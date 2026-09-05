@@ -311,7 +311,7 @@ export const interfacesRouter = router({
           resolvedAt: input.status === "resolvida" ? Date.now() : null,
           createdBy: ctx.user.id,
         })
-        .$returningId();
+        .returning({ id: coordinationInterfaces.id });
       const interfaceId = inserted[0]?.id;
       if (!interfaceId) {
         throw new TRPCError({

@@ -9,6 +9,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { activityAlertsHandler } from "../scheduledAlerts";
+import { getDb } from "../db";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,6 +31,14 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  console.log("[Server] Initializing database and ensuring seed data...");
+  const db = await getDb();
+  if (db) {
+    console.log("[Server] Database initialized and ready.");
+  } else {
+    console.warn("[Server] Database initialization failed or running in degraded mode.");
+  }
+
   const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads

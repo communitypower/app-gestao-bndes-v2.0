@@ -68,7 +68,8 @@ export const appRouter = router({
                 accessStatus: "ativo",
                 loginMethod: "local",
                 lastSignedIn: new Date(),
-              }).onDuplicateKeyUpdate({
+              }).onConflictDoUpdate({
+                target: users.openId,
                 set: {
                   lastSignedIn: new Date(),
                   accessStatus: "ativo",

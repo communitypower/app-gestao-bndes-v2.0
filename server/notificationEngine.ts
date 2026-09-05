@@ -71,7 +71,7 @@ export async function sendActivityNotification(
       recipientPhone: context.recipientPhone,
       idempotencyKey,
     })
-    .$returningId();
+    .returning({ id: notificationLogs.id });
   const logId = inserted[0]?.id;
 
   return processNotificationLog(logId);

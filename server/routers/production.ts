@@ -296,7 +296,7 @@ export const productionRouter = router({
           sectionId: input.sectionId,
           createdBy: ctx.user.id,
         })
-        .$returningId();
+        .returning({ id: productionMaterials.id });
       const materialId = inserted[0]?.id;
       if (!materialId) {
         throw new TRPCError({
@@ -430,7 +430,7 @@ export const productionRouter = router({
           message: input.message,
           submittedAt: Date.now(),
         })
-        .$returningId();
+        .returning({ id: reviewSubmissions.id });
       await db
         .update(productionMaterials)
         .set({ reviewStatus: "em revisão" })
@@ -741,7 +741,8 @@ export const productionRouter = router({
           note: input.note,
           decidedAt: Date.now(),
         })
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: [reviewDecisions.submissionId, reviewDecisions.reviewerId],
           set: {
             decision: input.decision,
             note: input.note,

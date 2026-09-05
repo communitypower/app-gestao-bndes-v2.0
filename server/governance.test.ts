@@ -32,7 +32,7 @@ function context(id: number, role: "admin" | "user" = "admin"): TrpcContext {
 
 function mutationDb() {
   const values = vi.fn(() => ({
-    onDuplicateKeyUpdate: vi.fn().mockResolvedValue(undefined),
+    onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
   }));
   return {
     insert: vi.fn(() => ({ values })),

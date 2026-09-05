@@ -97,7 +97,8 @@ export const governanceRouter = router({
           assignedBy: ctx.user.id,
           assignedAt: now,
         })
-        .onDuplicateKeyUpdate({
+        .onConflictDoUpdate({
+          target: tomeGovernanceAssignments.tome,
           set: {
             coordinatorId: input.coordinatorId,
             substituteId: input.substituteId,

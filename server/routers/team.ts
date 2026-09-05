@@ -123,7 +123,7 @@ export const teamRouter = router({
       const inserted = await db
         .insert(teamMembers)
         .values(input)
-        .$returningId();
+        .returning({ id: teamMembers.id });
       const memberId = inserted[0]?.id;
       if (memberId && input.groupRole === "coordenador") {
         await promoteCoordinator(input.groupId, memberId);

@@ -87,7 +87,7 @@ export async function createParticipantNotification(
         actionUrl: input.actionUrl ?? null,
         read: false,
       })
-      .$returningId();
+      .returning({ id: participantNotifications.id });
 
     return inserted[0]?.id ?? null;
   } catch (err) {

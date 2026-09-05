@@ -1,67 +1,186 @@
 import {
   bigint,
   boolean,
-  decimal,
+  doublePrecision,
   foreignKey,
   index,
-  int,
-  mysqlEnum,
-  mysqlTable,
+  integer,
+  numeric,
+  pgEnum,
+  pgTable,
+  serial,
   text,
   timestamp,
   uniqueIndex,
   varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
-export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
-  id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
+// ==========================================
+// Enums
+// ==========================================
+export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
+export const appRoleEnum = pgEnum("app_role", ["administrador", "coordenador", "executor"]);
+export const accessStatusEnum = pgEnum("access_status", ["ativo", "revogado"]);
+export const provisionStatusEnum = pgEnum("provision_status", ["pendente", "ativado", "revogado"]);
+export const accessEventTypeEnum = pgEnum("access_event_type", [
+  "perfil_alterado",
+  "acesso_revogado",
+  "acesso_reativado",
+  "pre_cadastro_atualizado",
+  "convite_enviado",
+]);
+export const governanceDecisionTypeEnum = pgEnum("governance_decision_type", ["implementacao_p0"]);
+export const governanceDecisionEnum = pgEnum("governance_decision", ["aprovada"]);
+export const groupRoleEnum = pgEnum("group_role", ["coordenador", "participante"]);
+export const tomeEnum = pgEnum("tome_enum", ["Apresentação", "Tomo I", "Tomo II", "Tomo III", "Tomo IV"]);
+export const structureStatusEnum = pgEnum("structure_status", ["canonica", "arquivada"]);
+export const documentStatusEnum = pgEnum("document_status", [
+  "planejada",
+  "em elaboração",
+  "submetida à revisão da seção",
+  "em revisão da seção",
+  "ajustes solicitados",
+  "revisada pela seção",
+  "consolidada no capítulo",
+  "em revisão do tomo",
+  "aprovada no tomo",
+  "em revisão do projeto",
+  "aprovada para documentação final",
+]);
+export const activityStatusEnum = pgEnum("activity_status", [
+  "pendente",
+  "em andamento",
+  "concluído",
+  "atrasado",
+]);
+export const reconciliationActionEnum = pgEnum("reconciliation_action", ["consolidada", "arquivada"]);
+export const milestoneStatusEnum = pgEnum("milestone_status", ["planejado", "concluído"]);
+export const fieldworkCategoryEnum = pgEnum("fieldwork_category", [
+  "visita a estaleiro",
+  "coleta de fonte primária",
+  "entrevista estruturada",
+  "apresentação de relatório",
+  "apresentação para equipe",
+  "audiência pública",
+]);
+export const allocationTypeEnum = pgEnum("allocation_type", ["vigente", "histórica"]);
+export const evidenceLinkTypeEnum = pgEnum("evidence_link_type", ["material", "evidência de campo"]);
+export const reviewerStatusEnum = pgEnum("reviewer_status", [
+  "pendente",
+  "em revisão",
+  "ajustes solicitados",
+  "aprovado",
+]);
+export const checklistScopeEnum = pgEnum("checklist_scope", ["seção", "capítulo"]);
+export const checklistStatusEnum = pgEnum("checklist_status", [
+  "pendente",
+  "em andamento",
+  "concluído",
+  "bloqueado",
+]);
+export const checklistEventTypeEnum = pgEnum("checklist_event_type", [
+  "status_alterado",
+  "responsável_alterado",
+  "prazo_alterado",
+]);
+export const libraryItemTypeEnum = pgEnum("library_item_type", ["arquivo", "link"]);
+export const materialReviewStatusEnum = pgEnum("material_review_status", [
+  "em elaboração",
+  "em revisão",
+  "aprovado",
+]);
+export const reviewSubmissionStatusEnum = pgEnum("review_submission_status", [
+  "em revisão",
+  "ajustes solicitados",
+  "aprovado",
+  "substituído",
+]);
+export const reviewDecisionEnum = pgEnum("review_decision", [
+  "em revisão",
+  "ajustes solicitados",
+  "aprovado",
+]);
+export const materialCommentTypeEnum = pgEnum("material_comment_type", [
+  "comentário",
+  "solicitação de ajuste",
+  "resposta",
+]);
+export const materialCommentStatusEnum = pgEnum("material_comment_status", [
+  "aberto",
+  "implementado",
+  "resolvido",
+]);
+export const interfaceTypeEnum = pgEnum("interface_type", [
+  "interface",
+  "escopo sobreposto",
+  "dependência",
+]);
+export const interfacePriorityEnum = pgEnum("interface_priority", [
+  "baixa",
+  "média",
+  "alta",
+  "crítica",
+]);
+export const blockingClassEnum = pgEnum("blocking_class", ["prioritária", "não prioritária"]);
+export const interfaceStatusEnum = pgEnum("interface_status", [
+  "identificada",
+  "em discussão",
+  "encaminhada",
+  "resolvida",
+]);
+export const interfaceSectionRoleEnum = pgEnum("interface_section_role", ["origem", "relacionada"]);
+export const interfaceGroupRoleEnum = pgEnum("interface_group_role", ["responsável", "envolvido"]);
+export const interfaceAiStatusEnum = pgEnum("interface_ai_status", ["concluída", "falhou"]);
+export const interfaceEventTypeEnum = pgEnum("interface_event_type", [
+  "criada",
+  "atualizada",
+  "status alterado",
+  "resolvida",
+  "reaberta",
+]);
+export const notificationLogEventEnum = pgEnum("notification_log_event", [
+  "atribuicao",
+  "prazo_3_dias",
+  "atraso",
+]);
+export const notificationLogStatusEnum = pgEnum("notification_log_status", [
+  "pendente",
+  "enviado",
+  "falhou",
+  "ignorado",
+]);
+
+// ==========================================
+// Tables
+// ==========================================
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-  appRole: mysqlEnum("appRole", ["administrador", "coordenador", "executor"])
-    .default("executor")
-    .notNull(),
-  accessStatus: mysqlEnum("accessStatus", ["ativo", "revogado"])
-    .default("ativo")
-    .notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
+  role: userRoleEnum("role").default("user").notNull(),
+  appRole: appRoleEnum("appRole").default("executor").notNull(),
+  accessStatus: accessStatusEnum("accessStatus").default("ativo").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
+  lastSignedIn: timestamp("lastSignedIn", { mode: "date" }).defaultNow().notNull(),
 });
 
-/**
- * Access provisions created by the administrator before a person signs in.
- * The authenticated account is linked by normalized e-mail on first access.
- */
-export const userAccessProvisions = mysqlTable(
+export const userAccessProvisions = pgTable(
   "user_access_provisions",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     email: varchar("email", { length: 320 }).notNull(),
     name: text("name").notNull(),
-    role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-    appRole: mysqlEnum("appRole", ["administrador", "coordenador", "executor"])
-      .default("executor")
-      .notNull(),
-    status: mysqlEnum("status", ["pendente", "ativado", "revogado"])
-      .default("pendente")
-      .notNull(),
-    userId: int("userId"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    activatedAt: timestamp("activatedAt"),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    role: userRoleEnum("role").default("user").notNull(),
+    appRole: appRoleEnum("appRole").default("executor").notNull(),
+    status: provisionStatusEnum("status").default("pendente").notNull(),
+    userId: integer("userId"),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    activatedAt: timestamp("activatedAt", { mode: "date" }),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
   table => [
     uniqueIndex("user_access_provisions_email_unique").on(table.email),
@@ -69,25 +188,18 @@ export const userAccessProvisions = mysqlTable(
   ]
 );
 
-/** Audit trail for administrative changes to authenticated users and pre-registered access. */
-export const userAccessEvents = mysqlTable(
+export const userAccessEvents = pgTable(
   "user_access_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId"),
-    provisionId: int("provisionId"),
-    actorUserId: int("actorUserId").notNull(),
-    eventType: mysqlEnum("eventType", [
-      "perfil_alterado",
-      "acesso_revogado",
-      "acesso_reativado",
-      "pre_cadastro_atualizado",
-      "convite_enviado",
-    ]).notNull(),
-    previousAppRole: mysqlEnum("previousAppRole", ["administrador", "coordenador", "executor"]),
-    nextAppRole: mysqlEnum("nextAppRole", ["administrador", "coordenador", "executor"]),
+    id: serial("id").primaryKey(),
+    userId: integer("userId"),
+    provisionId: integer("provisionId"),
+    actorUserId: integer("actorUserId").notNull(),
+    eventType: accessEventTypeEnum("eventType").notNull(),
+    previousAppRole: appRoleEnum("previousAppRole"),
+    nextAppRole: appRoleEnum("nextAppRole"),
     note: text("note"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
   table => [
     index("user_access_events_user_idx").on(table.userId),
@@ -99,10 +211,10 @@ export const userAccessEvents = mysqlTable(
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-export const projectSettings = mysqlTable(
+export const projectSettings = pgTable(
   "project_settings",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     name: varchar("name", { length: 220 }).notNull(),
     projectStartAt: bigint("projectStartAt", { mode: "number" }).notNull(),
     projectEndAt: bigint("projectEndAt", { mode: "number" }).notNull(),
@@ -115,121 +227,69 @@ export const projectSettings = mysqlTable(
       .default("pt_BR")
       .notNull(),
     scheduleCronTaskUid: varchar("scheduleCronTaskUid", { length: 65 }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    cronTaskIdx: index("project_settings_cron_task_idx").on(
-      table.scheduleCronTaskUid
-    ),
-  })
+  table => [
+    index("project_settings_cron_task_idx").on(table.scheduleCronTaskUid),
+  ]
 );
 
-/** Decisões imutáveis de governança, iniciadas pela autorização de implementação do pacote P0. */
-export const projectGovernanceDecisions = mysqlTable(
+export const projectGovernanceDecisions = pgTable(
   "project_governance_decisions",
   {
-    id: int("id").autoincrement().primaryKey(),
-    decisionType: mysqlEnum("decisionType", ["implementacao_p0"]).notNull(),
-    decision: mysqlEnum("decision", ["aprovada"]).notNull(),
+    id: serial("id").primaryKey(),
+    decisionType: governanceDecisionTypeEnum("decisionType").notNull(),
+    decision: governanceDecisionEnum("decision").notNull(),
     note: text("note"),
-    decidedBy: int("decidedBy").notNull().references(() => users.id),
+    decidedBy: integer("decidedBy").notNull().references(() => users.id),
     decidedAt: bigint("decidedAt", { mode: "number" }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    decisionTypeIdx: index("project_governance_decisions_type_idx").on(
-      table.decisionType,
-      table.decidedAt
-    ),
-  })
+  table => [
+    index("project_governance_decisions_type_idx").on(table.decisionType, table.decidedAt),
+  ]
 );
 
-/** Coordenação editorial do projeto, distinta das designações dos tomos. */
-export const projectEditorialGovernance = mysqlTable(
-  "project_editorial_governance",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    coordinatorId: int("coordinatorId").notNull(),
-    substituteId: int("substituteId").notNull(),
-    assignedBy: int("assignedBy").notNull(),
-    assignedAt: bigint("assignedAt", { mode: "number" }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  },
-  table => ({
-    coordinatorFk: foreignKey({ columns: [table.coordinatorId], foreignColumns: [teamMembers.id], name: "peg_coord_fk" }),
-    substituteFk: foreignKey({ columns: [table.substituteId], foreignColumns: [teamMembers.id], name: "peg_sub_fk" }),
-    assignedByFk: foreignKey({ columns: [table.assignedBy], foreignColumns: [users.id], name: "peg_actor_fk" }),
-    coordinatorIdx: index("project_editorial_governance_coordinator_idx").on(table.coordinatorId),
-    substituteIdx: index("project_editorial_governance_substitute_idx").on(table.substituteId),
-  })
-);
-
-/** Histórico imutável das designações da coordenação editorial do projeto. */
-export const projectEditorialGovernanceEvents = mysqlTable(
-  "project_editorial_governance_events",
-  {
-    id: int("id").autoincrement().primaryKey(),
-    previousCoordinatorId: int("previousCoordinatorId"),
-    nextCoordinatorId: int("nextCoordinatorId").notNull(),
-    previousSubstituteId: int("previousSubstituteId"),
-    nextSubstituteId: int("nextSubstituteId").notNull(),
-    justification: text("justification").notNull(),
-    assignedBy: int("assignedBy").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  table => ({
-    previousCoordinatorFk: foreignKey({ columns: [table.previousCoordinatorId], foreignColumns: [teamMembers.id], name: "pege_prev_coord_fk" }),
-    nextCoordinatorFk: foreignKey({ columns: [table.nextCoordinatorId], foreignColumns: [teamMembers.id], name: "pege_next_coord_fk" }),
-    previousSubstituteFk: foreignKey({ columns: [table.previousSubstituteId], foreignColumns: [teamMembers.id], name: "pege_prev_sub_fk" }),
-    nextSubstituteFk: foreignKey({ columns: [table.nextSubstituteId], foreignColumns: [teamMembers.id], name: "pege_next_sub_fk" }),
-    assignedByFk: foreignKey({ columns: [table.assignedBy], foreignColumns: [users.id], name: "pege_actor_fk" }),
-    createdIdx: index("project_editorial_governance_events_created_idx").on(table.createdAt),
-  })
-);
-
-export const studySections = mysqlTable(
+export const studySections = pgTable(
   "study_sections",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     code: varchar("code", { length: 8 }).notNull(),
     title: varchar("title", { length: 320 }).notNull(),
     officialDescription: text("officialDescription").notNull(),
-    sortOrder: int("sortOrder").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    sortOrder: integer("sortOrder").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    codeIdx: uniqueIndex("study_sections_code_idx").on(table.code),
-    orderIdx: index("study_sections_order_idx").on(table.sortOrder),
-  })
+  table => [
+    uniqueIndex("study_sections_code_idx").on(table.code),
+    index("study_sections_order_idx").on(table.sortOrder),
+  ]
 );
 
-export const teamGroups = mysqlTable(
+export const teamGroups = pgTable(
   "team_groups",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     name: varchar("name", { length: 180 }).notNull(),
     institution: varchar("institution", { length: 160 }).notNull(),
     active: boolean("active").default(true).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    nameIdx: uniqueIndex("team_groups_name_idx").on(table.name),
-    institutionIdx: index("team_groups_institution_idx").on(table.institution),
-  })
+  table => [
+    uniqueIndex("team_groups_name_idx").on(table.name),
+    index("team_groups_institution_idx").on(table.institution),
+  ]
 );
 
-export const teamMembers = mysqlTable(
+export const teamMembers = pgTable(
   "team_members",
   {
-    id: int("id").autoincrement().primaryKey(),
-    userId: int("userId").references(() => users.id),
-    groupId: int("groupId").references(() => teamGroups.id),
-    groupRole: mysqlEnum("groupRole", ["coordenador", "participante"])
-      .default("participante")
-      .notNull(),
+    id: serial("id").primaryKey(),
+    userId: integer("userId").references(() => users.id),
+    groupId: integer("groupId").references(() => teamGroups.id),
+    groupRole: groupRoleEnum("groupRole").default("participante").notNull(),
     name: varchar("name", { length: 220 }).notNull(),
     title: varchar("title", { length: 120 }).notNull(),
     institution: varchar("institution", { length: 160 }).notNull(),
@@ -237,87 +297,123 @@ export const teamMembers = mysqlTable(
     whatsappPhone: varchar("whatsappPhone", { length: 32 }),
     whatsappOptIn: boolean("whatsappOptIn").default(false).notNull(),
     active: boolean("active").default(true).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    userIdx: index("team_members_user_idx").on(table.userId),
-    groupIdx: index("team_members_group_idx").on(table.groupId),
-    groupRoleIdx: index("team_members_group_role_idx").on(
-      table.groupId,
-      table.groupRole
-    ),
-    nameIdx: index("team_members_name_idx").on(table.name),
-  })
+  table => [
+    index("team_members_user_idx").on(table.userId),
+    index("team_members_group_idx").on(table.groupId),
+    index("team_members_group_role_idx").on(table.groupId, table.groupRole),
+    index("team_members_name_idx").on(table.name),
+  ]
 );
 
-/** Participação temática por grupo, sem substituir o vínculo primário operacional do integrante. */
-export const teamGroupMemberships = mysqlTable(
+export const projectEditorialGovernance = pgTable(
+  "project_editorial_governance",
+  {
+    id: serial("id").primaryKey(),
+    coordinatorId: integer("coordinatorId").notNull(),
+    substituteId: integer("substituteId").notNull(),
+    assignedBy: integer("assignedBy").notNull(),
+    assignedAt: bigint("assignedAt", { mode: "number" }).notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  table => [
+    foreignKey({ columns: [table.coordinatorId], foreignColumns: [teamMembers.id], name: "peg_coord_fk" }),
+    foreignKey({ columns: [table.substituteId], foreignColumns: [teamMembers.id], name: "peg_sub_fk" }),
+    foreignKey({ columns: [table.assignedBy], foreignColumns: [users.id], name: "peg_actor_fk" }),
+    index("project_editorial_governance_coordinator_idx").on(table.coordinatorId),
+    index("project_editorial_governance_substitute_idx").on(table.substituteId),
+  ]
+);
+
+export const projectEditorialGovernanceEvents = pgTable(
+  "project_editorial_governance_events",
+  {
+    id: serial("id").primaryKey(),
+    previousCoordinatorId: integer("previousCoordinatorId"),
+    nextCoordinatorId: integer("nextCoordinatorId").notNull(),
+    previousSubstituteId: integer("previousSubstituteId"),
+    nextSubstituteId: integer("nextSubstituteId").notNull(),
+    justification: text("justification").notNull(),
+    assignedBy: integer("assignedBy").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+  },
+  table => [
+    foreignKey({ columns: [table.previousCoordinatorId], foreignColumns: [teamMembers.id], name: "pege_prev_coord_fk" }),
+    foreignKey({ columns: [table.nextCoordinatorId], foreignColumns: [teamMembers.id], name: "pege_next_coord_fk" }),
+    foreignKey({ columns: [table.previousSubstituteId], foreignColumns: [teamMembers.id], name: "pege_prev_sub_fk" }),
+    foreignKey({ columns: [table.nextSubstituteId], foreignColumns: [teamMembers.id], name: "pege_next_sub_fk" }),
+    foreignKey({ columns: [table.assignedBy], foreignColumns: [users.id], name: "pege_actor_fk" }),
+    index("project_editorial_governance_events_created_idx").on(table.createdAt),
+  ]
+);
+
+export const teamGroupMemberships = pgTable(
   "team_group_memberships",
   {
-    id: int("id").autoincrement().primaryKey(),
-    groupId: int("groupId").notNull().references(() => teamGroups.id),
-    teamMemberId: int("teamMemberId").notNull().references(() => teamMembers.id),
+    id: serial("id").primaryKey(),
+    groupId: integer("groupId").notNull().references(() => teamGroups.id),
+    teamMemberId: integer("teamMemberId").notNull().references(() => teamMembers.id),
     membershipSource: varchar("membershipSource", { length: 64 }).notNull(),
     sourceDocument: varchar("sourceDocument", { length: 320 }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    groupIdx: index("team_group_memberships_group_idx").on(table.groupId),
-    memberIdx: index("team_group_memberships_member_idx").on(table.teamMemberId),
-    uniqueMembershipIdx: uniqueIndex("team_group_memberships_unique_idx").on(table.groupId, table.teamMemberId),
-  })
+  table => [
+    index("team_group_memberships_group_idx").on(table.groupId),
+    index("team_group_memberships_member_idx").on(table.teamMemberId),
+    uniqueIndex("team_group_memberships_unique_idx").on(table.groupId, table.teamMemberId),
+  ]
 );
 
-/** Coordenação formal e substituição autorizada para cada tomo editorial. */
-export const tomeGovernanceAssignments = mysqlTable(
+export const tomeGovernanceAssignments = pgTable(
   "tome_governance_assignments",
   {
-    id: int("id").autoincrement().primaryKey(),
-    tome: mysqlEnum("tome", ["Apresentação", "Tomo I", "Tomo II", "Tomo III", "Tomo IV"]).notNull(),
-    coordinatorId: int("coordinatorId").references(() => teamMembers.id),
-    substituteId: int("substituteId").references(() => teamMembers.id),
-    assignedBy: int("assignedBy").references(() => users.id),
+    id: serial("id").primaryKey(),
+    tome: tomeEnum("tome").notNull(),
+    coordinatorId: integer("coordinatorId").references(() => teamMembers.id),
+    substituteId: integer("substituteId").references(() => teamMembers.id),
+    assignedBy: integer("assignedBy").references(() => users.id),
     assignedAt: bigint("assignedAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    tomeIdx: uniqueIndex("tome_governance_assignments_tome_idx").on(table.tome),
-    coordinatorIdx: index("tome_governance_assignments_coordinator_idx").on(table.coordinatorId),
-    substituteIdx: index("tome_governance_assignments_substitute_idx").on(table.substituteId),
-  })
+  table => [
+    uniqueIndex("tome_governance_assignments_tome_idx").on(table.tome),
+    index("tome_governance_assignments_coordinator_idx").on(table.coordinatorId),
+    index("tome_governance_assignments_substitute_idx").on(table.substituteId),
+  ]
 );
 
-/** Registro imutável das trocas de coordenação e substituição por tomo. */
-export const tomeGovernanceEvents = mysqlTable(
+export const tomeGovernanceEvents = pgTable(
   "tome_governance_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    tome: mysqlEnum("tome", ["Apresentação", "Tomo I", "Tomo II", "Tomo III", "Tomo IV"]).notNull(),
-    previousCoordinatorId: int("previousCoordinatorId").references(() => teamMembers.id),
-    nextCoordinatorId: int("nextCoordinatorId").references(() => teamMembers.id),
-    previousSubstituteId: int("previousSubstituteId").references(() => teamMembers.id),
-    nextSubstituteId: int("nextSubstituteId").references(() => teamMembers.id),
+    id: serial("id").primaryKey(),
+    tome: tomeEnum("tome").notNull(),
+    previousCoordinatorId: integer("previousCoordinatorId").references(() => teamMembers.id),
+    nextCoordinatorId: integer("nextCoordinatorId").references(() => teamMembers.id),
+    previousSubstituteId: integer("previousSubstituteId").references(() => teamMembers.id),
+    nextSubstituteId: integer("nextSubstituteId").references(() => teamMembers.id),
     justification: text("justification").notNull(),
-    assignedBy: int("assignedBy").notNull().references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    assignedBy: integer("assignedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    tomeIdx: index("tome_governance_events_tome_idx").on(table.tome, table.createdAt),
-  })
+  table => [
+    index("tome_governance_events_tome_idx").on(table.tome, table.createdAt),
+  ]
 );
 
-export const activities = mysqlTable(
+export const activities = pgTable(
   "activities",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     planCode: varchar("planCode", { length: 8 }),
-    planSortOrder: int("planSortOrder"),
-    parentActivityId: int("parentActivityId"),
+    planSortOrder: integer("planSortOrder"),
+    parentActivityId: integer("parentActivityId"),
     detailCode: varchar("detailCode", { length: 24 }),
-    detailSortOrder: int("detailSortOrder"),
+    detailSortOrder: integer("detailSortOrder"),
     title: varchar("title", { length: 1000 }).notNull(),
     description: text("description").notNull(),
     planningSummary: text("planningSummary"),
@@ -331,885 +427,617 @@ export const activities = mysqlTable(
     visibility: varchar("visibility", { length: 160 }),
     acceptanceCriteria: text("acceptanceCriteria"),
     sourceBase: varchar("sourceBase", { length: 320 }),
-    structureStatus: mysqlEnum("structureStatus", ["canonica", "arquivada"])
-      .default("canonica")
-      .notNull(),
-    sectionId: int("sectionId")
-      .notNull()
-      .references(() => studySections.id),
-    responsibleId: int("responsibleId")
-      .notNull()
-      .references(() => teamMembers.id),
+    structureStatus: structureStatusEnum("structureStatus").default("canonica").notNull(),
+    sectionId: integer("sectionId").notNull().references(() => studySections.id),
+    responsibleId: integer("responsibleId").notNull().references(() => teamMembers.id),
     startAt: bigint("startAt", { mode: "number" }),
     dueAt: bigint("dueAt", { mode: "number" }).notNull(),
-    /** Entrega interna para recebimento técnico, consolidação e editoração. */
     editorialDeliveryAt: bigint("editorialDeliveryAt", { mode: "number" }),
-    /** Entrega contratual ao BNDES, posterior à janela de consolidação editorial. */
     bndesDeliveryAt: bigint("bndesDeliveryAt", { mode: "number" }),
-    documentStatus: mysqlEnum("documentStatus", [
-      "planejada",
-      "em elaboração",
-      "submetida à revisão da seção",
-      "em revisão da seção",
-      "ajustes solicitados",
-      "revisada pela seção",
-      "consolidada no capítulo",
-      "em revisão do tomo",
-      "aprovada no tomo",
-      "em revisão do projeto",
-      "aprovada para documentação final",
-    ]).default("planejada").notNull(),
-    status: mysqlEnum("status", [
-      "pendente",
-      "em andamento",
-      "concluído",
-      "atrasado",
-    ])
-      .default("pendente")
-      .notNull(),
-    progress: int("progress").default(0).notNull(),
-    createdBy: int("createdBy").references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    documentStatus: documentStatusEnum("documentStatus").default("planejada").notNull(),
+    status: activityStatusEnum("status").default("pendente").notNull(),
+    progress: integer("progress").default(0).notNull(),
+    createdBy: integer("createdBy").references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    parentActivityFk: foreignKey({
+  table => [
+    foreignKey({
       columns: [table.parentActivityId],
       foreignColumns: [table.id],
       name: "activities_parentActivityId_activities_id_fk",
     }),
-    planCodeIdx: uniqueIndex("activities_plan_code_idx").on(table.planCode),
-    planOrderIdx: index("activities_plan_order_idx").on(table.planSortOrder),
-    parentActivityIdx: index("activities_parent_activity_idx").on(
-      table.parentActivityId
-    ),
-    detailCodeIdx: uniqueIndex("activities_detail_code_idx").on(table.detailCode),
-    detailOrderIdx: index("activities_detail_order_idx").on(
-      table.parentActivityId,
-      table.detailSortOrder
-    ),
-    sectionIdx: index("activities_section_idx").on(table.sectionId),
-    responsibleIdx: index("activities_responsible_idx").on(
-      table.responsibleId
-    ),
-    startIdx: index("activities_start_idx").on(table.startAt),
-    dueIdx: index("activities_due_idx").on(table.dueAt),
-    editorialDeliveryIdx: index("activities_editorial_delivery_idx").on(table.editorialDeliveryAt),
-    documentStatusIdx: index("activities_document_status_idx").on(table.documentStatus),
-    statusIdx: index("activities_status_idx").on(table.status),
-    structureStatusIdx: index("activities_structure_status_idx").on(table.structureStatus),
-  })
+    uniqueIndex("activities_plan_code_idx").on(table.planCode),
+    index("activities_plan_order_idx").on(table.planSortOrder),
+    index("activities_parent_activity_idx").on(table.parentActivityId),
+    uniqueIndex("activities_detail_code_idx").on(table.detailCode),
+    index("activities_detail_order_idx").on(table.parentActivityId, table.detailSortOrder),
+    index("activities_section_idx").on(table.sectionId),
+    index("activities_responsible_idx").on(table.responsibleId),
+    index("activities_start_idx").on(table.startAt),
+    index("activities_due_idx").on(table.dueAt),
+    index("activities_editorial_delivery_idx").on(table.editorialDeliveryAt),
+    index("activities_document_status_idx").on(table.documentStatus),
+    index("activities_status_idx").on(table.status),
+    index("activities_structure_status_idx").on(table.structureStatus),
+  ]
 );
 
-/** Histórico imutável das transições humanas do fluxo documental de seções e capítulos. */
-export const activityDocumentWorkflowEvents = mysqlTable(
+export const activityDocumentWorkflowEvents = pgTable(
   "activity_document_workflow_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId").notNull(),
-    previousStatus: mysqlEnum("previousStatus", [
-      "planejada", "em elaboração", "submetida à revisão da seção", "em revisão da seção", "ajustes solicitados", "revisada pela seção", "consolidada no capítulo", "em revisão do tomo", "aprovada no tomo", "em revisão do projeto", "aprovada para documentação final",
-    ]),
-    nextStatus: mysqlEnum("nextStatus", [
-      "planejada", "em elaboração", "submetida à revisão da seção", "em revisão da seção", "ajustes solicitados", "revisada pela seção", "consolidada no capítulo", "em revisão do tomo", "aprovada no tomo", "em revisão do projeto", "aprovada para documentação final",
-    ]).notNull(),
-    actorId: int("actorId").notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull(),
+    previousStatus: documentStatusEnum("previousStatus"),
+    nextStatus: documentStatusEnum("nextStatus").notNull(),
+    actorId: integer("actorId").notNull(),
     note: text("note"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityFk: foreignKey({ columns: [table.activityId], foreignColumns: [activities.id], name: "adwe_activity_fk" }),
-    actorFk: foreignKey({ columns: [table.actorId], foreignColumns: [users.id], name: "adwe_actor_fk" }),
-    activityIdx: index("activity_document_workflow_events_activity_idx").on(table.activityId, table.createdAt),
-  })
+  table => [
+    foreignKey({ columns: [table.activityId], foreignColumns: [activities.id], name: "adwe_activity_fk" }),
+    foreignKey({ columns: [table.actorId], foreignColumns: [users.id], name: "adwe_actor_fk" }),
+    index("activity_document_workflow_events_activity_idx").on(table.activityId, table.createdAt),
+  ]
 );
 
-/** Registro auditável de itens consolidados ou retirados da estrutura ativa pelo índice analítico oficial. */
-export const activityStructureReconciliations = mysqlTable(
+export const activityStructureReconciliations = pgTable(
   "activity_structure_reconciliations",
   {
-    id: int("id").autoincrement().primaryKey(),
-    supersededActivityId: int("supersededActivityId").notNull(),
-    canonicalActivityId: int("canonicalActivityId"),
-    action: mysqlEnum("action", ["consolidada", "arquivada"])
-      .notNull(),
+    id: serial("id").primaryKey(),
+    supersededActivityId: integer("supersededActivityId").notNull(),
+    canonicalActivityId: integer("canonicalActivityId"),
+    action: reconciliationActionEnum("action").notNull(),
     sourceReference: varchar("sourceReference", { length: 320 }).notNull(),
     snapshot: text("snapshot").notNull(),
     reason: text("reason").notNull(),
     performedAt: bigint("performedAt", { mode: "number" }).notNull(),
   },
-  table => ({
-    supersededFk: foreignKey({
+  table => [
+    foreignKey({
       columns: [table.supersededActivityId],
       foreignColumns: [activities.id],
       name: "asr_superseded_activity_fk",
     }),
-    canonicalFk: foreignKey({
+    foreignKey({
       columns: [table.canonicalActivityId],
       foreignColumns: [activities.id],
       name: "asr_canonical_activity_fk",
     }),
-    supersededIdx: uniqueIndex("activity_structure_reconciliation_superseded_idx").on(
-      table.supersededActivityId
-    ),
-    canonicalIdx: index("activity_structure_reconciliation_canonical_idx").on(
-      table.canonicalActivityId
-    ),
-  })
+    uniqueIndex("activity_structure_reconciliation_superseded_idx").on(table.supersededActivityId),
+    index("activity_structure_reconciliation_canonical_idx").on(table.canonicalActivityId),
+  ]
 );
 
-export const activityMilestones = mysqlTable(
+export const activityMilestones = pgTable(
   "activity_milestones",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
     title: varchar("title", { length: 240 }).notNull(),
     description: text("description"),
     dueAt: bigint("dueAt", { mode: "number" }).notNull(),
-    status: mysqlEnum("status", ["planejado", "concluído"])
-      .default("planejado")
-      .notNull(),
-    sortOrder: int("sortOrder").default(0).notNull(),
-    createdBy: int("createdBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    status: milestoneStatusEnum("status").default("planejado").notNull(),
+    sortOrder: integer("sortOrder").default(0).notNull(),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("activity_milestones_activity_idx").on(table.activityId),
-    dueIdx: index("activity_milestones_due_idx").on(table.dueAt),
-    uniqueTitleIdx: uniqueIndex("activity_milestones_unique_title_idx").on(
-      table.activityId,
-      table.title
-    ),
-  })
+  table => [
+    index("activity_milestones_activity_idx").on(table.activityId),
+    index("activity_milestones_due_idx").on(table.dueAt),
+    uniqueIndex("activity_milestones_unique_title_idx").on(table.activityId, table.title),
+  ]
 );
 
-export const fieldworkActivities = mysqlTable(
+export const fieldworkActivities = pgTable(
   "fieldwork_activities",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     code: varchar("code", { length: 32 }).notNull(),
     title: varchar("title", { length: 320 }).notNull(),
     description: text("description").notNull(),
-    category: mysqlEnum("category", [
-      "visita a estaleiro",
-      "coleta de fonte primária",
-      "entrevista estruturada",
-      "apresentação de relatório",
-      "apresentação para equipe",
-      "audiência pública",
-    ]).notNull(),
+    category: fieldworkCategoryEnum("category").notNull(),
     country: varchar("country", { length: 96 }),
     location: varchar("location", { length: 180 }),
-    relatedActivityId: int("relatedActivityId").references(() => activities.id),
-    responsibleId: int("responsibleId").references(() => teamMembers.id),
-    groupId: int("groupId").references(() => teamGroups.id),
+    relatedActivityId: integer("relatedActivityId").references(() => activities.id),
+    responsibleId: integer("responsibleId").references(() => teamMembers.id),
+    groupId: integer("groupId").references(() => teamGroups.id),
     startAt: bigint("startAt", { mode: "number" }),
     dueAt: bigint("dueAt", { mode: "number" }),
-    status: mysqlEnum("status", [
-      "pendente",
-      "em andamento",
-      "concluído",
-      "atrasado",
-    ])
-      .default("pendente")
-      .notNull(),
-    createdBy: int("createdBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    status: activityStatusEnum("status").default("pendente").notNull(),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    codeIdx: uniqueIndex("fieldwork_activities_code_idx").on(table.code),
-    relatedActivityIdx: index("fieldwork_activities_related_activity_idx").on(
-      table.relatedActivityId
-    ),
-    groupIdx: index("fieldwork_activities_group_idx").on(table.groupId),
-    dueIdx: index("fieldwork_activities_due_idx").on(table.dueAt),
-  })
+  table => [
+    uniqueIndex("fieldwork_activities_code_idx").on(table.code),
+    index("fieldwork_activities_related_activity_idx").on(table.relatedActivityId),
+    index("fieldwork_activities_group_idx").on(table.groupId),
+    index("fieldwork_activities_due_idx").on(table.dueAt),
+  ]
 );
 
-export const activityAllocations = mysqlTable(
+export const activityAllocations = pgTable(
   "activity_allocations",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
-    teamMemberId: int("teamMemberId")
-      .notNull()
-      .references(() => teamMembers.id),
-    allocatedHours: decimal("allocatedHours", {
-      precision: 8,
-      scale: 2,
-      mode: "number",
-    }).notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    teamMemberId: integer("teamMemberId").notNull().references(() => teamMembers.id),
+    allocatedHours: doublePrecision("allocatedHours").notNull(),
     responsibility: text("responsibility"),
     isExecutionLead: boolean("isExecutionLead").default(false).notNull(),
-    assignedBy: int("assignedBy").references(() => users.id),
-    allocationType: mysqlEnum("allocationType", ["vigente", "histórica"])
-      .default("vigente")
-      .notNull(),
+    assignedBy: integer("assignedBy").references(() => users.id),
+    allocationType: allocationTypeEnum("allocationType").default("vigente").notNull(),
     note: text("note"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("activity_allocations_activity_idx").on(table.activityId),
-    memberIdx: index("activity_allocations_member_idx").on(table.teamMemberId),
-    executionLeadIdx: index("activity_allocations_execution_lead_idx").on(
+  table => [
+    index("activity_allocations_activity_idx").on(table.activityId),
+    index("activity_allocations_member_idx").on(table.teamMemberId),
+    index("activity_allocations_execution_lead_idx").on(
       table.activityId,
       table.allocationType,
       table.isExecutionLead
     ),
-    activityMemberIdx: uniqueIndex("activity_allocations_unique_idx").on(
-      table.activityId,
-      table.teamMemberId
-    ),
-  })
+    uniqueIndex("activity_allocations_unique_idx").on(table.activityId, table.teamMemberId),
+  ]
 );
 
-export const activityLeadershipEvents = mysqlTable(
+export const activityLeadershipEvents = pgTable(
   "activity_leadership_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId").notNull().references(() => activities.id),
-    previousTeamMemberId: int("previousTeamMemberId").references(() => teamMembers.id),
-    nextTeamMemberId: int("nextTeamMemberId").notNull().references(() => teamMembers.id),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    previousTeamMemberId: integer("previousTeamMemberId").references(() => teamMembers.id),
+    nextTeamMemberId: integer("nextTeamMemberId").notNull().references(() => teamMembers.id),
     justification: text("justification").notNull(),
-    assignedBy: int("assignedBy").notNull().references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    assignedBy: integer("assignedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("activity_leadership_events_activity_idx").on(table.activityId),
-    createdIdx: index("activity_leadership_events_created_idx").on(table.createdAt),
-  })
+  table => [
+    index("activity_leadership_events_activity_idx").on(table.activityId),
+    index("activity_leadership_events_created_idx").on(table.createdAt),
+  ]
 );
 
-export const activityEvidenceLinks = mysqlTable(
+export const activityEvidenceLinks = pgTable(
   "activity_evidence_links",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
     label: varchar("label", { length: 240 }).notNull(),
     url: text("url").notNull(),
-    linkType: mysqlEnum("linkType", ["material", "evidência de campo"])
-      .default("material")
-      .notNull(),
-    createdBy: int("createdBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    linkType: evidenceLinkTypeEnum("linkType").default("material").notNull(),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("activity_evidence_links_activity_idx").on(table.activityId),
-  })
+  table => [
+    index("activity_evidence_links_activity_idx").on(table.activityId),
+  ]
 );
 
-export const activityReviewers = mysqlTable(
+export const activityReviewers = pgTable(
   "activity_reviewers",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
-    teamMemberId: int("teamMemberId")
-      .notNull()
-      .references(() => teamMembers.id),
-    assignedBy: int("assignedBy")
-      .notNull()
-      .references(() => users.id),
-    status: mysqlEnum("status", [
-      "pendente",
-      "em revisão",
-      "ajustes solicitados",
-      "aprovado",
-    ])
-      .default("pendente")
-      .notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    teamMemberId: integer("teamMemberId").notNull().references(() => teamMembers.id),
+    assignedBy: integer("assignedBy").notNull().references(() => users.id),
+    status: reviewerStatusEnum("status").default("pendente").notNull(),
     decisionNote: text("decisionNote"),
     decidedAt: bigint("decidedAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("activity_reviewers_activity_idx").on(table.activityId),
-    memberIdx: index("activity_reviewers_member_idx").on(table.teamMemberId),
-    statusIdx: index("activity_reviewers_status_idx").on(table.status),
-    uniqueReviewerIdx: uniqueIndex("activity_reviewers_unique_idx").on(
-      table.activityId,
-      table.teamMemberId
-    ),
-  })
+  table => [
+    index("activity_reviewers_activity_idx").on(table.activityId),
+    index("activity_reviewers_member_idx").on(table.teamMemberId),
+    index("activity_reviewers_status_idx").on(table.status),
+    uniqueIndex("activity_reviewers_unique_idx").on(table.activityId, table.teamMemberId),
+  ]
 );
 
-/** Itens de checklist do grupo do capítulo durante revisão de seção e capítulo. */
-export const reviewChecklistItems = mysqlTable(
+export const reviewChecklistItems = pgTable(
   "review_checklist_items",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId").notNull().references(() => activities.id),
-    scope: mysqlEnum("scope", ["seção", "capítulo"]).notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    scope: checklistScopeEnum("scope").notNull(),
     itemKey: varchar("itemKey", { length: 80 }).notNull(),
     title: varchar("title", { length: 320 }).notNull(),
-    responsibleId: int("responsibleId").references(() => teamMembers.id),
+    responsibleId: integer("responsibleId").references(() => teamMembers.id),
     dueAt: bigint("dueAt", { mode: "number" }),
-    status: mysqlEnum("status", ["pendente", "em andamento", "concluído", "bloqueado"]).default("pendente").notNull(),
+    status: checklistStatusEnum("status").default("pendente").notNull(),
     completedAt: bigint("completedAt", { mode: "number" }),
-    completedBy: int("completedBy").references(() => users.id),
-    createdBy: int("createdBy").notNull().references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    completedBy: integer("completedBy").references(() => users.id),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("review_checklist_items_activity_idx").on(table.activityId, table.scope, table.status),
-    responsibleIdx: index("review_checklist_items_responsible_idx").on(table.responsibleId),
-    uniqueItemIdx: uniqueIndex("review_checklist_items_unique_idx").on(table.activityId, table.itemKey),
-  })
+  table => [
+    index("review_checklist_items_activity_idx").on(table.activityId, table.scope, table.status),
+    index("review_checklist_items_responsible_idx").on(table.responsibleId),
+    uniqueIndex("review_checklist_items_unique_idx").on(table.activityId, table.itemKey),
+  ]
 );
 
-/** Histórico imutável das alterações no checklist de revisão. */
-export const reviewChecklistEvents = mysqlTable(
+export const reviewChecklistEvents = pgTable(
   "review_checklist_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    checklistItemId: int("checklistItemId").notNull(),
-    activityId: int("activityId").notNull().references(() => activities.id),
-    eventType: mysqlEnum("eventType", ["status_alterado", "responsável_alterado", "prazo_alterado"]).notNull(),
+    id: serial("id").primaryKey(),
+    checklistItemId: integer("checklistItemId").notNull(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    eventType: checklistEventTypeEnum("eventType").notNull(),
     summary: text("summary").notNull(),
-    actorId: int("actorId").notNull().references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    actorId: integer("actorId").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    checklistItemFk: foreignKey({
+  table => [
+    foreignKey({
       columns: [table.checklistItemId],
       foreignColumns: [reviewChecklistItems.id],
       name: "rce_item_fk",
     }),
-    itemIdx: index("review_checklist_events_item_idx").on(table.checklistItemId, table.createdAt),
-    activityIdx: index("review_checklist_events_activity_idx").on(table.activityId, table.createdAt),
-  })
+    index("review_checklist_events_item_idx").on(table.checklistItemId, table.createdAt),
+    index("review_checklist_events_activity_idx").on(table.activityId, table.createdAt),
+  ]
 );
 
-export const libraryItems = mysqlTable(
+export const libraryItems = pgTable(
   "library_items",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     title: varchar("title", { length: 320 }).notNull(),
     description: text("description"),
     theme: varchar("theme", { length: 180 }),
-    sectionId: int("sectionId").references(() => studySections.id),
-    itemType: mysqlEnum("itemType", ["arquivo", "link"]).notNull(),
+    sectionId: integer("sectionId").references(() => studySections.id),
+    itemType: libraryItemTypeEnum("itemType").notNull(),
     externalUrl: text("externalUrl"),
     fileName: varchar("fileName", { length: 320 }),
     mimeType: varchar("mimeType", { length: 160 }),
-    fileSize: int("fileSize"),
+    fileSize: integer("fileSize"),
     storageKey: text("storageKey"),
     storageUrl: text("storageUrl"),
-    uploadedBy: int("uploadedBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    uploadedBy: integer("uploadedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    sectionIdx: index("library_items_section_idx").on(table.sectionId),
-    typeIdx: index("library_items_type_idx").on(table.itemType),
-  })
+  table => [
+    index("library_items_section_idx").on(table.sectionId),
+    index("library_items_type_idx").on(table.itemType),
+  ]
 );
 
-export const productionMaterials = mysqlTable(
+export const productionMaterials = pgTable(
   "production_materials",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     title: varchar("title", { length: 320 }).notNull(),
     description: text("description"),
-    activityId: int("activityId").references(() => activities.id),
-    sectionId: int("sectionId")
-      .notNull()
-      .references(() => studySections.id),
-    reviewStatus: mysqlEnum("reviewStatus", [
-      "em elaboração",
-      "em revisão",
-      "aprovado",
-    ])
-      .default("em elaboração")
-      .notNull(),
-    currentRevision: int("currentRevision").default(1).notNull(),
-    createdBy: int("createdBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    activityId: integer("activityId").references(() => activities.id),
+    sectionId: integer("sectionId").notNull().references(() => studySections.id),
+    reviewStatus: materialReviewStatusEnum("reviewStatus").default("em elaboração").notNull(),
+    currentRevision: integer("currentRevision").default(1).notNull(),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("production_materials_activity_idx").on(table.activityId),
-    sectionIdx: index("production_materials_section_idx").on(table.sectionId),
-    statusIdx: index("production_materials_status_idx").on(
-      table.reviewStatus
-    ),
-  })
+  table => [
+    index("production_materials_activity_idx").on(table.activityId),
+    index("production_materials_section_idx").on(table.sectionId),
+    index("production_materials_status_idx").on(table.reviewStatus),
+  ]
 );
 
-export const materialRevisions = mysqlTable(
+export const materialRevisions = pgTable(
   "material_revisions",
   {
-    id: int("id").autoincrement().primaryKey(),
-    materialId: int("materialId")
-      .notNull()
-      .references(() => productionMaterials.id),
-    revisionNumber: int("revisionNumber").notNull(),
+    id: serial("id").primaryKey(),
+    materialId: integer("materialId").notNull().references(() => productionMaterials.id),
+    revisionNumber: integer("revisionNumber").notNull(),
     notes: text("notes"),
     fileName: varchar("fileName", { length: 320 }).notNull(),
     mimeType: varchar("mimeType", { length: 160 }).notNull(),
-    fileSize: int("fileSize").notNull(),
+    fileSize: integer("fileSize").notNull(),
     storageKey: text("storageKey").notNull(),
     storageUrl: text("storageUrl").notNull(),
-    uploadedBy: int("uploadedBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    uploadedBy: integer("uploadedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    materialIdx: index("material_revisions_material_idx").on(table.materialId),
-    materialRevisionIdx: uniqueIndex("material_revisions_unique_idx").on(
-      table.materialId,
-      table.revisionNumber
-    ),
-  })
+  table => [
+    index("material_revisions_material_idx").on(table.materialId),
+    uniqueIndex("material_revisions_unique_idx").on(table.materialId, table.revisionNumber),
+  ]
 );
 
-export const reviewSubmissions = mysqlTable(
+export const reviewSubmissions = pgTable(
   "review_submissions",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
-    materialId: int("materialId")
-      .notNull()
-      .references(() => productionMaterials.id),
-    revisionId: int("revisionId")
-      .notNull()
-      .references(() => materialRevisions.id),
-    submittedBy: int("submittedBy")
-      .notNull()
-      .references(() => users.id),
-    status: mysqlEnum("status", [
-      "em revisão",
-      "ajustes solicitados",
-      "aprovado",
-      "substituído",
-    ])
-      .default("em revisão")
-      .notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    materialId: integer("materialId").notNull().references(() => productionMaterials.id),
+    revisionId: integer("revisionId").notNull().references(() => materialRevisions.id),
+    submittedBy: integer("submittedBy").notNull().references(() => users.id),
+    status: reviewSubmissionStatusEnum("status").default("em revisão").notNull(),
     message: text("message"),
     submittedAt: bigint("submittedAt", { mode: "number" }).notNull(),
     completedAt: bigint("completedAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("review_submissions_activity_idx").on(table.activityId),
-    materialIdx: index("review_submissions_material_idx").on(table.materialId),
-    revisionIdx: index("review_submissions_revision_idx").on(table.revisionId),
-    statusIdx: index("review_submissions_status_idx").on(table.status),
-  })
+  table => [
+    index("review_submissions_activity_idx").on(table.activityId),
+    index("review_submissions_material_idx").on(table.materialId),
+    index("review_submissions_revision_idx").on(table.revisionId),
+    index("review_submissions_status_idx").on(table.status),
+  ]
 );
 
-export const reviewDecisions = mysqlTable(
+export const reviewDecisions = pgTable(
   "review_decisions",
   {
-    id: int("id").autoincrement().primaryKey(),
-    submissionId: int("submissionId")
-      .notNull()
-      .references(() => reviewSubmissions.id),
-    reviewerId: int("reviewerId")
-      .notNull()
-      .references(() => teamMembers.id),
-    decision: mysqlEnum("decision", [
-      "em revisão",
-      "ajustes solicitados",
-      "aprovado",
-    ]).notNull(),
+    id: serial("id").primaryKey(),
+    submissionId: integer("submissionId").notNull().references(() => reviewSubmissions.id),
+    reviewerId: integer("reviewerId").notNull().references(() => teamMembers.id),
+    decision: reviewDecisionEnum("decision").notNull(),
     note: text("note"),
     decidedAt: bigint("decidedAt", { mode: "number" }).notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    submissionIdx: index("review_decisions_submission_idx").on(
-      table.submissionId
-    ),
-    reviewerIdx: index("review_decisions_reviewer_idx").on(table.reviewerId),
-    uniqueDecisionIdx: uniqueIndex("review_decisions_unique_idx").on(
-      table.submissionId,
-      table.reviewerId
-    ),
-  })
+  table => [
+    index("review_decisions_submission_idx").on(table.submissionId),
+    index("review_decisions_reviewer_idx").on(table.reviewerId),
+    uniqueIndex("review_decisions_unique_idx").on(table.submissionId, table.reviewerId),
+  ]
 );
 
-export const materialComments = mysqlTable(
+export const materialComments = pgTable(
   "material_comments",
   {
-    id: int("id").autoincrement().primaryKey(),
-    materialId: int("materialId")
-      .notNull()
-      .references(() => productionMaterials.id),
-    revisionId: int("revisionId").references(() => materialRevisions.id),
-    submissionId: int("submissionId").references(() => reviewSubmissions.id),
-    authorId: int("authorId")
-      .notNull()
-      .references(() => users.id),
+    id: serial("id").primaryKey(),
+    materialId: integer("materialId").notNull().references(() => productionMaterials.id),
+    revisionId: integer("revisionId").references(() => materialRevisions.id),
+    submissionId: integer("submissionId").references(() => reviewSubmissions.id),
+    authorId: integer("authorId").notNull().references(() => users.id),
     content: text("content").notNull(),
-    commentType: mysqlEnum("commentType", [
-      "comentário",
-      "solicitação de ajuste",
-      "resposta",
-    ])
-      .default("comentário")
-      .notNull(),
+    commentType: materialCommentTypeEnum("commentType").default("comentário").notNull(),
     resolvedAt: bigint("resolvedAt", { mode: "number" }),
-    resolvedBy: int("resolvedBy").references(() => users.id),
-    status: mysqlEnum("status", ["aberto", "implementado", "resolvido"])
-      .default("aberto")
-      .notNull(),
+    resolvedBy: integer("resolvedBy").references(() => users.id),
+    status: materialCommentStatusEnum("status").default("aberto").notNull(),
     implementationNote: text("implementationNote"),
     implementedAt: bigint("implementedAt", { mode: "number" }),
-    implementedBy: int("implementedBy").references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    implementedBy: integer("implementedBy").references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    materialIdx: index("material_comments_material_idx").on(table.materialId),
-    revisionIdx: index("material_comments_revision_idx").on(table.revisionId),
-    submissionIdx: index("material_comments_submission_idx").on(
-      table.submissionId
-    ),
-  })
+  table => [
+    index("material_comments_material_idx").on(table.materialId),
+    index("material_comments_revision_idx").on(table.revisionId),
+    index("material_comments_submission_idx").on(table.submissionId),
+  ]
 );
 
-export const coordinationInterfaces = mysqlTable(
+export const coordinationInterfaces = pgTable(
   "coordination_interfaces",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     title: varchar("title", { length: 320 }).notNull(),
     description: text("description").notNull(),
-    interfaceType: mysqlEnum("interfaceType", [
-      "interface",
-      "escopo sobreposto",
-      "dependência",
-    ]).notNull(),
-    responsibleId: int("responsibleId")
-      .notNull()
-      .references(() => teamMembers.id),
-    priority: mysqlEnum("priority", ["baixa", "média", "alta", "crítica"])
-      .default("média")
-      .notNull(),
-    blockingClass: mysqlEnum("blockingClass", ["prioritária", "não prioritária"])
-      .default("não prioritária")
-      .notNull(),
-    status: mysqlEnum("status", [
-      "identificada",
-      "em discussão",
-      "encaminhada",
-      "resolvida",
-    ])
-      .default("identificada")
-      .notNull(),
+    interfaceType: interfaceTypeEnum("interfaceType").notNull(),
+    responsibleId: integer("responsibleId").notNull().references(() => teamMembers.id),
+    priority: interfacePriorityEnum("priority").default("média").notNull(),
+    blockingClass: blockingClassEnum("blockingClass").default("não prioritária").notNull(),
+    status: interfaceStatusEnum("status").default("identificada").notNull(),
     dueAt: bigint("dueAt", { mode: "number" }),
     resolution: text("resolution"),
-    createdBy: int("createdBy")
-      .notNull()
-      .references(() => users.id),
+    createdBy: integer("createdBy").notNull().references(() => users.id),
     resolvedAt: bigint("resolvedAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    responsibleIdx: index("coordination_interfaces_responsible_idx").on(
-      table.responsibleId
-    ),
-    statusIdx: index("coordination_interfaces_status_idx").on(table.status),
-    priorityIdx: index("coordination_interfaces_priority_idx").on(table.priority),
-    blockingClassIdx: index("coordination_interfaces_blocking_class_idx").on(table.blockingClass),
-    dueIdx: index("coordination_interfaces_due_idx").on(table.dueAt),
-  })
+  table => [
+    index("coordination_interfaces_responsible_idx").on(table.responsibleId),
+    index("coordination_interfaces_status_idx").on(table.status),
+    index("coordination_interfaces_priority_idx").on(table.priority),
+    index("coordination_interfaces_blocking_class_idx").on(table.blockingClass),
+    index("coordination_interfaces_due_idx").on(table.dueAt),
+  ]
 );
 
-export const interfaceSections = mysqlTable(
+export const interfaceSections = pgTable(
   "interface_sections",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    sectionId: int("sectionId")
-      .notNull()
-      .references(() => studySections.id),
-    role: mysqlEnum("role", ["origem", "relacionada"])
-      .default("relacionada")
-      .notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    sectionId: integer("sectionId").notNull().references(() => studySections.id),
+    role: interfaceSectionRoleEnum("role").default("relacionada").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_sections_interface_idx").on(table.interfaceId),
-    sectionIdx: index("interface_sections_section_idx").on(table.sectionId),
-    uniqueSectionIdx: uniqueIndex("interface_sections_unique_idx").on(
-      table.interfaceId,
-      table.sectionId
-    ),
-  })
+  table => [
+    index("interface_sections_interface_idx").on(table.interfaceId),
+    index("interface_sections_section_idx").on(table.sectionId),
+    uniqueIndex("interface_sections_unique_idx").on(table.interfaceId, table.sectionId),
+  ]
 );
 
-export const interfaceActivities = mysqlTable(
+export const interfaceActivities = pgTable(
   "interface_activities",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
-    role: mysqlEnum("role", ["origem", "relacionada"])
-      .default("relacionada")
-      .notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    role: interfaceSectionRoleEnum("role").default("relacionada").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_activities_interface_idx").on(
-      table.interfaceId
-    ),
-    activityIdx: index("interface_activities_activity_idx").on(table.activityId),
-    uniqueActivityIdx: uniqueIndex("interface_activities_unique_idx").on(
-      table.interfaceId,
-      table.activityId
-    ),
-  })
+  table => [
+    index("interface_activities_interface_idx").on(table.interfaceId),
+    index("interface_activities_activity_idx").on(table.activityId),
+    uniqueIndex("interface_activities_unique_idx").on(table.interfaceId, table.activityId),
+  ]
 );
 
-export const interfaceGroups = mysqlTable(
+export const interfaceGroups = pgTable(
   "interface_groups",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    groupId: int("groupId")
-      .notNull()
-      .references(() => teamGroups.id),
-    role: mysqlEnum("role", ["responsável", "envolvido"])
-      .default("envolvido")
-      .notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    groupId: integer("groupId").notNull().references(() => teamGroups.id),
+    role: interfaceGroupRoleEnum("role").default("envolvido").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_groups_interface_idx").on(table.interfaceId),
-    groupIdx: index("interface_groups_group_idx").on(table.groupId),
-    uniqueGroupIdx: uniqueIndex("interface_groups_unique_idx").on(
-      table.interfaceId,
-      table.groupId
-    ),
-  })
+  table => [
+    index("interface_groups_interface_idx").on(table.interfaceId),
+    index("interface_groups_group_idx").on(table.groupId),
+    uniqueIndex("interface_groups_unique_idx").on(table.interfaceId, table.groupId),
+  ]
 );
 
-export const interfaceComments = mysqlTable(
+export const interfaceComments = pgTable(
   "interface_comments",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    authorId: int("authorId")
-      .notNull()
-      .references(() => users.id),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    authorId: integer("authorId").notNull().references(() => users.id),
     content: text("content").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_comments_interface_idx").on(table.interfaceId),
-  })
+  table => [
+    index("interface_comments_interface_idx").on(table.interfaceId),
+  ]
 );
 
-export const interfaceEvidenceFiles = mysqlTable(
+export const interfaceEvidenceFiles = pgTable(
   "interface_evidence_files",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    activityId: int("activityId").references(() => activities.id),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    activityId: integer("activityId").references(() => activities.id),
     fileName: varchar("fileName", { length: 320 }).notNull(),
     mimeType: varchar("mimeType", { length: 160 }).notNull(),
-    fileSize: int("fileSize").notNull(),
+    fileSize: integer("fileSize").notNull(),
     storageKey: text("storageKey").notNull(),
     storageUrl: text("storageUrl").notNull(),
-    uploadedBy: int("uploadedBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    uploadedBy: integer("uploadedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_evidence_files_interface_idx").on(table.interfaceId),
-    activityIdx: index("interface_evidence_files_activity_idx").on(table.activityId),
-  })
+  table => [
+    index("interface_evidence_files_interface_idx").on(table.interfaceId),
+    index("interface_evidence_files_activity_idx").on(table.activityId),
+  ]
 );
 
-export const interfaceAiAnalyses = mysqlTable(
+export const interfaceAiAnalyses = pgTable(
   "interface_ai_analyses",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
     model: varchar("model", { length: 120 }).notNull(),
-    status: mysqlEnum("status", ["concluída", "falhou"]).notNull(),
+    status: interfaceAiStatusEnum("status").notNull(),
     resultJson: text("resultJson"),
     errorMessage: text("errorMessage"),
-    requestedBy: int("requestedBy")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    requestedBy: integer("requestedBy").notNull().references(() => users.id),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_ai_analyses_interface_idx").on(table.interfaceId),
-  })
+  table => [
+    index("interface_ai_analyses_interface_idx").on(table.interfaceId),
+  ]
 );
 
-export const interfaceEvents = mysqlTable(
+export const interfaceEvents = pgTable(
   "interface_events",
   {
-    id: int("id").autoincrement().primaryKey(),
-    interfaceId: int("interfaceId")
-      .notNull()
-      .references(() => coordinationInterfaces.id),
-    actorId: int("actorId")
-      .notNull()
-      .references(() => users.id),
-    eventType: mysqlEnum("eventType", [
-      "criada",
-      "atualizada",
-      "status alterado",
-      "resolvida",
-      "reaberta",
-    ]).notNull(),
+    id: serial("id").primaryKey(),
+    interfaceId: integer("interfaceId").notNull().references(() => coordinationInterfaces.id),
+    actorId: integer("actorId").notNull().references(() => users.id),
+    eventType: interfaceEventTypeEnum("eventType").notNull(),
     summary: text("summary").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    interfaceIdx: index("interface_events_interface_idx").on(table.interfaceId),
-  })
+  table => [
+    index("interface_events_interface_idx").on(table.interfaceId),
+  ]
 );
 
-export const notificationLogs = mysqlTable(
+export const notificationLogs = pgTable(
   "notification_logs",
   {
-    id: int("id").autoincrement().primaryKey(),
-    activityId: int("activityId")
-      .notNull()
-      .references(() => activities.id),
-    teamMemberId: int("teamMemberId")
-      .notNull()
-      .references(() => teamMembers.id),
-    event: mysqlEnum("event", [
-      "atribuicao",
-      "prazo_3_dias",
-      "atraso",
-    ]).notNull(),
-    status: mysqlEnum("status", [
-      "pendente",
-      "enviado",
-      "falhou",
-      "ignorado",
-    ])
-      .default("pendente")
-      .notNull(),
+    id: serial("id").primaryKey(),
+    activityId: integer("activityId").notNull().references(() => activities.id),
+    teamMemberId: integer("teamMemberId").notNull().references(() => teamMembers.id),
+    event: notificationLogEventEnum("event").notNull(),
+    status: notificationLogStatusEnum("status").default("pendente").notNull(),
     recipientPhone: varchar("recipientPhone", { length: 32 }),
     idempotencyKey: varchar("idempotencyKey", { length: 190 }).notNull(),
     providerMessageId: varchar("providerMessageId", { length: 255 }),
     errorMessage: text("errorMessage"),
-    attempts: int("attempts").default(0).notNull(),
+    attempts: integer("attempts").default(0).notNull(),
     nextAttemptAt: bigint("nextAttemptAt", { mode: "number" }),
     lastAttemptAt: bigint("lastAttemptAt", { mode: "number" }),
     sentAt: bigint("sentAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    activityIdx: index("notification_logs_activity_idx").on(table.activityId),
-    eventIdx: index("notification_logs_event_idx").on(table.event),
-    queueIdx: index("notification_logs_queue_idx").on(
-      table.status,
-      table.nextAttemptAt
-    ),
-    idempotencyIdx: uniqueIndex("notification_logs_idempotency_idx").on(
-      table.idempotencyKey
-    ),
-  })
+  table => [
+    index("notification_logs_activity_idx").on(table.activityId),
+    index("notification_logs_event_idx").on(table.event),
+    index("notification_logs_queue_idx").on(table.status, table.nextAttemptAt),
+    uniqueIndex("notification_logs_idempotency_idx").on(table.idempotencyKey),
+  ]
 );
 
-export const scopeMigrationHistory = mysqlTable(
+export const scopeMigrationHistory = pgTable(
   "scope_migration_history",
   {
-    id: int("id").autoincrement().primaryKey(),
+    id: serial("id").primaryKey(),
     migrationKey: varchar("migrationKey", { length: 96 }).notNull(),
     entityType: varchar("entityType", { length: 64 }).notNull(),
-    entityId: int("entityId").notNull(),
+    entityId: integer("entityId").notNull(),
     action: varchar("action", { length: 80 }).notNull(),
     snapshot: text("snapshot").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    migrationIdx: index("scope_migration_history_migration_idx").on(
-      table.migrationKey
-    ),
-    entityIdx: index("scope_migration_history_entity_idx").on(
-      table.entityType,
-      table.entityId
-    ),
-    uniqueSnapshotIdx: uniqueIndex("scope_migration_history_unique_idx").on(
+  table => [
+    index("scope_migration_history_migration_idx").on(table.migrationKey),
+    index("scope_migration_history_entity_idx").on(table.entityType, table.entityId),
+    uniqueIndex("scope_migration_history_unique_idx").on(
       table.migrationKey,
       table.entityType,
       table.entityId
     ),
-  })
+  ]
 );
 
-export const participantNotifications = mysqlTable(
+export const participantNotifications = pgTable(
   "participant_notifications",
   {
-    id: int("id").autoincrement().primaryKey(),
-    recipientUserId: int("recipientUserId").notNull(),
-    recipientMemberId: int("recipientMemberId"),
-    actorUserId: int("actorUserId"),
-    activityId: int("activityId"),
-    materialId: int("materialId"),
+    id: serial("id").primaryKey(),
+    recipientUserId: integer("recipientUserId").notNull(),
+    recipientMemberId: integer("recipientMemberId"),
+    actorUserId: integer("actorUserId"),
+    activityId: integer("activityId"),
+    materialId: integer("materialId"),
     type: varchar("type", { length: 64 }).notNull(),
     title: varchar("title", { length: 255 }).notNull(),
     message: text("message").notNull(),
     actionUrl: varchar("actionUrl", { length: 255 }),
     read: boolean("read").default(false).notNull(),
     readAt: bigint("readAt", { mode: "number" }),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   },
-  table => ({
-    recipientUserIdx: index("participant_notifications_recipientUser_idx").on(
-      table.recipientUserId
-    ),
-    readIdx: index("participant_notifications_read_idx").on(table.read),
-    activityIdx: index("participant_notifications_activity_idx").on(table.activityId),
-  })
+  table => [
+    index("participant_notifications_recipientUser_idx").on(table.recipientUserId),
+    index("participant_notifications_read_idx").on(table.read),
+    index("participant_notifications_activity_idx").on(table.activityId),
+  ]
 );
 
+// ==========================================
+// Inferred Types
+// ==========================================
 export type ProjectSettings = typeof projectSettings.$inferSelect;
 export type StudySection = typeof studySections.$inferSelect;
 export type TeamGroup = typeof teamGroups.$inferSelect;

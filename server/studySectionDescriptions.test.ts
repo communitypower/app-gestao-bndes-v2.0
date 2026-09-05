@@ -11,14 +11,14 @@ describe("sincronização das descrições oficiais", () => {
   it("atualiza somente o catálogo de frentes e não inclui notas de atividade no payload", async () => {
     const insertedTables: unknown[] = [];
     const capturedRows: Array<Record<string, unknown>> = [];
-    const onDuplicateKeyUpdate = vi.fn().mockResolvedValue(undefined);
+    const onConflictDoUpdate = vi.fn().mockResolvedValue(undefined);
     const fakeDb = {
       insert: vi.fn((table: unknown) => {
         insertedTables.push(table);
         return {
-          values: (rows: Array<Record<string, unknown>>) => {
-            capturedRows.push(...rows);
-            return { onDuplicateKeyUpdate };
+          values: (row: Record<string, unknown>) => {
+            capturedRows.push(row);
+            return { onConflictDoUpdate };
           },
         };
       }),
@@ -30,7 +30,7 @@ describe("sincronização das descrições oficiais", () => {
 
     await syncStudySectionCatalog(fakeDb as never);
 
-    expect(insertedTables).toEqual([studySections]);
+    expect(insertedTables).toEqual(Array(30).fill(studySections));
     expect(capturedRows).toHaveLength(30);
     expect(capturedRows).toEqual(canonicalStudySectionRows());
     expect(capturedRows).toContainEqual(
@@ -53,7 +53,7 @@ describe("sincronização das descrições oficiais", () => {
     expect(personalizedActivity.description).toBe(
       "Nota personalizada que deve permanecer intacta."
     );
-    expect(onDuplicateKeyUpdate).toHaveBeenCalledTimes(1);
+    expect(onConflictDoUpdate).toHaveBeenCalledTimes(30);
   });
 
   it("preserva uma nota personalizada em persistência ao executar a sincronização real", async () => {

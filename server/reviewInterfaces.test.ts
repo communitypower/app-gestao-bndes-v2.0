@@ -193,6 +193,8 @@ function context(id: number, role: "admin" | "user" = "user"): TrpcContext {
 function mutationDb(returningId = 901) {
   const values = vi.fn(() => ({
     $returningId: vi.fn().mockResolvedValue([{ id: returningId }]),
+    returning: vi.fn().mockResolvedValue([{ id: returningId }]),
+    onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
     onDuplicateKeyUpdate: vi.fn().mockResolvedValue(undefined),
   }));
   const makeWhereResult = () => {

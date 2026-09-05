@@ -1174,7 +1174,7 @@ export const activitiesRouter = router({
       const inserted = await db
         .insert(activities)
         .values({ ...activityInput, createdBy: ctx.user.id })
-        .$returningId();
+        .returning({ id: activities.id });
       const activityId = inserted[0]?.id;
       if (!activityId) {
         throw new TRPCError({

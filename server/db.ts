@@ -1,5 +1,9 @@
+import fs from "fs";
+import path from "path";
 import { and, asc, desc, eq, like, or, sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import pg from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 import {
   activityAllocations,
   activityEvidenceLinks,
@@ -68,30 +72,87 @@ import { ENV } from './_core/env';
 import { normalizeProvisionEmail } from "./accessProvisioning";
 import { normalizeLibraryFilters, type LibraryFilters } from "./libraryFilters";
 import { initLocalDatabase } from "./localDb";
+import * as schema from "../drizzle/schema";
+import { type NodePgDatabase } from "drizzle-orm/node-postgres";
 
-let _db: ReturnType<typeof drizzle> | null = null;
+export type DbClient = NodePgDatabase<typeof schema>;
 
-// Lazily create the drizzle instance so local tooling can run without a DB or fallback to embedded MySQL.
-export async function getDb() {
-  if (!_db) {
+let _db: DbClient | null = null;
+let _pool: pg.Pool | null = null;
+let _initDbPromise: Promise<DbClient | null> | null = null;
+
+// Lazily create the drizzle instance so local tooling can run without a DB or fallback to embedded Postgres.
+export async function getDb(): Promise<DbClient | null> {
+  if (_db) return _db;
+  if (_initDbPromise) return _initDbPromise;
+
+  _initDbPromise = (async () => {
     if (process.env.DATABASE_URL) {
       try {
-        _db = drizzle(process.env.DATABASE_URL);
+        const urlStr = process.env.DATABASE_URL;
+        const isLocal =
+          urlStr.includes("localhost") ||
+          urlStr.includes("127.0.0.1") ||
+          urlStr.includes("host.docker.internal");
+
+        _pool = new pg.Pool({
+          connectionString: urlStr,
+          ssl: isLocal ? undefined : { rejectUnauthorized: false },
+        });
+
+        // Test connectivity
+        const testClient = await _pool.connect();
+        testClient.release();
+
+        const client = drizzle(_pool, { schema });
+        _db = client;
+        console.log("[Database] Connected to PostgreSQL via DATABASE_URL");
+
+        // Automatically run migrations if drizzle directory exists
+        const drizzleDir = path.resolve(process.cwd(), "drizzle");
+        if (fs.existsSync(drizzleDir)) {
+          try {
+            console.log("[Database] Applying database migrations to PostgreSQL...");
+            await migrate(client, { migrationsFolder: drizzleDir });
+            console.log("[Database] Migrations applied successfully.");
+          } catch (migErr: any) {
+            console.warn("[Database] Migration notice:", migErr?.message || migErr);
+          }
+        }
+
+        // Automatically ensure seed data exists
+        try {
+          console.log("[Database] Ensuring canonical seed data...");
+          await ensureSeedData(client);
+          console.log("[Database] Canonical seed data populated and verified.");
+        } catch (seedErr: any) {
+          console.warn("[Database] Seed data notice:", seedErr?.message || seedErr);
+        }
+
+        return _db;
       } catch (error) {
         console.warn("[Database] Failed to connect to DATABASE_URL, falling back to local DB:", error);
         _db = null;
+        if (_pool) {
+          await _pool.end().catch(() => {});
+          _pool = null;
+        }
       }
     }
+
     if (!_db) {
       try {
-        _db = await initLocalDatabase();
+        _db = (await initLocalDatabase()) as DbClient;
       } catch (err) {
         console.error("[Database] Failed to initialize local embedded DB:", err);
         _db = null;
       }
     }
-  }
-  return _db;
+
+    return _db;
+  })();
+
+  return _initDbPromise;
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
@@ -175,7 +236,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
+    await db.insert(users).values(values).onConflictDoUpdate({
+      target: users.openId,
       set: updateSet,
     });
 
@@ -236,16 +298,19 @@ export function canonicalStudySectionRows() {
 export async function syncStudySectionCatalog(
   db: Awaited<ReturnType<typeof requireDb>>
 ) {
-  await db
-    .insert(studySections)
-    .values(canonicalStudySectionRows())
-    .onDuplicateKeyUpdate({
-      set: {
-        title: sql`VALUES(${studySections.title})`,
-        officialDescription: sql`VALUES(${studySections.officialDescription})`,
-        sortOrder: sql`VALUES(${studySections.sortOrder})`,
-      },
-    });
+  for (const row of canonicalStudySectionRows()) {
+    await db
+      .insert(studySections)
+      .values(row)
+      .onConflictDoUpdate({
+        target: studySections.code,
+        set: {
+          title: row.title,
+          officialDescription: row.officialDescription,
+          sortOrder: row.sortOrder,
+        },
+      });
+  }
 }
 
 /**
@@ -324,7 +389,7 @@ export async function syncPdfAnalyticCatalog(
         dueAt: DEFAULT_PROJECT_END_AT,
         status: "pendente",
         progress: 0,
-      }).$returningId();
+      }).returning({ id: activities.id });
       const id = created[0]?.id;
       if (!id) throw new Error(`Não foi possível criar o capítulo canônico ${section.code}.`);
       canonicalParents.set(storedSection.id, { id, responsibleId: sectionResponsible.id, startAt: null, dueAt: DEFAULT_PROJECT_END_AT });
@@ -375,6 +440,28 @@ export async function syncPdfAnalyticCatalog(
 
 export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {
   const db = explicitDb ?? (await requireDb());
+
+  // 0. Ensure default local admin user exists
+  await db
+    .insert(users)
+    .values({
+      openId: "local_admin",
+      name: "Administrador do Estudo",
+      email: "admin@estudo.ufrj.br",
+      role: "admin",
+      appRole: "administrador",
+      accessStatus: "ativo",
+      loginMethod: "local",
+    })
+    .onConflictDoUpdate({
+      target: users.openId,
+      set: {
+        name: "Administrador do Estudo",
+        role: "admin",
+        appRole: "administrador",
+        accessStatus: "ativo",
+      },
+    });
 
   const settings = await db.select().from(projectSettings).limit(1);
   if (settings.length === 0) {
@@ -429,7 +516,7 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
         })
         .where(eq(users.id, userObj.id));
     } else {
-      const [insertResult] = await db.insert(users).values({
+      const [insertedUser] = await db.insert(users).values({
         openId,
         name: memberSeed.name,
         email: memberSeed.email,
@@ -437,8 +524,8 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
         role,
         appRole: memberSeed.appRole,
         accessStatus: "ativo",
-      });
-      userId = (insertResult as any).insertId;
+      }).returning({ id: users.id });
+      userId = insertedUser.id;
       userByEmail.set(emailNorm, {
         id: userId,
         openId,
@@ -534,6 +621,46 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
 
   await syncPdfAnalyticCatalog(db);
   await syncIdentifiedInterfaces(db);
+  await syncLibraryImportPlan(db);
+}
+
+export async function syncLibraryImportPlan(db: Awaited<ReturnType<typeof requireDb>>) {
+  const planPath = path.resolve(process.cwd(), "drive-library-import-plan.json");
+  if (!fs.existsSync(planPath)) return;
+
+  const count = await db.select({ count: sql<number>`count(*)` }).from(libraryItems);
+  if (Number(count[0]?.count ?? 0) > 0) {
+    return;
+  }
+
+  const planData = JSON.parse(fs.readFileSync(planPath, "utf-8"));
+  if (!Array.isArray(planData.entries) || planData.entries.length === 0) return;
+
+  const sections = await db.select().from(studySections);
+  const sectionMap = new Map(sections.map(s => [s.code, s.id]));
+
+  const adminUsers = await db.select().from(users).where(eq(users.role, "admin")).limit(1);
+  const fallbackUser = (await db.select().from(users).limit(1))[0];
+  const uploadedById = adminUsers[0]?.id ?? fallbackUser?.id ?? 1;
+
+  const rows = planData.entries.map((entry: any) => ({
+    title: entry.title,
+    description: entry.description,
+    theme: entry.theme,
+    sectionId: entry.sectionCode ? (sectionMap.get(entry.sectionCode) ?? null) : null,
+    itemType: "link" as const,
+    externalUrl: entry.externalUrl,
+    fileName: entry.fileName,
+    mimeType: entry.mimeType,
+    fileSize: entry.fileSize,
+    uploadedBy: uploadedById,
+  }));
+
+  for (let i = 0; i < rows.length; i += 50) {
+    const chunk = rows.slice(i, i + 50);
+    await db.insert(libraryItems).values(chunk).onConflictDoNothing();
+  }
+  console.log(`[Database] Seeded ${rows.length} library reference items.`);
 }
 
 export async function syncIdentifiedInterfaces(db: Awaited<ReturnType<typeof requireDb>>) {
@@ -615,7 +742,7 @@ export async function syncIdentifiedInterfaces(db: Awaited<ReturnType<typeof req
     if (existing) {
       interfaceId = existing.id;
     } else {
-      const [insertRes] = await db.insert(coordinationInterfaces).values({
+      const [insertedInterface] = await db.insert(coordinationInterfaces).values({
         title: seed.title,
         description: seed.description,
         interfaceType: seed.interfaceType,
@@ -624,8 +751,8 @@ export async function syncIdentifiedInterfaces(db: Awaited<ReturnType<typeof req
         blockingClass: "não prioritária",
         status: "identificada",
         createdBy: adminUser.id,
-      });
-      interfaceId = Number((insertRes as any).insertId);
+      }).returning({ id: coordinationInterfaces.id });
+      interfaceId = insertedInterface.id;
       existingByTitle.set(seed.title, {
         id: interfaceId,
         title: seed.title,
