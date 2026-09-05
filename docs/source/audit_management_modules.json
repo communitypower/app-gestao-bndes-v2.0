@@ -1,0 +1,108 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Home.tsx",
+      "output": {
+        "code_evidence": "Métricas de progresso e atrasos (linhas 32-34); Barra de progresso por seção (linha 71); Renderização de interfaces com status, responsável e último encaminhamento (linhas 72-89); Lista de próximas entregas com data e responsável (linhas 109-121)",
+        "confidence": "Alta, pois o código do componente React é explícito na renderização das métricas, listas e integrações de dados via tRPC",
+        "implemented_capabilities": "O módulo implementa o monitoramento do progresso geral e por seção, controle de status de atividades (concluídas, em andamento, atrasadas), acompanhamento do cronograma mestre de seis meses, gestão de interfaces e dependências com histórico de encaminhamentos, e visualização das próximas entregas com prazos e responsáveis.",
+        "management_gaps": "Não apresenta indicadores de qualidade, status de revisão ou rastreabilidade de aprovações. Falta uma visão explícita de riscos ou impedimentos críticos que não sejam interfaces, e não há métricas sobre a capacidade ou carga de trabalho da equipe, apenas o número de membros ativos.",
+        "management_strengths": "Destaca-se pela integração visual entre o progresso das seções e as interfaces abertas, facilitando a identificação de gargalos. O foco em entregas futuras e atividades atrasadas permite uma rápida priorização e tomada de decisão baseada em dados quantitativos claros.",
+        "module": "Visão Geral",
+        "priority_improvements": "Incluir métricas de qualidade e status de revisão das entregas; Adicionar um painel de riscos ou alertas críticos para o cronograma; Inserir indicadores de carga de trabalho da equipe"
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Activities.tsx",
+      "output": {
+        "code_evidence": "ActivityForm (title, description, sectionId, responsibleId, dueDate, status, progress, allocations); ActivityDetailDialog (exibe progresso, horas totais, coordenador responsável, colaboradores alocados, revisores apontados, material em revisão, interfaces relacionadas); AllocationEditor (alocação de horas por membro da equipe); ReviewerEditor (alocação de revisores); ActivityEditor (criação/edição de atividades, definição de status e progresso); ActivitiesContent (listagem, filtros por status e busca).",
+        "confidence": "Alta, pois o código fonte do componente React detalha claramente as estruturas de dados, formulários e interfaces de usuário implementadas para a gestão de atividades.",
+        "implemented_capabilities": "O módulo implementa o cadastro e edição de atividades com título, descrição, seção, data de entrega, status e progresso. Permite a designação de um coordenador responsável e a alocação de horas para os membros da equipe. Inclui a gestão de revisores (revisão por pares), visualização de materiais em revisão e rastreamento de interfaces relacionadas. Possui listagem com filtros por status e busca textual.",
+        "management_gaps": "Não há evidências de gestão de riscos, dependências complexas entre atividades (além de interfaces básicas), controle de custos financeiros (apenas horas), ou histórico detalhado de alterações (audit trail) na interface. O progresso é inserido manualmente, sem cálculo automático baseado em entregas parciais.",
+        "management_strengths": "Forte controle de alocação de capacidade (horas por colaborador) e responsabilidades claras (coordenador, colaboradores, revisores). Integração visual de informações gerenciais na ficha da atividade (progresso, horas, revisões, interfaces). Interface amigável com filtros e busca para facilitar o acompanhamento.",
+        "module": "Atividades",
+        "priority_improvements": "Implementar cálculo automático de progresso baseado em entregas ou horas consumidas; Adicionar gestão de riscos e dependências entre atividades; Incluir histórico de alterações (audit trail) visível para rastreabilidade."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Calendar.tsx",
+      "output": {
+        "code_evidence": "Visualização mensal de entregas (linha 41); Alertas visuais para itens em andamento, próximos do vencimento e atrasados (linha 41); Função dueTone para cálculo de status de prazo (linha 55, 94); Cores de alerta para perigo e aviso (linhas 56-59, 95-98); Filtro de atividades por mês e dia (linhas 23-26, 30-36); Exibição de responsável e código da seção (linha 75, 100)",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do componente React que renderiza o calendário e suas funcionalidades.",
+        "implemented_capabilities": "O módulo implementa a visualização cronológica das entregas do projeto em formato de calendário mensal. Ele possui capacidade de rastreamento de prazos com alertas visuais automáticos baseados no status e na data de vencimento (dueTone), destacando itens atrasados (\"Prazo vencido\") ou próximos do vencimento (\"Vence em até 3 dias\"). Além disso, exibe informações gerenciais básicas como o responsável pela entrega, o código da seção e o status atual da atividade.",
+        "management_gaps": "O módulo carece de funcionalidades interativas para gestão direta, como a capacidade de reagendar atividades arrastando-as no calendário (drag-and-drop) ou editar os detalhes diretamente pela interface. Não há evidências de filtros avançados (por responsável, status ou seção) na visualização do calendário, limitando a análise de capacidade e gargalos. Também falta integração visível com dependências entre tarefas ou visualização de caminho crítico.",
+        "management_strengths": "A principal força gerencial é a clareza visual na gestão de prazos, utilizando um sistema de cores (vermelho para atrasos, laranja para alertas) que facilita a identificação rápida de riscos ao cronograma. A organização em visualizações responsivas (lista para mobile e grade para desktop) garante acessibilidade à informação gerencial em diferentes dispositivos.",
+        "module": "Calendário",
+        "priority_improvements": "Implementar filtros dinâmicos por responsável, status e seção para facilitar a gestão de capacidade; Adicionar interatividade para reagendamento de atividades diretamente no calendário (ex: drag-and-drop); Incluir visualização de dependências entre atividades para melhor gestão de riscos do cronograma."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Team.tsx",
+      "output": {
+        "code_evidence": "Definição de papéis em TeamGroupRole ('coordenador', 'participante'); campos whatsappPhone e whatsappOptIn no MemberForm; regra de negócio explícita na mensagem 'Ao promover este integrante... assume as atividades do coordenador anterior'; vinculação de usuário com a justificativa 'O coordenador precisa deste vínculo para consultar suas atividades e preencher as horas do grupo'.",
+        "confidence": "Alta, pois o código apresenta regras de negócio explícitas nas mensagens de interface, formulários completos e estrutura de dados clara que demonstram o funcionamento do módulo.",
+        "implemented_capabilities": "Gestão da estrutura organizacional em grupos com papéis definidos (coordenador e participante), cadastro de membros com vínculo institucional, associação de contas de usuário para controle de permissões (apontamento de horas e consulta de atividades) e gestão de contatos para alertas via WhatsApp.",
+        "management_gaps": "Ausência de gestão de capacidade ou alocação de esforço (horas disponíveis vs. planejadas) na visão da equipe, falta de rastreabilidade histórica ao transferir a coordenação de um membro para outro, e inexistência de métricas de desempenho ou progresso associadas aos grupos nesta interface.",
+        "management_strengths": "Estruturação clara de responsabilidades com a exigência de um único coordenador por grupo, vinculação direta entre perfis da equipe e contas de acesso do sistema, e preparação para comunicação proativa através do opt-in de alertas via WhatsApp.",
+        "module": "Equipe",
+        "priority_improvements": "Incluir indicadores de capacidade e alocação de horas por grupo/membro; adicionar histórico de alterações de coordenação para rastreabilidade de responsabilidades; integrar um resumo do progresso das atividades de cada grupo na listagem."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Production.tsx",
+      "output": {
+        "code_evidence": "trpc.production.create.useMutation(); trpc.production.addRevision.useMutation(); trpc.production.addComment.useMutation(); trpc.production.resolveComment.useMutation(); trpc.production.setReviewStatus.useMutation(); trpc.production.submitForReview.useMutation(); trpc.production.reviewDecision.useMutation(); \u003cReviewerRoster material={selected} /\u003e; \u003cStatusBadge status={item.reviewStatus} /\u003e; {item.revisions.length}; {item.comments.filter(comment =\u003e !comment.resolvedAt).length}",
+        "confidence": "Alta, pois o código demonstra explicitamente as funcionalidades de gestão de versões, revisão e comentários.",
+        "implemented_capabilities": "O módulo implementa a gestão de versões de materiais técnicos, controle de status de revisão (em elaboração, em revisão, aprovado), alocação de revisores, submissão formal para revisão, registro de pareceres (em revisão, ajustes solicitados, aprovado), comentários tipificados (comentário, solicitação de ajuste, resposta) e rastreabilidade de pendências (comentários resolvidos/não resolvidos).",
+        "management_gaps": "Não há evidências de controle de prazos (SLA) para as revisões, nem de métricas de esforço ou capacidade da equipe. A rastreabilidade de alterações entre versões depende de notas manuais, sem um sistema de diff automatizado.",
+        "management_strengths": "Forte controle de fluxo de trabalho de revisão com papéis definidos (visualizador, revisor, gestor), rastreabilidade de versões com preservação de histórico e gestão estruturada de pendências (comentários acionáveis e resolvíveis).",
+        "module": "Produção",
+        "priority_improvements": "Implementar controle de prazos (SLA) para revisões; Adicionar métricas de tempo de ciclo de revisão; Integrar visualização de diff entre versões de documentos."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Interfaces.tsx",
+      "output": {
+        "code_evidence": "InterfaceType (\"interface\", \"escopo sobreposto\", \"dependência\"); InterfacePriority (\"baixa\", \"média\", \"alta\", \"crítica\"); InterfaceStatus (\"identificada\", \"em discussão\", \"encaminhada\", \"resolvida\"); sectionIds e groupIds no InterfaceForm; Histórico auditável (item.events); Discussão entre grupos (item.comments); Solução pactuada (item.resolution)",
+        "confidence": "Alta, pois o código apresenta explicitamente as estruturas de dados, formulários e fluxos de estado para a gestão de interfaces.",
+        "implemented_capabilities": "O módulo implementa a identificação, classificação (por tipo e prioridade) e rastreamento de interfaces, dependências e sobreposições de escopo entre diferentes seções e grupos. Permite a designação de um coordenador responsável, definição de prazos, registro de discussões entre os grupos envolvidos, manutenção de um histórico auditável de eventos e o registro formal da solução pactuada.",
+        "management_gaps": "Não há evidências de alertas automáticos para prazos vencidos ou próximos do vencimento. A resolução de uma interface não parece estar vinculada automaticamente a mudanças no cronograma ou no escopo das seções afetadas (falta de integração sistêmica com o planejamento). Não há métricas ou dashboards visíveis para avaliar o tempo médio de resolução ou o gargalo entre os grupos.",
+        "management_strengths": "Forte rastreabilidade através do histórico auditável de eventos e do registro de discussões. Estruturação clara das responsabilidades, exigindo a definição de um coordenador e a seleção explícita das seções e grupos envolvidos. Exigência de registro formal da solução antes de permitir a mudança de status para \"resolvida\".",
+        "module": "Interfaces",
+        "priority_improvements": "Implementar notificações automáticas para prazos de encaminhamento vencidos ou próximos; Criar vínculo automático entre a solução da interface e a atualização do escopo/cronograma das seções afetadas; Desenvolver indicadores de desempenho (ex: tempo médio de resolução) para identificar gargalos na coordenação transversal."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Library.tsx",
+      "output": {
+        "code_evidence": "trpc.library.upload.useMutation(); vinculação com sectionId (itemSection === \"geral\" ? null : Number(itemSection)); filtros combinados (search, theme, sectionId); input de arquivo com limite de 20 MB e formatos específicos",
+        "confidence": "Alta, pois o código expõe claramente as operações de listagem, upload, vinculação a seções e os filtros aplicados no frontend",
+        "implemented_capabilities": "O módulo permite o armazenamento centralizado e a catalogação de referências (arquivos e links externos), com recursos de busca textual e filtragem cruzada por temas e seções específicas do estudo.",
+        "management_gaps": "Faltam mecanismos de controle de versão para arquivos, registro de autoria (quem fez o upload) para auditoria, e controle de permissões ou fluxo de aprovação para garantir a qualidade das referências adicionadas.",
+        "management_strengths": "Destaca-se pela forte rastreabilidade, permitindo vincular diretamente documentos e links a seções exatas do estudo, o que organiza a base de conhecimento e fundamenta a execução de cada etapa.",
+        "module": "Biblioteca",
+        "priority_improvements": "Implementar registro de autoria e log de auditoria para os uploads; Adicionar controle de versão para documentos atualizados; Criar um fluxo de revisão ou status de aprovação para referências críticas"
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/client/src/pages/Administration.tsx",
+      "output": {
+        "code_evidence": "Linha 21-22: Configuração de WhatsApp (enabled, template, language); Linha 26: toggleSchedule para rotina diária; Linha 33: \"Mensagens utilitárias... Somente atribuição, três dias antes e marcação de atraso\"; Linha 34: \"Verificação diária... Execução às 12:00 UTC, com deduplicação por atividade e evento, fila e até três tentativas controladas\"; Linha 36: Controle de acesso e alteração de perfis (APP_ROLES); Linha 38: Histórico operacional (notificationLogs) com status, tentativas e mensagens de erro.",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do componente React que renderiza a interface e gerencia as interações de administração.",
+        "implemented_capabilities": "O módulo implementa controle de acesso baseado em perfis (roles), configuração de integração com WhatsApp Business para envio de alertas (atribuição, proximidade de prazo e atraso), gerenciamento de rotinas automáticas (cron) para verificação diária de prazos, e rastreabilidade operacional através de um histórico de notificações com controle de tentativas e status de envio.",
+        "management_gaps": "Não há evidências de configuração de regras de escalonamento para atrasos prolongados, personalização dos horários ou dias da rotina de verificação (fixada em 12:00 UTC), nem relatórios agregados sobre a eficácia das notificações (ex: taxa de leitura ou impacto na redução de atrasos).",
+        "management_strengths": "A automação da verificação de prazos com deduplicação e controle de tentativas reduz o esforço manual de acompanhamento. A rastreabilidade das notificações permite auditar falhas de comunicação. A interface centralizada para governança facilita a gestão de acessos e integrações.",
+        "module": "Administração",
+        "priority_improvements": "Permitir a configuração de múltiplos horários ou regras de escalonamento para a rotina de verificação; Adicionar métricas agregadas de sucesso/falha das notificações para avaliar a eficácia da comunicação; Implementar logs de auditoria para alterações críticas de configuração (ex: mudança de perfis ou desativação de alertas)."
+      },
+      "error": ""
+    }
+  ]
+}

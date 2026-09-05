@@ -1,0 +1,108 @@
+# Terminal Full Output
+# Terminal: default
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 26981
+# Timestamp: 2026-07-31_07-41-19.165348
+# Original Length: 10329 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[43m[33m[[39m[49m[43m[30mWARN[39m[49m[43m[33m][39m[49m The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.patchedDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+> estudo-bndes-gestao@1.0.0 test /home/ubuntu/estudo-bndes-gestao
+> vitest run
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/home/ubuntu/estudo-bndes-gestao
+[22m [31m❯[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 772[2mms
+[22m[39m   [31m❯[39m enforcement do perfil colaborador[2m (13)[22m[33m 771[2mms
+[22m[39m     [32m✓[39m bloqueia painel no servidor
+     [32m✓[39m bloqueia atividades no servidor[33m 669[2mms
+[22m[39m     [32m✓[39m bloqueia equipe no servidor
+     [32m✓[39m bloqueia administração no servidor
+     [32m✓[39m bloqueia criação de atividade no servidor
+     [32m✓[39m bloqueia edição de atividade no servidor
+     [31m×[39m bloqueia criação de participante no servidor
+     [32m✓[39m bloqueia edição de participante no servidor
+     [32m✓[39m bloqueia configuração do projeto no servidor
+     [32m✓[39m bloqueia configuração do WhatsApp no servidor
+     [32m✓[39m bloqueia alteração de perfil no servidor
+     [32m✓[39m bloqueia configuração da rotina no servidor
+     [32m✓[39m expõe apenas o estado não administrativo no procedimento de identificação
+ [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (6)
+[22m [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 586[2mms
+[22m[39m [31m❯[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (2)
+[22m   [31m❯[39m estrutura hierárquica da equipe[2m (1)
+[22m     [31m×[39m exibe o coordenador e os participantes abaixo do mesmo grupo
+   [31m❯[39m ficha visível da atividade[2m (1)
+[22m     [31m×[39m abre a ficha completa por uma ação distinta da edição
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m server/access.test.ts[2m > [22menforcement do perfil colaborador[2m > [22mbloqueia criação de participante no servidor
+[31m[1mAssertionError[22m: expected TRPCError: [
+  {
+    "expected": "number"… { code: '…' } to match object { code: 'FORBIDDEN' }
+(4 matching properties omitted from actual)
+[39m- Expected
++ Received
+- Object {
+-   "code": "FORBIDDEN",
++ TRPCError {
++   "code": "BAD_REQUEST",
+  }
+[36m [2m❯[22m server/access.test.ts:[2m40:5
+[22m[39m    [90m 38| [39m  ])([32m"bloqueia %s no servidor"[39m[33m,[39m [35masync[39m (_area[33m,[39m execute) [33m=>[39m {
+    [90m 39| [39m    [35mconst[39m caller [33m=[39m appRouter[33m.[39m[34mcreateCaller[39m([34mcollaboratorContext[39m())[33m;
+[39m    [90m 40| [39m    [35mawait[39m [34mexpect[39m([34mexecute[39m(caller))[33m.[39mrejects[33m.[39m[34mtoMatchObject[39m({ code[33m:[39m [32m"FORBI[39m…
+    [90m   | [39m    [31m^
+[39m    [90m 41| [39m  })[33m;
+[39m    [90m 42| 
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mestrutura hierárquica da equipe[2m > [22mexibe o coordenador e os participantes abaixo do mesmo grupo
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'status')
+[39m[36m [2m❯[22m TeamContent client/src/pages/Team.tsx:[2m65:48
+[22m[39m    [90m 63| [39m[35mfunction[39m [33mTeamContent[39m() {
+    [90m 64| [39m  [35mconst[39m { data[33m,[39m isLoading } [33m=[39m trpc[33m.[39mteam[33m.[39mhierarchy[33m.[39m[34museQuery[39m()[33m;
+[39m    [90m 65| [39m  [35mconst[39m { data[33m:[39m access } [33m=[39m trpc[33m.[39madministration[33m.[39mstatus[33m.[39m[34museQuery[39m()[33m;
+[39m    [90m   | [39m                                               [31m^
+[39m    [90m 66| [39m  [35mconst[39m utils [33m=[39m trpc[33m.[39m[34museUtils[39m()[33m;
+[39m    [90m 67| [39m  [35mconst[39m create [33m=[39m trpc[33m.[39mteam[33m.[39mcreate[33m.[39m[34museMutation[39m()[33m;
+[39m[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[90m [2m❯[22m renderRootSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17450:11
+[22m[39m[90m [2m❯[22m performWorkOnRoot node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m16583:35
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mabre a ficha completa por uma ação distinta da edição
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'status')
+[39m[36m [2m❯[22m ActivityAccessGate client/src/components/ActivityAccessGate.tsx:[2m12:51
+[22m[39m    [90m 10| [39m  children[33m:[39m [33mReactNode[39m[33m;
+[39m    [90m 11| [39m}) {
+    [90m 12| [39m  [35mconst[39m { data[33m,[39m isLoading } [33m=[39m trpc[33m.[39madministration[33m.[39mstatus[33m.[39m[34museQuery[39m()[33m;
+[39m    [90m   | [39m                                                  [31m^
+[39m    [90m 13| [39m  [35mif[39m (isLoading [33m||[39m [33m![39mdata) [35mreturn[39m [33m<[39m[33mPageLoading[39m [33m/[39m[33m>[39m[33m;
+[39m    [90m 14| [39m  [35mif[39m ([33m![39mdata[33m.[39mcanAccessActivities) {
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[90m [2m❯[22m renderRootSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17450:11
+[22m[39m[90m [2m❯[22m performWorkOnRoot node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m16583:35
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+[22m[39m[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[90m (12)
+[39m[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m40 passed[39m[22m[90m (43)
+[39m[2m   Start at [22m 07:41:16
+[2m   Duration [22m 2.60s[2m (transform 816ms, setup 0ms, collect 4.29s, tests 1.49s, environment 1.94s, prepare 1.09s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

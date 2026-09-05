@@ -1,0 +1,117 @@
+{
+  "planPath": "/home/ubuntu/drive-library-import/plan.json",
+  "summary": {
+    "sourceFileCount": 782,
+    "uniqueFileCount": 328,
+    "duplicateCopiesOmitted": 454,
+    "classifiedCount": 269,
+    "generalCount": 59,
+    "byTheme": [
+      {
+        "theme": "Clarksons e mercado marítimo",
+        "count": 9
+      },
+      {
+        "theme": "Clusters e cadeia produtiva",
+        "count": 6
+      },
+      {
+        "theme": "Construção naval mundial",
+        "count": 31
+      },
+      {
+        "theme": "Defesa e segmentos especializados",
+        "count": 1
+      },
+      {
+        "theme": "Descarbonização e transição energética",
+        "count": 8
+      },
+      {
+        "theme": "Economia marítima e transporte marítimo",
+        "count": 8
+      },
+      {
+        "theme": "Financiamento e Fundo da Marinha Mercante",
+        "count": 2
+      },
+      {
+        "theme": "Imprensa e conjuntura",
+        "count": 16
+      },
+      {
+        "theme": "Indústria naval no Brasil",
+        "count": 41
+      },
+      {
+        "theme": "Legislação, normas e acordos",
+        "count": 20
+      },
+      {
+        "theme": "Offshore",
+        "count": 4
+      },
+      {
+        "theme": "Organismos internacionais",
+        "count": 12
+      },
+      {
+        "theme": "Pesquisa, desenvolvimento e tecnologia",
+        "count": 7
+      },
+      {
+        "theme": "Políticas de marinha mercante",
+        "count": 9
+      },
+      {
+        "theme": "Políticas industriais",
+        "count": 101
+      },
+      {
+        "theme": "Produção acadêmica da UFRJ",
+        "count": 31
+      },
+      {
+        "theme": "Produtividade e competitividade",
+        "count": 22
+      }
+    ],
+    "batches": [
+      {
+        "batchNumber": 1,
+        "filePath": "/home/ubuntu/drive-library-import/batch-01.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 2,
+        "filePath": "/home/ubuntu/drive-library-import/batch-02.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 3,
+        "filePath": "/home/ubuntu/drive-library-import/batch-03.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 4,
+        "filePath": "/home/ubuntu/drive-library-import/batch-04.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 5,
+        "filePath": "/home/ubuntu/drive-library-import/batch-05.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 6,
+        "filePath": "/home/ubuntu/drive-library-import/batch-06.sql",
+        "count": 50
+      },
+      {
+        "batchNumber": 7,
+        "filePath": "/home/ubuntu/drive-library-import/batch-07.sql",
+        "count": 28
+      }
+    ]
+  }
+}

@@ -1,0 +1,589 @@
+# Terminal Full Output
+# Terminal: redesign-validation
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test && pnpm check && pnpm build
+# PID: 65592
+# Timestamp: 2026-08-16_15-11-14.628802
+# Original Length: 38812 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test && pnpm check && pnpm build
+[22m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 1185[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (10)
+[22m [32m✓[39m [2mserver/[22mstudySectionDescriptions[2m.test.ts[22m[2m (2)[22m[33m 2148[2mms
+[22m[39m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (8)
+[22m [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 649[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mformalPageTitles[2m.test.ts[22m[2m (10)
+[22m [32m✓[39m [2mclient/src/pages/[22mhomeDescriptions[2m.test.tsx[22m[2m (1)
+[22m [31m❯[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (3)[22m[33m 843[2mms
+[22m[39m   [32m✓[39m estrutura hierárquica da equipe[2m (1)
+[22m   [31m❯[39m ficha visível da atividade[2m (2)[22m[33m 698[2mms
+[22m[39m     [31m×[39m abre a ficha completa por uma ação distinta da edição[33m 484[2mms
+[22m[39m     [31m×[39m mantém títulos acessíveis enquanto os diálogos assíncronos carregam
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 2 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mabre a ficha completa por uma ação distinta da edição
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "button" and name `/ver ficha/i`
+Here are the accessible roles:
+  banner:
+  Name "":
+  [36m<header
+[39m    [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-6 md:pb-8"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  paragraph:
+  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label self-center text-right"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label md:hidden"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 text-sm font-medium md:mt-0"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"text-xs text-muted-foreground"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label md:hidden"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"font-mono mt-1 text-xs font-medium md:mt-0"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 text-[11px] text-muted-foreground"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  heading:
+  Name "Gestão de atividades":
+  [36m<h1
+[39m    [33mclass[39m=[32m"font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]"
+[39m  [36m/>
+[39m  Name "Construção Naval Mundial":
+  [36m<h2
+[39m    [33mclass[39m=[32m"mt-1.5 text-[15px] font-semibold leading-5 text-foreground"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  button:
+  Name "Nova atividade":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h
+-9 px-4 py-2 has-[>svg]:px-3 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Ficha":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-transparent shadow-xs hover:bg-accent dark:bg-transp
+arent dark:border-input dark:hover:bg-input/50 h-8 gap-1.5 px-3 has-[>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Horas":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[
+>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "0 revisores de Construção Naval Mundial":
+  [36m<button
+[39m    [33maria-label[39m=[32m"0 revisores de Construção Naval Mundial"
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[
+>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Editar Construção Naval Mundial":
+  [36m<button
+[39m    [33maria-label[39m=[32m"Editar Construção Naval Mundial"
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 size-
+9"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  textbox:
+  Name "":
+  [36m<input
+[39m    [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-vi
+sible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background pl-10"
+[39m    [33mdata-slot[39m=[32m"input"
+[39m    [33mplaceholder[39m=[32m"Buscar frente, descrição, Tomo, grupo ou coordenador"
+[39m    [33mvalue[39m=[32m""
+[39m  [36m/>
+[39m  --------------------------------------------------
+  combobox:
+  Name "":
+  [36m<button
+[39m    [33maria-autocomplete[39m=[32m"none"
+[39m    [33maria-controls[39m=[32m"radix-_r_3_"
+[39m    [33maria-expanded[39m=[32m"false"
+[39m    [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor
+-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m    [33mdata-size[39m=[32m"default"
+[39m    [33mdata-slot[39m=[32m"select-trigger"
+[39m    [33mdata-state[39m=[32m"closed"
+[39m    [33mdir[39m=[32m"ltr"
+[39m    [33mrole[39m=[32m"combobox"
+[39m    [33mtype[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "":
+  [36m<button
+[39m    [33maria-autocomplete[39m=[32m"none"
+[39m    [33maria-controls[39m=[32m"radix-_r_4_"
+[39m    [33maria-expanded[39m=[32m"false"
+[39m    [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor
+-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m    [33mdata-size[39m=[32m"default"
+[39m    [33mdata-slot[39m=[32m"select-trigger"
+[39m    [33mdata-state[39m=[32m"closed"
+[39m    [33mdir[39m=[32m"ltr"
+[39m    [33mrole[39m=[32m"combobox"
+[39m    [33mtype[39m=[32m"button"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  article:
+  Name "":
+  [36m<article
+[39m    [33mclass[39m=[32m"grid gap-4 px-4 py-4 hover:bg-muted/35 md:grid-cols-[40px_58px_minmax(0,1fr)_180px_120px_230px] md:items-center"
+[39m  [36m/>
+[39m  --------------------------------------------------
+Ignored nodes: comments, script, style
+[36m<body>
+[39m  [36m<div>
+[39m    [36m<div
+[39m      [33mclass[39m=[32m"space-y-7"
+[39m    [36m>
+[39m      [36m<header
+[39m        [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-6 md:pb-8"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"mb-4 flex items-center justify-between gap-4"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m          [36m>
+[39m            [0mControle de atividades
+[0m          [36m</p>
+[39m          [36m<span
+[39m            [33mclass[39m=[32m"font-mono text-xs font-medium text-muted-foreground"
+[39m          [36m>
+[39m            [0m02 — Atividades
+[0m          [36m</span>
+[39m        [36m</div>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"grid items-end gap-5 lg:grid-cols-[minmax(0,1fr)_auto]"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"max-w-4xl"
+[39m          [36m>
+[39m            [36m<h1
+[39m              [33mclass[39m=[32m"font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]"
+[39m            [36m>
+[39m              [0mGestão de atividades
+[0m            [36m</h1>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]"
+[39m            [36m>
+[39m              [0mConsulta e acompanhamento das 29 frentes, com descrições oficiais, coordenação, horas alocadas, revisores e interfaces.
+[0m            [36m</p>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"lg:pb-1"
+[39m          [36m>
+[39m            [36m<button
+[39m              [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-pr
+imary/90 h-9 px-4 py-2 has-[>svg]:px-3 rounded-md"
+[39m              [33mdata-slot[39m=[32m"button"
+[39m            [36m>
+[39m              [36m<svg
+[39m                [33mclass[39m=[32m"lucide lucide-plus mr-2 h-4 w-4"
+[39m                [33mfill[39m=[32m"none"
+[39m                [33mheight[39m=[32m"24"
+[39m                [33mstroke[39m=[32m"currentColor"
+[39m                [33mstroke-linecap[39m=[32m"round"
+[39m                [33mstroke-linejoin[39m=[32m"round"
+[39m                [33mstroke-width[39m=[32m"2"
+[39m                [33mviewBox[39m=[32m"0 0 24 24"
+[39m                [33mwidth[39m=[32m"24"
+[39m                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m              [36m>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M5 12h14"
+[39m                [36m/>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M12 5v14"
+[39m                [36m/>
+[39m              [36m</svg>
+[39m              [0m Nova atividade
+[0m            [36m</button>
+[39m          [36m</div>
+[39m        [36m</div>
+[39m      [36m</header>
+[39m      [36m<div
+[39m        [33mclass[39m=[32m"technical-panel grid gap-3 p-4 lg:grid-cols-[1fr_220px_220px_auto]"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"relative"
+[39m        [36m>
+[39m          [36m<svg
+[39m            [33mclass[39m=[32m"lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+[39m            [33mfill[39m=[32m"none"
+[39m            [33mheight[39m=[32m"24"
+[39m            [33mstroke[39m=[32m"currentColor"
+[39m            [33mstroke-linecap[39m=[32m"round"
+[39m            [33mstroke-linejoin[39m=[32m"round"
+[39m            [33mstroke-width[39m=[32m"2"
+[39m            [33mviewBox[39m=[32m"0 0 24 24"
+[39m            [33mwidth[39m=[32m"24"
+[39m            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m          [36m>
+[39m            [36m<circle
+[39m              [33mcx[39m=[32m"11"
+[39m              [33mcy[39m=[32m"11"
+[39m              [33mr[39m=[32m"8"
+[39m            [36m/>
+[39m            [36m<path
+[39m              [33md[39m=[32m"m21 21-4.3-4.3"
+[39m            [36m/>
+[39m          [36m</svg>
+[39m          [36m<input
+[39m            [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 
+focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background pl-10"
+[39m            [33mdata-slot[39m=[32m"input"
+[39m            [33mplaceholder[39m=[32m"Buscar frente, descrição, Tomo, grupo ou coordenador"
+[39m            [33mvalue[39m=[32m""
+[39m          [36m/>
+[39m        [36m</div>
+[39m        [36m<button
+[39m          [33maria-autocomplete[39m=[32m"none"
+[39m          [33maria-controls[39m=[32m"radix-_r_3_"
+[39m          [33maria-expanded[39m=[32m"false"
+[39m          [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:
+cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m          [33mdata-size[39m=[32m"default"
+[39m          [33mdata-slot[39m=[32m"select-trigger"
+[39m          [33mdata-state[39m=[32m"closed"
+[39m          [33mdir[39m=[32m"ltr"
+[39m          [33mrole[39m=[32m"combobox"
+[39m          [33mtype[39m=[32m"button"
+[39m        [36m>
+[39m          [36m<svg
+[39m            [33mclass[39m=[32m"lucide lucide-layers3 mr-2 h-4 w-4"
+[39m       ...
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19
+[22m[39m[36m [2m❯[22m client/src/pages/teamActivitiesStructure.test.tsx:[2m288:14
+[22m[39m    [90m286| [39m    [34mrender[39m([33m<[39m[33mActivitiesPage[39m [33m/[39m[33m>[39m)[33m;
+[39m    [90m287| [39m    [34mexpect[39m(
+    [90m288| [39m      screen[33m.[39m[34mgetByRole[39m([32m"button"[39m[33m,[39m { name[33m:[39m [36m/ver ficha/i[39m })
+    [90m   | [39m             [31m^
+[39m    [90m289| [39m    )[33m.[39m[34mtoBeInTheDocument[39m()[33m;
+[39m    [90m290| [39m    [34mexpect[39m(
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mmantém títulos acessíveis enquanto os diálogos assíncronos carregam
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "button" and name `/ver ficha/i`
+Here are the accessible roles:
+  banner:
+  Name "":
+  [36m<header
+[39m    [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-6 md:pb-8"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  paragraph:
+  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label self-center text-right"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label md:hidden"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 text-sm font-medium md:mt-0"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"text-xs text-muted-foreground"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"data-label md:hidden"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"font-mono mt-1 text-xs font-medium md:mt-0"
+[39m  [36m/>
+[39m  Name "":
+  [36m<p
+[39m    [33mclass[39m=[32m"mt-1 text-[11px] text-muted-foreground"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  heading:
+  Name "Gestão de atividades":
+  [36m<h1
+[39m    [33mclass[39m=[32m"font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]"
+[39m  [36m/>
+[39m  Name "Construção Naval Mundial":
+  [36m<h2
+[39m    [33mclass[39m=[32m"mt-1.5 text-[15px] font-semibold leading-5 text-foreground"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  button:
+  Name "Nova atividade":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-primary/90 h
+-9 px-4 py-2 has-[>svg]:px-3 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Ficha":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-transparent shadow-xs hover:bg-accent dark:bg-transp
+arent dark:border-input dark:hover:bg-input/50 h-8 gap-1.5 px-3 has-[>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Horas":
+  [36m<button
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[
+>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "0 revisores de Construção Naval Mundial":
+  [36m<button
+[39m    [33maria-label[39m=[32m"0 revisores de Construção Naval Mundial"
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[
+>svg]:px-2.5 rounded-md"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "Editar Construção Naval Mundial":
+  [36m<button
+[39m    [33maria-label[39m=[32m"Editar Construção Naval Mundial"
+[39m    [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent dark:hover:bg-accent/50 size-
+9"
+[39m    [33mdata-slot[39m=[32m"button"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  textbox:
+  Name "":
+  [36m<input
+[39m    [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-vi
+sible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background pl-10"
+[39m    [33mdata-slot[39m=[32m"input"
+[39m    [33mplaceholder[39m=[32m"Buscar frente, descrição, Tomo, grupo ou coordenador"
+[39m    [33mvalue[39m=[32m""
+[39m  [36m/>
+[39m  --------------------------------------------------
+  combobox:
+  Name "":
+  [36m<button
+[39m    [33maria-autocomplete[39m=[32m"none"
+[39m    [33maria-controls[39m=[32m"radix-_r_s_"
+[39m    [33maria-expanded[39m=[32m"false"
+[39m    [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor
+-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m    [33mdata-size[39m=[32m"default"
+[39m    [33mdata-slot[39m=[32m"select-trigger"
+[39m    [33mdata-state[39m=[32m"closed"
+[39m    [33mdir[39m=[32m"ltr"
+[39m    [33mrole[39m=[32m"combobox"
+[39m    [33mtype[39m=[32m"button"
+[39m  [36m/>
+[39m  Name "":
+  [36m<button
+[39m    [33maria-autocomplete[39m=[32m"none"
+[39m    [33maria-controls[39m=[32m"radix-_r_t_"
+[39m    [33maria-expanded[39m=[32m"false"
+[39m    [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor
+-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m    [33mdata-size[39m=[32m"default"
+[39m    [33mdata-slot[39m=[32m"select-trigger"
+[39m    [33mdata-state[39m=[32m"closed"
+[39m    [33mdir[39m=[32m"ltr"
+[39m    [33mrole[39m=[32m"combobox"
+[39m    [33mtype[39m=[32m"button"
+[39m  [36m/>
+[39m  --------------------------------------------------
+  article:
+  Name "":
+  [36m<article
+[39m    [33mclass[39m=[32m"grid gap-4 px-4 py-4 hover:bg-muted/35 md:grid-cols-[40px_58px_minmax(0,1fr)_180px_120px_230px] md:items-center"
+[39m  [36m/>
+[39m  --------------------------------------------------
+Ignored nodes: comments, script, style
+[36m<body>
+[39m  [36m<div>
+[39m    [36m<div
+[39m      [33mclass[39m=[32m"space-y-7"
+[39m    [36m>
+[39m      [36m<header
+[39m        [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-6 md:pb-8"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"mb-4 flex items-center justify-between gap-4"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m          [36m>
+[39m            [0mControle de atividades
+[0m          [36m</p>
+[39m          [36m<span
+[39m            [33mclass[39m=[32m"font-mono text-xs font-medium text-muted-foreground"
+[39m          [36m>
+[39m            [0m02 — Atividades
+[0m          [36m</span>
+[39m        [36m</div>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"grid items-end gap-5 lg:grid-cols-[minmax(0,1fr)_auto]"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"max-w-4xl"
+[39m          [36m>
+[39m            [36m<h1
+[39m              [33mclass[39m=[32m"font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]"
+[39m            [36m>
+[39m              [0mGestão de atividades
+[0m            [36m</h1>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]"
+[39m            [36m>
+[39m              [0mConsulta e acompanhamento das 29 frentes, com descrições oficiais, coordenação, horas alocadas, revisores e interfaces.
+[0m            [36m</p>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"lg:pb-1"
+[39m          [36m>
+[39m            [36m<button
+[39m              [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-pr
+imary/90 h-9 px-4 py-2 has-[>svg]:px-3 rounded-md"
+[39m              [33mdata-slot[39m=[32m"button"
+[39m            [36m>
+[39m              [36m<svg
+[39m                [33mclass[39m=[32m"lucide lucide-plus mr-2 h-4 w-4"
+[39m                [33mfill[39m=[32m"none"
+[39m                [33mheight[39m=[32m"24"
+[39m                [33mstroke[39m=[32m"currentColor"
+[39m                [33mstroke-linecap[39m=[32m"round"
+[39m                [33mstroke-linejoin[39m=[32m"round"
+[39m                [33mstroke-width[39m=[32m"2"
+[39m                [33mviewBox[39m=[32m"0 0 24 24"
+[39m                [33mwidth[39m=[32m"24"
+[39m                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m              [36m>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M5 12h14"
+[39m                [36m/>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M12 5v14"
+[39m                [36m/>
+[39m              [36m</svg>
+[39m              [0m Nova atividade
+[0m            [36m</button>
+[39m          [36m</div>
+[39m        [36m</div>
+[39m      [36m</header>
+[39m      [36m<div
+[39m        [33mclass[39m=[32m"technical-panel grid gap-3 p-4 lg:grid-cols-[1fr_220px_220px_auto]"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"relative"
+[39m        [36m>
+[39m          [36m<svg
+[39m            [33mclass[39m=[32m"lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+[39m            [33mfill[39m=[32m"none"
+[39m            [33mheight[39m=[32m"24"
+[39m            [33mstroke[39m=[32m"currentColor"
+[39m            [33mstroke-linecap[39m=[32m"round"
+[39m            [33mstroke-linejoin[39m=[32m"round"
+[39m            [33mstroke-width[39m=[32m"2"
+[39m            [33mviewBox[39m=[32m"0 0 24 24"
+[39m            [33mwidth[39m=[32m"24"
+[39m            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m          [36m>
+[39m            [36m<circle
+[39m              [33mcx[39m=[32m"11"
+[39m              [33mcy[39m=[32m"11"
+[39m              [33mr[39m=[32m"8"
+[39m            [36m/>
+[39m            [36m<path
+[39m              [33md[39m=[32m"m21 21-4.3-4.3"
+[39m            [36m/>
+[39m          [36m</svg>
+[39m          [36m<input
+[39m            [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 
+focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background pl-10"
+[39m            [33mdata-slot[39m=[32m"input"
+[39m            [33mplaceholder[39m=[32m"Buscar frente, descrição, Tomo, grupo ou coordenador"
+[39m            [33mvalue[39m=[32m""
+[39m          [36m/>
+[39m        [36m</div>
+[39m        [36m<button
+[39m          [33maria-autocomplete[39m=[32m"none"
+[39m          [33maria-controls[39m=[32m"radix-_r_s_"
+[39m          [33maria-expanded[39m=[32m"false"
+[39m          [33mclass[39m=[32m"border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:
+cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 w-full bg-background"
+[39m          [33mdata-size[39m=[32m"default"
+[39m          [33mdata-slot[39m=[32m"select-trigger"
+[39m          [33mdata-state[39m=[32m"closed"
+[39m          [33mdir[39m=[32m"ltr"
+[39m          [33mrole[39m=[32m"combobox"
+[39m          [33mtype[39m=[32m"button"
+[39m        [36m>
+[39m          [36m<svg
+[39m            [33mclass[39m=[32m"lucide lucide-layers3 mr-2 h-4 w-4"
+[39m       ...
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19
+[22m[39m[36m [2m❯[22m client/src/pages/teamActivitiesStructure.test.tsx:[2m334:32
+[22m[39m    [90m332| [39m      [35mfor[39m ([35mconst[39m scenario [35mof[39m scenarios) {
+    [90m333| [39m        [35mconst[39m view [33m=[39m [34mrender[39m([33m<[39m[33mActivitiesPage[39m [33m/[39m[33m>[39m)[33m;
+[39m    [90m334| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByRole[39m([32m"button"[39m[33m,[39m { name[33m:[39m scenario[33m.[39mbu…
+    [90m   | [39m                               [31m^
+[39m    [90m335| [39m        [34mexpect[39m(
+    [90m336| [39m          [35mawait[39m screen[33m.[39m[34mfindByRole[39m([32m"heading"[39m[33m,[39m { name[33m:[39m scenario[33m.[39mtitle })
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+[22m[39m[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m16 passed[39m[22m[90m (17)
+[39m[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m71 passed[39m[22m[90m (73)
+[39m[2m   Start at [22m 15:11:09
+[2m   Duration [22m 5.16s[2m (transform 1.08s, setup 0ms, collect 6.86s, tests 5.10s, environment 3.25s, prepare 1.69s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

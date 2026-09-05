@@ -1,0 +1,1 @@
+ALTER TABLE `activities` MODIFY COLUMN `title` varchar(1000) NOT NULL;

@@ -1,0 +1,229 @@
+{
+  "source": {
+    "structure": "Plano_de_Trabalho-UFRJ_26_agosto.pdf — Anexo B, Índice Analítico do Relatório 1",
+    "descriptions": "Plano_de_Trabalho-UFRJ_26_agosto.pdf — Anexo A, Estrutura do Relatório 1"
+  },
+  "generatedAt": "2026-08-30T01:59:18.962Z",
+  "counts": {
+    "expectedChapters": 30,
+    "activeChapters": 30,
+    "expectedSections": 253,
+    "activeSections": 252
+  },
+  "missingChapters": [],
+  "extraChapters": [],
+  "titleMismatches": [],
+  "descriptionMismatches": [
+    {
+      "code": "AP",
+      "expectedLength": 188,
+      "currentLength": 195
+    },
+    {
+      "code": "I.1",
+      "expectedLength": 659,
+      "currentLength": 391
+    },
+    {
+      "code": "I.2",
+      "expectedLength": 610,
+      "currentLength": 406
+    },
+    {
+      "code": "I.3",
+      "expectedLength": 752,
+      "currentLength": 397
+    },
+    {
+      "code": "I.4",
+      "expectedLength": 539,
+      "currentLength": 399
+    },
+    {
+      "code": "I.5",
+      "expectedLength": 396,
+      "currentLength": 334
+    },
+    {
+      "code": "I.6",
+      "expectedLength": 1471,
+      "currentLength": 379
+    },
+    {
+      "code": "I.7",
+      "expectedLength": 328,
+      "currentLength": 281
+    },
+    {
+      "code": "I.8",
+      "expectedLength": 933,
+      "currentLength": 416
+    },
+    {
+      "code": "II.1",
+      "expectedLength": 546,
+      "currentLength": 377
+    },
+    {
+      "code": "II.2",
+      "expectedLength": 539,
+      "currentLength": 342
+    },
+    {
+      "code": "II.3",
+      "expectedLength": 621,
+      "currentLength": 434
+    },
+    {
+      "code": "II.4",
+      "expectedLength": 1226,
+      "currentLength": 422
+    },
+    {
+      "code": "II.5",
+      "expectedLength": 464,
+      "currentLength": 313
+    },
+    {
+      "code": "II.6",
+      "expectedLength": 723,
+      "currentLength": 403
+    },
+    {
+      "code": "II.7",
+      "expectedLength": 671,
+      "currentLength": 382
+    },
+    {
+      "code": "II.8",
+      "expectedLength": 732,
+      "currentLength": 348
+    },
+    {
+      "code": "II.9",
+      "expectedLength": 759,
+      "currentLength": 449
+    },
+    {
+      "code": "III.1",
+      "expectedLength": 1045,
+      "currentLength": 513
+    },
+    {
+      "code": "III.2",
+      "expectedLength": 879,
+      "currentLength": 449
+    },
+    {
+      "code": "III.3",
+      "expectedLength": 1191,
+      "currentLength": 437
+    },
+    {
+      "code": "III.4",
+      "expectedLength": 923,
+      "currentLength": 450
+    },
+    {
+      "code": "III.5",
+      "expectedLength": 925,
+      "currentLength": 424
+    },
+    {
+      "code": "III.6",
+      "expectedLength": 1044,
+      "currentLength": 452
+    },
+    {
+      "code": "III.7",
+      "expectedLength": 807,
+      "currentLength": 434
+    },
+    {
+      "code": "III.8",
+      "expectedLength": 633,
+      "currentLength": 446
+    },
+    {
+      "code": "III.9",
+      "expectedLength": 1061,
+      "currentLength": 460
+    },
+    {
+      "code": "IV.1",
+      "expectedLength": 1135,
+      "currentLength": 459
+    },
+    {
+      "code": "IV.2",
+      "expectedLength": 1670,
+      "currentLength": 484
+    },
+    {
+      "code": "IV.3",
+      "expectedLength": 678,
+      "currentLength": 374
+    }
+  ],
+  "missingSections": [
+    {
+      "sectionCode": "II.2",
+      "detailCode": "II.2.11",
+      "title": "Outros produtores emergentes"
+    }
+  ],
+  "extraSections": [],
+  "sectionTitleMismatches": [
+    {
+      "code": "II.2.1",
+      "expected": "Dimensões de análise das experiências nacionais: protecionismo; evolução da indústria; estrutura empresarial; especialização; qualificação tecnológica; recursos humanos; cadeia de fornecedores; inserção internacional; evolução da produtividade; competitividade; resultados produtivos; estratégias de desenvolvimento tecnológico e catching-up",
+      "current": "Japão"
+    },
+    {
+      "code": "II.2.2",
+      "expected": "Japão",
+      "current": "Coreia do Sul"
+    },
+    {
+      "code": "II.2.3",
+      "expected": "Coreia do Sul",
+      "current": "China"
+    },
+    {
+      "code": "II.2.4",
+      "expected": "China",
+      "current": "Singapura"
+    },
+    {
+      "code": "II.2.5",
+      "expected": "Singapura",
+      "current": "Estados Unidos"
+    },
+    {
+      "code": "II.2.6",
+      "expected": "Estados Unidos",
+      "current": "Países europeus selecionados"
+    },
+    {
+      "code": "II.2.7",
+      "expected": "Países europeus selecionados",
+      "current": "Índia"
+    },
+    {
+      "code": "II.2.8",
+      "expected": "Índia",
+      "current": "Vietnã"
+    },
+    {
+      "code": "II.2.9",
+      "expected": "Vietnã",
+      "current": "Indonésia"
+    },
+    {
+      "code": "II.2.10",
+      "expected": "Indonésia",
+      "current": "Outros produtores emergentes"
+    }
+  ],
+  "compatible": false
+}

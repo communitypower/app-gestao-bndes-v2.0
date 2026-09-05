@@ -1,0 +1,308 @@
+[
+  {
+    "row": 1,
+    "cells": {
+      "A": "G1",
+      "B": "Sistematização",
+      "K": "Coordenação"
+    }
+  },
+  {
+    "row": 2,
+    "cells": {
+      "C": "Floriano Carlos Martins Pires Jr."
+    }
+  },
+  {
+    "row": 3,
+    "cells": {
+      "C": "Segen Farid Estefen",
+      "K": "Geral"
+    }
+  },
+  {
+    "row": 4,
+    "cells": {
+      "C": "Luiz Felipe Assis",
+      "L": "Floriano Carlos Martins Pires Jr."
+    }
+  },
+  {
+    "row": 5,
+    "cells": {
+      "C": "Cassiano Marins de Souza"
+    }
+  },
+  {
+    "row": 6,
+    "cells": {
+      "C": "Marcos Bernardes Cozzolino do Nascimento",
+      "K": "Administrativa"
+    }
+  },
+  {
+    "row": 7,
+    "cells": {
+      "C": "Carlos Frederico Leão Rocha",
+      "L": "Luiz Felipe Assis"
+    }
+  },
+  {
+    "row": 8,
+    "cells": {
+      "C": "Marcelo Colomer Ferraro",
+      "L": "Denise Cunha"
+    }
+  },
+  {
+    "row": 9,
+    "cells": {
+      "A": "G2",
+      "B": "Política Industrial e Cadeia  de Suprimentos",
+      "K": "Técnica"
+    }
+  },
+  {
+    "row": 10,
+    "cells": {
+      "C": "Carlos Frederico Leão Rocha",
+      "L": "Floriano Carlos Martins Pires Jr."
+    }
+  },
+  {
+    "row": 11,
+    "cells": {
+      "C": "Marcelo Colomer Ferraro",
+      "L": "Segen Farid Estefen"
+    }
+  },
+  {
+    "row": 12,
+    "cells": {
+      "C": "Helder Queiroz Pinto Junior",
+      "L": "Luiz Felipe Assis"
+    }
+  },
+  {
+    "row": 13,
+    "cells": {
+      "C": "Germano Mendes de Paula",
+      "L": "Carlos Frederico Leão Rocha"
+    }
+  },
+  {
+    "row": 14,
+    "cells": {
+      "C": "Rodrigo Coelho Sabbatini",
+      "L": "Marcelo Colomer Ferraro"
+    }
+  },
+  {
+    "row": 15,
+    "cells": {
+      "A": "G3",
+      "B": "Transporte Marítimo no Brasil; Políticas de Marinha Mercante e de Construção Naval",
+      "L": "Cassiano Marins de Souza"
+    }
+  },
+  {
+    "row": 16,
+    "cells": {
+      "C": "Antonio João Prates"
+    }
+  },
+  {
+    "row": 17,
+    "cells": {
+      "C": "Armando Freigedo Rodrigues Filho"
+    }
+  },
+  {
+    "row": 18,
+    "cells": {
+      "C": "Paulo Octavio de Paiva Almeida"
+    }
+  },
+  {
+    "row": 19,
+    "cells": {
+      "C": "Carolina Gonçalves dos Santos"
+    }
+  },
+  {
+    "row": 20,
+    "cells": {
+      "A": "G4",
+      "B": "Transporte Marítimo Mundial"
+    }
+  },
+  {
+    "row": 21,
+    "cells": {
+      "C": "Luiz Felipe Assis"
+    }
+  },
+  {
+    "row": 22,
+    "cells": {
+      "C": "Floriano Carlos Martins Pires Jr."
+    }
+  },
+  {
+    "row": 23,
+    "cells": {
+      "A": "G5",
+      "B": "FMM"
+    }
+  },
+  {
+    "row": 24,
+    "cells": {
+      "C": "Marcos Bernardes Cozzolino do Nascimento"
+    }
+  },
+  {
+    "row": 25,
+    "cells": {
+      "A": "G6",
+      "B": "Offshore"
+    }
+  },
+  {
+    "row": 26,
+    "cells": {
+      "C": "Marcelo Igor Lourenço de Souza"
+    }
+  },
+  {
+    "row": 27,
+    "cells": {
+      "A": "G7",
+      "B": "Fluvial: Transporte e Construção"
+    }
+  },
+  {
+    "row": 28,
+    "cells": {
+      "C": "Carlos Daher Padovezi"
+    }
+  },
+  {
+    "row": 29,
+    "cells": {
+      "C": "Pedro Igor Dias Lameira"
+    }
+  },
+  {
+    "row": 30,
+    "cells": {
+      "C": "André Mitsuo Kogishi"
+    }
+  },
+  {
+    "row": 31,
+    "cells": {
+      "C": "Hito Braga de Moraes"
+    }
+  },
+  {
+    "row": 32,
+    "cells": {
+      "C": "Nelio Moura de Figueiredo"
+    }
+  },
+  {
+    "row": 33,
+    "cells": {
+      "C": "Emannuel Loureiro"
+    }
+  },
+  {
+    "row": 34,
+    "cells": {
+      "A": "G8",
+      "B": "Descarbonização"
+    }
+  },
+  {
+    "row": 35,
+    "cells": {
+      "C": "Jean David Job Emmanuel Marie Caprace"
+    }
+  },
+  {
+    "row": 36,
+    "cells": {
+      "C": "Luiz Antônio Vaz Pinto"
+    }
+  },
+  {
+    "row": 37,
+    "cells": {
+      "C": "Crístofer Hood Marques"
+    }
+  },
+  {
+    "row": 38,
+    "cells": {
+      "A": "G9",
+      "B": "Construção Militar"
+    }
+  },
+  {
+    "row": 39,
+    "cells": {
+      "C": "Andre Ricardo Mendonça Pinheiro"
+    }
+  },
+  {
+    "row": 40,
+    "cells": {
+      "A": "G10",
+      "B": "Construção Naval Mundial e Construção no Brasil - analise econômica  e tecnológica"
+    }
+  },
+  {
+    "row": 41,
+    "cells": {
+      "C": "Cassiano Marins de Souza"
+    }
+  },
+  {
+    "row": 42,
+    "cells": {
+      "C": "Floriano Carlos Martins Pires Jr."
+    }
+  },
+  {
+    "row": 43,
+    "cells": {
+      "A": "G11",
+      "B": "Construção Naval no Brasil"
+    }
+  },
+  {
+    "row": 44,
+    "cells": {
+      "C": "Marta Cecilia Tapia Reyes"
+    }
+  },
+  {
+    "row": 45,
+    "cells": {
+      "C": "Marcos Pereira"
+    }
+  },
+  {
+    "row": 46,
+    "cells": {
+      "C": "João Candido Gonçalves da Silva"
+    }
+  },
+  {
+    "row": 47,
+    "cells": {
+      "C": "Sergio Lamarca Leite"
+    }
+  }
+]

@@ -1,0 +1,144 @@
+0001	Oportunidades da Descarbonização e da Transição Energética para a Reestruturação da Indústria Naval
+0002	Relatório 1
+0003	Indústria Naval: Diagnóstico e Perspectivas
+0004	Apresentação
+0005	Apresentação geral do Estudo. Descrição do objetivo, metodologia, equipe. Estrutura do Portal e do Relatório. Banco de dados. Audiovisual. Sumário Executivo. Conteúdo dos Relatórios 1 e 2.
+0006	Tomo I
+0007	Economia Marítima, Mercados e Demanda para a Indústria Naval
+0008	Introdução
+0009	Objetivos do Relatório 1: diagnósticos e cenários. Análise da evolução da indústria naval brasileira, em particular nos períodos 1970-80 e 2000-2010. Sucessos e falhas. Escopo. Construção de navios, embarcações fluviais, offshore, fabricação e integração de módulos, reparo, descomissionamento/desmantelamento.
+0010	Estrutura do relatório. Os temas são examinados em diferentes capítulos segundo perspectivas complementares. O Tomo I analisa os setores geradores de demanda; o Tomo II, a capacidade de resposta da base produtiva; o Tomo III, as políticas e instituições que condicionam essa resposta; e o Tomo IV integra essas dimensões na construção dos cenários.
+0011	Economia Marítima
+0012	Economia marítima. Indústria naval, marinha mercante, óleo e gás, geração de energia, pesca, defesa. Interrelação entre os setores. A natureza estratégica da indústria naval e da economia do mar. Aspectos econômicos dos principais segmentos geradores da demanda da indústria naval. Aspectos econômicos, tecnológicos e geopolíticos. Mudanças econômicas, geopolíticas, ambientais, regulatórias e tecnológicas que afetam as indústrias marítimas, e, em particular, a indústria naval. Reorganização das cadeias globais, regionalização produtiva, transição energética. Oportunidades e desafios para a indústria naval brasileira.
+0013	Transporte Marítimo Mundial
+0014	Estrutura e organização dos mercados de transporte marítimo internacional.  Regulação. Comportamento dos principais segmentos do mercado: granéis líquidos, gás, químicos, granéis sólidos e contêineres. Outros segmentos: veículos, cargas de projeto, carga geral, apoio marítimo e portuário. Principais fluxos.  Análise dos mercados: tipos de navios, bandeiras, aspectos tecnológicos, fretes, preços, carteiras de encomendas. Navegação e meio ambiente. Evolução e dinâmica recente. Fatores econômicos, geopolíticos e ambientais que condicionam a expansão, renovação e transformação tecnológica das frotas. Tendências. Cenários de demanda para a indústria naval. Desafios e oportunidades para a marinha mercante e a indústria naval no Brasil.
+0015	Transporte Marítimo no Brasil
+0016	Evolução da marinha mercante brasileira. Principais fluxos de transporte marítimo de cabotagem e longo curso. Regulamentação. Organização dos mercados. Gargalos de infraestrutura. Empresas brasileiras de navegação. Frotas. Bandeiras. Afretamento. Integração às redes globais. Apoio portuário. Apoio marítimo (enquadramento como segmento da navegação brasileira).  Custos diferenciais da bandeira brasileira. Panorama do setor pesqueiro. Cenários de demanda para construção, reparo, conversão e modernização de navios e embarcações de apoio.
+0017	Transporte Hidroviário Interior
+0018	Análise das principais bacias. Infraestrutura. Principais fluxos de carga. Estrutura e organização dos mercados: empresas, frotas. Transporte multimodal. Navegação fluvial de percurso internacional. Impactos ambientais. Transporte de passageiros na Região Amazônica. Transporte hidroviário urbano. Navegação e desenvolvimento regional. Cenários de demanda para construção de embarcações fluviais.
+0019	Indústria de Óleo e Gás e de Energia Eólica Offshore
+0020	Evolução e perspectivas da indústria de óleo e gás offshore. Regiões de produção. Principais empresas e países. Marcos regulatórios nos principais polos. Tipos de unidades flutuantes de exploração e produção. Análise dos sistemas de operação em função das características físicas e logísticas dos campos. Comportamento dos mercados de óleo e gás e interrelação com o mercado de unidades de E&P, em particular, FPSO e Sondas. Análise dos mercados de construção e afretamento. Tendências e cenários globais de demanda: construção, fabricação e integração de módulos, conversão, descomissionamento
+0021	Atividade offshore no Brasil. Principais campos. Empresas e participação no mercado. Tipo de unidades em operação e perspectivas. Descomissionamento. Cenários de demanda: construção, fabricação e integração de módulos, conversão, descomissionamento.
+0022	Mercado mundial de navios aliviadores e embarcações de apoio offshore.  Tipos de embarcações e padrões de operação. Participação do Brasil no mercado mundial. Estrutura do mercado brasileiro. Comparação do mercado brasileiro com as principais regiões: modos de operação, tipos de afretamento, preços. regulamentação. Empresas, frotas, verticalização. Cenários de demanda por aliviadores e OSV no Brasil.
+0023	O setor de geração eólica no Brasil. Tipos de instalações e embarcações de apoio. Evolução e perspectivas. Cenários de demanda por embarcações de apoio especializadas e construção de instalações de geração eólica offshore.
+0024	Construção naval militar
+0025	Evolução e perspectivas dos programas de construção naval militar no Brasil. Experiências internacionais relevantes de desenvolvimento da indústria naval militar. Programas de offset, conteúdo local, clusters produtivos e estratégias de capacitação tecnológica e inovação. Cenários de demanda por navios e embarcações militares.
+0026	Descarbonização na Indústria Marítima
+0027	Análise do processo de descarbonização da indústria marítima mundial, com foco nas metas da IMO e nas principais estratégias nacionais e regionais. Respostas de armadores, operadores, portos e fornecedores de energia. Identificação e classificação das tecnologias emergentes voltadas à descarbonização e à melhoria da eficiência energética de embarcações e unidades offshore, abrangendo soluções de projeto, propulsão, operação e digitalização. Infraestrutura de abastecimento.
+0028	Análise do estado atual da frota global e brasileira em relação ao uso de combustíveis alternativos e de tecnologias de eficiência energética.
+0029	Análise do efeito da transição energética sobre mercados, frotas e demanda por embarcações novas e retrofitting.
+0030	Análise do potencial competitivo do Brasil na produção e uso de combustíveis renováveis para o transporte marítimo e identificação das necessidades de infraestrutura portuária e logística verde.
+0031	Tomo II
+0032	Indústria Naval: Base Produtiva, Tecnologia e Competitividade
+0033	Construção Naval Mundial
+0034	Análise da trajetória e da estrutura atual da construção naval mundial. Evolução da produção, capacidade de estaleiros, padrão tecnológico. Capacidade instalada, por país e por classe de estaleiro/segmento do mercado. Principais grupos empresariais e principais estaleiros. Especialização e seriação. Segmentos de navios, apoio marítimo, offshore e defesa. Protecionismo. Fatores de competitividade. Tecnologia. Cadeia produtiva. Comportamento dos mercados. Impactos recentes ambientais, tecnológicos, geopolíticos.
+0035	Experiências nacionais de desenvolvimento da construção naval
+0036	Estudos dos casos de China, Coreia do Sul, Japão, Singapura, Estados Unidos, países europeus e produtores emergentes, incluindo Índia, Vietnã e Indonésia. Protecionismo. Evolução da indústria, estrutura empresarial, especialização, qualificação tecnológica, recursos humanos, cadeia de fornecedores, inserção internacional. Evolução da produtividade. Competitividade. Resultados produtivos. Estratégias de desenvolvimento tecnológico – catching up. O trabalho inclui visitas a estaleiros e organizações relevantes na China, Coreia e Índia.
+0037	Construção naval e offshore no Brasil
+0038	Histórico. Evolução da indústria naval moderna brasileira. Planos e Programas de desenvolvimento. Os ciclos de 1970-1980 e 2000-2010: expansão da capacidade e retração subsequente. Construção de unidades offshore. Construção militar. Embarcações fluviais. Evolução da estrutura da indústria: trajetória das empresas, da capacidade produtiva e da cadeia de fornecedores. Desempenho. Qualificação tecnológica e recursos humanos. Contratos e produção realizada. Preços e prazos. Distribuição geográfica. Fatores econômicos, empresariais, tecnológicos, regulatórios e institucionais que determinaram os resultados alcançados.
+0039	Estrutura atual e capacidade dos estaleiros brasileiros
+0040	Diagnóstico abrangente da indústria naval brasileira, avaliando infraestrutura, capacidade produtiva, níveis de produtividade, capacitação tecnológica, cadeia de suprimentos e potencial de modernização dos estaleiros nacionais.
+0041	Levantamento de todos os estaleiros e instalações de fabricação e integração de módulos relevantes, em operação ou não. Análise da evolução das instalações, organização corporativa, capacidade, produção e desempenho. Estrutura e situação atuais. Carteiras, engenharia de projeto e de processos, infraestrutura industrial, processos, modelo de organização e gestão.
+0042	Cadeia produtiva, por tipo de produto e região.
+0043	Análise do potencial de reativação ou adaptação para operação sustentável e competitiva, para os segmentos de maior viabilidade.
+0044	Serão considerados os estaleiros dedicados à construção de navios convencionais, embarcações fluviais, embarcações de apoio offshore, plataformas offshore e módulos de plantas de processo bem como os estaleiros de reparo, conversão e desmonte de plataformas e navios. O trabalho inclui visitas às instalações para levantamento de campo.
+0045	Reparo, conversão, desmantelamento e descomissionamento
+0046	Situação atual e tendências do mercado mundial. Regulação internacional e nacional. Análise comparativa entre estaleiros de reparo e construção e instalações de descomissionamento.
+0047	Diagnóstico da demanda, da infraestrutura, das empresas e da capacidade nacional para reparo, docagem, conversão e modernização de embarcações e unidades offshore, considerando a competição internacional.
+0048	Desafios e oportunidades em reparo, conversão, retrofitting e desmantelamento.
+0049	Cadeia produtiva da indústria de construção naval
+0050	Perfil de nacionalização de componentes na indústria de construção naval nos principais países produtores. Importância das indústrias siderúrgica e de materiais, equipamentos e sistemas navais para a indústria de construção naval dos países selecionados.
+0051	Evolução do índice de nacionalização nas diferentes fases da indústria naval brasileira.
+0052	Levantamento e análise da cadeia de suprimentos no cenário atual, para as principais classes de estaleiros, regiões e tipos de produtos. Serão examinadas localização, capacidade, conteúdo nacional, dependências externas, lacunas produtivas e tecnológicas, relações entre estaleiros e fornecedores e diferenças entre as cadeias civil, fluvial, offshore e militar.
+0053	Padrão tecnológico e recursos humanos
+0054	Análise da capacitação dos estaleiros brasileiros em engenharia de produtos e de processos e de gestão da produção. Perfil da força de trabalho empregada nos estaleiros , nos níveis básico, técnico e gerencial.
+0055	Análise das capacidades de pesquisa, desenvolvimento e inovação disponíveis em empresas, universidades e centros de pesquisa nas áreas relevantes para a indústria naval. Avaliação das relações entre essas instituições e a base produtiva.
+0056	Análise da disponibilidade de força de trabalho no Brasil nos níveis operacional, técnico, de engenharia e gerencial, bem como dos sistemas de formação e qualificação de recursos humanos nos níveis básico, técnico e superior.
+0057	Produtividade e competitividade
+0058	Metodologia para avaliação tecnológica de estaleiros. Proposição de indicadores simplificados para avaliação de desempenho e benchmarking.
+0059	Análise dos padrões tecnológicos, produtividade e desempenho para as principais classes de estaleiros mundiais, em função da capacidade produtiva, especialização e seriação.
+0060	Análise dos padrões tecnológicos, produtividade e desempenho dos estaleiros brasileiros, em comparação com as classes relevantes. Serão considerados os últimos períodos de operação contínua, a situação atual e o potencial de cada estaleiro.
+0061	Análise das possibilidades de inserção competitiva de cada estaleiro, com identificação de potencialidades, limitações e gargalos e proposição de metas de produtividade e desempenho.
+0062	Descarbonização: oportunidades e desafios para a indústria naval
+0063	Síntese das mudanças de mercado e das tendências tecnológicas associadas à descarbonização, analisadas no Tomo I, e impactos sobre o projeto, construção, conversão e reparo de embarcações e unidades offshore.
+0064	Análise das competências requeridas para projeto e construção de navios capazes ou preparados para utilização de novos combustíveis, e para desenvolvimento e aplicação de sistemas de eficiência energética, captura de carbono e tecnologias correlatas.
+0065	Avaliação das capacidades e deficiências da indústria naval brasileira para inserção competitiva nesses mercados.
+0066	Análise da descarbonização dos próprios processos de construção naval.
+0067	Identificação dos desafios e das oportunidades para estaleiros, empresas de engenharia e fornecedores brasileiros.
+0068	Tomo III
+0069	Política Industrial e Política Marítima
+0070	Fundamentos e tendências
+0071	Política industrial: Revisão da literatura, conceitos teóricos e justificativas econômicas. Políticas horizontais e setoriais. Transformações ambientais e geopolíticas em curso e tendências. O papel das organizações multilaterais.
+0072	Evolução das políticas industriais praticadas no Brasil.
+0073	Políticas marítimas e políticas de construção naval. Justificativas econômicas, estratégicas e geopolíticas. Cenário atual e tendências.
+0074	Desenvolvimento de metodologia de análise da evolução das políticas setoriais voltadas para a indústria naval aplicadas no Brasil e no mundo nos períodos relevantes.
+0075	Relevância de instrumentos horizontais existentes para impulsionar a indústria naval, como os propostos na Nova Indústria Brasil (NIB) e em outras políticas.
+0076	Políticas públicas e mecanismos de fomento à descarbonização marítima. Avaliação de sua aplicabilidade ao contexto brasileiro.  Desafios regulatórios nacionais e internacionais para a introdução de novos combustíveis marítimos. Possibilidades para o Brasil na transição energética marítima global.
+0077	Políticas de marinha mercante no mundo
+0078	Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de marinha mercante – evolução desde o pós-guerra. Histórico (modelos e instrumentos de proteção e incentivo) nos principais países marítimos. Regulação nacional e internacional e acordos bilaterais e multilaterais.
+0079	Análise de casos relevantes: Europa Ocidental, China, Coreia, Japão, EUA, Austrália, Nova Zelândia, Singapura, Europa Oriental, Turquia, Índia, com foco nas últimas décadas.
+0080	Análise dos principais mecanismos de proteção e incentivo: registros alternativos, financiamento e outros instrumentos financeiros, subsídios, incentivos fiscais, reserva de mercado e de carga, preferência de bandeira, políticas de tripulação e de desenvolvimento tecnológico.
+0081	Identificação dos casos mais expressivos de sucesso e falha e dos resultados sobre frota, participação no mercado e competitividade.
+0082	Políticas de construção naval no mundo
+0083	Inter-relação entre políticas de construção naval e de transporte marítimo.
+0084	Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de construção naval – evolução desde o pós-guerra. Regulamentação nacional e internacional. Organismos internacionais e acordos bilaterais e multilaterais.
+0085	Histórico nos principais países produtores, principais ciclos de industrialização e processos de realocação geográfica. Impacto das políticas setoriais e horizontais na consolidação das indústrias nacionais e na distribuição geográfica da produção.
+0086	Análise de casos relevantes: Europa, EUA, Japão, Coreia, China, Singapura, Europa Oriental, Turquia, Índia, Indonésia e Vietnã. Síntese dos resultados das políticas, com base na evolução das indústrias nacionais analisada no Tomo II.
+0087	Mecanismos de proteção e incentivo: planejamento governamental, estatização, restrições de mercado, subsídios, incentivos fiscais, instrumentos financeiros, garantias e créditos para exportação e compras governamentais.
+0088	Cooperação internacional. Integração das estratégias de catching-up tecnológico nas políticas do Japão, da Coreia e da China.
+0089	Impactos das transformações em curso e tendências.
+0090	Políticas brasileiras de marinha mercante e construção naval
+0091	Evolução das políticas marítimas no Brasil – marinha mercante, construção naval, navegação interior, óleo e gás offshore, energias oceânicas e defesa. Inter-relações entre as políticas dos diferentes setores.
+0092	Os Planos de Desenvolvimento e os Planos de Construção Naval. Os ciclos de expansão e queda de 1970-1980 e 2000-2010. Principais mecanismos de intervenção: reserva de mercado e de carga, preferência de bandeira, políticas de tripulação, financiamento, incentivos fiscais, conteúdo local e compras governamentais. O FMM como principal instrumento de financiamento (analisado detalhadamente no Capítulo 5).
+0093	Síntese dos resultados alcançados, deixando a análise de sucessos e falhas para o Capítulo 7.
+0094	Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval.
+0095	Cenário atual: Lei nº 14.301/2022 (BR do Mar), conteúdo local, legislação tributária e demais instrumentos em vigor.
+0096	O Fundo da Marinha Mercante
+0097	Histórico e relevância para a indústria marítima brasileira. Evolução da regulamentação do AFRMM e do FMM. Estrutura institucional, agentes financeiros e processo de aprovação e concessão dos financiamentos.
+0098	Evolução da arrecadação, distribuição e aplicação dos recursos. Eficiência dos projetos financiados (obras concluídas, custos e prazos). Eficácia do sistema (consolidação de empresas e evolução da competitividade).
+0099	Análise do efeito do financiamento e do emprego das contas vinculadas sobre o custo efetivo de capital. Simulação para situações representativas e relevantes. Riscos, garantias e custos financeiros.
+0100	Alocação de custos e benefícios. Efeitos distributivos intersetoriais e inter-regionais. Impacto sobre a navegação interior e o desenvolvimento regional.
+0101	Análise da racionalidade econômica e estratégica do sistema.
+0102	Alterações introduzidas pela Lei nº 14.301/2022 (BR do Mar) e avaliação do modelo atual.
+0103	Setores críticos da cadeia de suprimentos: siderurgia e materiais e equipamentos navais
+0104	Políticas industriais e perfil de nacionalização de componentes na indústria de construção naval nos principais países produtores.
+0105	Políticas de conteúdo local como instrumento de política industrial. Efeito sobre os índices de nacionalização e sobre o desempenho da indústria naval.
+0106	Importância da indústria siderúrgica e da indústria de materiais e equipamentos navais para a indústria de construção naval dos países relevantes. Políticas industriais voltadas para esses setores e sua articulação com as políticas de construção naval.
+0107	Histórico e estrutura da indústria siderúrgica e da indústria de materiais e equipamentos navais no Brasil. Principais empresas, localização, capacidade produtiva, tecnologia, recursos humanos e dependência de importações. Políticas industriais adotadas e evolução dos índices de nacionalização nas diferentes fases.
+0108	Cenários prospectivos. Oportunidades e desafios para o desenvolvimento da cadeia nacional de suprimentos. Importância para o desenvolvimento competitivo da indústria naval.
+0109	Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas
+0110	O ciclo de expansão das décadas de 1970 e 1980 no Brasil. Objetivos, instrumentos e resultados das políticas adotadas. Fatores endógenos e exógenos da crise e da retração. Comparação com a trajetória da Coreia do Sul no mesmo período.
+0111	O ciclo de expansão das décadas de 2000 e 2010. Objetivos, instrumentos e resultados das políticas adotadas. Fatores que determinaram a expansão e a posterior queda da atividade. Comparação com a trajetória da China.
+0112	Análise comparativa das políticas e de seus resultados, considerando continuidade e coordenação institucional, demanda, financiamento, escala de produção, produtividade, aprendizado tecnológico e inserção internacional.
+0113	Identificação dos principais problemas sistêmicos e das lições para uma nova política de desenvolvimento da indústria naval brasileira.
+0114	Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval brasileira
+0115	Síntese das transformações geopolíticas e ambientais em curso, examinadas nos Tomos I e II, que afetam os mercados internacionais e a indústria naval. Mudanças nos setores de energia, navegação e defesa. Reorganização das cadeias produtivas, segurança econômica, transição energética e novas exigências ambientais.
+0116	Impactos sobre a distribuição geográfica da produção, o acesso a mercados e tecnologias, a demanda por embarcações e a formação de parcerias internacionais.
+0117	Riscos, desafios e oportunidades para a reestruturação da indústria naval brasileira. Implicações para as políticas industriais e marítimas nacionais.
+0118	Ambiente econômico e institucional da indústria marítima brasileira
+0119	Síntese das condições econômicas que afetam a indústria marítima brasileira. Volume e estabilidade da demanda, condições macroeconômicas, custo de capital, restrições fiscais, taxa de câmbio e ambiente de investimento.
+0120	Organização institucional dos órgãos do Estado com atribuições sobre a indústria marítima. Formulação das políticas, regulamentação e regulação dos setores, fiscalização das atividades e gestão dos mecanismos de fomento e financiamento.
+0121	Avaliação da racionalidade da estrutura institucional, da coordenação entre os órgãos envolvidos e dos efeitos da ausência de orientação programática estável e consolidada.
+0122	Avaliação da capacitação técnica, autonomia decisória e continuidade institucional dos órgãos e agências envolvidos.
+0123	Riscos políticos, econômicos e regulatórios para a reestruturação da indústria naval.
+0124	Aspectos determinantes para a reorientação das políticas industriais e a implantação de novos modelos para a indústria naval, considerando suas interfaces com a marinha mercante, o óleo e gás, a defesa e a energia. Desafios e oportunidades.
+0125	Tomo IV
+0126	Diagnóstico Integrado e Cenários
+0127	Diagnóstico integrado da competividaindústria naval brasileira
+0128	Consolidação dos resultados dos Tomos I, II e III. Articulação entre mercados e demanda, capacidade produtiva, tecnologia, produtividade, competitividade, cadeia de suprimentos, políticas públicas e ambiente institucional.
+0129	Análise das relações entre volume e estabilidade da demanda, capacidade dos estaleiros, produtividade, custos, prazos, qualidade e condições de financiamento. Compatibilidade entre a demanda potencial e a capacidade de atendimento da indústria brasileira nos diferentes segmentos.
+0130	Identificação das principais potencialidades, limitações, dependências e gargalos da indústria naval brasileira. Inter-relações e possíveis sinergias entre construção naval, reparo, descomissionamento, navegação interior, óleo e gás, energias oceânicas e defesa.
+0131	Análise de como a descarbonização, a transição energética e as mudanças tecnológicas e geopolíticas alteram a composição da demanda, os requisitos tecnológicos e as oportunidades de inserção da indústria naval brasileira.
+0132	Identificação dos fatores críticos, das incertezas e das variáveis que deverão ser consideradas na construção dos cenários para a indústria naval brasileira.
+0133	Cenários para a indústria naval brasileira
+0134	Consolidação das projeções de demanda para transporte marítimo e navegação interior, óleo e gás offshore, energias oceânicas, defesa, reparo e descomissionamento, apresentadas nos tomos anteriores.
+0135	Definição de cenários alternativos e das respectivas hipóteses, horizontes temporais e principais incertezas. Projeção do volume e da composição da demanda por segmento.
+0136	Simulação das condições necessárias para que a demanda por embarcações e serviços seja atendida pela indústria naval brasileira. Diferenciais de custos e prazos de entrega, qualidade e confiabilidade, condições de financiamento, tributação, regras de utilização das contas vinculadas, regras de tripulação da bandeira brasileira, regras de preferência de bandeira e afretamento, conteúdo local e demais instrumentos regulatórios e de incentivo. Efeitos sobre a competitividade da bandeira brasileira em relação às bandeiras estrangeiras e sobre a competitividade dos navios construídos no Brasil em relação aos importados.
+0137	Avaliação das possibilidades de inserção competitiva dos estaleiros brasileiros nos diferentes segmentos de mercado e classes de estaleiros. Metas e desafios de produtividade e desempenho.
+0138	Avaliação das exigências tecnológicas e de recursos humanos em cada cenário. Capacidades e deficiências em engenharia, projeto, produção, gestão, pesquisa e desenvolvimento e formação profissional. Necessidades de qualificação, desenvolvimento e transferência de tecnologia.
+0139	Necessidades de investimento em modernização, ampliação ou implantação de instalações. Efeitos sobre a capacidade produtiva, a cadeia de suprimentos e o potencial de produção nacional em cada cenário.
+0140	Conclusões do Relatório 1
+0141	Síntese das principais conclusões derivadas do diagnóstico integrado e dos cenários. Potencialidades, limitações, gargalos e condições necessárias para o desenvolvimento competitivo da indústria naval brasileira.
+0142	Explicitação do que pode ser afirmado com base nas evidências disponíveis e do que permanece condicionado por incertezas, hipóteses ou lacunas de informação.
+0143	Indicação das questões que deverão orientar a identificação dos segmentos estratégicos, a formulação das políticas e a elaboração do Plano de Ação.
+0144	O enfrentamento dessas questões será objeto do Relatório 2.

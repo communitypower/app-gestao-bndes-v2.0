@@ -1,0 +1,729 @@
+{
+  "sourceDocument": "Cronograma-R1-e-R2-26_agosto.xlsm, encaminhado ao BNDES em 26/08/2026",
+  "sourceScheduleItems": 253,
+  "canonicalPortalStages": 251,
+  "matchedStages": 251,
+  "dateMismatches": [
+    {
+      "id": 180019,
+      "detailCode": "I.2.1",
+      "title": "Conceito e delimitação da economia marítima",
+      "expected": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startMonth": 1,
+        "endMonth": 3,
+        "title": "Conceito e delimitação da economia marítima"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-21",
+        "startAt": 1787324400000,
+        "dueAt": 1795273200000
+      }
+    },
+    {
+      "id": 180021,
+      "detailCode": "I.2.3",
+      "title": "Relevância estratégica e econômica da economia marítima",
+      "expected": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startMonth": 1,
+        "endMonth": 3,
+        "title": "Relevância estratégica e econômica da economia marítima"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-21",
+        "startAt": 1787324400000,
+        "dueAt": 1795273200000
+      }
+    },
+    {
+      "id": 180028,
+      "detailCode": "I.3.1",
+      "title": "Evolução do comércio e do transporte marítimo mundial",
+      "expected": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startMonth": 1,
+        "endMonth": 3,
+        "title": "Evolução do comércio e do transporte marítimo mundial"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-21",
+        "startAt": 1787324400000,
+        "dueAt": 1795273200000
+      }
+    },
+    {
+      "id": 180105,
+      "detailCode": "II.1.1",
+      "title": "Análise da trajetória e da estrutura atual da construção naval mundial",
+      "expected": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startMonth": 1,
+        "endMonth": 3,
+        "title": "Análise da trajetória e da estrutura atual da construção naval mundial"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-21",
+        "startAt": 1787324400000,
+        "dueAt": 1795273200000
+      }
+    },
+    {
+      "id": 240004,
+      "detailCode": "I.5.12",
+      "title": "Cenários de demanda para construção de embarcações fluviais",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Cenários de demanda para construção de embarcações fluviais"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240005,
+      "detailCode": "I.7.5",
+      "title": "Programas de offset, clusters navais e estratégias de inovação",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Programas de offset, clusters navais e estratégias de inovação"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startAt": 1787281200000,
+        "dueAt": 1795229999000
+      }
+    },
+    {
+      "id": 240006,
+      "detailCode": "I.7.6",
+      "title": "Participação da indústria local e processos de transferência de tecnologia",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Participação da indústria local e processos de transferência de tecnologia"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startAt": 1787281200000,
+        "dueAt": 1795229999000
+      }
+    },
+    {
+      "id": 240007,
+      "detailCode": "I.7.7",
+      "title": "Gargalos econômicos, produtivos e tecnológicos",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 3,
+        "endMonth": 4,
+        "title": "Gargalos econômicos, produtivos e tecnológicos"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startAt": 1787281200000,
+        "dueAt": 1795229999000
+      }
+    },
+    {
+      "id": 240008,
+      "detailCode": "I.7.8",
+      "title": "Oportunidades para inserção nas cadeias globais",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 3,
+        "endMonth": 4,
+        "title": "Oportunidades para inserção nas cadeias globais"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-11-20",
+        "startAt": 1787281200000,
+        "dueAt": 1795229999000
+      }
+    },
+    {
+      "id": 240009,
+      "detailCode": "I.8.8",
+      "title": "Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas embarcações e retrofitting",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas embarcações e retrofitting"
+      },
+      "actual": {
+        "startDate": null,
+        "dueDate": "2026-10-25",
+        "startAt": null,
+        "dueAt": 1792947600000
+      }
+    },
+    {
+      "id": 240010,
+      "detailCode": "I.8.9",
+      "title": "Frota brasileira: estratégias de descarbonização dos armadores",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Frota brasileira: estratégias de descarbonização dos armadores"
+      },
+      "actual": {
+        "startDate": null,
+        "dueDate": "2026-10-25",
+        "startAt": null,
+        "dueAt": 1792947600000
+      }
+    },
+    {
+      "id": 240011,
+      "detailCode": "I.8.10",
+      "title": "Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos renováveis",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos renováveis"
+      },
+      "actual": {
+        "startDate": null,
+        "dueDate": "2026-10-25",
+        "startAt": null,
+        "dueAt": 1792947600000
+      }
+    },
+    {
+      "id": 240012,
+      "detailCode": "I.8.11",
+      "title": "Infraestrutura de abastecimento, bunkering, portos e corredores verdes",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Infraestrutura de abastecimento, bunkering, portos e corredores verdes"
+      },
+      "actual": {
+        "startDate": null,
+        "dueDate": "2026-10-25",
+        "startAt": null,
+        "dueAt": 1792947600000
+      }
+    },
+    {
+      "id": 240013,
+      "detailCode": "II.2.9",
+      "title": "Indonésia",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Vietnã"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240014,
+      "detailCode": "II.2.10",
+      "title": "Outros produtores emergentes",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Indonésia"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240017,
+      "detailCode": "II.5.6",
+      "title": "Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240018,
+      "detailCode": "II.5.7",
+      "title": "Demanda brasileira por reparo, docagem e retrofitting de embarcações",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Demanda brasileira por reparo, docagem e retrofitting de embarcações"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240019,
+      "detailCode": "II.5.8",
+      "title": "Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240020,
+      "detailCode": "II.5.9",
+      "title": "Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e descomissionamento",
+      "expected": {
+        "startDate": "2026-09-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 2,
+        "endMonth": 4,
+        "title": "Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e descomissionamento"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240021,
+      "detailCode": "II.5.10",
+      "title": "Competição internacional e competitividade das atividades no Brasil",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Competição internacional e competitividade das atividades no Brasil"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240022,
+      "detailCode": "II.5.11",
+      "title": "Desafios e oportunidades para reparo, retrofitting, desmantelamento e descomissionamento no Brasil",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Desafios e oportunidades para reparo, retrofitting, desmantelamento e descomissionamento no Brasil"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240023,
+      "detailCode": "II.6.6",
+      "title": "Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore e construção naval militar",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore e construção naval militar"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240024,
+      "detailCode": "II.6.7",
+      "title": "Distribuição regional e capacidade dos fornecedores nacionais",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Distribuição regional e capacidade dos fornecedores nacionais"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240025,
+      "detailCode": "II.6.8",
+      "title": "Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240026,
+      "detailCode": "II.6.9",
+      "title": "Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 3,
+        "endMonth": 5,
+        "title": "Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240027,
+      "detailCode": "II.6.10",
+      "title": "Desafios e oportunidades para a estaleiros brasileiros",
+      "expected": {
+        "startDate": "2026-12-21",
+        "dueDate": "2027-02-20",
+        "startMonth": 5,
+        "endMonth": 6,
+        "title": "Desafios e oportunidades para a estaleiros brasileiros"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240028,
+      "detailCode": "II.7.6",
+      "title": "Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico, de engenharia e gerencial",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico, de engenharia e gerencial"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240029,
+      "detailCode": "II.7.7",
+      "title": "Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1787281200000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240030,
+      "detailCode": "II.9.6",
+      "title": "Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de equipamentos e sistemas",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de equipamentos e sistemas"
+      },
+      "actual": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1792551600000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240031,
+      "detailCode": "II.9.7",
+      "title": "Descarbonização dos processos de construção naval",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Descarbonização dos processos de construção naval"
+      },
+      "actual": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1792551600000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240032,
+      "detailCode": "II.9.8",
+      "title": "Oportunidades de inserção competitiva da indústria naval brasileira nos mercados associados à descarbonização",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-02-20",
+        "startMonth": 4,
+        "endMonth": 6,
+        "title": "Oportunidades de inserção competitiva da indústria naval brasileira nos mercados associados à descarbonização"
+      },
+      "actual": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1792551600000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240033,
+      "detailCode": "II.9.9",
+      "title": "Principais desafios tecnológicos e produtivos",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-02-20",
+        "startMonth": 4,
+        "endMonth": 6,
+        "title": "Principais desafios tecnológicos e produtivos"
+      },
+      "actual": {
+        "startDate": "2026-10-21",
+        "dueDate": "2027-01-20",
+        "startAt": 1792551600000,
+        "dueAt": 1800500399000
+      }
+    },
+    {
+      "id": 240041,
+      "detailCode": "III.2.14",
+      "title": "Outros casos relevantes",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Outros casos relevantes"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240042,
+      "detailCode": "III.3.13",
+      "title": "Vietnã",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 3,
+        "endMonth": 4,
+        "title": "Vietnã"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240043,
+      "detailCode": "III.3.14",
+      "title": "Indonésia",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 3,
+        "endMonth": 4,
+        "title": "Indonésia"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240044,
+      "detailCode": "III.3.15",
+      "title": "Turquia e Europa Oriental",
+      "expected": {
+        "startDate": "2026-10-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 3,
+        "endMonth": 4,
+        "title": "Turquia e Europa Oriental"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240045,
+      "detailCode": "III.3.16",
+      "title": "Outros casos relevantes",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2026-12-20",
+        "startMonth": 4,
+        "endMonth": 4,
+        "title": "Outros casos relevantes"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240047,
+      "detailCode": "III.4.11",
+      "title": "Resultados das políticas brasileiras de marinha mercante e construção naval",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Resultados das políticas brasileiras de marinha mercante e construção naval"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    },
+    {
+      "id": 240048,
+      "detailCode": "III.4.12",
+      "title": "Mudanças recentes e principais questões em debate no Brasil",
+      "expected": {
+        "startDate": "2026-11-21",
+        "dueDate": "2027-01-20",
+        "startMonth": 4,
+        "endMonth": 5,
+        "title": "Mudanças recentes e principais questões em debate no Brasil"
+      },
+      "actual": {
+        "startDate": "2026-08-21",
+        "dueDate": "2026-12-20",
+        "startAt": 1787281200000,
+        "dueAt": 1797821999000
+      }
+    }
+  ],
+  "missingSourceStages": [
+    {
+      "detailCode": "II.2.11",
+      "title": "Outros produtores emergentes",
+      "intentionallyAbsorbed": false
+    },
+    {
+      "detailCode": "II.4.7",
+      "title": "Economias e deseconomias de localização e os polos navais",
+      "intentionallyAbsorbed": false
+    }
+  ],
+  "unexpectedPortalStages": [],
+  "summary": {
+    "dateMismatchCount": 39,
+    "intentionallyAbsorbedCount": 0,
+    "unmatchedSourceCount": 2,
+    "unexpectedPortalStageCount": 0
+  }
+}

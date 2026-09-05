@@ -1,0 +1,13 @@
+001 |  | Mês | Mês |  |  |  |  |  | 
+002 |  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+003 | PLANO DE AÇÃO |  |  |  |  |  |  |  | 
+004 | Identificação de segmentos (subsetores) estratégicos |  |  |  |  |  |  |  | 
+005 | Diretrizes gerais |  |  |  |  |  |  |  | 
+006 | Medidas e instrumentos de Política Industrial  |  |  |  |  |  |  |  | 
+007 | Eixo 1 – Regulação e Governança Setorial |  |  |  |  |  |  |  | 
+008 | Eixo 2 – Financiamento |  |  |  |  |  |  |  | 
+009 | Eixo 3 – Demanda |  |  |  |  |  |  |  | 
+010 | Eixo 4 – Desenvolvimento tecnológico e qualificação de recursos humanos |  |  |  |  |  |  |  | 
+011 | Eixo 5 – Sustentabilidade e Descarbonização |  |  |  |  |  |  |  | 
+012 | Estabelecimento de metas  e mecanismos de monitoramento e avaliação |  |  |  |  |  |  |  | 
+013 | Hierarquização das medidas |  |  |  |  |  |  |  | 

@@ -1,0 +1,290 @@
+# Terminal Full Output
+# Terminal: test-pdf-reconciliation-and-roles
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 736
+# Timestamp: 2026-08-28_17-56-43.028341
+# Original Length: 21275 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[22m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 5076[2mms
+[22m[39m [32m✓[39m [2mserver/[22maccessProvisioning[2m.test.ts[22m[2m (2)
+[22m [31m❯[39m [2mserver/[22mactivityPlanCatalog[2m.test.ts[22m[2m (4)[22m[33m 431[2mms
+[22m[39m   [31m❯[39m sincronização da matriz de atividades[2m (4)[22m[33m 430[2mms
+[22m[39m     [32m✓[39m representa os três estágios do Tomo IV definidos pela Estrutura V1
+     [32m✓[39m mantém as atividades complementares previstas vinculadas aos itens de origem
+     [31m×[39m preserva a nota operacional personalizada ao atualizar os metadados do planejamento[33m 349[2mms
+[22m[39m     [31m×[39m preserva a nota operacional personalizada ao sincronizar atividade complementar
+ [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (9)
+[22m [31m❯[39m [2mserver/[22mdelegatedActivityAccess[2m.test.ts[22m[2m (2)
+[22m   [31m❯[39m acesso de integrante com responsabilidade delegada[2m (2)
+[22m     [32m✓[39m permite ao integrante delegado consultar somente a atividade atribuída
+     [31m×[39m bloqueia integrante sem delegação e bloqueia alteração pelo integrante delegado
+ [31m❯[39m [2mserver/[22mfieldworkAccess[2m.test.ts[22m[2m (3)
+[22m   [31m❯[39m atividades de campo e divulgação[2m (3)
+[22m     [32m✓[39m permite ao administrador e ao coordenador do grupo registrar atividade de campo
+     [31m×[39m bloqueia participante e coordenador de outro grupo
+     [31m×[39m rejeita responsável de grupo diferente do grupo selecionado
+ [32m✓[39m [2mserver/[22mgovernance[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mproductionBundle[2m.test.ts[22m[2m (1)
+[22m [31m❯[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (11)
+[22m   [32m✓[39m alocação de revisores por atividade[2m (2)
+[22m   [32m✓[39m escopo de visualização e ciclo de revisão[2m (4)
+[22m   [31m❯[39m gestão e resolução de interfaces entre grupos[2m (5)
+[22m     [32m✓[39m mostra a interface aos grupos envolvidos e oculta do grupo externo
+     [32m✓[39m permite ao coordenador responsável criar a interface com duas seções e dois grupos
+     [32m✓[39m aceita item do plano pertencente às seções e grupos da interface
+     [31m×[39m permite discussão aos coordenadores envolvidos e bloqueia participantes
+     [32m✓[39m reserva a resolução ao coordenador responsável ou administrador
+ [32m✓[39m [2mserver/[22mstudySectionDescriptions[2m.test.ts[22m[2m (2)[22m[33m 417[2mms
+[22m[39m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mactivityPlan[2m.test.ts[22m[2m (3)
+[22m [31m❯[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (8)
+[22m   [31m❯[39m vocabulário obrigatório do estudo[2m (8)
+[22m     [32m✓[39m mantém exatamente as 30 frentes oficiais dos quatro tomos
+     [31m×[39m usa o título completo de cada seção como título da atividade inicial
+     [31m×[39m mantém uma descrição oficial substantiva para cada uma das 30 frentes
+     [32m✓[39m mantém exatamente os quatro status solicitados
+     [32m✓[39m mantém exatamente os dois perfis solicitados
+     [31m×[39m estrutura os participantes em grupos com um coordenador canônico
+     [31m×[39m mapeia cada uma das 30 frentes ao grupo e coordenador esperados
+     [32m✓[39m não admite eventos de WhatsApp além dos três definidos
+ [31m❯[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (5)
+[22m   [31m❯[39m estrutura de grupos e alocação de horas[2m (5)
+[22m     [32m✓[39m reconhece somente coordenador ativo e vinculado a grupo como responsável
+     [32m✓[39m aceita alocação para integrante ativo de qualquer grupo, sem alterar a coordenação formal
+     [31m×[39m rejeita duplicidade, horas não positivas e responsável que não seja coordenador
+     [32m✓[39m soma as horas individuais com duas casas decimais
+     [32m✓[39m exige escopo válido e exatamente um líder de execução
+ [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/lib/[22mtrpcRequest[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcalendarTimeline[2m.test.tsx[22m[2m (1)[22m[33m 1195[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 950[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mexecutiveDesignSystem[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mclient/src/pages/[22mfieldworkPage[2m.test.tsx[22m[2m (1)[22m[33m 398[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mformalPageTitles[2m.test.ts[22m[2m (11)
+[22m [32m✓[39m [2mclient/src/pages/[22mhomeDescriptions[2m.test.tsx[22m[2m (2)[22m[33m 1159[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (3)[22m[33m 1776[2mms
+[22m[39m[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 11 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m server/activityPlanCatalog.test.ts[2m > [22msincronização da matriz de atividades[2m > [22mpreserva a nota operacional personalizada ao atualizar os metadados do planejamento
+[31m[1mAssertionError[22m: expected undefined to be defined
+[39m[36m [2m❯[22m server/activityPlanCatalog.test.ts:[2m47:25
+[22m[39m    [90m 45| [39m      [33m.[39m[34mwhere[39m([34meq[39m(activities[33m.[39mplanCode[33m,[39m [32m"A00"[39m))
+    [90m 46| [39m      [33m.[39m[34mlimit[39m([34m1[39m)[33m;
+[39m    [90m 47| [39m    [34mexpect[39m(original[[34m0[39m])[33m.[39m[34mtoBeDefined[39m()[33m;
+[39m    [90m   | [39m                        [31m^
+[39m    [90m 48| [39m    [35mconst[39m activity [33m=[39m original[[34m0[39m][33m![39m[33m;
+[39m    [90m 49| [39m    [35mconst[39m personalizedNote [33m=
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/activityPlanCatalog.test.ts[2m > [22msincronização da matriz de atividades[2m > [22mpreserva a nota operacional personalizada ao sincronizar atividade complementar
+[31m[1mError[22m: Não foi possível sincronizar a atividade prevista P01.
+[39m[36m [2m❯[22m Module.syncOperationalActivityCatalog server/db.ts:[2m377:13
+[22m[39m    [90m375| [39m    [35mconst[39m parent [33m=[39m existingByPlanCode[33m.[39m[35mget[39m(item[33m.[39mparentPlanCode)[33m;
+[39m    [90m376| [39m    [35mif[39m ([33m![39msection [33m||[39m [33m![39mparent) {
+    [90m377| [39m      [35mthrow[39m [35mnew[39m [33mError[39m([32m`Não foi possível sincronizar a atividade previs[39m…
+    [90m   | [39m            [31m^
+[39m    [90m378| [39m    }
+    [90m379| [39m    [35mconst[39m existing [33m=[39m existingByPlanCode[33m.[39m[35mget[39m(item[33m.[39mcode)[33m;
+[39m[90m [2m❯[22m server/activityPlanCatalog.test.ts:[2m111:9
+[22m[39m[90m [2m❯[22m MySql2Session.transaction node_modules/.pnpm/drizzle-orm@0.44.6_mysql2@3.15.1/node_modules/src/mysql2/session.ts:[2m311:19
+[22m[39m[90m [2m❯[22m server/activityPlanCatalog.test.ts:[2m106:7
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/delegatedActivityAccess.test.ts[2m > [22macesso de integrante com responsabilidade delegada[2m > [22mbloqueia integrante sem delegação e bloqueia alteração pelo integrante delegado
+[31m[1mAssertionError[22m: promise resolved "[ { id: 41, responsibleId: 11, …(2) } ]" instead of rejecting
+[39m- Expected: 
+[Error: rejected promise]
++ Received: 
+Array [
+  Object {
+    "allocations": Array [
+      Object {
+        "allocatedHours": 20,
+        "isExecutionLead": true,
+        "responsibility": "Consolidar a base documental da frente.",
+        "teamMemberId": 13,
+      },
+    ],
+    "id": 41,
+    "responsibleGroupId": 7,
+    "responsibleId": 11,
+  },
+]
+[36m [2m❯[22m server/delegatedActivityAccess.test.ts:[2m103:52
+[22m[39m    [90m101| [39m  [34mit[39m([32m"bloqueia integrante sem delegação e bloqueia alteração pelo inte[39m…
+    [90m102| [39m    [35mconst[39m unassignedCaller [33m=[39m appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m104[39m))[33m;
+[39m    [90m103| [39m    [35mawait[39m [34mexpect[39m(unassignedCaller[33m.[39mactivities[33m.[39m[34mlist[39m())[33m.[39mrejects[33m.[39m[34mtoMatchOb[39m…
+    [90m   | [39m                                                   [31m^
+[39m    [90m104| [39m      code[33m:[39m [32m"FORBIDDEN"[39m[33m,
+[39m    [90m105| [39m    })[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/fieldworkAccess.test.ts[2m > [22matividades de campo e divulgação[2m > [22mbloqueia participante e coordenador de outro grupo
+[31m[1mAssertionError[22m: promise resolved "[]" instead of rejecting
+[39m- Expected: 
+[Error: rejected promise]
++ Received: 
+Array []
+[36m [2m❯[22m server/fieldworkAccess.test.ts:[2m89:78
+[22m[39m    [90m 87| 
+[39m    [90m 88| [39m  [34mit[39m([32m"bloqueia participante e coordenador de outro grupo"[39m[33m,[39m [35masync[39m () [33m=>[39m…
+    [90m 89| [39m    [35mawait[39m [34mexpect[39m(appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m102[39m))[33m.[39mfieldwork[33m.[39m[34mcreate[39m…
+    [90m   | [39m                                                                             [31m^
+[39m    [90m 90| [39m    [35mawait[39m [34mexpect[39m(appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m103[39m))[33m.[39mfieldwork[33m.[39m[34mcreate[39m…
+    [90m 91| [39m  })[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/fieldworkAccess.test.ts[2m > [22matividades de campo e divulgação[2m > [22mrejeita responsável de grupo diferente do grupo selecionado
+[31m[1mAssertionError[22m: promise resolved "[]" instead of rejecting
+[39m- Expected: 
+[Error: rejected promise]
++ Received: 
+Array []
+[36m [2m❯[22m server/fieldworkAccess.test.ts:[2m96:5
+[22m[39m    [90m 94| [39m    [35mawait[39m [34mexpect[39m(
+    [90m 95| [39m      appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m1[39m[33m,[39m [32m"admin"[39m))[33m.[39mfieldwork[33m.[39m[34mcreate[39m({ [33m.[39m…
+    [90m 96| [39m    )[33m.[39mrejects[33m.[39m[34mtoMatchObject[39m({ code[33m:[39m [32m"BAD_REQUEST"[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m 97| [39m  })[33m;
+[39m    [90m 98| [39m})[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/reviewInterfaces.test.ts[2m > [22mgestão e resolução de interfaces entre grupos[2m > [22mpermite discussão aos coordenadores envolvidos e bloqueia participantes
+[31m[1mAssertionError[22m: promise resolved "{ id: 501, …(16) }" instead of rejecting
+[39m- Expected
++ Received
+- [Error: rejected promise]
++ Object {
++   "comments": Array [],
++   "createdAt": 2026-08-28T17:56:35.199Z,
++   "description": "Compatibilizar limites e bases entre as duas seções.",
++   "dueAt": null,
++   "events": Array [],
++   "groups": Array [
++     Object {
++       "groupId": 7,
++       "id": 701,
++       "institution": "UFRJ",
++       "interfaceId": 501,
++       "name": "Grupo Alfa",
++       "role": "responsável",
++     },
++     Object {
++       "groupId": 8,
++       "id": 702,
++       "institution": "UFF",
++       "interfaceId": 501,
++       "name": "Grupo Beta",
++       "role": "envolvido",
++     },
++   ],
++   "id": 501,
++   "interfaceType": "escopo sobreposto",
++   "priority": "alta",
++   "resolution": null,
++   "responsibleGroupName": "Grupo Alfa",
++   "responsibleId": 11,
++   "responsibleName": "Coordenação Alfa",
++   "sections": Array [
++     Object {
++       "code": "5.1",
++       "id": 601,
++       "interfaceId": 501,
++       "role": "origem",
++       "sectionId": 1,
++       "title": "Capacidade instalada",
++     },
++     Object {
++       "code": "5.2",
++       "id": 602,
++       "interfaceId": 501,
++       "role": "relacionada",
++       "sectionId": 2,
++       "title": "Produtividade",
++     },
++   ],
++   "status": "em discussão",
++   "title": "Premissas comuns de capacidade instalada",
++   "updatedAt": 2026-08-28T17:56:35.199Z,
++ }
+[36m [2m❯[22m server/reviewInterfaces.test.ts:[2m404:5
+[22m[39m    [90m402| [39m        content[33m:[39m [32m"Comentário sem atribuição de coordenação."[39m[33m,
+[39m    [90m403| [39m      })
+    [90m404| [39m    )[33m.[39mrejects[33m.[39m[34mtoMatchObject[39m({ code[33m:[39m [32m"FORBIDDEN"[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m405| [39m  })[33m;
+[39m    [90m406| 
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/domain.test.ts[2m > [22mvocabulário obrigatório do estudo[2m > [22musa o título completo de cada seção como título da atividade inicial
+[31m[1mAssertionError[22m: expected 'Apresentação' to be 'Apresentação do Relatório 1' // Object.is equality
+[39mExpected: "Apresentação do Relatório 1"
+Received: "Apresentação"
+[36m [2m❯[22m shared/domain.test.ts:[2m55:23
+[22m[39m    [90m 53| 
+[39m    [90m 54| [39m    [34mexpect[39m(titles)[33m.[39m[34mtoHaveLength[39m([34m30[39m)[33m;
+[39m    [90m 55| [39m    [34mexpect[39m(titles[[34m0[39m])[33m.[39m[34mtoBe[39m([32m"Apresentação do Relatório 1"[39m)[33m;
+[39m    [90m   | [39m                      [31m^
+[39m    [90m 56| [39m    [34mexpect[39m(titles[33m.[39m[34mat[39m([33m-[39m[34m1[39m))[33m.[39m[34mtoBe[39m([32m"Conclusões do Relatório 1"[39m)[33m;
+[39m    [90m 57| [39m    [34mexpect[39m(titles)[33m.[39m[34mtoEqual[39m([33mSTUDY_SECTIONS[39m[33m.[39m[34mmap[39m(section [33m=>[39m section[33m.[39mtitle…
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/domain.test.ts[2m > [22mvocabulário obrigatório do estudo[2m > [22mmantém uma descrição oficial substantiva para cada uma das 30 frentes
+[31m[1mTypeError[22m: Cannot convert undefined or null to object
+[39m[36m [2m❯[22m shared/domain.test.ts:[2m64:19
+[22m[39m    [90m 62| 
+[39m    [90m 63| [39m  [34mit[39m([32m"mantém uma descrição oficial substantiva para cada uma das 30 fr[39m…
+    [90m 64| [39m    [34mexpect[39m([33mObject[39m[33m.[39m[34mkeys[39m([33mSTUDY_SECTION_DESCRIPTIONS[39m))[33m.[39m[34mtoHaveLength[39m([34m30[39m)[33m;
+[39m    [90m   | [39m                  [31m^
+[39m    [90m 65| [39m    [34mexpect[39m([33mObject[39m[33m.[39m[34mkeys[39m([33mSTUDY_SECTION_DESCRIPTIONS[39m))[33m.[39m[34mtoEqual[39m(
+    [90m 66| [39m      expect[33m.[39m[34marrayContaining[39m([33mSTUDY_SECTION_CODES[39m)
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/domain.test.ts[2m > [22mvocabulário obrigatório do estudo[2m > [22mestrutura os participantes em grupos com um coordenador canônico
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality
+[39m- Expected
++ Received
+- true
++ false
+[36m [2m❯[22m shared/domain.test.ts:[2m122:7
+[22m[39m    [90m120| [39m        [33mSTUDY_SECTIONS[39m[33m.[39m[34msome[39m(section [33m=>[39m section[33m.[39mgroupName [33m===[39m group[33m.[39mnam…
+    [90m121| [39m      )
+    [90m122| [39m    )[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;
+[39m    [90m   | [39m      [31m^
+[39m    [90m123| [39m  })[33m;
+[39m    [90m124| 
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/domain.test.ts[2m > [22mvocabulário obrigatório do estudo[2m > [22mmapeia cada uma das 30 frentes ao grupo e coordenador esperados
+[31m[1mAssertionError[22m: expected undefined to be 'Núcleo' // Object.is equality
+[39m- Expected: 
+"Núcleo"
++ Received: 
+undefined
+[36m [2m❯[22m shared/domain.test.ts:[2m173:33
+[22m[39m    [90m171| [39m    [35mfor[39m ([35mconst[39m section [35mof[39m [33mSTUDY_SECTIONS[39m) {
+    [90m172| [39m      [35mconst[39m expectedGroup [33m=[39m expectedGroupsByCode[section[33m.[39mcode][33m;
+[39m    [90m173| [39m      [34mexpect[39m(section[33m.[39mgroupName)[33m.[39m[34mtoBe[39m(expectedGroup)[33m;
+[39m    [90m   | [39m                                [31m^
+[39m    [90m174| [39m      [34mexpect[39m(
+    [90m175| [39m        [33mTEAM_GROUP_SEED[39m[33m.[39m[34mfind[39m(group [33m=>[39m group[33m.[39mname [33m===[39m expectedGroup)
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/teamStructure.test.ts[2m > [22mestrutura de grupos e alocação de horas[2m > [22mrejeita duplicidade, horas não positivas e responsável que não seja coordenador
+[31m[1mAssertionError[22m: expected [] to deeply equal [ Array(1) ]
+[39m- Expected
++ Received
+- Array [
+-   "O responsável deve ser um coordenador ativo vinculado a um grupo.",
+- ]
++ Array []
+[36m [2m❯[22m shared/teamStructure.test.ts:[2m79:7
+[22m[39m    [90m 77| [39m    [34mexpect[39m(
+    [90m 78| [39m      [34mvalidateActivityTeamSelection[39m(participant[33m,[39m [coordinator[33m,[39m partici…
+    [90m 79| [39m    )[33m.[39m[34mtoEqual[39m([
+    [90m   | [39m      [31m^
+[39m    [90m 80| [39m      [32m"O responsável deve ser um coordenador ativo vinculado a um grup[39m…
+    [90m 81| [39m    ])[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+[22m[39m[2m Test Files [22m [1m[31m6 failed[39m[22m[2m | [22m[1m[32m22 passed[39m[22m[90m (28)
+[39m[2m      Tests [22m [1m[31m11 failed[39m[22m[2m | [22m[1m[32m95 passed[39m[22m[90m (106)
+[39m[2m   Start at [22m 17:56:31
+[2m   Duration [22m 10.99s[2m (transform 2.32s, setup 0ms, collect 13.72s, tests 11.75s, environment 6.47s, prepare 2.80s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

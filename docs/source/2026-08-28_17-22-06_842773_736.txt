@@ -1,0 +1,114 @@
+# Terminal Full Output
+# Terminal: governance-tests
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 736
+# Timestamp: 2026-08-28_17-22-06.842773
+# Original Length: 13126 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[22m[39m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 2398[2mms
+[22m[39m [32m✓[39m [2mserver/[22maccessProvisioning[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mactivityPlanCatalog[2m.test.ts[22m[2m (4)[22m[33m 2080[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (9)
+[22m [32m✓[39m [2mserver/[22mdelegatedActivityAccess[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mfieldworkAccess[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mgovernance[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mproductionBundle[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (11)
+[22m [32m✓[39m [2mserver/[22mstudySectionDescriptions[2m.test.ts[22m[2m (2)[22m[33m 1319[2mms
+[22m[39m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mactivityPlan[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (8)
+[22m [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (5)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/lib/[22mtrpcRequest[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcalendarTimeline[2m.test.tsx[22m[2m (1)[22m[33m 1098[2mms
+[22m[39m [31m❯[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 666[2mms
+[22m[39m   [32m✓[39m interface da biblioteca[2m (2)[22m[33m 633[2mms
+[22m[39m   [31m❯[39m interface da administração do WhatsApp[2m (2)
+[22m     [31m×[39m renderiza o estado da integração, salva o modelo e processa alertas
+     [32m✓[39m mostra o bloqueio e os destinos permitidos ao colaborador
+ [32m✓[39m [2mclient/src/pages/[22mexecutiveDesignSystem[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mclient/src/pages/[22mfieldworkPage[2m.test.tsx[22m[2m (1)[22m[33m 400[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mformalPageTitles[2m.test.ts[22m[2m (11)
+[22m [31m❯[39m [2mclient/src/pages/[22mhomeDescriptions[2m.test.tsx[22m[2m (2)
+[22m   [31m❯[39m descrições oficiais no painel[2m (2)
+[22m     [31m×[39m exibe a descrição no panorama da frente e na próxima entrega
+     [31m×[39m abre a lista do mês e oferece acesso à ficha completa da atividade
+ [31m❯[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (3)[22m[33m 356[2mms
+[22m[39m   [32m✓[39m estrutura hierárquica da equipe[2m (1)
+[22m   [31m❯[39m ficha visível da atividade[2m (2)
+[22m     [31m×[39m abre a ficha completa por uma ação distinta da edição
+     [31m×[39m mantém títulos acessíveis enquanto os diálogos assíncronos carregam
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 5 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/collaborationPages.test.tsx[2m > [22minterface da administração do WhatsApp[2m > [22mrenderiza o estado da integração, salva o modelo e processa alertas
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'overview')
+[39m[36m [2m❯[22m AdministrationContent client/src/pages/Administration.tsx:[2m17:106
+[22m[39m    [90m 15| [39m[35mfunction[39m [33mAdministrationContent[39m() {
+    [90m 16| [39m  [35mconst[39m { data[33m,[39m isLoading[33m,[39m refetch } [33m=[39m trpc[33m.[39madministration[33m.[39mstatus[33m.[39m[34museQ[39m…
+    [90m 17| [39m  [35mconst[39m { data[33m:[39m governance[33m,[39m isLoading[33m:[39m governanceLoading[33m,[39m refetch[33m:[39m ref…
+    [90m   | [39m                                                                                                         [31m^
+[39m    [90m 18| [39m  [35mconst[39m updateWhatsApp [33m=[39m trpc[33m.[39madministration[33m.[39mupdateWhatsApp[33m.[39m[34museMutatio[39m…
+    [90m 19| [39m  [35mconst[39m configureSchedule [33m=[39m trpc[33m.[39madministration[33m.[39mconfigureSchedule[33m.[39m[34museM[39m…
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[90m [2m❯[22m renderRootSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17450:11
+[22m[39m[90m [2m❯[22m performWorkOnRoot node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m16583:35
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/homeDescriptions.test.tsx[2m > [22mdescrições oficiais no painel[2m > [22mexibe a descrição no panorama da frente e na próxima entrega
+[31m[1m[7m FAIL [27m[22m[39m client/src/pages/homeDescriptions.test.tsx[2m > [22mdescrições oficiais no painel[2m > [22mabre a lista do mês e oferece acesso à ficha completa da atividade
+[31m[1mTypeError[22m: trpc.useUtils is not a function
+[39m[36m [2m❯[22m DashboardContent client/src/pages/Home.tsx:[2m14:22
+[22m[39m    [90m 12| 
+[39m    [90m 13| [39m[35mfunction[39m [33mDashboardContent[39m() {
+    [90m 14| [39m  [35mconst[39m utils [33m=[39m trpc[33m.[39m[34museUtils[39m()[33m;
+[39m    [90m   | [39m                     [31m^
+[39m    [90m 15| [39m  [35mconst[39m { data[33m,[39m isLoading } [33m=[39m trpc[33m.[39mdashboard[33m.[39moverview[33m.[39m[34museQuery[39m()[33m;
+[39m    [90m 16| [39m  [35mconst[39m { data[33m:[39m governance[33m,[39m isLoading[33m:[39m governanceLoading } [33m=[39m trpc[33m.[39mgove…
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[90m [2m❯[22m renderRootSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17450:11
+[22m[39m[90m [2m❯[22m performWorkOnRoot node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m16583:35
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mabre a ficha completa por uma ação distinta da edição
+[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mmantém títulos acessíveis enquanto os diálogos assíncronos carregam
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'useMutation')
+[39m[36m [2m❯[22m ActivityDetailDialog client/src/pages/Activities.tsx:[2m130:79
+[22m[39m    [90m128| [39m  [35mconst[39m addEvidenceLink [33m=[39m trpc[33m.[39mactivities[33m.[39maddEvidenceLink[33m.[39m[34museMutation[39m(…
+    [90m129| [39m  [35mconst[39m linkFieldwork [33m=[39m trpc[33m.[39mfieldwork[33m.[39mlinkToActivity[33m.[39m[34museMutation[39m()[33m;
+[39m    [90m130| [39m  [35mconst[39m initializeReviewChecklist [33m=[39m trpc[33m.[39mactivities[33m.[39minitializeReviewCh…
+    [90m   | [39m                                                                              [31m^
+[39m    [90m131| [39m  [35mconst[39m updateReviewChecklistItem [33m=[39m trpc[33m.[39mactivities[33m.[39mupdateReviewCheckl…
+    [90m132| [39m  [35mconst[39m [linkLabel[33m,[39m setLinkLabel] [33m=[39m [34museState[39m([32m""[39m)[33m;
+[39m[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[90m [2m❯[22m renderRootSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17450:11
+[22m[39m[90m [2m❯[22m performWorkOnRoot node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m16583:35
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+[22m[39m[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m25 passed[39m[22m[90m (28)
+[39m[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m101 passed[39m[22m[90m (106)
+[39m[2m   Start at [22m 17:21:58
+[2m   Duration [22m 7.61s[2m (transform 1.97s, setup 0ms, collect 12.85s, tests 8.62s, environment 5.81s, prepare 2.68s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

@@ -1,0 +1,144 @@
+{
+  "project_info": {
+    "title": "Portal Naval",
+    "created": 1787164615.948,
+    "last_updated": 1787164880.898,
+    "total_slides": 13
+  },
+  "slides": [
+    {
+      "id": "capa",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "objetivo",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "panorama",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "perfis",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "atividades",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "cronograma",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "alertas",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "interfaces",
+      "state": "edited",
+      "pageNum": 8
+    },
+    {
+      "id": "campo",
+      "state": "edited",
+      "pageNum": 9
+    },
+    {
+      "id": "biblioteca",
+      "state": "edited",
+      "pageNum": 10
+    },
+    {
+      "id": "teste",
+      "state": "edited",
+      "pageNum": 11
+    },
+    {
+      "id": "limites",
+      "state": "edited",
+      "pageNum": 12
+    },
+    {
+      "id": "encerramento",
+      "state": "edited",
+      "pageNum": 13
+    }
+  ],
+  "outline": [
+    {
+      "id": "capa",
+      "title": "Portal Naval",
+      "summary": "Capa institucional para a rodada inicial de testes do Relatório 1."
+    },
+    {
+      "id": "objetivo",
+      "title": "Objetivo da rodada",
+      "summary": "Apresenta o propósito da rodada controlada de testes e os resultados esperados."
+    },
+    {
+      "id": "panorama",
+      "title": "O portal em números",
+      "summary": "Apresenta as 29 frentes, 36 itens, 9 grupos, interfaces, campo e Biblioteca."
+    },
+    {
+      "id": "perfis",
+      "title": "Perfis e acesso",
+      "summary": "Explica as permissões de administrador, coordenador, delegado e colaborador."
+    },
+    {
+      "id": "atividades",
+      "title": "Da atividade à entrega",
+      "summary": "Mostra o fluxo de atividade, responsabilidades delegadas e revisão."
+    },
+    {
+      "id": "cronograma",
+      "title": "Cronograma mestre",
+      "summary": "Apresenta a escala M1–M6 e a distribuição mensal de entregáveis.",
+      "image_plan": "/home/ubuntu/upload/pasted_file_L5CMsg_image.png - Slide 5 displays the cronograma mestre (schedule table/ui matching image 2)"
+    },
+    {
+      "id": "alertas",
+      "title": "Alertas e decisões",
+      "summary": "Explica os alertas de atraso, prazo próximo, sobreposição e a exportação."
+    },
+    {
+      "id": "interfaces",
+      "title": "Interfaces críticas",
+      "summary": "Apresenta as interfaces entre grupos e seus itens vinculados."
+    },
+    {
+      "id": "campo",
+      "title": "Campo e divulgação",
+      "summary": "Apresenta visitas, coleta de fontes, entrevistas, apresentações e audiências."
+    },
+    {
+      "id": "biblioteca",
+      "title": "Biblioteca e revisão",
+      "summary": "Apresenta o acervo, a busca e o fluxo de produção e revisão."
+    },
+    {
+      "id": "teste",
+      "title": "Roteiro de teste",
+      "summary": "Apresenta a sequência mínima de teste e o registro de ocorrências."
+    },
+    {
+      "id": "limites",
+      "title": "Escopo desta rodada",
+      "summary": "Delimita os recursos em fase posterior, como WhatsApp e conexão OAuth do Drive."
+    },
+    {
+      "id": "encerramento",
+      "title": "Próximos passos",
+      "summary": "Fecha com prioridade de teste e resultado esperado da rodada.",
+      "image_plan": "/home/ubuntu/auditoria-estudo-bndes/maturidade-plataforma.png - Slide 12 closing overview matches the platform maturity chart (image 1) as a summary report"
+    }
+  ]
+}

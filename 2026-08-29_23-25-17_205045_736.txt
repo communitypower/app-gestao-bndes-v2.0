@@ -1,0 +1,435 @@
+# Terminal Full Output
+# Terminal: test-review-team-tomo
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 736
+# Timestamp: 2026-08-29_23-25-17.205045
+# Original Length: 28455 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[22m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (12)[22m[33m 4910[2mms
+[22m[39m [32m✓[39m [2mserver/[22maccessProvisioning[2m.test.ts[22m[2m (2)
+[22m [31m❯[39m [2mserver/[22mactivityPlanCatalog[2m.test.ts[22m[2m (2)[22m[33m 378[2mms
+[22m[39m   [31m❯[39m catálogo exclusivo do índice analítico do PDF[2m (2)[22m[33m 377[2mms
+[22m[39m     [31m×[39m mantém 30 capítulos e 253 itens provenientes do Anexo B
+     [31m×[39m mantém no banco apenas os capítulos e itens canônicos na estrutura ativa[33m 364[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (9)
+[22m [32m✓[39m [2mserver/[22mdelegatedActivityAccess[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mfieldworkAccess[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mgovernance[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mproductionBundle[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mreviewChecklistSchedule[2m.test.ts[22m[2m (3)
+[22m [31m❯[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (11)
+[22m   [31m❯[39m alocação de revisores por atividade[2m (2)
+[22m     [31m×[39m permite ao administrador e ao coordenador responsável atualizar revisores
+     [32m✓[39m bloqueia coordenador alheio e participante do grupo responsável
+   [32m✓[39m escopo de visualização e ciclo de revisão[2m (4)
+[22m   [32m✓[39m gestão e resolução de interfaces entre grupos[2m (5)
+[22m [32m✓[39m [2mserver/[22mstudySectionDescriptions[2m.test.ts[22m[2m (2)[22m[33m 444[2mms
+[22m[39m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mactivityPlan[2m.test.ts[22m[2m (3)
+[22m [31m❯[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (5)
+[22m   [31m❯[39m estrutura canônica do estudo[2m (5)
+[22m     [32m✓[39m deriva as 30 frentes e os cinco agrupamentos editoriais exclusivamente do PDF
+     [31m×[39m mantém 253 itens e descrições derivadas da mesma fonte canônica
+     [32m✓[39m mantém textos descritivos V1 para todos os campos de descrição das atividades-mãe
+     [32m✓[39m não atribui grupos ou pessoas como atributo da estrutura analítica
+     [32m✓[39m mantém os vocabulários operacionais estabelecidos
+ [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (5)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/lib/[22mtrpcRequest[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcalendarTimeline[2m.test.tsx[22m[2m (1)[22m[33m 1183[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 851[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mexecutiveDesignSystem[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mclient/src/pages/[22mfieldworkPage[2m.test.tsx[22m[2m (1)[22m[33m 418[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mformalPageTitles[2m.test.ts[22m[2m (11)
+[22m [32m✓[39m [2mclient/src/pages/[22mhomeDescriptions[2m.test.tsx[22m[2m (2)[22m[33m 1380[2mms
+[22m[39m [31m❯[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (7)[22m[33m 3471[2mms
+[22m[39m   [31m❯[39m estrutura hierárquica da equipe[2m (1)[22m[33m 323[2mms
+[22m[39m     [31m×[39m exibe o coordenador e os participantes abaixo do mesmo grupo[33m 322[2mms
+[22m[39m   [32m✓[39m ficha visível da atividade[2m (6)[22m[33m 3147[2mms
+[22m[39m[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 5 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m server/activityPlanCatalog.test.ts[2m > [22mcatálogo exclusivo do índice analítico do PDF[2m > [22mmantém 30 capítulos e 253 itens provenientes do Anexo B
+[31m[1mAssertionError[22m: expected [ Array(252) ] to have a length of 253 but got 252
+[39m- Expected
++ Received
+- 253
++ 252
+[36m [2m❯[22m server/activityPlanCatalog.test.ts:[2m10:32
+[22m[39m    [90m  8| [39m  [34mit[39m([32m"mantém 30 capítulos e 253 itens provenientes do Anexo B"[39m[33m,[39m () [33m=>[39m {
+    [90m  9| [39m    [34mexpect[39m([33mPDF_ANALYTIC_SECTIONS[39m)[33m.[39m[34mtoHaveLength[39m([34m30[39m)[33m;
+[39m    [90m 10| [39m    [34mexpect[39m([33mPDF_ANALYTIC_ITEMS[39m)[33m.[39m[34mtoHaveLength[39m([34m253[39m)[33m;
+[39m    [90m   | [39m                               [31m^
+[39m    [90m 11| [39m    [34mexpect[39m([33mPDF_ANALYTIC_SOURCE[39m)[33m.[39m[34mtoBe[39m([32m"Plano_de_Trabalho-UFRJ_26_agosto[39m…
+    [90m 12| [39m  })[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/activityPlanCatalog.test.ts[2m > [22mcatálogo exclusivo do índice analítico do PDF[2m > [22mmantém no banco apenas os capítulos e itens canônicos na estrutura ativa
+[31m[1mAssertionError[22m: expected [ { id: 180011 }, …(251) ] to have a length of 253 but got 252
+[39m- Expected
++ Received
+- 253
++ 252
+[36m [2m❯[22m server/activityPlanCatalog.test.ts:[2m19:25
+[22m[39m    [90m 17| [39m    [35mconst[39m activeItems [33m=[39m [35mawait[39m db[33m.[39m[34mselect[39m({ id[33m:[39m activities[33m.[39mid })[33m.[39m[35mfrom[39m(ac…
+    [90m 18| [39m    [34mexpect[39m(activeParents)[33m.[39m[34mtoHaveLength[39m([34m30[39m)[33m;
+[39m    [90m 19| [39m    [34mexpect[39m(activeItems)[33m.[39m[34mtoHaveLength[39m([34m253[39m)[33m;
+[39m    [90m   | [39m                        [31m^
+[39m    [90m 20| [39m  })[33m;
+[39m    [90m 21| [39m})[33m;
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/reviewInterfaces.test.ts[2m > [22malocação de revisores por atividade[2m > [22mpermite ao administrador e ao coordenador responsável atualizar revisores
+[31m[1mAssertionError[22m: promise rejected "TRPCError: Cannot read properties of unde… { code: '…' }" instead of resolving
+[39m[36m [2m❯[22m server/reviewInterfaces.test.ts:[2m237:5
+[22m[39m    [90m235| [39m    [35mawait[39m [34mexpect[39m(
+    [90m236| [39m      admin[33m.[39mactivities[33m.[39m[34mupdateReviewers[39m({ id[33m:[39m [34m21[39m[33m,[39m reviewerIds[33m:[39m [[34m14[39m] })
+    [90m237| [39m    )[33m.[39mresolves[33m.[39m[34mtoMatchObject[39m({ id[33m:[39m [34m21[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m238| [39m    [35mawait[39m [34mexpect[39m(
+    [90m239| [39m      coordinator[33m.[39mactivities[33m.[39m[34mupdateReviewers[39m({ id[33m:[39m [34m21[39m[33m,[39m reviewerIds[33m:[39m [[34m1[39m…
+[31m[1mCaused by: TRPCError[22m: Cannot read properties of undefined (reading 'map')
+[39m[36m [2m❯[22m getEligibleReviewers server/routers/activities.ts:[2m77:9
+[22m[39m[90m [2m❯[22m validateReviewers server/routers/activities.ts:[2m96:20
+[22m[39m[90m [2m❯[22m server/routers/activities.ts:[2m428:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[22m[39m[31m[1mSerialized Error:[22m[39m [90m{ code: 'INTERNAL_SERVER_ERROR' }
+[39m[31m[1mCaused by: TypeError[22m: Cannot read properties of undefined (reading 'map')
+[39m[36m [2m❯[22m getEligibleReviewers server/routers/activities.ts:[2m77:9
+[22m[39m[90m [2m❯[22m validateReviewers server/routers/activities.ts:[2m96:20
+[22m[39m[90m [2m❯[22m server/routers/activities.ts:[2m428:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m shared/domain.test.ts[2m > [22mestrutura canônica do estudo[2m > [22mmantém 253 itens e descrições derivadas da mesma fonte canônica
+[31m[1mAssertionError[22m: expected [ Array(252) ] to have a length of 253 but got 252
+[39m- Expected
++ Received
+- 253
++ 252
+[36m [2m❯[22m shared/domain.test.ts:[2m30:32
+[22m[39m    [90m 28| [39m  [34mit[39m([32m"mantém 253 itens e descrições derivadas da mesma fonte canônica"[39m…
+    [90m 29| [39m    [34mexpect[39m([33mPDF_ANALYTIC_SOURCE[39m)[33m.[39m[34mtoBe[39m([32m"Plano_de_Trabalho-UFRJ_26_agosto[39m…
+    [90m 30| [39m    [34mexpect[39m([33mPDF_ANALYTIC_ITEMS[39m)[33m.[39m[34mtoHaveLength[39m([34m253[39m)[33m;
+[39m    [90m   | [39m                               [31m^
+[39m    [90m 31| [39m    [34mexpect[39m([33mObject[39m[33m.[39m[34mkeys[39m([33mSTUDY_SECTION_DESCRIPTIONS[39m))[33m.[39m[34mtoEqual[39m([33mSTUDY_SECT[39m…
+    [90m 32| [39m    [35mfor[39m ([35mconst[39m section [35mof[39m [33mSTUDY_SECTIONS[39m) {
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mestrutura hierárquica da equipe[2m > [22mexibe o coordenador e os participantes abaixo do mesmo grupo
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Floriano Carlos Martins Pires Jr.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+Ignored nodes: comments, script, style
+[36m<body>
+[39m  [36m<div>
+[39m    [36m<div
+[39m      [33mclass[39m=[32m"space-y-7"
+[39m    [36m>
+[39m      [36m<header
+[39m        [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-6 md:pb-8"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"mb-4 flex items-center justify-between gap-4"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m          [36m>
+[39m            [0mOrganização da equipe
+[0m          [36m</p>
+[39m          [36m<span
+[39m            [33mclass[39m=[32m"font-mono text-xs font-medium text-muted-foreground"
+[39m          [36m>
+[39m            [0m04 — Equipe
+[0m          [36m</span>
+[39m        [36m</div>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"grid items-end gap-5 lg:grid-cols-[minmax(0,1fr)_auto]"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"max-w-4xl"
+[39m          [36m>
+[39m            [36m<h1
+[39m              [33mclass[39m=[32m"font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]"
+[39m            [36m>
+[39m              [0mEstrutura de grupos e responsabilidades
+[0m            [36m</h1>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]"
+[39m            [36m>
+[39m              [0mComposição dos nove grupos definidos para o Relatório 1, com coordenadores, participantes e frentes atribuídas.
+[0m            [36m</p>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"lg:pb-1"
+[39m          [36m>
+[39m            [36m<button
+[39m              [33mclass[39m=[32m"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground hover:bg-pr
+imary/90 h-9 px-4 py-2 has-[>svg]:px-3 rounded-md"
+[39m              [33mdata-slot[39m=[32m"button"
+[39m            [36m>
+[39m              [36m<svg
+[39m                [33mclass[39m=[32m"lucide lucide-plus mr-2 h-4 w-4"
+[39m                [33mfill[39m=[32m"none"
+[39m                [33mheight[39m=[32m"24"
+[39m                [33mstroke[39m=[32m"currentColor"
+[39m                [33mstroke-linecap[39m=[32m"round"
+[39m                [33mstroke-linejoin[39m=[32m"round"
+[39m                [33mstroke-width[39m=[32m"2"
+[39m                [33mviewBox[39m=[32m"0 0 24 24"
+[39m                [33mwidth[39m=[32m"24"
+[39m                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m              [36m>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M5 12h14"
+[39m                [36m/>
+[39m                [36m<path
+[39m                  [33md[39m=[32m"M12 5v14"
+[39m                [36m/>
+[39m              [36m</svg>
+[39m              [0m Incluir integrante
+[0m            [36m</button>
+[39m          [36m</div>
+[39m        [36m</div>
+[39m      [36m</header>
+[39m      [36m<section
+[39m        [33mclass[39m=[32m"grid gap-4 sm:grid-cols-3"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"technical-panel border-t-[3px] px-4 py-4 border-t-foreground/50"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"data-label"
+[39m          [36m>
+[39m            [0mGrupos
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"font-mono mt-3 text-3xl font-semibold tracking-[-.04em]"
+[39m          [36m>
+[39m            [0m1
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"mt-2 text-xs leading-5 text-muted-foreground"
+[39m          [36m>
+[39m            [0mEstruturas temáticas
+[0m          [36m</p>
+[39m        [36m</div>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"technical-panel border-t-[3px] px-4 py-4 border-t-foreground/50"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"data-label"
+[39m          [36m>
+[39m            [0mCoordenadores
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"font-mono mt-3 text-3xl font-semibold tracking-[-.04em]"
+[39m          [36m>
+[39m            [0m1
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"mt-2 text-xs leading-5 text-muted-foreground"
+[39m          [36m>
+[39m            [0mResponsáveis pelas frentes
+[0m          [36m</p>
+[39m        [36m</div>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"technical-panel border-t-[3px] px-4 py-4 border-t-primary"
+[39m        [36m>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"data-label"
+[39m          [36m>
+[39m            [0mIntegrantes ativos
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"font-mono mt-3 text-3xl font-semibold tracking-[-.04em] text-primary"
+[39m          [36m>
+[39m            [0m2
+[0m          [36m</p>
+[39m          [36m<p
+[39m            [33mclass[39m=[32m"mt-2 text-xs leading-5 text-muted-foreground"
+[39m          [36m>
+[39m            [0mCoordenadores e participantes
+[0m          [36m</p>
+[39m        [36m</div>
+[39m      [36m</section>
+[39m      [36m<div
+[39m        [33mclass[39m=[32m"technical-panel max-w-2xl p-4"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"relative"
+[39m        [36m>
+[39m          [36m<svg
+[39m            [33mclass[39m=[32m"lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+[39m            [33mfill[39m=[32m"none"
+[39m            [33mheight[39m=[32m"24"
+[39m            [33mstroke[39m=[32m"currentColor"
+[39m            [33mstroke-linecap[39m=[32m"round"
+[39m            [33mstroke-linejoin[39m=[32m"round"
+[39m            [33mstroke-width[39m=[32m"2"
+[39m            [33mviewBox[39m=[32m"0 0 24 24"
+[39m            [33mwidth[39m=[32m"24"
+[39m            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m          [36m>
+[39m            [36m<circle
+[39m              [33mcx[39m=[32m"11"
+[39m              [33mcy[39m=[32m"11"
+[39m              [33mr[39m=[32m"8"
+[39m            [36m/>
+[39m            [36m<path
+[39m              [33md[39m=[32m"m21 21-4.3-4.3"
+[39m            [36m/>
+[39m          [36m</svg>
+[39m          [36m<input
+[39m            [33mclass[39m=[32m"file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 
+focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-background pl-10"
+[39m            [33mdata-slot[39m=[32m"input"
+[39m            [33mplaceholder[39m=[32m"Buscar grupo, participante ou instituição"
+[39m            [33mvalue[39m=[32m""
+[39m          [36m/>
+[39m        [36m</div>
+[39m      [36m</div>
+[39m      [36m<div
+[39m        [33mclass[39m=[32m"space-y-5"
+[39m      [36m>
+[39m        [36m<div
+[39m          [33mclass[39m=[32m"technical-panel overflow-hidden"
+[39m          [33mdata-slot[39m=[32m"collapsible"
+[39m          [33mdata-state[39m=[32m"closed"
+[39m        [36m>
+[39m          [36m<article>
+[39m            [36m<button
+[39m              [33maria-controls[39m=[32m"radix-_r_0_"
+[39m              [33maria-expanded[39m=[32m"false"
+[39m              [33maria-label[39m=[32m"Expandir informações do grupo Núcleo"
+[39m              [33mclass[39m=[32m"grid w-full gap-3 border-b bg-muted/30 px-5 py-4 text-left md:grid-cols-[44px_1fr_auto] md:items-center"
+[39m              [33mdata-slot[39m=[32m"collapsible-trigger"
+[39m              [33mdata-state[39m=[32m"closed"
+[39m              [33mtype[39m=[32m"button"
+[39m            [36m>
+[39m              [36m<span
+[39m                [33mclass[39m=[32m"font-mono text-xs text-muted-foreground"
+[39m              [36m>
+[39m                [0m01
+[0m              [36m</span>
+[39m              [36m<div>
+[39m                [36m<p
+[39m                  [33mclass[39m=[32m"data-label text-primary"
+[39m                [36m>
+[39m                  [0mGrupo participante
+[0m                [36m</p>
+[39m                [36m<h2
+[39m                  [33mclass[39m=[32m"font-display mt-1 text-2xl font-semibold tracking-[-.025em]"
+[39m                [36m>
+[39m                  [36m<span
+[39m                    [33mtitle[39m=[32m"Núcleo"
+[39m                  [36m>
+[39m                    [0mNúcleo
+[0m                  [36m</span>
+[39m                [36m</h2>
+[39m              [36m</div>
+[39m              [36m<p
+[39m                [33mclass[39m=[32m"flex items-center justify-end gap-2 text-sm text-muted-foreground"
+[39m              [36m>
+[39m                [36m<svg
+[39m                  [33mclass[39m=[32m"lucide lucide-building2 h-4 w-4"
+[39m                  [33mfill[39m=[32m"none"
+[39m                  [33mheight[39m=[32m"24"
+[39m                  [33mstroke[39m=[32m"currentColor"
+[39m                  [33mstroke-linecap[39m=[32m"round"
+[39m                  [33mstroke-linejoin[39m=[32m"round"
+[39m                  [33mstroke-width[39m=[32m"2"
+[39m                  [33mviewBox[39m=[32m"0 0 24 24"
+[39m                  [33mwidth[39m=[32m"24"
+[39m                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m                [36m>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M10 6h4"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M10 10h4"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M10 14h4"
+[39m                  [36m/>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"M10 18h4"
+[39m                  [36m/>
+[39m                [36m</svg>
+[39m                [0m 
+[0m                [0mInterinstitucional
+[0m                [36m<span
+[39m                  [33mclass[39m=[32m"font-mono text-xs"
+[39m                [36m>
+[39m                  [0m2
+[0m                  [0m pessoas
+[0m                [36m</span>
+[39m                [36m<svg
+[39m                  [33maria-hidden[39m=[32m"true"
+[39m                  [33mclass[39m=[32m"lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform "
+[39m                  [33mfill[39m=[32m"none"
+[39m                  [33mheight[39m=[32m"24"
+[39m                  [33mstroke[39m=[32m"currentColor"
+[39m                  [33mstroke-linecap[39m=[32m"round"
+[39m                  [33mstroke-linejoin[39m=[32m"round"
+[39m                  [33mstroke-width[39m=[32m"2"
+[39m                  [33mviewBox[39m=[32m"0 0 24 24"
+[39m                  [33mwidth[39m=[32m"24"
+[39m                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m                [36m>
+[39m                  [36m<path
+[39m                    [33md[39m=[32m"m6 9 6 6 6-6"
+[39m                  [36m/>
+[39m                [36m</svg>
+[39m              [36m</p>
+[39m            [36m</button>
+[39m            [36m<div
+[39m              [33mdata-slot[39m=[32m"collapsible-content"
+[39m              [33mdata-state[39m=[32m"closed"
+[39m              [33mhidden[39m=[32m""
+[39m              [33mid[39m=[32m"radix-_r_0_"
+[39m              [33mstyle[39m=[32m""
+[39m            [36m/>
+[39m          [36m</article>
+[39m        [36m</div>
+[39m      [36m</div>
+[39m    [36m</div>
+[39m  [36m</div>
+[39m[36m</body>
+[39m[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19
+[22m[39m[36m [2m❯[22m client/src/pages/teamActivitiesStructure.test.tsx:[2m370:19
+[22m[39m    [90m368| [39m    [34mrender[39m([33m<[39m[33mTeamPage[39m [33m/[39m[33m>[39m)[33m;
+[39m    [90m369| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Núcleo"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;
+[39m    [90m370| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Floriano Carlos Martins Pires Jr."[39m))[33m.[39m[34mtoBe[39m…
+    [90m   | [39m                  [31m^
+[39m    [90m371| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Cassiano Marins de Souza"[39m))[33m.[39m[34mtoBeInTheDocu[39m…
+    [90m372| [39m    [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Coordenador responsável"[39m))[33m.[39m[34mtoBeInTheDocum[39m…
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+[22m[39m[2m Test Files [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m25 passed[39m[22m[90m (29)
+[39m[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m101 passed[39m[22m[90m (106)
+[39m[2m   Start at [22m 23:25:06
+[2m   Duration [22m 10.73s[2m (transform 1.98s, setup 0ms, collect 13.50s, tests 13.37s, environment 5.20s, prepare 3.05s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

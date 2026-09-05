@@ -1,0 +1,1234 @@
+{
+  "source": "Plano_de_Trabalho-UFRJ_26_agosto.pdf — Anexo B, Índice Analítico do Relatório 1",
+  "generatedAt": "2026-08-28T17:41:44.968Z",
+  "counts": {
+    "currentParentActivities": 47,
+    "currentDetailedItems": 286,
+    "canonicalChapters": 29,
+    "canonicalItems": 253,
+    "matchingDetailCodes": 209,
+    "missingCanonicalCodes": 44,
+    "supersededDetailedCodes": 77,
+    "extraParentActivities": 17
+  },
+  "canonicalParentBySection": {
+    "I.1": {
+      "id": 30002,
+      "planCode": "A01",
+      "planSortOrder": 2,
+      "sectionId": 30002,
+      "title": "Introdução, objetivos e escopo do Relatório 1",
+      "sectionCode": "I.1"
+    },
+    "I.2": {
+      "id": 30003,
+      "planCode": "A02",
+      "planSortOrder": 3,
+      "sectionId": 30003,
+      "title": "Economia marítima e setores geradores de demanda",
+      "sectionCode": "I.2"
+    },
+    "I.3": {
+      "id": 3,
+      "planCode": "A03",
+      "planSortOrder": 4,
+      "sectionId": 3,
+      "title": "Mercados mundiais de transporte marítimo",
+      "sectionCode": "I.3"
+    },
+    "I.4": {
+      "id": 6,
+      "planCode": "A04",
+      "planSortOrder": 5,
+      "sectionId": 6,
+      "title": "Marinha mercante e transporte marítimo brasileiro",
+      "sectionCode": "I.4"
+    },
+    "I.5": {
+      "id": 7,
+      "planCode": "A05",
+      "planSortOrder": 6,
+      "sectionId": 7,
+      "title": "Bacias, fluxos e demanda por embarcações fluviais",
+      "sectionCode": "I.5"
+    },
+    "I.6": {
+      "id": 4,
+      "planCode": "A06",
+      "planSortOrder": 7,
+      "sectionId": 4,
+      "title": "Mercado mundial de óleo e gás offshore e unidades de E&P",
+      "sectionCode": "I.6"
+    },
+    "I.7": {
+      "id": 11,
+      "planCode": "A10",
+      "planSortOrder": 11,
+      "sectionId": 11,
+      "title": "Construção naval militar: programas, capacitação tecnológica e demanda",
+      "sectionCode": "I.7"
+    },
+    "I.8": {
+      "id": 9,
+      "planCode": "A11",
+      "planSortOrder": 12,
+      "sectionId": 9,
+      "title": "Metas, estratégias e governança da descarbonização marítima",
+      "sectionCode": "I.8"
+    },
+    "II.1": {
+      "id": 5,
+      "planCode": "B01",
+      "planSortOrder": 16,
+      "sectionId": 5,
+      "title": "Estrutura, produção e competitividade da construção naval mundial",
+      "sectionCode": "II.1"
+    },
+    "II.2": {
+      "id": 1,
+      "planCode": "B02",
+      "planSortOrder": 17,
+      "sectionId": 1,
+      "title": "Casos nacionais de desenvolvimento da construção naval",
+      "sectionCode": "II.2"
+    },
+    "II.3": {
+      "id": 10,
+      "planCode": "B03",
+      "planSortOrder": 18,
+      "sectionId": 10,
+      "title": "Histórico e desempenho da construção naval e offshore brasileira",
+      "sectionCode": "II.3"
+    },
+    "II.4": {
+      "id": 12,
+      "planCode": "B04",
+      "planSortOrder": 19,
+      "sectionId": 12,
+      "title": "Inventário nacional de estaleiros e instalações",
+      "sectionCode": "II.4"
+    },
+    "II.5": {
+      "id": 13,
+      "planCode": "B06",
+      "planSortOrder": 21,
+      "sectionId": 13,
+      "title": "Reparo, conversão, desmantelamento e descomissionamento",
+      "sectionCode": "II.5"
+    },
+    "II.6": {
+      "id": 14,
+      "planCode": "B07",
+      "planSortOrder": 22,
+      "sectionId": 14,
+      "title": "Cadeia de suprimentos e conteúdo nacional",
+      "sectionCode": "II.6"
+    },
+    "II.7": {
+      "id": 30004,
+      "planCode": "B08",
+      "planSortOrder": 23,
+      "sectionId": 30004,
+      "title": "Padrão tecnológico, P&D e formação profissional",
+      "sectionCode": "II.7"
+    },
+    "II.8": {
+      "id": 15,
+      "planCode": "B09",
+      "planSortOrder": 24,
+      "sectionId": 15,
+      "title": "Indicadores, benchmarking e inserção competitiva",
+      "sectionCode": "II.8"
+    },
+    "II.9": {
+      "id": 8,
+      "planCode": "B10",
+      "planSortOrder": 25,
+      "sectionId": 8,
+      "title": "Oportunidades e desafios para a indústria naval",
+      "sectionCode": "II.9"
+    },
+    "III.1": {
+      "id": 2,
+      "planCode": "C01",
+      "planSortOrder": 26,
+      "sectionId": 2,
+      "title": "Fundamentos e tendências: política industrial e política marítima",
+      "sectionCode": "III.1"
+    },
+    "III.2": {
+      "id": 16,
+      "planCode": "C02",
+      "planSortOrder": 27,
+      "sectionId": 16,
+      "title": "Políticas mundiais de marinha mercante",
+      "sectionCode": "III.2"
+    },
+    "III.3": {
+      "id": 17,
+      "planCode": "C03",
+      "planSortOrder": 28,
+      "sectionId": 17,
+      "title": "Políticas mundiais de construção naval",
+      "sectionCode": "III.3"
+    },
+    "III.4": {
+      "id": 18,
+      "planCode": "C04",
+      "planSortOrder": 29,
+      "sectionId": 18,
+      "title": "Políticas brasileiras de marinha mercante e construção naval",
+      "sectionCode": "III.4"
+    },
+    "III.5": {
+      "id": 19,
+      "planCode": "C05",
+      "planSortOrder": 30,
+      "sectionId": 19,
+      "title": "Fundo da Marinha Mercante, AFRMM e financiamento",
+      "sectionCode": "III.5"
+    },
+    "III.6": {
+      "id": 30005,
+      "planCode": "C06",
+      "planSortOrder": 31,
+      "sectionId": 30005,
+      "title": "Siderurgia, materiais, equipamentos e conteúdo nacional",
+      "sectionCode": "III.6"
+    },
+    "III.7": {
+      "id": 30006,
+      "planCode": "C07",
+      "planSortOrder": 32,
+      "sectionId": 30006,
+      "title": "Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas",
+      "sectionCode": "III.7"
+    },
+    "III.8": {
+      "id": 20,
+      "planCode": "C08",
+      "planSortOrder": 33,
+      "sectionId": 20,
+      "title": "Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval brasileira",
+      "sectionCode": "III.8"
+    },
+    "III.9": {
+      "id": 21,
+      "planCode": "C09",
+      "planSortOrder": 34,
+      "sectionId": 21,
+      "title": "Ambiente econômico e institucional da indústria marítima brasileira",
+      "sectionCode": "III.9"
+    },
+    "IV.1": {
+      "id": 30007,
+      "planCode": "D01",
+      "planSortOrder": 35,
+      "sectionId": 30007,
+      "title": "Diagnóstico integrado da competitividade da indústria naval brasileira",
+      "sectionCode": "IV.1"
+    },
+    "IV.2": {
+      "id": 120004,
+      "planCode": "D02",
+      "planSortOrder": 36,
+      "sectionId": 90031,
+      "title": "Cenários para a indústria naval brasileira",
+      "sectionCode": "IV.2"
+    },
+    "IV.3": {
+      "id": 30008,
+      "planCode": "D03",
+      "planSortOrder": 37,
+      "sectionId": 30008,
+      "title": "Conclusões do Relatório 1 e agenda do Relatório 2",
+      "sectionCode": "IV.3"
+    }
+  },
+  "missingCanonicalItems": [
+    {
+      "sectionCode": "I.5",
+      "detailCode": "I.5.12",
+      "title": "Cenários de demanda para construção de embarcações fluviais"
+    },
+    {
+      "sectionCode": "I.7",
+      "detailCode": "I.7.5",
+      "title": "Programas de offset, clusters navais e estratégias de inovação"
+    },
+    {
+      "sectionCode": "I.7",
+      "detailCode": "I.7.6",
+      "title": "Participação da indústria local e processos de transferência de tecnologia"
+    },
+    {
+      "sectionCode": "I.7",
+      "detailCode": "I.7.7",
+      "title": "Gargalos econômicos, produtivos e tecnológicos"
+    },
+    {
+      "sectionCode": "I.7",
+      "detailCode": "I.7.8",
+      "title": "Oportunidades para inserção nas cadeias globais"
+    },
+    {
+      "sectionCode": "I.8",
+      "detailCode": "I.8.8",
+      "title": "Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas embarcações e retrofitting"
+    },
+    {
+      "sectionCode": "I.8",
+      "detailCode": "I.8.9",
+      "title": "Frota brasileira: estratégias de descarbonização dos armadores"
+    },
+    {
+      "sectionCode": "I.8",
+      "detailCode": "I.8.10",
+      "title": "Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos renováveis"
+    },
+    {
+      "sectionCode": "I.8",
+      "detailCode": "I.8.11",
+      "title": "Infraestrutura de abastecimento, bunkering, portos e corredores verdes"
+    },
+    {
+      "sectionCode": "II.2",
+      "detailCode": "II.2.9",
+      "title": "Vietnã"
+    },
+    {
+      "sectionCode": "II.2",
+      "detailCode": "II.2.10",
+      "title": "Indonésia"
+    },
+    {
+      "sectionCode": "II.2",
+      "detailCode": "II.2.11",
+      "title": "Outros produtores emergentes"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.6",
+      "title": "Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.7",
+      "title": "Demanda brasileira por reparo, docagem e retrofitting de embarcações"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.8",
+      "title": "Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.9",
+      "title": "Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e descomissionamento"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.10",
+      "title": "Competição internacional e competitividade das atividades no Brasil"
+    },
+    {
+      "sectionCode": "II.5",
+      "detailCode": "II.5.11",
+      "title": "Desafios e oportunidades para reparo, retrofitting, desmantelamento e descomissionamento no Brasil"
+    },
+    {
+      "sectionCode": "II.6",
+      "detailCode": "II.6.6",
+      "title": "Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore e construção naval militar"
+    },
+    {
+      "sectionCode": "II.6",
+      "detailCode": "II.6.7",
+      "title": "Distribuição regional e capacidade dos fornecedores nacionais"
+    },
+    {
+      "sectionCode": "II.6",
+      "detailCode": "II.6.8",
+      "title": "Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas"
+    },
+    {
+      "sectionCode": "II.6",
+      "detailCode": "II.6.9",
+      "title": "Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos"
+    },
+    {
+      "sectionCode": "II.6",
+      "detailCode": "II.6.10",
+      "title": "Desafios e oportunidades para a estaleiros brasileiros"
+    },
+    {
+      "sectionCode": "II.7",
+      "detailCode": "II.7.6",
+      "title": "Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico, de engenharia e gerencial"
+    },
+    {
+      "sectionCode": "II.7",
+      "detailCode": "II.7.7",
+      "title": "Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior"
+    },
+    {
+      "sectionCode": "II.9",
+      "detailCode": "II.9.6",
+      "title": "Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de equipamentos e sistemas"
+    },
+    {
+      "sectionCode": "II.9",
+      "detailCode": "II.9.7",
+      "title": "Descarbonização dos processos de construção naval"
+    },
+    {
+      "sectionCode": "II.9",
+      "detailCode": "II.9.8",
+      "title": "Oportunidades de inserção competitiva da indústria naval brasileira nos mercados associados à descarbonização"
+    },
+    {
+      "sectionCode": "II.9",
+      "detailCode": "II.9.9",
+      "title": "Principais desafios tecnológicos e produtivos"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.7",
+      "title": "Japão"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.8",
+      "title": "Coreia do Sul"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.9",
+      "title": "China"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.10",
+      "title": "Singapura"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.11",
+      "title": "Austrália e Nova Zelândia"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.12",
+      "title": "Europa Oriental e Turquia"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.13",
+      "title": "Índia"
+    },
+    {
+      "sectionCode": "III.2",
+      "detailCode": "III.2.14",
+      "title": "Outros casos relevantes"
+    },
+    {
+      "sectionCode": "III.3",
+      "detailCode": "III.3.13",
+      "title": "Vietnã"
+    },
+    {
+      "sectionCode": "III.3",
+      "detailCode": "III.3.14",
+      "title": "Indonésia"
+    },
+    {
+      "sectionCode": "III.3",
+      "detailCode": "III.3.15",
+      "title": "Turquia e Europa Oriental"
+    },
+    {
+      "sectionCode": "III.3",
+      "detailCode": "III.3.16",
+      "title": "Outros casos relevantes"
+    },
+    {
+      "sectionCode": "III.4",
+      "detailCode": "III.4.10",
+      "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval"
+    },
+    {
+      "sectionCode": "III.4",
+      "detailCode": "III.4.11",
+      "title": "Resultados das políticas brasileiras de marinha mercante e construção naval"
+    },
+    {
+      "sectionCode": "III.4",
+      "detailCode": "III.4.12",
+      "title": "Mudanças recentes e principais questões em debate no Brasil"
+    }
+  ],
+  "supersededDetailedItems": [
+    {
+      "id": 180004,
+      "parentActivityId": 30001,
+      "detailCode": "AP.1",
+      "detailSortOrder": 1,
+      "title": "Apresentação geral do Estudo.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180005,
+      "parentActivityId": 30001,
+      "detailCode": "AP.2",
+      "detailSortOrder": 2,
+      "title": "Descrição do objetivo, metodologia, equipe.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180006,
+      "parentActivityId": 30001,
+      "detailCode": "AP.3",
+      "detailSortOrder": 3,
+      "title": "Estrutura do Portal e do Relatório.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180007,
+      "parentActivityId": 30001,
+      "detailCode": "AP.4",
+      "detailSortOrder": 4,
+      "title": "Banco de dados.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180008,
+      "parentActivityId": 30001,
+      "detailCode": "AP.5",
+      "detailSortOrder": 5,
+      "title": "Audiovisual.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180009,
+      "parentActivityId": 30001,
+      "detailCode": "AP.6",
+      "detailSortOrder": 6,
+      "title": "Sumário Executivo.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180010,
+      "parentActivityId": 30001,
+      "detailCode": "AP.7",
+      "detailSortOrder": 7,
+      "title": "Conteúdo dos Relatórios 1 e 2.",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 180015,
+      "parentActivityId": 30002,
+      "detailCode": "I.1.5",
+      "detailSortOrder": 5,
+      "title": "Construção de navios, embarcações fluviais, offshore, fabricação e integração de módulos, reparo, descomissionamento/desmantelamento.",
+      "sectionCode": "I.1"
+    },
+    {
+      "id": 180016,
+      "parentActivityId": 30002,
+      "detailCode": "I.1.6",
+      "detailSortOrder": 6,
+      "title": "Estrutura do relatório.",
+      "sectionCode": "I.1"
+    },
+    {
+      "id": 180017,
+      "parentActivityId": 30002,
+      "detailCode": "I.1.7",
+      "detailSortOrder": 7,
+      "title": "Os temas são examinados em diferentes capítulos segundo perspectivas complementares.",
+      "sectionCode": "I.1"
+    },
+    {
+      "id": 180018,
+      "parentActivityId": 30002,
+      "detailCode": "I.1.8",
+      "detailSortOrder": 8,
+      "title": "O Tomo I analisa os setores geradores de demanda; o Tomo II, a capacidade de resposta da base produtiva; o Tomo III, as políticas e instituições que condicionam essa resposta; e o Tomo IV integra essas dimensões na construção dos cenários.",
+      "sectionCode": "I.1"
+    },
+    {
+      "id": 180023,
+      "parentActivityId": 30003,
+      "detailCode": "I.2.5",
+      "detailSortOrder": 5,
+      "title": "Aspectos econômicos dos principais segmentos geradores da demanda da indústria naval.",
+      "sectionCode": "I.2"
+    },
+    {
+      "id": 180024,
+      "parentActivityId": 30003,
+      "detailCode": "I.2.6",
+      "detailSortOrder": 6,
+      "title": "Aspectos econômicos, tecnológicos e geopolíticos.",
+      "sectionCode": "I.2"
+    },
+    {
+      "id": 180025,
+      "parentActivityId": 30003,
+      "detailCode": "I.2.7",
+      "detailSortOrder": 7,
+      "title": "Mudanças econômicas, geopolíticas, ambientais, regulatórias e tecnológicas que afetam as indústrias marítimas, e, em particular, a indústria naval.",
+      "sectionCode": "I.2"
+    },
+    {
+      "id": 180026,
+      "parentActivityId": 30003,
+      "detailCode": "I.2.8",
+      "detailSortOrder": 8,
+      "title": "Reorganização das cadeias globais, regionalização produtiva, transição energética.",
+      "sectionCode": "I.2"
+    },
+    {
+      "id": 180027,
+      "parentActivityId": 30003,
+      "detailCode": "I.2.9",
+      "detailSortOrder": 9,
+      "title": "Oportunidades e desafios para a indústria naval brasileira.",
+      "sectionCode": "I.2"
+    },
+    {
+      "id": 180049,
+      "parentActivityId": 6,
+      "detailCode": "I.4.10",
+      "detailSortOrder": 10,
+      "title": "Integração às redes globais.",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180050,
+      "parentActivityId": 6,
+      "detailCode": "I.4.11",
+      "detailSortOrder": 11,
+      "title": "Apoio portuário.",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180051,
+      "parentActivityId": 6,
+      "detailCode": "I.4.12",
+      "detailSortOrder": 12,
+      "title": "Apoio marítimo (enquadramento como segmento da navegação brasileira).",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180052,
+      "parentActivityId": 6,
+      "detailCode": "I.4.13",
+      "detailSortOrder": 13,
+      "title": "Custos diferenciais da bandeira brasileira.",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180053,
+      "parentActivityId": 6,
+      "detailCode": "I.4.14",
+      "detailSortOrder": 14,
+      "title": "Panorama do setor pesqueiro.",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180054,
+      "parentActivityId": 6,
+      "detailCode": "I.4.15",
+      "detailSortOrder": 15,
+      "title": "Cenários de demanda para construção, reparo, conversão e modernização de navios e embarcações de apoio.",
+      "sectionCode": "I.4"
+    },
+    {
+      "id": 180080,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.14",
+      "detailSortOrder": 14,
+      "title": "Descomissionamento.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180081,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.15",
+      "detailSortOrder": 15,
+      "title": "Cenários de demanda: construção, fabricação e integração de módulos, conversão, descomissionamento.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180082,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.16",
+      "detailSortOrder": 16,
+      "title": "Mercado mundial de navios aliviadores e embarcações de apoio offshore.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180083,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.17",
+      "detailSortOrder": 17,
+      "title": "Tipos de embarcações e padrões de operação.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180084,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.18",
+      "detailSortOrder": 18,
+      "title": "Participação do Brasil no mercado mundial.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180085,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.19",
+      "detailSortOrder": 19,
+      "title": "Estrutura do mercado brasileiro.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180086,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.20",
+      "detailSortOrder": 20,
+      "title": "Comparação do mercado brasileiro com as principais regiões: modos de operação, tipos de afretamento, preços.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180087,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.21",
+      "detailSortOrder": 21,
+      "title": "regulamentação.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180088,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.22",
+      "detailSortOrder": 22,
+      "title": "Empresas, frotas, verticalização.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180089,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.23",
+      "detailSortOrder": 23,
+      "title": "Cenários de demanda por aliviadores e OSV no Brasil.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180090,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.24",
+      "detailSortOrder": 24,
+      "title": "O setor de geração eólica no Brasil.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180091,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.25",
+      "detailSortOrder": 25,
+      "title": "Tipos de instalações e embarcações de apoio.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180092,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.26",
+      "detailSortOrder": 26,
+      "title": "Evolução e perspectivas.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180093,
+      "parentActivityId": 60003,
+      "detailCode": "I.6.27",
+      "detailSortOrder": 27,
+      "title": "Cenários de demanda por embarcações de apoio especializadas e construção de instalações de geração eólica offshore.",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 180112,
+      "parentActivityId": 5,
+      "detailCode": "II.1.8",
+      "detailSortOrder": 8,
+      "title": "Fatores de competitividade.",
+      "sectionCode": "II.1"
+    },
+    {
+      "id": 180113,
+      "parentActivityId": 5,
+      "detailCode": "II.1.9",
+      "detailSortOrder": 9,
+      "title": "Tecnologia.",
+      "sectionCode": "II.1"
+    },
+    {
+      "id": 180114,
+      "parentActivityId": 5,
+      "detailCode": "II.1.10",
+      "detailSortOrder": 10,
+      "title": "Cadeia produtiva.",
+      "sectionCode": "II.1"
+    },
+    {
+      "id": 180115,
+      "parentActivityId": 5,
+      "detailCode": "II.1.11",
+      "detailSortOrder": 11,
+      "title": "Comportamento dos mercados.",
+      "sectionCode": "II.1"
+    },
+    {
+      "id": 180116,
+      "parentActivityId": 5,
+      "detailCode": "II.1.12",
+      "detailSortOrder": 12,
+      "title": "Impactos recentes ambientais, tecnológicos, geopolíticos.",
+      "sectionCode": "II.1"
+    },
+    {
+      "id": 180135,
+      "parentActivityId": 10,
+      "detailCode": "II.3.11",
+      "detailSortOrder": 11,
+      "title": "Contratos e produção realizada.",
+      "sectionCode": "II.3"
+    },
+    {
+      "id": 180136,
+      "parentActivityId": 10,
+      "detailCode": "II.3.12",
+      "detailSortOrder": 12,
+      "title": "Preços e prazos.",
+      "sectionCode": "II.3"
+    },
+    {
+      "id": 180137,
+      "parentActivityId": 10,
+      "detailCode": "II.3.13",
+      "detailSortOrder": 13,
+      "title": "Distribuição geográfica.",
+      "sectionCode": "II.3"
+    },
+    {
+      "id": 180138,
+      "parentActivityId": 10,
+      "detailCode": "II.3.14",
+      "detailSortOrder": 14,
+      "title": "Fatores econômicos, empresariais, tecnológicos, regulatórios e institucionais que determinaram os resultados alcançados.",
+      "sectionCode": "II.3"
+    },
+    {
+      "id": 180146,
+      "parentActivityId": 12,
+      "detailCode": "II.4.8",
+      "detailSortOrder": 8,
+      "title": "Serão considerados os estaleiros dedicados à construção de navios convencionais, embarcações fluviais, embarcações de apoio offshore, plataformas offshore e módulos de plantas de processo bem como os estaleiros de reparo, conversão e desmonte de plataformas e navios.",
+      "sectionCode": "II.4"
+    },
+    {
+      "id": 180147,
+      "parentActivityId": 12,
+      "detailCode": "II.4.9",
+      "detailSortOrder": 9,
+      "title": "O trabalho inclui visitas às instalações para levantamento de campo.",
+      "sectionCode": "II.4"
+    },
+    {
+      "id": 180182,
+      "parentActivityId": 2,
+      "detailCode": "III.1.9",
+      "detailSortOrder": 9,
+      "title": "Desenvolvimento de metodologia de análise da evolução das políticas setoriais voltadas para a indústria naval aplicadas no Brasil e no mundo nos períodos relevantes.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180183,
+      "parentActivityId": 2,
+      "detailCode": "III.1.10",
+      "detailSortOrder": 10,
+      "title": "Relevância de instrumentos horizontais existentes para impulsionar a indústria naval, como os propostos na Nova Indústria Brasil (NIB) e em outras políticas.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180184,
+      "parentActivityId": 2,
+      "detailCode": "III.1.11",
+      "detailSortOrder": 11,
+      "title": "Políticas públicas e mecanismos de fomento à descarbonização marítima.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180185,
+      "parentActivityId": 2,
+      "detailCode": "III.1.12",
+      "detailSortOrder": 12,
+      "title": "Avaliação de sua aplicabilidade ao contexto brasileiro.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180186,
+      "parentActivityId": 2,
+      "detailCode": "III.1.13",
+      "detailSortOrder": 13,
+      "title": "Desafios regulatórios nacionais e internacionais para a introdução de novos combustíveis marítimos.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180187,
+      "parentActivityId": 2,
+      "detailCode": "III.1.14",
+      "detailSortOrder": 14,
+      "title": "Possibilidades para o Brasil na transição energética marítima global.",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 180224,
+      "parentActivityId": 19,
+      "detailCode": "III.5.10",
+      "detailSortOrder": 10,
+      "title": "Alocação de custos e benefícios.",
+      "sectionCode": "III.5"
+    },
+    {
+      "id": 180225,
+      "parentActivityId": 19,
+      "detailCode": "III.5.11",
+      "detailSortOrder": 11,
+      "title": "Efeitos distributivos intersetoriais e inter-regionais.",
+      "sectionCode": "III.5"
+    },
+    {
+      "id": 180226,
+      "parentActivityId": 19,
+      "detailCode": "III.5.12",
+      "detailSortOrder": 12,
+      "title": "Impacto sobre a navegação interior e o desenvolvimento regional.",
+      "sectionCode": "III.5"
+    },
+    {
+      "id": 180227,
+      "parentActivityId": 19,
+      "detailCode": "III.5.13",
+      "detailSortOrder": 13,
+      "title": "Análise da racionalidade econômica e estratégica do sistema.",
+      "sectionCode": "III.5"
+    },
+    {
+      "id": 180228,
+      "parentActivityId": 19,
+      "detailCode": "III.5.14",
+      "detailSortOrder": 14,
+      "title": "Alterações introduzidas pela Lei nº 14.301/2022 (BR do Mar) e avaliação do modelo atual.",
+      "sectionCode": "III.5"
+    },
+    {
+      "id": 180237,
+      "parentActivityId": 30005,
+      "detailCode": "III.6.9",
+      "detailSortOrder": 9,
+      "title": "Cenários prospectivos.",
+      "sectionCode": "III.6"
+    },
+    {
+      "id": 180238,
+      "parentActivityId": 30005,
+      "detailCode": "III.6.10",
+      "detailSortOrder": 10,
+      "title": "Oportunidades e desafios para o desenvolvimento da cadeia nacional de suprimentos.",
+      "sectionCode": "III.6"
+    },
+    {
+      "id": 180239,
+      "parentActivityId": 30005,
+      "detailCode": "III.6.11",
+      "detailSortOrder": 11,
+      "title": "Importância para o desenvolvimento competitivo da indústria naval.",
+      "sectionCode": "III.6"
+    },
+    {
+      "id": 180248,
+      "parentActivityId": 30006,
+      "detailCode": "III.7.9",
+      "detailSortOrder": 9,
+      "title": "Análise comparativa das políticas e de seus resultados, considerando continuidade e coordenação institucional, demanda, financiamento, escala de produção, produtividade, aprendizado tecnológico e inserção internacional.",
+      "sectionCode": "III.7"
+    },
+    {
+      "id": 180249,
+      "parentActivityId": 30006,
+      "detailCode": "III.7.10",
+      "detailSortOrder": 10,
+      "title": "Identificação dos principais problemas sistêmicos e das lições para uma nova política de desenvolvimento da indústria naval brasileira.",
+      "sectionCode": "III.7"
+    },
+    {
+      "id": 180261,
+      "parentActivityId": 21,
+      "detailCode": "III.9.6",
+      "detailSortOrder": 6,
+      "title": "Avaliação da capacitação técnica, autonomia decisória e continuidade institucional dos órgãos e agências envolvidos.",
+      "sectionCode": "III.9"
+    },
+    {
+      "id": 180262,
+      "parentActivityId": 21,
+      "detailCode": "III.9.7",
+      "detailSortOrder": 7,
+      "title": "Riscos políticos, econômicos e regulatórios para a reestruturação da indústria naval.",
+      "sectionCode": "III.9"
+    },
+    {
+      "id": 180264,
+      "parentActivityId": 21,
+      "detailCode": "III.9.8",
+      "detailSortOrder": 8,
+      "title": "Aspectos determinantes para a reorientação das políticas industriais e a implantação de novos modelos para a indústria naval, considerando suas interfaces com a marinha mercante, o óleo e gás, a defesa e a energia.",
+      "sectionCode": "III.9"
+    },
+    {
+      "id": 180265,
+      "parentActivityId": 21,
+      "detailCode": "III.9.9",
+      "detailSortOrder": 9,
+      "title": "Desafios e oportunidades.",
+      "sectionCode": "III.9"
+    },
+    {
+      "id": 180272,
+      "parentActivityId": 30007,
+      "detailCode": "IV.1.7",
+      "detailSortOrder": 7,
+      "title": "Análise de como a descarbonização, a transição energética e as mudanças tecnológicas e geopolíticas alteram a composição da demanda, os requisitos tecnológicos e as oportunidades de inserção da indústria naval brasileira.",
+      "sectionCode": "IV.1"
+    },
+    {
+      "id": 180273,
+      "parentActivityId": 30007,
+      "detailCode": "IV.1.8",
+      "detailSortOrder": 8,
+      "title": "Identificação dos fatores críticos, das incertezas e das variáveis que deverão ser consideradas na construção dos cenários para a indústria naval brasileira.",
+      "sectionCode": "IV.1"
+    },
+    {
+      "id": 180281,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.8",
+      "detailSortOrder": 8,
+      "title": "Metas e desafios de produtividade e desempenho.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180282,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.9",
+      "detailSortOrder": 9,
+      "title": "Avaliação das exigências tecnológicas e de recursos humanos em cada cenário.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180283,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.10",
+      "detailSortOrder": 10,
+      "title": "Capacidades e deficiências em engenharia, projeto, produção, gestão, pesquisa e desenvolvimento e formação profissional.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180284,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.11",
+      "detailSortOrder": 11,
+      "title": "Necessidades de qualificação, desenvolvimento e transferência de tecnologia.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180285,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.12",
+      "detailSortOrder": 12,
+      "title": "Necessidades de investimento em modernização, ampliação ou implantação de instalações.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180286,
+      "parentActivityId": 120004,
+      "detailCode": "IV.2.13",
+      "detailSortOrder": 13,
+      "title": "Efeitos sobre a capacidade produtiva, a cadeia de suprimentos e o potencial de produção nacional em cada cenário.",
+      "sectionCode": "IV.2"
+    },
+    {
+      "id": 180290,
+      "parentActivityId": 30008,
+      "detailCode": "IV.3.4",
+      "detailSortOrder": 4,
+      "title": "Indicação das questões que deverão orientar a identificação dos segmentos estratégicos, a formulação das políticas e a elaboração do Plano de Ação.",
+      "sectionCode": "IV.3"
+    },
+    {
+      "id": 180291,
+      "parentActivityId": 30008,
+      "detailCode": "IV.3.5",
+      "detailSortOrder": 5,
+      "title": "O enfrentamento dessas questões será objeto do Relatório 2.",
+      "sectionCode": "IV.3"
+    }
+  ],
+  "extraParents": [
+    {
+      "id": 30001,
+      "planCode": "A00",
+      "planSortOrder": 1,
+      "sectionId": 30001,
+      "title": "Apresentação geral do Estudo e arquitetura de publicação",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 150004,
+      "planCode": "P01",
+      "planSortOrder": 38,
+      "sectionId": 30001,
+      "title": "Estruturação do Portal e da arquitetura de publicação do Estudo",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 150005,
+      "planCode": "P02",
+      "planSortOrder": 39,
+      "sectionId": 30001,
+      "title": "Organização do banco de dados documental e temático",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 150006,
+      "planCode": "P03",
+      "planSortOrder": 40,
+      "sectionId": 30001,
+      "title": "Produção audiovisual do Estudo",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 150007,
+      "planCode": "P04",
+      "planSortOrder": 41,
+      "sectionId": 30001,
+      "title": "Elaboração do Sumário Executivo do Relatório 1",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 150008,
+      "planCode": "P05",
+      "planSortOrder": 42,
+      "sectionId": 30001,
+      "title": "Delimitação de conteúdo e transição entre os Relatórios 1 e 2",
+      "sectionCode": "AP"
+    },
+    {
+      "id": 60001,
+      "planCode": "A07",
+      "planSortOrder": 8,
+      "sectionId": 4,
+      "title": "Atividade offshore brasileira e demanda associada",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 60002,
+      "planCode": "A08",
+      "planSortOrder": 9,
+      "sectionId": 4,
+      "title": "Aliviadores e embarcações de apoio offshore",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 60003,
+      "planCode": "A09",
+      "planSortOrder": 10,
+      "sectionId": 4,
+      "title": "Eólica offshore e embarcações especializadas",
+      "sectionCode": "I.6"
+    },
+    {
+      "id": 60004,
+      "planCode": "A12",
+      "planSortOrder": 13,
+      "sectionId": 9,
+      "title": "Tecnologias de eficiência e combustíveis alternativos",
+      "sectionCode": "I.8"
+    },
+    {
+      "id": 60005,
+      "planCode": "A13",
+      "planSortOrder": 14,
+      "sectionId": 9,
+      "title": "Frota, mercados e retrofitting",
+      "sectionCode": "I.8"
+    },
+    {
+      "id": 60006,
+      "planCode": "A14",
+      "planSortOrder": 15,
+      "sectionId": 9,
+      "title": "Potencial brasileiro em combustíveis renováveis e logística verde",
+      "sectionCode": "I.8"
+    },
+    {
+      "id": 150012,
+      "planCode": "P09",
+      "planSortOrder": 46,
+      "sectionId": 1,
+      "title": "Consolidação das evidências das visitas internacionais",
+      "sectionCode": "II.2"
+    },
+    {
+      "id": 60007,
+      "planCode": "B05",
+      "planSortOrder": 20,
+      "sectionId": 12,
+      "title": "Capacidade produtiva, carteira e potencial de reativação",
+      "sectionCode": "II.4"
+    },
+    {
+      "id": 150013,
+      "planCode": "P10",
+      "planSortOrder": 47,
+      "sectionId": 12,
+      "title": "Consolidação do levantamento de campo dos estaleiros brasileiros",
+      "sectionCode": "II.4"
+    },
+    {
+      "id": 150010,
+      "planCode": "P07",
+      "planSortOrder": 44,
+      "sectionId": 15,
+      "title": "Metodologia, indicadores e benchmarking de produtividade de estaleiros",
+      "sectionCode": "II.8"
+    },
+    {
+      "id": 150009,
+      "planCode": "P06",
+      "planSortOrder": 43,
+      "sectionId": 2,
+      "title": "Desenvolvimento da metodologia de análise de políticas setoriais",
+      "sectionCode": "III.1"
+    },
+    {
+      "id": 150011,
+      "planCode": "P08",
+      "planSortOrder": 45,
+      "sectionId": 19,
+      "title": "Modelagem e simulações do FMM e das contas vinculadas",
+      "sectionCode": "III.5"
+    }
+  ]
+}

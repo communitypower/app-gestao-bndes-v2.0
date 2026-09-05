@@ -1,0 +1,7 @@
+# 1 - Estrutura da equipe e próximo passo
+
+Nossa referência operacional se apoia na matriz funcional estruturada de G1 a G11, reunindo vinte e nove integrantes definidos na reunião de kick-off. Cada grupo assume frentes específicas para cobrir todo o escopo técnico do estudo. O nosso próximo passo prático exige a confirmação direta de executor, revisor, prazo e interfaces em cada seção. Façam o primeiro acesso ao portal com a conta Google e o e-mail pré-cadastrado para validar o perfil. Alinhem cada responsabilidade de perto para garantir que nossa engrenagem comece a rodar sem atritos.
+
+# 2 - Do trabalho da seção à entrega ao BNDES
+
+Controlar o fluxo documental garante a solidez de toda a entrega ao banco e organiza o nosso trabalho prático. Mapeamos cinco tomos estruturados em trinta capítulos e duzentas e cinquenta e uma seções para dar conta do volume do estudo. O processo avança de forma contínua pela produção, revisão, consolidação e integração. O executor produz o conteúdo, o revisor independente valida o material, a coordenação consolida o capítulo e o projeto integra tudo para o envio. Nosso calendário oficial M1 a M6 roda de vinte e um de agosto de dois mil e vinte e seis a vinte de fevereiro de dois mil e sete. Fiquem atentos aos prazos operacionais, com entregas internas no dia quinze e o encaminhamento ao BNDES no dia trinta. Vamos ver agora como nossa equipe se organiza para tocar essas entregas.

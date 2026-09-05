@@ -1,0 +1,1 @@
+ALTER TABLE `study_sections` ADD `officialDescription` text NOT NULL;

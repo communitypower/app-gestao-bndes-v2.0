@@ -1,0 +1,470 @@
+# Project TODO
+
+- [x] Definir o modelo de dados para seções 5.1 a 5.21, equipe, atividades, referências, materiais de produção, revisões, comentários e notificações.
+- [x] Aplicar a direção visual editorial: base creme, títulos Didone, subtítulos serifados, detalhes sans-serif, linhas finas, espaço negativo e composição assimétrica.
+- [x] Implementar controle de acesso com os perfis exatos `administrador` e `colaborador`.
+- [x] Implementar painel com cronograma de seis meses, indicadores gerais, progresso por seção 5.1 a 5.21 e status das entregas.
+- [x] Implementar cadastro, edição, conclusão e consulta de atividades com título, descrição, seção, responsável, entrega e os status exatos `pendente`, `em andamento`, `concluído` e `atrasado`.
+- [x] Cadastrar a equipe técnica multidisciplinar e permitir sua seleção como responsável por atividades.
+- [x] Implementar calendário mensal de entregas com destaque para itens próximos do vencimento e atrasados.
+- [x] Implementar biblioteca de referências com busca, filtros por tema/seção, links e upload seguro de PDF, Word e outros arquivos para armazenamento em nuvem.
+- [x] Implementar área de produção por seção com upload seguro de materiais, histórico de revisões e links compartilháveis.
+- [x] Implementar comentários colaborativos em materiais de produção para participantes autorizados.
+- [x] Implementar registro de configurações, fila e histórico de notificações de WhatsApp.
+- [x] Disparar alerta de WhatsApp somente na atribuição de atividade, três dias antes da entrega e quando um item for marcado como atrasado.
+- [x] Implementar execução periódica segura para detectar exatamente o prazo de três dias e itens que devem ser marcados como atrasados.
+- [x] Criar dados iniciais coerentes para as 21 seções, equipe técnica e plano de seis meses, sem fabricar avaliações ou depoimentos.
+- [x] Cobrir regras de negócio críticas com testes Vitest, incluindo nomenclaturas, permissões e eventos de notificação.
+- [x] Validar TypeScript, testes, build, fluxos principais, responsividade em desktop e celular e ausência de erros de console.
+- [x] Verificar visualmente as páginas principais e ajustar legibilidade, contraste, hierarquia e acabamento editorial.
+- [x] Preparar a versão final em checkpoint para visualização e publicação pelo usuário.
+- [x] Restringir o perfil `colaborador` exclusivamente à biblioteca e à área de produção, mantendo painel, atividades, equipe e administração para `administrador`.
+- [x] Implementar busca textual e filtros por tema e seção na biblioteca, com parâmetros tipados no servidor e consumo na interface.
+- [x] Tornar o histórico de notificações uma fila verificável com processamento de itens pendentes e novas tentativas controladas.
+- [x] Preparar o registro autenticado da execução periódica do endpoint de alertas, com ativação administrativa disponível após a publicação.
+- [x] Aplicar destaque visual verificável para entregas próximas do vencimento e atrasadas no calendário mensal.
+- [x] Validar por testes o bloqueio no servidor das áreas administrativas para o perfil `colaborador`.
+- [x] Confirmar por typecheck e testes a interface completa da biblioteca e da administração de WhatsApp.
+- [x] Cobrir todas as mutações administrativas com testes de bloqueio para `colaborador` e validar acesso permitido à biblioteca e à produção.
+- [x] Testar normalização de busca/filtros e segurança de formatos/tamanho de upload da biblioteca.
+- [x] Testar o esquema de configuração do WhatsApp e a ocultação do histórico administrativo para `colaborador`.
+- [x] Adicionar descrições acessíveis aos diálogos de biblioteca e produção para eliminar avisos de acessibilidade nos testes de interface.
+- [x] Validar por teste a presença conjunta de `WHATSAPP_ACCESS_TOKEN` e `WHATSAPP_PHONE_NUMBER_ID` sem expor seus valores.
+- [x] Dividir o código das páginas por rota e separar dependências compartilhadas para reduzir o pacote inicial indicado pelo build de produção.
+- [x] Substituir a grade comprimida do calendário por uma agenda mensal responsiva no celular, preservando a grade de sete colunas no desktop.
+- [x] Concluir a validação manual autenticada dos fluxos principais após restaurar uma conexão estável com a prévia.
+- [x] Criar efetivamente o checkpoint final e registrar seu identificador verificável na entrega.
+- [x] Substituir os títulos genéricos das 21 atividades pelos títulos completos correspondentes às seções 5.1 a 5.21, incluindo a atualização dos registros já existentes.
+- [x] Validar por teste e inspeção da interface que nenhuma atividade inicial permanece com o prefixo `Elaborar diagnóstico da seção`.
+- [x] Salvar um novo checkpoint com os títulos completos e entregar seu identificador verificável.
+- [x] Registrar em documentação a inspeção visual de `/atividades`, confirmando os 21 títulos completos e a ausência do prefixo genérico na interface.
+- [x] Criar grupos participantes com um coordenador e participantes vinculados abaixo dele na estrutura da equipe.
+- [x] Restringir a responsabilidade por atividades exclusivamente a membros com função de coordenador.
+- [x] Permitir que o coordenador registre e atualize o número de horas alocadas a cada colaborador em cada atividade.
+- [x] Exibir nas fichas das atividades o grupo responsável, o coordenador, os colaboradores alocados, as horas individuais e o total de horas.
+- [x] Criar uma visualização de ficha completa da atividade acessível diretamente pela lista, sem exigir abertura do modo de edição.
+- [x] Manter a edição da atividade como ação distinta e disponível apenas para o perfil autorizado.
+- [x] Migrar a equipe inicial para grupos coerentes, preservando os 30 membros existentes e suas instituições.
+- [x] Cobrir hierarquia, responsabilidade exclusiva de coordenador e alocação de horas com testes automatizados.
+- [x] Validar a nova equipe hierárquica e as fichas de atividades em desktop e celular.
+- [x] Salvar novo checkpoint com a estrutura de grupos, horas e fichas visíveis.
+- [x] Permitir que coordenadores autenticados responsáveis por uma atividade editem as alocações e horas apenas das atividades do seu grupo, com validação server-side pelo vínculo `userId` da equipe.
+- [x] Cobrir por testes de autorização o fluxo em que administrador e coordenador responsável podem atualizar horas, enquanto outros usuários e coordenadores de outros grupos são bloqueados.
+- [x] Modelar submissões de materiais em desenvolvimento por atividade, versões submetidas, status de revisão e histórico de decisões.
+- [x] Permitir que administradores e coordenadores responsáveis aloquem e removam revisores da equipe em cada atividade.
+- [x] Restringir o acesso de revisão aos revisores apontados, preservando a visualização do material para os integrantes vinculados ao grupo responsável.
+- [x] Permitir ao coordenador selecionar um material da área de produção e disponibilizá-lo formalmente para revisão.
+- [x] Criar uma área de revisão da atividade com material vigente, histórico de versões, revisores, comentários e estado de cada apontamento.
+- [x] Permitir que revisores apontados comentem, solicitem ajustes e registrem parecer, com resposta e resolução pelo coordenador responsável.
+- [x] Exibir na ficha da atividade os revisores alocados, o material em revisão, o andamento da revisão e os comentários pendentes.
+- [x] Modelar interfaces e escopos sobrepostos entre duas ou mais seções, com grupos envolvidos, responsável, prioridade, prazo, status e registro de resolução.
+- [x] Permitir que coordenadores e administradores criem, atualizem, comentem e resolvam interfaces entre seções, mantendo histórico auditável.
+- [x] Criar uma página de gestão de interfaces com filtros por seção, grupo, prioridade e status, além de visão clara das partes envolvidas.
+- [x] Exibir nas fichas das atividades e seções as interfaces abertas relacionadas e seus encaminhamentos.
+- [x] Aplicar migrações preservando materiais, revisões, comentários, equipe, atividades e dados existentes.
+- [x] Cobrir por testes as permissões de grupo, coordenação e revisor, o ciclo de revisão e o ciclo de resolução de interfaces.
+- [x] Validar TypeScript, testes, build, responsividade e ausência de novos erros de execução.
+- [x] Salvar e entregar um checkpoint com revisão colaborativa, revisores e gestão de interfaces.
+- [x] Corrigir o diálogo da página de atividades que abre sem `DialogTitle`, garantindo um nome acessível para leitores de tela.
+- [x] Cobrir por teste a abertura dos diálogos de atividades sem avisos de acessibilidade do Radix.
+- [x] Validar a correção com TypeScript, testes e inspeção do console, e salvar um checkpoint corretivo.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: modelar avaliações de gestão persistidas dentro da plataforma.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: restringir a geração e consulta de avaliações integradas aos administradores.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: automatizar a coleta recorrente de evidências dentro da aplicação.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: gerar avaliações recorrentes com IA dentro da aplicação.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: armazenar histórico comparável de avaliações na aplicação.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: criar uma página editorial de Avaliação da Gestão.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: exibir o plano de 30/60/90 dias em uma nova página da plataforma.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: permitir novas avaliações sob demanda e consulta ao histórico.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: testar a funcionalidade integrada de avaliações recorrentes.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: validar a funcionalidade integrada de avaliações recorrentes.
+- [x] Escopo substituído pelo pedido posterior de auditoria pontual: entregar um checkpoint da funcionalidade integrada de avaliações recorrentes.
+- [x] Criar e entregar um prompt reutilizável para avaliar a plataforma sob a ótica da gestão da execução do Estudo BNDES e priorizar melhorias.
+- [x] Auditar os fluxos atuais da plataforma por perfil, módulo e etapa da execução do estudo, com evidências verificáveis.
+- [x] Avaliar a qualidade e a completude dos dados atuais de atividades, equipe, horas, materiais, revisões, interfaces e notificações.
+- [x] Pontuar a maturidade da gestão da execução nas dimensões definidas pelo prompt e explicitar fatos, inferências, hipóteses e lacunas.
+- [x] Identificar causas-raiz, riscos gerenciais e falhas de integração entre módulos que prejudiquem prazo, capacidade, qualidade ou coerência das 21 seções.
+- [x] Priorizar melhorias P0–P3 e especificar histórias de usuário, critérios de aceite, indicadores e roteiro de 30/60/90 dias.
+- [x] Entregar relatório consolidado da auditoria com as três mudanças de maior impacto recomendadas para os próximos 30 dias.
+- [x] Extrair do anexo `Estrutura-Relatorio_1.docx` a hierarquia completa de seções, subseções e temas do relatório.
+- [x] Confrontar a estrutura oficial do anexo com as seções, atividades e títulos atualmente cadastrados na plataforma.
+- [x] Definir e documentar o mapeamento canônico entre temas do relatório, grupos participantes, coordenadores e demais integrantes.
+- [x] Reorganizar a equipe nos nove grupos informados: Núcleo, AQUAPAR, IE-UFRJ, FMM, Fluvial, CN Brasil/Estaleiros, Defesa e CN Militar, Offshore e Descarbonização.
+- [x] Atualizar seções, atividades, responsáveis e grupos no domínio e no banco sem perder horas, revisores, materiais, comentários, interfaces ou históricos existentes.
+- [x] Ajustar as telas de equipe, atividades, painel, produção e interfaces para refletirem o novo escopo e a nova distribuição de responsabilidades.
+- [x] Cobrir por testes o novo escopo, os nove grupos, os coordenadores e o mapeamento de responsabilidade por seção.
+- [x] Validar a consistência do banco, permissões, TypeScript, testes, build, responsividade e ausência de novos erros.
+- [x] Documentar o escopo e a matriz de responsabilidades resultantes e salvar um novo checkpoint verificável.
+- [x] Documentar a hierarquia completa extraída do anexo, incluindo subseções e temas de cada capítulo, além das 29 frentes principais.
+- [x] Preservar funcionalmente a alocação anterior de 10 horas sem violar a nova regra de integrantes por grupo e revalidar as horas antes e depois da migração.
+- [x] Adicionar teste automatizado que verifique o grupo responsável esperado para cada uma das 29 frentes oficiais.
+- [x] Mapear as descrições oficiais do anexo para cada uma das 29 frentes da Apresentação e dos Tomos I a IV.
+- [x] Armazenar no domínio e no banco as descrições oficiais, preservando separadamente eventuais descrições personalizadas das atividades.
+- [x] Exibir a descrição oficial completa na ficha de cada atividade e disponibilizá-la nos fluxos de consulta relevantes.
+- [x] Cobrir por testes a presença de descrição oficial não vazia em todas as 29 frentes e a preservação de textos personalizados.
+- [x] Validar banco, TypeScript, testes, build, responsividade e ausência de novos erros após a inclusão das descrições.
+- [x] Documentar e salvar um checkpoint verificável com as descrições oficiais dos itens do estudo.
+- [x] Exibir as descrições oficiais também no panorama das frentes do painel e no escopo sob coordenação de cada grupo.
+- [x] Validar por teste e inspeção os pontos adicionais de consulta das descrições fora da página de Atividades.
+- [x] Adicionar teste automatizado que prove que a sincronização das descrições oficiais não altera notas personalizadas das atividades.
+- [x] Registrar evidência de persistência de uma nota personalizada antes e depois da sincronização canônica.
+- [x] Inventariar títulos, subtítulos, chamadas e textos introdutórios das páginas para identificar metáforas, incentivos e adjetivos promocionais.
+- [x] Substituir os títulos principais por nomes institucionais e descritivos das respectivas áreas funcionais.
+- [x] Reescrever subtítulos e descrições de cabeçalho com linguagem objetiva, informativa e sem tom promocional.
+- [x] Padronizar a nomenclatura institucional entre navegação, cabeçalhos, estados vazios e diálogos relacionados.
+- [x] Atualizar os testes de interface afetados pela nova redação e adicionar cobertura da nomenclatura principal.
+- [x] Validar TypeScript, testes, build, páginas em desktop e celular e ausência de novos erros.
+- [x] Documentar e salvar um checkpoint verificável com a linguagem institucional revisada.
+- [x] Revisar e alinhar os rótulos da navegação lateral à nomenclatura institucional dos cabeçalhos.
+- [x] Auditar e ajustar todos os títulos e descrições de estados vazios e diálogos das páginas principais.
+- [x] Registrar por varredura textual a ausência de chamadas metafóricas, promocionais ou de incentivo nos elementos revisados.
+- [x] Auditar o sistema visual atual, os componentes compartilhados e os padrões de densidade, contraste e hierarquia das oito páginas.
+- [x] Definir tokens de cor, tipografia, espaçamento, bordas, superfícies e estados para a direção Relatório técnico + Painel executivo.
+- [x] Reestruturar o layout global e a navegação para melhorar orientação, leitura e priorização de alertas.
+- [x] Redesenhar cabeçalhos, indicadores, filtros, tabelas, cartões, estados vazios e diálogos compartilhados.
+- [x] Aplicar o novo sistema visual às páginas Visão geral, Atividades, Cronograma, Equipe, Biblioteca, Produção, Interfaces e Administração.
+- [x] Preservar todas as funcionalidades, permissões, formulários, dados, nomes acessíveis e fluxos existentes.
+- [x] Atualizar ou ampliar testes de interface para os novos componentes e estruturas visuais.
+- [x] Validar TypeScript, testes, build, contraste, navegação por teclado e responsividade em desktop e celular.
+- [x] Documentar as decisões de design e salvar um checkpoint verificável da nova versão visual.
+- [x] Verificar se o endereço fornecido aponta para uma pasta, arquivo ou apenas um recurso visual do Google.
+- [x] Carregar na Biblioteca o conteúdo importável do endereço ou solicitar o link compartilhável correto quando a fonte não expuser arquivos.
+- [x] Concluir o redesign dos estados vazios e dos diálogos remanescentes, eliminando os padrões visuais antigos identificados por varredura textual.
+- [x] Executar validação funcional pós-redesign por módulo e perfil, cobrindo formulários, permissões, dados persistidos e nomes acessíveis.
+- [x] Registrar no projeto as evidências visuais, funcionais e técnicas do redesenho e da importação da Biblioteca.
+- [x] Diagnosticar a causa da tela em branco após a sincronização da prévia, verificando servidor, navegador, rede e artefatos de build.
+- [x] Corrigir o carregamento inicial da aplicação e adicionar cobertura de regressão para a causa identificada.
+- [x] Validar a rota inicial e os módulos autenticados em desktop e celular, sem erros de navegador, servidor ou rede.
+- [x] Salvar e entregar um checkpoint corretivo verificável para a tela em branco.
+- [x] Distinguir no modelo a coordenação responsável da execução delegada a integrantes do mesmo grupo.
+- [x] Permitir uma ou mais atribuições por atividade, com integrante, escopo da responsabilidade, indicação de liderança e horas alocadas.
+- [x] Restringir a criação e alteração das delegações ao administrador e ao coordenador responsável pela atividade.
+- [x] Impedir delegação para integrante de outro grupo e preservar alocações históricas existentes.
+- [x] Exibir nas fichas e listas a coordenação, a liderança de execução, os demais responsáveis delegados, seus escopos e horas.
+- [x] Permitir que integrantes com conta vinculada consultem somente as atividades que lhes foram delegadas, sem acesso administrativo.
+- [x] Atualizar o diálogo de distribuição de horas para incluir responsabilidades e liderança de execução.
+- [x] Cobrir por testes as permissões, os limites de grupo, a persistência, a preservação histórica e o acesso dos delegados.
+- [x] Validar banco, TypeScript, testes, build, desktop, celular e ausência de novos erros.
+- [x] Documentar e salvar um checkpoint verificável com a delegação de responsabilidades.
+- [x] Inventariar a planilha, o CSV e o plano de atividades e comparar códigos, títulos, responsáveis, apoios, entregas e dependências com as 29 frentes do portal.
+- [x] Definir e documentar a precedência entre os anexos quando houver divergências de conteúdo ou planejamento.
+- [x] Migrar as atividades com responsáveis principais, apoios, entregas no Portal Naval e dependências sem perder descrições, revisões, alocações e histórico.
+- [x] Converter responsáveis funcionais M1, M2 e M3 em atribuições de planejamento documentadas, sem substituir os responsáveis nominais do estudo até confirmação.
+- [x] Registrar os três anexos como referências na Biblioteca, com links e classificação temática adequados.
+- [x] Exibir na ficha de atividade os apoios, entregas e dependências consolidados a partir dos anexos.
+- [x] Cobrir por testes a consolidação das 29 frentes, a preservação de dados e a apresentação dos campos de planejamento.
+- [x] Validar dados, banco, TypeScript, testes, build, desktop, celular e ausência de novos erros.
+- [x] Documentar a atualização e salvar um checkpoint verificável com os dados consolidados dos anexos.
+- [x] Definir a visualização temporal dos 36 itens com escala mensal, marcos, cores de status e indicadores de prazo.
+- [x] Disponibilizar datas de início e término por item, mantendo compatibilidade com o prazo final já cadastrado.
+- [x] Permitir que administrador e coordenador responsável ajustem datas somente das atividades sob sua gestão.
+- [x] Exibir no cronograma código do plano, item, grupo, responsável, período, progresso e estado de prazo.
+- [x] Adicionar filtros por Tomo, grupo, responsável funcional, status e intervalo temporal, com acesso à ficha da atividade.
+- [x] Manter uma alternativa de agenda acessível e responsiva para telas menores, sem exigir arrastar elementos.
+- [x] Cobrir por testes as regras de período, filtros, permissões de atualização e navegação para a ficha.
+- [x] Validar banco, TypeScript, testes, build, desktop, celular, contraste, teclado e ausência de novos erros.
+- [x] Documentar e salvar um checkpoint verificável com o cronograma de itens.
+- [x] Extrair do plano anexado as interfaces explícitas entre itens, dependências de coordenação e entregáveis por mês.
+- [x] Registrar interfaces identificadas no plano na gestão de interfaces, com seções, grupos, responsável, prioridade e encaminhamento inicial.
+- [x] Exibir o número de entregáveis previstos por mês na tabela e no cabeçalho do cronograma mestre.
+- [x] Criar uma seção de atividades de campo e divulgação com visitas a estaleiros no Brasil, China, Índia e Coreia, coleta de fontes primárias, entrevistas, apresentações de relatórios e para a equipe, e audiências públicas.
+- [x] Permitir definir data inicial e marcos intermediários diretamente no item do cronograma, respeitando as permissões de administrador e coordenador.
+- [x] Destacar visualmente tarefas atrasadas, sem início, com prazos próximos e com sobreposição de períodos no cronograma.
+- [x] Implementar exportação do cronograma filtrado em PDF e imagem para compartilhamento, com cabeçalho, intervalo e legenda de estados.
+- [x] Cobrir por testes interfaces importadas, entregáveis mensais, marcos, alertas, permissões e exportação.
+- [x] Validar banco, TypeScript, testes, build, desktop, celular, acessibilidade, exportação e ausência de novos erros.
+- [x] Documentar e salvar um checkpoint verificável com a ampliação do cronograma e das atividades de campo.
+- [x] Inventariar novamente a pasta conectada do Google Drive e comparar seu conteúdo atual com o inventário anterior.
+- [x] Identificar documentos novos, removidos ou atualizados em relação aos 328 registros já importados na Biblioteca.
+- [x] Importar alterações de forma deduplicada, preservando classificação e referências existentes.
+- [x] Validar a Biblioteca após a reconciliação e documentar o resultado da sincronização.
+- [x] Salvar um checkpoint verificável da reconciliação da pasta conectada do Google Drive.
+- [x] Extrair integralmente a Estrutura do Relatório 1 — V1 e confrontá-la com as 29 frentes, os 36 itens e a matriz vigente.
+- [x] Produzir a matriz canônica de diferenças da V1, incluindo regras explícitas de preservação de históricos e vínculos operacionais.
+- [x] Atualizar domínio, dados e vínculos das atividades conforme a V1, sem apagar horas, delegações, revisões, materiais, comentários, interfaces, marcos ou evidências.
+- [x] Ajustar os módulos afetados e cobrir as alterações canônicas com testes automatizados.
+- [x] Validar banco, TypeScript, testes, build e visualizações nos dispositivos previstos.
+- [x] Documentar a reconciliação da V1, salvar o checkpoint e entregar a versão revisada do portal.
+- [x] Extrair e classificar as atividades explicitamente previstas na Estrutura do Relatório 1 — V1.
+- [x] Definir o mapeamento das novas atividades com frentes, itens de execução, grupos e coordenação formal.
+- [x] Incluir as atividades adicionais no Portal Naval sem substituir registros operacionais existentes.
+- [x] Cobrir a inclusão com testes, validar a interface e documentar a atualização.
+- [x] Salvar e entregar o checkpoint com as atividades previstas no documento V1.
+- [x] Analisar os vínculos atuais de materiais, produção e campo por atividade para definir o campo de link.
+- [x] Implementar persistência, permissões e edição de links de materiais e evidências por atividade.
+- [x] Exibir os links diretamente nos cards e fichas de atividades com abertura segura.
+- [x] Cobrir o fluxo com testes, validar desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint com os links de materiais e evidências.
+- [x] Extrair integralmente os tópicos de cada capítulo e gerar a decomposição numerada das atividades de gestão.
+- [x] Definir a migração que preserva atividades existentes e cria atividades-filhas por capítulo, com códigos e vínculos canônicos.
+- [x] Permitir executor e revisor de qualquer integrante ativo, mantendo o coordenador como responsável formal pela frente.
+- [x] Integrar os links de materiais e evidências às atividades e às interfaces relacionadas.
+- [x] Implementar carregamento de arquivos dos autores e pré-análise de inconsistências por IA nas interfaces.
+- [x] Exibir resultados de pré-análise, encaminhamentos e histórico nas fichas e na gestão de interfaces.
+- [x] Cobrir a decomposição, permissões e pré-análise com testes; validar banco, build e interfaces responsivas.
+- [x] Documentar, salvar e entregar o checkpoint da gestão detalhada por atividade.
+- [x] Mapear todas as listagens que tratam atividades-filhas como registros independentes de acompanhamento.
+- [x] Ocultar as atividades-filhas da lista principal e apresentá-las como etapas de execução dentro da ficha da atividade-mãe.
+- [x] Concentrar no cartão-ficha da atividade-mãe o acompanhamento de estado, responsáveis, revisores, prazos, materiais e evidências de cada etapa.
+- [x] Atualizar testes, validar em desktop e celular e documentar a navegação hierárquica.
+- [x] Salvar e entregar o checkpoint com as etapas internas de execução.
+- [x] Revisar a estrutura do deck de testadores e consolidar as alterações recentes do Portal Naval.
+- [x] Atualizar os slides com atividades-mãe, etapas de execução, evidências e pré-análise de interfaces por IA.
+- [x] Revisar a narrativa de testes, apresentar o deck atualizado e entregar o material.
+- [x] Mapear divergências de capítulos, itens e subitens entre Visão Geral, Gestão de Atividades e o catálogo V1.
+- [x] Definir a hierarquia única V1 e suas regras de contagem, navegação e preservação de registros.
+- [x] Atualizar os dados e as telas afetadas para exibir a mesma hierarquia em todos os módulos.
+- [x] Cobrir a compatibilização com testes, validar as interfaces responsivas e documentar a reconciliação.
+- [x] Salvar e entregar o checkpoint da hierarquia V1 compatibilizada.
+- [x] Comparar a divisão efetiva de capítulos, atividades-mãe e etapas exibida nas duas páginas.
+- [x] Criar uma projeção canônica compartilhada para a estrutura hierárquica utilizada por Visão Geral e Gestão de Atividades.
+- [x] Atualizar as duas páginas para exibir os mesmos capítulos, atividades e etapas na mesma ordem.
+- [x] Cobrir a equivalência com testes, validar a interface e documentar a correção.
+- [x] Salvar e entregar o checkpoint da equivalência integral entre Visão Geral e Gestão de Atividades.
+- [x] Validar o fluxo de identidade e a possibilidade de pré-cadastro seguro de usuários por e-mail.
+- [x] Cadastrar os contatos informados como colaboradores, preservando o administrador existente.
+- [x] Verificar unicidade, perfil inicial e compatibilidade com a autenticação do portal.
+- [x] Documentar o cadastro inicial e salvar o checkpoint correspondente.
+- [x] Mapear usuários ativos, pré-cadastros e permissões já existentes para a administração centralizada.
+- [x] Implementar consultas e mutações protegidas para promover, rebaixar, revogar e reativar acessos com trilha de auditoria.
+- [x] Criar tela administrativa de usuários com busca, filtros, estados de acesso e edição de perfil.
+- [x] Cobrir permissões, proteção do administrador e alterações de perfil com testes; validar em desktop e celular.
+- [x] Documentar a gestão de usuários e salvar o checkpoint correspondente.
+- [x] Mapear os controles atuais de distribuição de execução e de revisão em cada ficha de atividade.
+- [x] Incluir listas suspensas de integrantes elegíveis para atribuir executores e revisores.
+- [x] Manter coordenação formal, permissões e histórico ao salvar atribuições pelas listas.
+- [x] Cobrir o fluxo com testes, validar em desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint com as listas de executor e revisor.
+- [x] Mapear a elegibilidade de responsável por capítulo e de responsável de execução por atividade.
+- [x] Permitir que qualquer integrante ativo seja responsável pela execução de uma atividade, mantendo somente coordenadores como responsáveis formais de capítulos.
+- [x] Adicionar busca nas listas de executores e revisores e seleção em lote de revisores.
+- [x] Exibir responsável, data e origem de cada atribuição nas fichas das atividades.
+- [x] Cobrir as novas regras e controles com testes, validar desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da ampliação de atribuições e revisão.
+- [x] Mapear a disponibilidade atual de integrantes e o fluxo de mudança de liderança de execução.
+- [x] Exibir disponibilidade relevante nos seletores de executor e revisor antes da atribuição.
+- [x] Exigir e auditar justificativa textual nas transferências de liderança de execução.
+- [x] Cobrir regras e interface com testes, validar em desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint de disponibilidade e justificativa de liderança.
+- [x] Mapear carga atual, transferências de liderança e vínculo de coordenação nas atividades-mãe e interfaces.
+- [x] Destacar integrantes com sobrecarga nas listas suspensas por meio de indicador de cor e texto acessível.
+- [x] Exibir o histórico completo de transferências de liderança e justificativas nas fichas de atividade.
+- [x] Reforçar que coordenadores conduzem execução e interfaces das atividades-mãe, mantendo etapas atribuíveis a qualquer integrante ativo.
+- [x] Cobrir governança e indicadores com testes, validar desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint de sobrecarga, histórico e governança.
+- [x] Mapear os campos e cartões que exibem o coordenador em atividades-mãe e etapas de execução.
+- [x] Exibir o coordenador somente nas atividades-mãe e remover sua replicação visual nas etapas.
+- [x] Permitir e apresentar responsáveis próprios das etapas, escolhidos entre integrantes ativos da equipe.
+- [x] Cobrir a separação de responsabilidades com testes, validar a ficha e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da separação entre coordenação e execução por etapa.
+- [x] Extrair e comparar cronograma, entregas, responsáveis e marcos do XLSM e do plano de trabalho PDF.
+- [x] Definir a matriz canônica de alterações e as regras de preservação para dados operacionais existentes.
+- [x] Atualizar atividades-mãe, etapas, períodos, marcos e dependências conforme os anexos reconciliados.
+- [x] Validar banco, interface e testes; documentar a reconciliação dos anexos.
+- [x] Salvar e entregar o checkpoint da atualização baseada no cronograma e no plano de trabalho.
+- [x] Mapear as etapas sem período oficial, os seminários cadastrados e os produtos transversais com marcos.
+- [x] Criar filtro de etapas sem período e edição rápida de responsável, início e término.
+- [x] Permitir vincular os oito seminários às atividades-mãe e capítulos correspondentes.
+- [x] Exibir marcos intermediários de Portal, Banco de Dados e Sumário Executivo no cronograma.
+- [x] Cobrir os fluxos com testes, validar desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint dos novos fluxos de planejamento e acompanhamento.
+- [x] Mapear os blocos informativos e seu vínculo com fichas de atividades ou frentes.
+- [x] Tornar os blocos relevantes clicáveis, com navegação acessível para a ficha completa correspondente.
+- [x] Preservar permissões de revisão e incluir indicação clara de abertura de ficha.
+- [x] Cobrir a navegação com testes, validar desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint dos blocos clicáveis e fichas completas.
+- [x] Mapear os controles atuais de materiais e evidências disponíveis na ficha completa.
+- [x] Adicionar atalhos rápidos para anexar materiais e evidências diretamente da ficha.
+- [x] Preservar permissões, validações e histórico nos atalhos de anexação.
+- [x] Cobrir os atalhos com testes, validar em desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint dos atalhos de materiais e evidências.
+- [x] Mapear os blocos de atividade e os campos de prazo exibidos em Equipe e grupos.
+- [x] Separar visualmente atividades dentro do prazo, em atenção e atrasadas com cores e rótulos acessíveis.
+- [x] Tornar os blocos relevantes clicáveis para abrir a ficha completa da atividade.
+- [x] Cobrir a sinalização e a navegação com testes, validar a interface e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da aba Equipe e grupos atualizada.
+- [x] Mapear os marcadores M1–M6 e a filtragem mensal de atividades da Visão Geral.
+- [x] Tornar os marcadores mensais clicáveis e abrir a lista de atividades relacionadas ao período.
+- [x] Garantir que os itens da lista mensal abram as fichas completas correspondentes.
+- [x] Cobrir a navegação mensal com testes, validar a interface e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da navegação mensal da Visão Geral.
+- [x] Mapear as permissões atuais de inclusão e edição de integrantes na aba Equipe e grupos.
+- [x] Permitir ao administrador incluir integrantes e abrir a edição integral das respectivas fichas.
+- [x] Preservar a salvaguarda de coordenação e validar controles administrativos na interface.
+- [x] Cobrir o fluxo com testes, validar em desktop e celular e documentar a alteração.
+- [x] Salvar e entregar o checkpoint das permissões administrativas de integrantes.
+- [x] Extrair e confrontar o índice analítico final da V1 com capítulos, atividades-mãe e etapas atuais.
+- [x] Produzir a matriz canônica de itemização conforme o índice e registrar regras de preservação.
+- [x] Atualizar a hierarquia do portal com migração aditiva e auditável, sem apagar registros existentes.
+- [x] Compatibilizar Visão Geral, Atividades, Cronograma, Equipe e Interfaces com a nova itemização.
+- [x] Cobrir a reconciliação com testes, validar desktop e celular e documentar a atualização.
+- [x] Salvar e entregar o checkpoint da itemização conforme o índice analítico.
+- [x] Identificar as 44 etapas suplementares e auditar materiais, alocações, revisões, marcos e interfaces dependentes.
+- [x] Registrar a autorização de remoção e capturar snapshots auditáveis antes da operação transacional.
+- [x] Remover as etapas suplementares e seus vínculos dependentes conforme a autorização do usuário.
+- [x] Validar as 286 etapas analíticas remanescentes, as telas afetadas e a documentação de remoção.
+- [x] Salvar e entregar o checkpoint da remoção das etapas suplementares.
+- [x] Estruturar o plano de revisão do portal com simplificação de telas e workflow documental escalonado.
+- [x] Redigir e entregar o prompt reutilizável para validação da governança de elaboração, revisão e aprovação.
+- [x] Reproduzir a consulta da Visão Geral e identificar a rota que devolve HTML em vez de JSON.
+- [x] Corrigir a configuração de rota ou cliente tRPC responsável pela resposta inválida.
+- [x] Adicionar teste de regressão para a consulta da Visão Geral e validar o carregamento autenticado.
+- [x] Documentar a correção e salvar o checkpoint correspondente.
+- [x] Recuperar o prompt existente e consolidar as regras de governança documental e de cronograma.
+- [x] Entregar a versão completa e reutilizável do prompt de revisão do Portal Naval.
+- [x] Inventariar telas, dados, atividades, documentos e fluxos de revisão do Portal Naval.
+- [x] Avaliar governança documental, responsabilidades, interfaces e aderência ao cronograma.
+- [x] Definir arquitetura simplificada, prioridades, critérios de aceite e plano de implantação.
+- [x] Consolidar e entregar o diagnóstico do plano de revisão para validação da coordenação.
+- [x] Modelar a decisão auditável de aprovação para início da implementação do pacote P0.
+- [x] Criar o componente interativo de checklist de revisão por seção e capítulo, com responsáveis e prazos.
+- [x] Modelar coordenadores e substitutos autorizados de cada tomo, preservando a hierarquia editorial vigente.
+- [x] Implementar procedimentos protegidos, validações e trilha de auditoria para aprovação, checklist e governança de tomos.
+- [x] Exibir controles administrativos para aprovação do P0, acompanhamento do checklist e gestão de tomos.
+- [x] Cobrir novas regras com testes, validar banco, interface desktop/mobile e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da governança operacional do workflow documental.
+- [x] Extrair o índice analítico do PDF Plano de Trabalho — UFRJ, 26 de agosto, que passa a ser a única referência estrutural do estudo, e registrar sua precedência.
+- [x] Inventariar as atividades, etapas, vínculos operacionais e referências estruturais que divergem do índice analítico único.
+- [x] Simplificar capítulos, atividades-mãe e etapas exclusivamente conforme o índice analítico, preservando dados e histórico auditável.
+- [x] Retirar referências estruturais concorrentes da interface, do domínio e da documentação operacional aplicável.
+- [x] Permitir que todos os integrantes ativos assumam, conforme designação, os papéis de coordenador, autor, executor, revisor e substituto.
+- [x] Atualizar permissões, seletores e telas para a estrutura e os papéis simplificados.
+- [x] Validar a reconciliação, integridade, testes, interface e documentação da alteração.
+- [x] Salvar e entregar o checkpoint da simplificação pelo índice analítico e da ampliação de papéis.
+- [x] Extrair os textos descritivos das seções da Estrutura do Relatório 1 — V1 e mapeá-los aos capítulos canônicos ativos.
+- [x] Definir regras de precedência e preservação para inserir descrições V1 sem alterar a hierarquia do PDF de 26 de agosto.
+- [x] Atualizar os campos de descrição das atividades-mãe canônicas e registrar a alteração de forma auditável.
+- [x] Validar o conteúdo, a integridade da estrutura, os testes e a apresentação das descrições nas fichas.
+- [x] Salvar e entregar o checkpoint das descrições das atividades conforme a Estrutura do Relatório 1 — V1.
+- [x] Mapear os controles existentes de responsáveis, revisores, checklist, descrição e prazos oficiais do cronograma.
+- [x] Definir regras de elegibilidade, auditoria e cálculo de prazo dos itens de revisão por capítulo.
+- [x] Implementar atalhos de atribuição de responsável e revisor na ficha de cada atividade-mãe.
+- [x] Aplicar prazos de checklist com base no período oficial das atividades no cronograma do projeto.
+- [x] Implementar edição rápida e auditável de descrição nas fichas de atividade.
+- [x] Cobrir os novos controles com testes e validar dados, permissões, interface e documentação.
+- [x] Salvar e entregar o checkpoint da atribuição rápida, prazos de checklist e edição de descrição.
+- [x] Mapear os dados de responsáveis, revisores, capítulos e checklists e os recursos de exportação existentes.
+- [x] Definir filtros por responsável e revisor, colunas de status e permissões para exportação.
+- [x] Implementar consultas de status filtrável e exportação do relatório em CSV e PDF.
+- [x] Integrar filtros pesquisáveis e comandos de exportação às páginas de atividades e capítulos.
+- [x] Validar o conteúdo dos arquivos, a aderência dos filtros, testes, interface e documentação.
+- [x] Salvar e entregar o checkpoint dos filtros de atribuição e exportação de status.
+- [x] Mapear os códigos, títulos e links duplicados exibidos nos cartões e fichas da Gestão de Interfaces.
+- [x] Definir a convenção única de identificação hierárquica para capítulos, itens e fichas relacionadas.
+- [x] Simplificar a apresentação de identificadores na Gestão de Interfaces, preservando a navegação para a ficha completa.
+- [x] Cobrir a identificação simplificada com testes, validar interface e documentar a alteração.
+- [x] Salvar e entregar o checkpoint da identificação simplificada das interfaces.
+- [x] Mapear dados de tomos, situações de interface e nomes de grupos exibidos nas telas atuais.
+- [x] Definir indicadores do resumo por tomo, o critério de bloqueio de interface e nomes curtos dos grupos.
+- [x] Implementar agregações e regras de apresentação para tomos, bloqueios e rótulos concisos de grupo.
+- [x] Atualizar Visão Geral, Gestão de Interfaces e componentes de grupo com os novos elementos visuais.
+- [x] Validar dados, testes, interface desktop/mobile e documentação da melhoria de acompanhamento.
+- [x] Salvar e entregar o checkpoint do resumo por tomo, bloqueios e nomenclatura simplificada.
+- [x] Localizar o formulário de ficha que envia rótulo com menos de três caracteres.
+- [x] Validar e normalizar o rótulo na interface antes da mutação correspondente.
+- [x] Adicionar teste de regressão, validar TypeScript e build da correção.
+- [x] Salvar e entregar o checkpoint da correção de rótulo inválido.
+- [x] Mapear os prazos oficiais, marcos existentes, coordenadores e interfaces afetados pelo calendário editorial de dias 15 e 30.
+- [x] Definir regras de entrega interna no dia 15, consolidação e editoração entre os dias 16 e 29 e entrega ao BNDES no dia 30.
+- [x] Registrar Professor Floriano Pires como coordenador do projeto e Engenheiro Cassiano Marins como substituto, mantendo a definição de tomos sob responsabilidade de Floriano.
+- [x] Classificar interfaces como prioritárias ou não prioritárias e bloquear aprovação somente quando houver interface prioritária não resolvida.
+- [x] Atualizar indicadores e controles do workflow para exibir os novos prazos, governança e bloqueios.
+- [x] Validar dados, cronograma, permissões, testes, interface e documentação; salvar a versão publicada.
+- [x] Inventariar a hierarquia ativa, os papéis, os materiais, revisões, interfaces e estados documentais existentes.
+- [x] Confrontar o fluxo atual com a execução, revisão, consolidação e aprovação por seção, capítulo, tomo e projeto.
+- [x] Definir o workflow documental necessário, as decisões humanas obrigatórias e o tratamento de interfaces remanescentes.
+- [x] Documentar o diagnóstico de aderência e submeter as definições de governança que exigem validação da coordenação.
+- [x] Implementar os ajustes de workflow aprovados, preservando permissões, materiais e histórico auditável.
+- [x] Validar a implementação, salvar a versão publicada e apresentar o resultado.
+- [x] Inventariar as alterações previstas nos prompts e verificar sua visibilidade na versão publicada por perfil de acesso.
+- [x] Diagnosticar divergências entre implementação, permissões, dados disponíveis e apresentação do workflow nas telas.
+- [x] Corrigir bloqueios de visibilidade e tornar claramente identificáveis os controles de fluxo, prazos e aprovação.
+- [x] Validar a experiência corrigida, documentar a auditoria e publicar o checkpoint correspondente.
+- [x] Mapear o subtítulo ausente do Tomo II, os blocos repetidos na Gestão de Atividades e os indicadores da Visão Geral.
+- [x] Definir a apresentação concisa de tomos, capítulos e seções e o resumo do fluxo documental por nível.
+- [x] Corrigir o subtítulo do Tomo II e reduzir informações repetidas nas fichas e listagens de atividades.
+- [x] Destacar na Visão Geral as quantidades de tomos, capítulos e seções e o percurso de controle documental.
+- [x] Validar conteúdo, navegação, testes, responsividade e documentação da revisão visual.
+- [x] Salvar e entregar o checkpoint da simplificação do controle documental.
+- [x] Mapear os validadores de revisão, os cartões de grupos e os capítulos e seções do Tomo II afetados.
+- [x] Impedir que o executor de uma atividade seja designado como revisor do mesmo trabalho, em interface e servidor.
+- [x] Reorganizar a tela Equipe e grupos com visão inicial colapsada por grupo e expansão para coordenador e participantes.
+- [x] Revisar e atualizar os subtítulos editoriais dos tomos para aplicação uniforme na interface.
+- [x] Transferir as dimensões de análise fornecidas para a descrição do Tomo II, Capítulo 2 e atualizar a primeira seção para Japão, preservando os vínculos auditáveis.
+- [x] Validar dados, permissões, testes, interface e documentação; salvar a versão publicada.
+- [x] Extrair do documento Estrutura do Relatório 1 — V1 as descrições completas de todos os capítulos e mapeá-las aos capítulos canônicos ativos.
+- [x] Comparar os textos já apresentados nas fichas e complementar as descrições sem alterar títulos, códigos, seções ou prazos.
+- [x] Atualizar de forma auditável as descrições completas dos capítulos, preservando materiais, revisões, interfaces e histórico.
+- [x] Validar a presença das descrições completas nas fichas, a integridade, os testes, a interface e a documentação.
+- [x] Salvar e entregar o checkpoint das descrições completas dos capítulos conforme a Estrutura do Relatório 1 — V1.
+- [x] Extrair os Anexos A e B do Plano de Trabalho BNDES de 26 de agosto e registrar sua precedência como fonte única.
+- [x] Confrontar os 30 capítulos, as seções e as descrições ativas com o Anexo B e o Anexo A, respectivamente.
+- [x] Confirmar a matriz de descrições do Anexo A e os 30 capítulos atualmente ativos antes da atualização limitada aos textos.
+- [x] Substituir somente `activities.description` pelos textos completos do Anexo A, preservando estrutura, prazos, vínculos e histórico auditável.
+- [x] Validar as descrições atualizadas, a integridade de vínculos, testes, documentação e a versão publicada.
+- [x] Confirmar a matriz de descrições do Anexo A e os 30 capítulos atualmente ativos antes da atualização limitada aos textos.
+- [x] Substituir somente `activities.description` pelos textos completos do Anexo A, preservando estrutura, prazos, vínculos e histórico auditável.
+- [x] Validar as descrições atualizadas, a integridade de vínculos, testes, documentação e a versão publicada.
+- [x] Escopo de correção estrutural substituído por orientação expressa da coordenação: atualizar somente as descrições completas do Anexo A, preservando as divergências estruturais previamente auditadas.
+- [x] Documentar evidências da verificação e validar a atualização limitada às descrições, sem declarar compatibilidade estrutural integral.
+- [x] Mapear as seções, descrições e vínculos operacionais dos Capítulos II.2 e II.4 antes da reorganização editorial.
+- [x] Definir a descrição de dimensões analíticas e a sequência de seções por país ou unidade de análise para II.2 e II.4.
+- [x] Atualizar II.2 e II.4 de forma transacional, preservando códigos, responsabilidades, prazos, materiais, revisões, interfaces e histórico auditável.
+- [x] Atualizar as projeções e telas para a composição editorial reorganizada dos dois capítulos.
+- [x] Validar estrutura, vínculos, testes, interface e documentação; salvar a versão publicada.
+- [x] Inspecionar o one-pager de fluxo documental para identificar sobreposições e elementos visuais excessivos.
+- [x] Simplificar a editoração do one-pager e corrigir todas as sobreposições identificadas.
+- [x] Gerar notas detalhadas de apresentação para coordenadores explicarem o fluxo documental.
+- [x] Apresentar a versão revisada do one-pager com roteiro de apoio.
+- [x] Reorganizar o one-pager para trazer a estrutura do trabalho ao cabeçalho, remover o calendário e posicionar o fluxo na base.
+- [x] Acrescentar slide de estrutura da equipe, responsabilidades de grupos e próximo passo de alinhamento dos executores por seção.
+- [x] Revisar a apresentação atualizada e suas notas de apoio antes da entrega.
+- [x] Definir o procedimento de primeiro acesso ao Portal Naval e incluí-lo no segundo slide da apresentação.
+- [x] Regenerar notas e apresentar a versão atualizada com orientação de primeiro acesso.
+- [x] Extrair as definições de grupos e papéis do Plano de Trabalho BNDES e inventariar a distribuição atual no portal.
+- [x] Comparar grupos, participantes, coordenações e responsabilidades do plano com os registros ativos da plataforma.
+- [x] Aplicar de forma auditável os ajustes aprovados de grupos e papéis, preservando usuários, vínculos e histórico.
+- [x] Gerar roteiro completo e detalhado para os dois slides de apresentação do Portal Naval.
+- [x] Validar distribuição, permissões, roteiro e apresentação antes da entrega.
+- [x] Mapear os estados documentais e os dados ativos usados para os KPIs de conclusão.
+- [x] Definir as contagens por fase, os indicadores executivos e as regras de atualização do dashboard.
+- [x] Implementar a agregação protegida de KPIs dos documentos por estado do workflow.
+- [x] Criar a página de KPIs, integrá-la à navegação e conectar indicadores às atividades filtradas.
+- [x] Cobrir o dashboard com testes, validar dados e interface e documentar a funcionalidade.
+- [x] Salvar e entregar o checkpoint do dashboard de KPIs documentais.
+- [x] Extrair e inventariar as atividades, os grupos, os responsáveis, os prazos e a narrativa dos anexos de atividades, cronograma e kick-off.
+- [x] Confrontar os anexos com a estrutura, grupos, cronograma e apresentação atuais do portal.
+- [x] Definir os ajustes necessários, suas precedências documentais e as regras de preservação de dados.
+- [x] Aplicar atualizações aprovadas no portal e na apresentação, com trilha auditável.
+- [x] Validar dados, permissões, cronograma, testes, apresentação e documentação antes da publicação.
+- [x] Salvar e entregar o checkpoint da revisão baseada nos anexos de atividades, cronograma e kick-off.
+- [x] Mapear a conversão dos nove grupos atuais para os grupos funcionais G1–G11 e suas composições da planilha.
+- [x] Definir a migração auditável de grupos e o uso dos XLSM como referência de atribuições e cronograma, mantendo 251 seções.
+- [x] Aplicar a reorganização para G1–G11 e exibir as referências de grupos e cronograma sem alterar a estrutura de seções.
+- [x] Atualizar a apresentação de equipe para refletir G1–G11 e o uso das matrizes de referência.
+- [x] Validar dados, permissões, estrutura de 251 seções, testes, telas e apresentação; salvar a versão publicada.
+- [x] Mapear as seções pendentes associadas a G4 e G10, os integrantes elegíveis e os controles de atribuição existentes.
+- [x] Definir a seleção em lote, permissões administrativas, confirmação e trilha de auditoria das designações.
+- [x] Implementar a operação protegida de atribuição em lote para executores de seções G4 e G10.
+- [x] Criar o painel de seleção e confirmação em lote na Gestão de Atividades.
+- [x] Validar atribuições, permissões, histórico, testes, interface e documentação; salvar a versão publicada.
+- [x] Localizar e analisar o PowerPoint de kick-off e confrontar seus participantes com a composição atual dos grupos.
+- [x] Definir a matriz de atualização de integrantes e os impactos em vínculos, permissões, alocações e histórico auditável.
+- [x] Atualizar integrantes, grupos e projeções institucionais do Portal Naval conforme a referência de kick-off.
+- [x] Validar dados, permissões, telas e testes; documentar e publicar a atualização.
+- [x] Usar a lâmina de composição da reunião de kick-off como fonte explícita para a reconciliação dos participantes de G1–G11.
+- [x] Extrair a matriz de datas do cronograma XLSM encaminhado ao BNDES em 26 de agosto e validar sua cobertura.
+- [x] Confrontar as datas oficiais com atividades, etapas, entregas editoriais, entregas ao BNDES e marcos existentes no Portal Naval.
+- [x] Corrigir apenas divergências comprovadas com snapshots auditáveis, preservando alocações, materiais, revisões, interfaces e histórico.
+- [x] Validar dados, testes e cronograma; documentar e publicar a reconciliação.
+- [x] Diagnosticar a diferença de escala entre o cabeçalho do cronograma, as barras de atividades e os entregáveis mensais.
+- [x] Definir a escala canônica e o critério de contagem de entregáveis por período do cronograma oficial.
+- [x] Implementar o alinhamento do cabeçalho, das barras e dos entregáveis mensais no cronograma.
+- [x] Validar visualmente e por teste a consistência temporal; documentar e publicar a correção.
+- [x] Criar um usuário de teste com perfil de colaborador, sem privilégios administrativos, e validar seu acesso restrito.
+- [x] Verificar e cadastrar Colaborador Teste, colaborador@naval.com, como usuário de teste colaborador ativo.
+- [x] Revisar e atualizar a apresentação resumida do Portal Naval com a composição G1–G11 e o cronograma oficial harmonizado.
+- [x] Incluir os nomes completos dos participantes de cada grupo no slide de equipe e mobilização dos grupos.
+- [x] Simplificar a diagramação dos slides, eliminar espaços vazios e remover regras de controle, participação temática e apoio à mobilização.
+- [x] Substituir o subtítulo do primeiro slide pela sequência Seção, Capítulo, Tomo e Relatório.
+- [x] Demonstrar a navegação e as limitações operacionais do perfil colaborador antes do cadastro do usuário de teste.

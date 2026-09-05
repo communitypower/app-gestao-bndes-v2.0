@@ -1,0 +1,738 @@
+# Terminal Full Output
+# Terminal: test-fieldwork-timeline
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 65592
+# Timestamp: 2026-08-18_15-22-57.082330
+# Original Length: 45891 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[22m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 1755[2mms
+[22m[39m [32m✓[39m [2mserver/[22mactivityPlanCatalog[2m.test.ts[22m[2m (1)[22m[33m 738[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (7)
+[22m [32m✓[39m [2mserver/[22mdelegatedActivityAccess[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mproductionBundle[2m.test.ts[22m[2m (1)
+[22m [31m❯[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (10)
+[22m   [32m✓[39m alocação de revisores por atividade[2m (2)
+[22m   [32m✓[39m escopo de visualização e ciclo de revisão[2m (4)
+[22m   [31m❯[39m gestão e resolução de interfaces entre grupos[2m (4)
+[22m     [32m✓[39m mostra a interface aos grupos envolvidos e oculta do grupo externo
+     [31m×[39m permite ao coordenador responsável criar a interface com duas seções e dois grupos
+     [32m✓[39m permite discussão aos coordenadores envolvidos e bloqueia participantes
+     [31m×[39m reserva a resolução ao coordenador responsável ou administrador
+ [32m✓[39m [2mserver/[22mstudySectionDescriptions[2m.test.ts[22m[2m (2)[22m[33m 395[2mms
+[22m[39m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mactivityPlan[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (8)
+[22m [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (5)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [31m❯[39m [2mclient/src/pages/[22mcalendarTimeline[2m.test.tsx[22m[2m (1)
+[22m   [31m❯[39m cronograma de itens[2m (1)
+[22m     [31m×[39m exibe marco sem início e abre o diálogo de definição de período
+ [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 757[2mms
+[22m[39m [32m✓[39m [2mclient/src/pages/[22mexecutiveDesignSystem[2m.test.ts[22m[2m (2)
+[22m [31m❯[39m [2mclient/src/pages/[22mformalPageTitles[2m.test.ts[22m[2m (10)
+[22m   [31m❯[39m nomenclatura institucional das páginas[2m (10)
+[22m     [32m✓[39m usa o título formal em Home.tsx
+     [32m✓[39m usa o título formal em Activities.tsx
+     [31m×[39m usa o título formal em Calendar.tsx
+     [32m✓[39m usa o título formal em Team.tsx
+     [32m✓[39m usa o título formal em Library.tsx
+     [32m✓[39m usa o título formal em Production.tsx
+     [32m✓[39m usa o título formal em Interfaces.tsx
+     [32m✓[39m usa o título formal em Administration.tsx
+     [32m✓[39m remove as chamadas promocionais e metafóricas anteriores
+     [32m✓[39m alinha os rótulos da navegação aos nomes funcionais
+ [32m✓[39m [2mclient/src/pages/[22mhomeDescriptions[2m.test.tsx[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (3)[22m[33m 1245[2mms
+[22m[39m[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 4 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m server/reviewInterfaces.test.ts[2m > [22mgestão e resolução de interfaces entre grupos[2m > [22mpermite ao coordenador responsável criar a interface com duas seções e dois grupos
+[31m[1mAssertionError[22m: promise rejected "TRPCError: Cannot read properties of unde… { code: '…' }" instead of resolving
+[39m[36m [2m❯[22m server/reviewInterfaces.test.ts:[2m373:5
+[22m[39m    [90m371| [39m    [35mawait[39m [34mexpect[39m(
+    [90m372| [39m      appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m101[39m))[33m.[39minterfaces[33m.[39m[34mcreate[39m(input)
+    [90m373| [39m    )[33m.[39mresolves[33m.[39m[34mtoMatchObject[39m({ id[33m:[39m [34m501[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m374| [39m  })[33m;
+[39m    [90m375| 
+[39m[31m[1mCaused by: TRPCError[22m: Cannot read properties of undefined (reading 'filter')
+[39m[36m [2m❯[22m validateInterfaceSelection server/routers/interfaces.ts:[2m63:41
+[22m[39m[90m [2m❯[22m server/routers/interfaces.ts:[2m236:27
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m371:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[22m[39m[31m[1mSerialized Error:[22m[39m [90m{ code: 'INTERNAL_SERVER_ERROR' }
+[39m[31m[1mCaused by: TypeError[22m: Cannot read properties of undefined (reading 'filter')
+[39m[36m [2m❯[22m validateInterfaceSelection server/routers/interfaces.ts:[2m63:41
+[22m[39m[90m [2m❯[22m server/routers/interfaces.ts:[2m236:27
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m371:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/reviewInterfaces.test.ts[2m > [22mgestão e resolução de interfaces entre grupos[2m > [22mreserva a resolução ao coordenador responsável ou administrador
+[31m[1mAssertionError[22m: promise rejected "TRPCError: Cannot read properties of unde… { code: '…' }" instead of resolving
+[39m[36m [2m❯[22m server/reviewInterfaces.test.ts:[2m405:5
+[22m[39m    [90m403| [39m    [35mawait[39m [34mexpect[39m(
+    [90m404| [39m      appRouter[33m.[39m[34mcreateCaller[39m([34mcontext[39m([34m101[39m))[33m.[39minterfaces[33m.[39m[34mupdate[39m(resolvedI…
+    [90m405| [39m    )[33m.[39mresolves[33m.[39m[34mtoMatchObject[39m({ id[33m:[39m [34m501[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m406| [39m  })[33m;
+[39m    [90m407| [39m})[33m;
+[39m[31m[1mCaused by: TRPCError[22m: Cannot read properties of undefined (reading 'filter')
+[39m[36m [2m❯[22m validateInterfaceSelection server/routers/interfaces.ts:[2m63:41
+[22m[39m[90m [2m❯[22m server/routers/interfaces.ts:[2m310:27
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m403:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[22m[39m[31m[1mSerialized Error:[22m[39m [90m{ code: 'INTERNAL_SERVER_ERROR' }
+[39m[31m[1mCaused by: TypeError[22m: Cannot read properties of undefined (reading 'filter')
+[39m[36m [2m❯[22m validateInterfaceSelection server/routers/interfaces.ts:[2m63:41
+[22m[39m[90m [2m❯[22m server/routers/interfaces.ts:[2m310:27
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m403:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/calendarTimeline.test.tsx[2m > [22mcronograma de itens[2m > [22mexibe marco sem início e abre o diálogo de definição de período
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'length')
+[39m[36m [2m❯[22m client/src/pages/Calendar.tsx:[2m573:30
+[22m[39m[90m [2m❯[22m CalendarContent client/src/pages/Calendar.tsx:[2m558:19
+[22m[39m[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/formalPageTitles.test.ts[2m > [22mnomenclatura institucional das páginas[2m > [22musa o título formal em Calendar.tsx
+[31m[1mAssertionError[22m: expected 'import { useEffect, useMemo, useRef, …' to contain 'title="Cronograma de itens"'
+[39m- Expected
++ Received
+- title="Cronograma de itens"
++ import { useEffect, useMemo, useRef, useState } from "react";
++ import ActivityAccessGate from "@/components/ActivityAccessGate";
++ import {
++   PageHeader,
++   PageLoading,
++   SectionMark,
++   StatusBadge,
++ } from "@/components/EditorialUI";
++ import { Badge } from "@/components/ui/badge";
++ import { Button } from "@/components/ui/button";
++ import {
++   Dialog,
++   DialogContent,
++   DialogDescription,
++   DialogFooter,
++   DialogHeader,
++   DialogTitle,
++ } from "@/components/ui/dialog";
++ import { Input } from "@/components/ui/input";
++ import { Label } from "@/components/ui/label";
++ import {
++   Select,
++   SelectContent,
++   SelectItem,
++   SelectTrigger,
++   SelectValue,
++ } from "@/components/ui/select";
++ import { trpc } from "@/lib/trpc";
++ import { dueTone, formatDate } from "@/lib/format";
++ import { STUDY_TOMES, studyTomeFromCode } from "@shared/domain";
++ import {
++   CalendarClock,
++   AlertTriangle,
++   ChevronLeft,
++   ChevronRight,
++   Eye,
++   Filter,
++   Pencil,
++   RefreshCcw,
++   Route,
++   Download,
++   ImageDown,
++   FileDown,
++   Flag,
++   Plus,
++   Trash2,
++ } from "lucide-react";
++ import { toast } from "sonner";
++ import html2canvas from "html2canvas";
++ import { jsPDF } from "jspdf";
++
++ const DAY = 24 * 60 * 60 * 1000;
++
++ type MilestoneDraft = {
++   id?: number;
++   title: string;
++   description: string;
++   dueDate: string;
++   status: "planejado" | "concluído";
++ };
++
++ function inputDate(value: number | null | undefined) {
++   return value ? new Date(value).toISOString().slice(0, 10) : "";
++ }
++
++ function timestampAtNoon(value: string) {
++   return Date.parse(`${value}T12:00:00.000Z`);
++ }
++
++ function monthLabel(date: Date) {
++   return new Intl.DateTimeFormat("pt-BR", {
++     month: "short",
++     year: "2-digit",
++   }).format(date);
++ }
++
++ function statusColor(status: string) {
++   if (status === "atrasado") return "bg-[#B44232]";
++   if (status === "concluído") return "bg-[#27745B]";
++   if (status === "em andamento") return "bg-[#2D6E79]";
++   return "bg-[#7B8A87]";
++ }
++
++ function TimelineRow({
++   item,
++   rangeStart,
++   rangeEnd,
++   monthCount,
++   hasOverlap,
++   hasNearDue,
++   onSchedule,
++ }: {
++   item: {
++     id: number;
++     planCode: string | null;
++     sectionCode: string;
++     title: string;
++     groupName: string | null;
++     responsibleName: string;
++     startAt: number | null;
++     dueAt: number;
++     progress: number;
++     status: "pendente" | "em andamento" | "concluído" | "atrasado";
++     milestones: Array<{
++       id: number;
++       title: string;
++       dueAt: number;
++       status: "planejado" | "concluído";
++     }>;
++   };
++   rangeStart: number;
++   rangeEnd: number;
++   monthCount: number;
++   hasOverlap: boolean;
++   hasNearDue: boolean;
++   onSchedule: (id: number) => void;
++ }) {
++   const rangeDays = Math.max(Math.round((rangeEnd - rangeStart) / DAY), 1);
++   const periodStart = item.startAt ?? item.dueAt;
++   const itemStart = Math.max(periodStart, rangeStart);
++   const itemEnd = Math.min(item.dueAt, rangeEnd);
++   const visible = itemEnd >= rangeStart && itemStart <= rangeEnd;
++   const left = Math.max(0, ((itemStart - rangeStart) / DAY / rangeDays) * 100);
++   const width = item.startAt
++     ? Math.max(1.2, ((Math.max(itemEnd - itemStart, DAY) / DAY / rangeDays) * 100))
++     : 1.2;
++   const milestone = !item.startAt;
++   const overdue = dueTone(item.dueAt, item.status) === "danger";
++   const barColor = overdue
++     ? "bg-[#B44232]"
++     : hasOverlap
++       ? "bg-[#B8791C]"
++       : hasNearDue
++         ? "bg-[#A95D22]"
++         : statusColor(item.status);
++
++   return (
++     <div className="grid min-w-[1040px] grid-cols-[72px_minmax(240px,1.2fr)_150px_1.8fr] border-b last:border-b-0">
++       <div className="flex items-center border-r px-3 py-3">
++         <SectionMark code={item.planCode ?? item.sectionCode} />
++       </div>
++       <div className="border-r px-4 py-3">
++         <p className="line-clamp-1 text-sm font-semibold text-foreground">{item.title}</p>
++         <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
++           {item.groupName ?? "Grupo não informado"} · {item.responsibleName}
++         </p>
++       </div>
++       <div className="border-r px-4 py-3">
++         <StatusBadge status={item.status} />
++         <p className="mt-2 font-mono text-[10px] text-muted-foreground">
++           {item.progress}% concluído
++         </p>
++       </div>
++       <div
++         className="relative min-h-[72px] bg-[linear-gradient(to_right,transparent_0,transparent_calc(100%-1px),hsl(var(--border))_100%)]"
++         style={{ backgroundSize: `${100 / Math.max(monthCount, 1)}% 100%` }}
++       >
++         {visible ? (
++           <button
++             type="button"
++             onClick={() => onSchedule(item.id)}
++             aria-label={`Definir período de ${item.title}`}
++             className={`absolute top-6 h-5 rounded-sm ${barColor} shadow-sm transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${milestone ? "w-3 -translate-x-1/2" : ""} ${hasOverlap ? "ring-2 ring-[#E5B64A] ring-offset-1" : ""}`}
++             style={{ left: `${left}%`, width: milestone ? undefined : `${width}%` }}
++           >
++             <span className="sr-only">
++               {milestone
++                 ? `Marco de entrega em ${formatDate(item.dueAt)}`
++                 : `Período de ${formatDate(item.startAt!)} a ${formatDate(item.dueAt)}`}
++             </span>
++           </button>
++         ) : null}
++         {item.milestones.map(milestoneItem => {
++           const visibleMilestone = milestoneItem.dueAt >= rangeStart && milestoneItem.dueAt <= rangeEnd;
++           if (!visibleMilestone) return null;
++           const milestoneLeft = Math.max(0, ((milestoneItem.dueAt - rangeStart) / DAY / rangeDays) * 100);
++           return (
++             <button
++               key={milestoneItem.id}
++               type="button"
++               onClick={() => onSchedule(item.id)}
++               aria-label={`Editar marco ${milestoneItem.title} de ${item.title}`}
++               title={`${milestoneItem.title} — ${formatDate(milestoneItem.dueAt)}`}
++               className={`absolute top-[19px] z-10 h-4 w-4 -translate-x-1/2 rotate-45 border-2 border-card ${milestoneItem.status === "concluído" ? "bg-[#27745B]" : "bg-[#163C40]"} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary`}
++               style={{ left: `${milestoneLeft}%` }}
++             ><span className="sr-only">Marco {milestoneItem.title}</span></button>
++           );
++         })}
++         {milestone ? (
++           <span className="absolute bottom-2 left-3 text-[10px] text-muted-foreground">
++             início a definir · término {formatDate(item.dueAt)}
++           </span>
++         ) : null}
++         {overdue || hasOverlap || hasNearDue ? (
++           <span className="absolute bottom-2 right-3 flex items-center gap-1 text-[10px] font-medium text-muted-foreground">
++             <AlertTriangle className={`h-3 w-3 ${overdue ? "text-[#B44232]" : hasOverlap ? "text-[#B8791C]" : "text-[#A95D22]"}`} />
++             {overdue ? "atrasado" : hasOverlap ? "sobreposição" : "prazo próximo"}
++           </span>
++         ) : null}
++       </div>
++     </div>
++   );
++ }
++
++ function ScheduleDialog({
++   activityId,
++   onOpenChange,
++ }: {
++   activityId: number | null;
++   onOpenChange: (open: boolean) => void;
++ }) {
++   const utils = trpc.useUtils();
++   const detail = trpc.activities.detail.useQuery(
++     { id: activityId ?? 0 },
++     { enabled: activityId !== null }
++   );
++   const [startDate, setStartDate] = useState("");
++   const [dueDate, setDueDate] = useState("");
++   const [milestones, setMilestones] = useState<MilestoneDraft[]>([]);
++
++   useEffect(() => {
++     if (detail.data) {
++       setStartDate(inputDate(detail.data.startAt));
++       setDueDate(inputDate(detail.data.dueAt));
++       setMilestones(
++         detail.data.milestones.map(milestone => ({
++           id: milestone.id,
++           title: milestone.title,
++           description: milestone.description ?? "",
++           dueDate: inputDate(milestone.dueAt),
++           status: milestone.status,
++         }))
++       );
++     }
++   }, [detail.data]);
++
++   const updateSchedule = trpc.activities.updateSchedule.useMutation({
++     onSuccess: async () => {
++       await Promise.all([
++         utils.activities.list.invalidate(),
++         utils.activities.detail.invalidate(),
++         utils.dashboard.overview.invalidate(),
++       ]);
++       toast.success("Período atualizado.");
++       onOpenChange(false);
++     },
++     onError: error => toast.error(error.message),
++   });
++   const updateMilestones = trpc.activities.updateMilestones.useMutation({
++     onError: error => toast.error(error.message),
++   });
++
++   const save = () => {
++     if (!activityId || !dueDate) return;
++     const startAt = startDate ? timestampAtNoon(startDate) : null;
++     const dueAt = timestampAtNoon(dueDate);
++     if (startAt && startAt > dueAt) {
++       toast.error("A data inicial não pode ser posterior à data de término.");
++       return;
++     }
++     if (milestones.some(milestone => !milestone.title.trim() || !milestone.dueDate)) {
++       toast.error("Informe título e data para cada marco intermediário.");
++       return;
++     }
++     if (milestones.some(milestone => {
++       const milestoneAt = timestampAtNoon(milestone.dueDate);
++       return milestoneAt > dueAt || (startAt !== null && milestoneAt < startAt);
++     })) {
++       toast.error("Os marcos devem ficar dentro do período da atividade.");
++       return;
++     }
++     void (async () => {
++       try {
++         await updateSchedule.mutateAsync({ id: activityId, startAt, dueAt });
++         await updateMilestones.mutateAsync({
++           id: activityId,
++           milestones: milestones.map((milestone, index) => ({
++             id: milestone.id,
++             title: milestone.title.trim(),
++             description: milestone.description.trim() || null,
++             dueAt: timestampAtNoon(milestone.dueDate),
++             status: milestone.status,
++             sortOrder: index,
++           })),
++         });
++         await Promise.all([
++           utils.activities.list.invalidate(),
++           utils.activities.detail.invalidate(),
++           utils.dashboard.overview.invalidate(),
++         ]);
++         toast.success("Período e marcos atualizados.");
++         onOpenChange(false);
++       } catch {
++         // As mutações já comunicam o erro pertinente.
++       }
++     })();
++   };
++
++   const item = detail.data;
++   return (
++     <Dialog open={activityId !== null} onOpenChange={onOpenChange}>
++       <DialogContent className="bg-card sm:max-w-lg">
++         <DialogHeader>
++           <DialogTitle className="font-display text-3xl font-semibold tracking-[-.03em]">
++             Definição de período
++           </DialogTitle>
++           <DialogDescription>
++             {item
++               ? `${item.planCode ?? item.sectionCode} — ${item.title}`
++               : "Carregando atividade."}
++           </DialogDescription>
++         </DialogHeader>
++         {detail.isLoading || !item ? (
++           <p className="py-8 text-sm text-muted-foreground">Carregando dados do item.</p>
++         ) : (
++           <div className="grid gap-5 py-3 sm:grid-cols-2">
++             <div>
++               <Label htmlFor="schedule-start">Data inicial</Label>
++               <Input
++                 id="schedule-start"
++                 className="mt-2 rounded-md"
++                 type="date"
++                 value={startDate}
++                 disabled={!item.canManageAllocations}
++                 onChange={event => setStartDate(event.target.value)}
++               />
++               <p className="mt-2 text-xs text-muted-foreground">Opcional. Sem data inicial, o item é exibido como marco de entrega.</p>
++             </div>
++             <div>
++               <Label htmlFor="schedule-due">Data de término</Label>
++               <Input
++                 id="schedule-due"
++                 className="mt-2 rounded-md"
++                 type="date"
++                 value={dueDate}
++                 disabled={!item.canManageAllocations}
++                 onChange={event => setDueDate(event.target.value)}
++               />
++             </div>
++             <section className="border-t pt-5 sm:col-span-2">
++               <div className="flex items-center justify-between gap-3">
++                 <div>
++                   <Label>Marcos intermediários</Label>
++                   <p className="mt-1 text-xs text-muted-foreground">Registre entregas parciais, validações ou pontos de controle dentro do período.</p>
++                 </div>
++                 {item.canManageAllocations ? (
++                   <Button type="button" size="sm" variant="outline" onClick={() => setMilestones([...milestones, { title: "", description: "", dueDate: dueDate || inputDate(item.dueAt), status: "planejado" }])}>
++                     <Plus className="mr-1.5 h-3.5 w-3.5" /> Adicionar marco
++                   </Button>
++                 ) : null}
++               </div>
++               <div className="mt-4 space-y-3">
++                 {milestones.map((milestone, index) => (
++                   <div key={milestone.id ?? `novo-${index}`} className="grid gap-2 rounded-md border bg-muted/20 p-3 sm:grid-cols-[1.2fr_150px_150px_auto]">
++                     <Input aria-label={`Título do marco ${index + 1}`} disabled={!item.canManageAllocations} value={milestone.title} placeholder="Marco de controle" onChange={event => setMilestones(milestones.map((current, currentIndex) => currentIndex === index ? { ...current, title: event.target.value } : current))} />
++                     <Input aria-label={`Data do marco ${index + 1}`} disabled={!item.canManageAllocations} type="date" value={milestone.dueDate} onChange={event => setMilestones(milestones.map((current, currentIndex) => currentIndex === index ? { ...current, dueDate: event.target.value } : current))} />
++                     <Select disabled={!item.canManageAllocations} value={milestone.status} onValueChange={value => setMilestones(milestones.map((current, currentIndex) => currentIndex === index ? { ...current, status: value as MilestoneDraft["status"] } : current))}>
++                       <SelectTrigger><SelectValue /></SelectTrigger>
++                       <SelectContent><SelectItem value="planejado">Planejado</SelectItem><SelectItem value="concluído">Concluído</SelectItem></SelectContent>
++                     </Select>
++                     {item.canManageAllocations ? <Button type="button" aria-label={`Excluir marco ${index + 1}`} size="icon" variant="ghost" onClick={() => setMilestones(milestones.filter((_, currentIndex) => currentIndex !== index))}><Trash2 className="h-4 w-4" /></Button> : null}
++                   </div>
++                 ))}
++                 {!milestones.length ? <p className="rounded-md border border-dashed p-4 text-xs text-muted-foreground">Nenhum marco intermediário registrado.</p> : null}
++               </div>
++             </section>
++             {!item.canManageAllocations ? (
++               <p className="border-l-2 border-primary pl-3 text-xs leading-5 text-muted-foreground sm:col-span-2">
++                 Somente o coordenador responsável ou um administrador pode alterar este período.
++               </p>
++             ) : null}
++           </div>
++         )}
++         <DialogFooter className="gap-2 sm:justify-between">
++           <a href={`/atividades?ficha=${activityId ?? ""}`} className="inline-flex h-9 items-center text-xs font-semibold text-primary underline-offset-4 hover:underline">
++             <Eye className="mr-1.5 h-3.5 w-3.5" /> Abrir ficha em Atividades
++           </a>
++           {item?.canManageAllocations ? (
++             <Button onClick={save} disabled={updateSchedule.isPending || updateMilestones.isPending || !dueDate} className="rounded-md">
++               {updateSchedule.isPending || updateMilestones.isPending ? "Salvando…" : "Salvar período e marcos"}
++             </Button>
++           ) : null}
++         </DialogFooter>
++       </DialogContent>
++     </Dialog>
++   );
++ }
++
++ function CalendarContent() {
++   const { data, isLoading } = trpc.activities.list.useQuery();
++   const { data: overview } = trpc.dashboard.overview.useQuery();
++   const [tome, setTome] = useState("todos");
++   const [group, setGroup] = useState("todos");
++   const [functionalResponsible, setFunctionalResponsible] = useState("todos");
++   const [status, setStatus] = useState("todos");
++   const [startFilter, setStartFilter] = useState("");
++   const [endFilter, setEndFilter] = useState("");
++   const [selectedId, setSelectedId] = useState<number | null>(null);
++   const timelineRef = useRef<HTMLDivElement | null>(null);
++   const [exporting, setExporting] = useState<"image" | "pdf" | null>(null);
++
++   if (isLoading || !data || !overview) return <PageLoading />;
++
++   const projectStart = new Date(overview.settings.projectStartAt).getTime();
++   const projectEnd = new Date(overview.settings.projectEndAt).getTime();
++   const rangeStart = startFilter ? timestampAtNoon(startFilter) : projectStart;
++   const rangeEnd = endFilter ? timestampAtNoon(endFilter) : projectEnd;
++   const safeRangeEnd = Math.max(rangeStart + DAY, rangeEnd);
++   const groups = Array.from(
++     new Set(
++       data
++         .map(item => item.groupName)
++         .filter((value): value is string => Boolean(value))
++     )
++   );
++   const functionalResponsibles = Array.from(
++     new Set(
++       data
++         .map(item => item.planningResponsible)
++         .filter((value): value is string => Boolean(value))
++     )
++   );
++
++   const filtered = data.filter(item => {
++     const itemTome = studyTomeFromCode(item.sectionCode);
++     const itemStart = item.startAt ?? item.dueAt;
++     const overlapsRange = item.dueAt >= rangeStart && itemStart <= safeRangeEnd;
++     return (
++       (tome === "todos" || itemTome === tome) &&
++       (group === "todos" || item.groupName === group) &&
++       (functionalResponsible === "todos" || item.planningResponsible === functionalResponsible) &&
++       (status === "todos" || item.status === status) &&
++       overlapsRange
++     );
++   });
++
++   const monthMarks = Array.from({ length: 6 }, (_, index) => {
++     const date = new Date(rangeStart);
++     date.setMonth(date.getMonth() + index);
++     return date;
++   }).filter(date => date.getTime() <= safeRangeEnd);
++
++   const noStart = filtered.filter(item => !item.startAt).length;
++   const overdue = filtered.filter(item => dueTone(item.dueAt, item.status) === "danger").length;
++   const nearDueIds = new Set(
++     filtered
++       .filter(item => item.status !== "concluído" && item.dueAt >= Date.now() && item.dueAt - Date.now() <= 7 * DAY)
++       .map(item => item.id)
++   );
++   const overlapIds = new Set<number>();
++   const byGroup = new Map<string, typeof filtered>();
++   filtered.filter(item => item.startAt).forEach(item => {
++     const key = item.groupName ?? "Grupo não informado";
++     byGroup.set(key, [...(byGroup.get(key) ?? []), item]);
++   });
++   byGroup.forEach(items => {
++     items.forEach((item, index) => {
++       items.slice(index + 1).forEach(other => {
++         if ((item.startAt ?? item.dueAt) <= other.dueAt && (other.startAt ?? other.dueAt) <= item.dueAt) {
++           overlapIds.add(item.id);
++           overlapIds.add(other.id);
++         }
++       });
++     });
++   });
++   const monthlyDeliverables = monthMarks.map(month => {
++     const monthEnd = new Date(month.getFullYear(), month.getMonth() + 1, 1).getTime() - 1;
++     return filtered.filter(item => item.dueAt >= month.getTime() && item.dueAt <= monthEnd).length;
++   });
++   const exportTimeline = async (format: "image" | "pdf") => {
++     if (!timelineRef.current) return;
++     setExporting(format);
++     try {
++       const canvas = await html2canvas(timelineRef.current, { backgroundColor: "#f8f8f5", scale: 2, useCORS: true });
++       const filename = `cronograma-itens-${new Date().toISOString().slice(0, 10)}`;
++       if (format === "image") {
++         const link = document.createElement("a");
++         link.href = canvas.toDataURL("image/png");
++         link.download = `${filename}.png`;
++         link.click();
++       } else {
++         const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
++         const width = 792 - 48;
++         const height = (canvas.height * width) / canvas.width;
++         pdf.addImage(canvas.toDataURL("image/png"), "PNG", 24, 24, width, Math.min(height, 564));
++         pdf.save(`${filename}.pdf`);
++       }
++       toast.success(format === "image" ? "Imagem do cronograma exportada." : "PDF do cronograma exportado.");
++     } catch {
++       toast.error("Não foi possível exportar o cronograma.");
++     } finally {
++       setExporting(null);
++     }
++   };
++
++   return (
++     <div className="space-y-6">
++       <PageHeader
++         eyebrow="Cronograma mestre"
++         title="Execução por item"
++         description="Acompanhamento temporal dos 36 itens de execução. Defina início e término para transformar marcos de entrega em períodos de trabalho acompanháveis."
++         index="03 — Cronograma"
++       />
++
++       <section className="technical-panel p-4">
++         <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4">
++           <div className="flex items-center gap-2">
++             <Route className="h-4 w-4 text-primary" />
++             <h2 className="text-sm font-semibold">Linha do tempo de execução</h2>
++           </div>
++           <div className="flex flex-wrap items-center gap-2">
++             <Badge variant="outline" className="rounded-sm font-mono text-[10px]">{filtered.length} itens</Badge>
++             <Badge variant="outline" className="rounded-sm font-mono text-[10px]">{noStart} sem início</Badge>
++             {overdue ? <Badge className="rounded-sm bg-[#B44232] font-mono text-[10px]">{overdue} atrasados</Badge> : null}
++             {overlapIds.size ? <Badge className="rounded-sm bg-[#B8791C] font-mono text-[10px]">{overlapIds.size} sobrepostos</Badge> : null}
++             <Button type="button" variant="outline" size="sm" onClick={() => exportTimeline("image")} disabled={exporting !== null}><ImageDown className="mr-1.5 h-3.5 w-3.5" /> {exporting === "image" ? "Exportando…" : "Imagem"}</Button>
++             <Button type="button" variant="outline" size="sm" onClick={() => exportTimeline("pdf")} disabled={exporting !== null}><FileDown className="mr-1.5 h-3.5 w-3.5" /> {exporting === "pdf" ? "Exportando…" : "PDF"}</Button>
++           </div>
++         </div>
++
++         <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6">
++           <Select value={tome} onValueChange={setTome}>
++             <SelectTrigger className="rounded-md"><SelectValue placeholder="Todos os Tomos" /></SelectTrigger>
++             <SelectContent><SelectItem value="todos">Todos os Tomos</SelectItem>{STUDY_TOMES.map(item => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
++           </Select>
++           <Select value={group} onValueChange={setGroup}>
++             <SelectTrigger className="rounded-md"><SelectValue placeholder="Todos os grupos" /></SelectTrigger>
++             <SelectContent><SelectItem value="todos">Todos os grupos</SelectItem>{groups.map(item => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
++           </Select>
++           <Select value={functionalResponsible} onValueChange={setFunctionalResponsible}>
++             <SelectTrigger className="rounded-md"><SelectValue placeholder="Responsável funcional" /></SelectTrigger>
++             <SelectContent><SelectItem value="todos">Todos os responsáveis</SelectItem>{functionalResponsibles.map(item => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
++           </Select>
++           <Select value={status} onValueChange={setStatus}>
++             <SelectTrigger className="rounded-md"><SelectValue placeholder="Todos os estados" /></SelectTrigger>
++             <SelectContent><SelectItem value="todos">Todos os estados</SelectItem><SelectItem value="pendente">Pendente</SelectItem><SelectItem value="em andamento">Em andamento</SelectItem><SelectItem value="concluído">Concluído</SelectItem><SelectItem value="atrasado">Atrasado</SelectItem></SelectContent>
++           </Select>
++           <Input type="date" aria-label="Início do intervalo" className="rounded-md" value={startFilter} onChange={event => setStartFilter(event.target.value)} />
++           <div className="flex gap-2"><Input type="date" aria-label="Término do intervalo" className="rounded-md" value={endFilter} onChange={event => setEndFilter(event.target.value)} /><Button variant="outline" size="icon" className="rounded-md" aria-label="Restaurar intervalo do projeto" onClick={() => { setStartFilter(""); setEndFilter(""); }}><RefreshCcw className="h-4 w-4" /></Button></div>
++         </div>
++       </section>
++
++       <div ref={timelineRef} className="bg-[#f8f8f5]">
++       <section className="hidden overflow-hidden rounded-md border bg-card lg:block">
++         <div className="grid min-w-[1040px] grid-cols-[72px_minmax(240px,1.2fr)_150px_1.8fr] border-b bg-muted/45">
++           <div className="data-label border-r px-3 py-3">Item</div>
++           <div className="data-label border-r px-4 py-3">Descrição e coordenação</div>
++           <div className="data-label border-r px-4 py-3">Estado</div>
++           <div className="grid" style={{ gridTemplateColumns: `repeat(${monthMarks.length}, minmax(0, 1fr))` }}>{monthMarks.map((month, index) => <div key={index} className="border-r px-3 py-3 text-center last:border-r-0"><p className="data-label">M{index + 1}</p><p className="mt-1 text-xs font-semibold">{monthLabel(month)}</p><p className="mt-1 font-mono text-[10px] text-primary">{monthlyDeliverables[index]} entregável{monthlyDeliverables[index] === 1 ? "" : "eis"}</p></div>)}</div>
++         </div>
++         <div className="max-h-[68vh] overflow-auto">
++           {filtered.map(item => <TimelineRow key={item.id} item={item} rangeStart={rangeStart} rangeEnd={safeRangeEnd} monthCount={monthMarks.length} hasOverlap={overlapIds.has(item.id)} hasNearDue={nearDueIds.has(item.id)} onSchedule={setSelectedId} />)}
++           {!filtered.length ? <p className="p-12 text-center text-sm text-muted-foreground">Nenhum item corresponde aos filtros selecionados.</p> : null}
++         </div>
++       </section>
++
++       <section className="space-y-3 lg:hidden">
++         {filtered.map(item => (
++           <article key={item.id} className={`technical-panel border-l-4 p-4 ${dueTone(item.dueAt, item.status) === "danger" ? "border-l-[#B44232]" : overlapIds.has(item.id) ? "border-l-[#B8791C]" : nearDueIds.has(item.id) ? "border-l-[#A95D22]" : "border-l-primary"}`}>
++             <div className="flex items-start justify-between gap-3">
++               <div className="min-w-0">
++                 <SectionMark code={item.planCode ?? item.sectionCode} />
++                 <h2 className="mt-3 text-sm font-semibold leading-5">{item.title}</h2>
++                 <p className="mt-1 text-xs text-muted-foreground">{item.groupName ?? "Grupo não informado"} · {item.responsibleName}</p>
++               </div>
++               <StatusBadge status={item.status} />
++             </div>
++             <div className="mt-4 grid grid-cols-2 gap-3 border-y py-3 text-xs">
++               <div><p className="data-label text-muted-foreground">Início</p><p className="mt-1 font-medium">{item.startAt ? formatDate(item.startAt) : "A definir"}</p></div>
++               <div><p className="data-label text-muted-foreground">Término</p><p className="mt-1 font-medium">{formatDate(item.dueAt)}</p></div>
++             </div>
++             {dueTone(item.dueAt, item.status) === "danger" || overlapIds.has(item.id) || nearDueIds.has(item.id) ? <p className="mt-3 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"><AlertTriangle className={`h-3.5 w-3.5 ${dueTone(item.dueAt, item.status) === "danger" ? "text-[#B44232]" : overlapIds.has(item.id) ? "text-[#B8791C]" : "text-[#A95D22]"}`} />{dueTone(item.dueAt, item.status) === "danger" ? "Atividade atrasada" : overlapIds.has(item.id) ? "Período sobreposto a 
+outro item do grupo" : "Prazo nos próximos sete dias"}</p> : null}
++             {item.milestones.length ? <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground"><Flag className="h-3.5 w-3.5 text-primary" />{item.milestones.length} marco{item.milestones.length === 1 ? "" : "s"} intermediário{item.milestones.length === 1 ? "" : "s"}</p> : null}
++             <div className="mt-3 flex items-center justify-between gap-3"><span className="font-mono text-[11px] text-muted-foreground">{item.progress}% concluído</span><Button variant="outline" size="sm" className="rounded-md" onClick={() => setSelectedId(item.id)}><CalendarClock className="mr-1.5 h-3.5 w-3.5" /> Período</Button></div>
++           </article>
++         ))}
++         {!filtered.length ? <div className="technical-panel p-10 text-center text-sm text-muted-foreground">Nenhum item corresponde aos filtros selecionados.</div> : null}
++       </section>
++       </div>
++
++       <ScheduleDialog activityId={selectedId} onOpenChange={open => !open && setSelectedId(null)} />
++     </div>
++   );
++ }
++
++ export default function CalendarPage() {
++   return <ActivityAccessGate><CalendarContent /></ActivityAccessGate>;
++ }
++
+[36m [2m❯[22m client/src/pages/formalPageTitles.test.ts:[2m30:20
+[22m[39m    [90m 28| [39m  it[33m.[39m[34meach[39m(pages)([32m"usa o título formal em %s"[39m[33m,[39m (file[33m,[39m expectedTitle) [33m=>[39m…
+    [90m 29| [39m    [35mconst[39m source [33m=[39m [34mreadFileSync[39m([35mnew[39m [33mURL[39m([32m`./[39m[36m${[39mfile[36m}[39m[32m`[39m[33m,[39m [35mimport[39m[33m.[39mmeta[33m.[39murl)[33m,[39m…
+    [90m 30| [39m    [34mexpect[39m(source)[33m.[39m[34mtoContain[39m([32m`title="[39m[36m${[39mexpectedTitle[36m}[39m[32m"`[39m)[33m;
+[39m    [90m   | [39m                   [31m^
+[39m    [90m 31| [39m  })[33m;
+[39m    [90m 32| 
+[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+[22m[39m[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m20 passed[39m[22m[90m (23)
+[39m[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m83 passed[39m[22m[90m (87)
+[39m[2m   Start at [22m 15:22:50
+[2m   Duration [22m 6.13s[2m (transform 1.23s, setup 0ms, collect 9.02s, tests 5.33s, environment 4.56s, prepare 2.19s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

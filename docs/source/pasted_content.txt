@@ -1,0 +1,179 @@
+considerando que o desenvolvimento do estudo de diagnósticos e politicas publicas deve ser desenvolvido num prazo de 6 meses, montar um app para o monitoramento das atividades de elaboração do estudo, atribuindo responsáveis, definindo datas de entregas, notificações via whatsapp.
+
+O app também deverá ter ferramanetas de disponibilização de uma biblioteca de referÊncis do projeto, e de uma área de produção onde o material em elaboração poderá ser acessado pelos participantes para revisão e comentários.
+
+DIAGNÓSTICOS E POLÍTICAS PÚBLICAS
+O relatório com os diagnósticos da indústria naval brasileira será desenvolvido através das etapas e atividades descritas na sequência.
+5.1.Políticas industriais nos principais países produtores e blocos
+a.Política industrial – tendências globais no cenário pós-pandemia e de mudança climática
+b.Modelos de política industrial
+c.Sucessos e falhas da política industrial nos principais países produtores
+d.Políticas de conteúdo local, financiamento, compras governamentais, C&T e proteção de mercado
+e.Os casos da indústria naval, offshore, siderúrgica e de navipeças
+5.2.Políticas industriais no Brasil
+a.Modelos de política industrial
+b.Sucessos e falhas da política industrial brasileira
+c.Políticas de conteúdo local, financiamento, compras governamentais, C&T e proteção de mercado
+d.Os casos da indústria naval, offshore, siderúrgica e de navipeças
+e.Relevância de instrumentos existentes para impulsionar a indústria naval, como os propostos na Nova Indústria Brasil (NIB) e em outras políticas
+f.Cenários políticos e institucionais para o desenvolvimento de políticas industriais no brasil – transversais e verticais
+5.3.Transporte marítimo no mundo
+a.Evolução e perspectivas do Transporte Marítimo Internacional
+b.Composição das frotas nos principais segmentos: tonelagem, bandeiras, idade, vida econômica, indicadores econômicos
+c.Cenários de demanda por novas construções
+d.Tendências tecnológicas
+e.Impactos da descarbonização
+f.Cenários prospectivos
+5.4.Indústria de óleo e gás e energia offshore mundial
+a.Evolução e perspectivas da indústria de óleo e gás offshore
+b.Países e empresas líderes em produção e participações no mercado
+c.Comparação de marcos regulatórios nos principais polos: licenciamento, conteúdo local, segurança e descomissionamento
+d.Unidades flutuantes: sondas, unidades de produção, navios de apoio e aliviadores – tipos, tecnologias e tendências
+e.Situação atual e perspectivas da geração energia offshore – eólica, ondas, marés e hidrogênio verde in situ
+5.5.Construção naval no mundo
+a.Evolução e perspectivas da indústria mundial de construção naval
+b.Os segmentos de navios mercantes, defesa e unidades offshore
+c.Avaliação tecnológica da indústria naval
+d.Produtividade e competitividade
+e.Principais produtores
+f.Tendências tecnológicas – descarbonização e Indústria 4.0
+g.Cenários prospectivos
+5.6.Transporte marítimo no Brasil
+a.Evolução e perspectivas do Transporte Marítimo no Brasil
+b.Frota nacional e empresas brasileiras de navegação
+c.Participação da bandeira brasileira por setor – cabotagem, longo curso
+d.Estratégias de afretamento
+e.Integração às redes globais
+f.Gargalos de infraestrutura e organização dos mercados
+g.Apoio marítimo e aliviadores
+h.Pesca
+i.Apoio portuário
+5.7.Transporte aquaviário interior no Brasil
+a.Histórico, evolução e tendências do transporte fluvial nas principais bacias hidrográficas
+b.Infraestrutura hidroviária – cenários de expansão e integração modal
+c.Tipos de embarcações – quantidade e localização
+d.Transporte de carga – carga geral, contêineres, granéis sólidos e líquidos: fluxos, frotas, perfil das empresas
+e.Transporte de passageiros – de longa distância, travessias e transporte hidroviário urbano
+f.Navegação interior e meio ambiente
+g.Transporte hidroviário de percurso internacional
+h.Integração regional – infraestrutura, regulamentação, impacto na construção naval no Brasil
+i.Cenários de demanda de embarcações por segmento
+j.Importância para os principais segmentos e eficiência econômica do modelo de financiamento e contas vinculadas de AFRMM
+5.8.Indústria de óleo e gás e energia eólica offshore no Brasil
+a.Evolução e perspectivas
+b.Regulamentação
+c.Bacias e campos
+d.Estrutura do mercado. Participação da Petrobras e operadoras estrangeiras
+e.Tendências tecnológicas, operacionais e de modelo de negócio
+f.Cenários de demanda de unidades de E&P, OSV e aliviadores – demanda para a construção naval brasileira
+g.Perspectivas do setor de energia eólica offshore no Brasil
+h.Regiões de geração e localização industrial
+i.Cenários de demanda de plataformas flutuantes para sistemas eólicos e embarcações de apoio
+j.Desafios e oportunidades
+5.9.Descarbonização: oportunidades e desafios para a indústria de construção naval
+a.O processo de descarbonização da indústria marítima mundial
+b.Direcionadores globais e políticas de descarbonização
+c.Panorama da frota mundial e nacional
+d.Políticas e boas práticas internacionais
+e.Desafios regulatórios e biocombustíveis marítimos
+f.Tendências tecnológicas e eficiência energética
+g.Vantagens competitivas do Brasil e infraestrutura verde
+h.Descarbonização marítima e a indústria naval brasileira
+5.10.Construção naval e offshore no Brasil
+a.A indústria naval brasileira – histórico e estrutura
+b.Os estaleiros brasileiros – histórico, localização, instalações, capacidade, tecnologia, recursos humanos
+c.Construção de navios
+d.Plataformas e módulos – construção, integração e comissionamento
+e.Sistemas eólicos offshore
+f.Embarcações fluviais e impacto nas economias regionais e nacional
+g.Rebocadores portuários, outras embarcações especializadas, e de pesca
+h.Capacidade tecnológica e recursos humanos
+i.Produtividade e competitividade
+5.11.Construção naval militar
+a.Construção naval militar no mundo – políticas industriais e modelos de governança
+b.Programas de offset, clusters navais e estratégias de inovação
+c.Estaleiros e empresas atuantes na construção militar – capacidade produtiva e tecnológica
+d.Programas navais em curso e previstos
+e.Avaliação da participação da indústria local e de processos de transferência de tecnologia
+f.Gargalos produtivos e tecnológicos;
+g.Oportunidades para inserção da indústria brasileira em cadeias globais de valor
+5.12.Reparo naval no Brasil
+a.Análise da demanda
+b.Análise comparativa entre estaleiros de reparo e construção
+c.Instalações de reparo existentes
+d.Competição com estaleiros estrangeiros
+e.Desafios e oportunidades
+5.13.Desmantelamento e descomissionamento
+a.Regulamentação internacional – Convenção de Hong Kong
+b.Mercado mundial de desmantelamento e descomissionamento
+c.Demanda no Brasil
+d.Regulamentação brasileira
+e.Perspectivas para estaleiros nacionais
+f.Desafios e oportunidades
+5.14.Cadeia produtiva da indústria de construção naval
+a.Perfil de nacionalização de componentes na indústria de construção naval nos principais países produtores
+b.Importância da indústria siderúrgica e de navipeças para a indústria de construção naval dos países selecionados
+c.Importância da indústria subsidiária para a indústria brasileira de construção naval e para a economia nacional
+d.Histórico da indústria subsidiaria no Brasil – Evolução do índice de nacionalização nas diferentes fases
+e.Indústria siderúrgica brasileira
+f.Indústria brasileira de navipeças: potencial e limitações
+g.Principais fabricantes – histórico, localização, instalações e equipamentos, capacidade, tecnologia, recursos humanos, índices de nacionalização
+h.Desafios e oportunidades
+5.15.Padrão tecnológico e competitividade da indústria naval brasileira
+a.Proposição de indicadores de qualificação tecnológica e benchmarking de estaleiros
+b.Análise tecnológica de uma amostra relevante de estaleiros asiáticos
+c.Análise comparativa do desempenho e potencial da CN brasileira
+d.Principais gargalos tecnológicos e gerenciais
+e.Estratégias de desenvolvimento tecnológico e capacitação de recursos humanos
+f.Arranjos alternativos para catching-up – compra de tecnologia, desenvolvimento autônomo e parcerias estratégicas
+g.Metas de desempenho para uma política nacional de construção naval
+h.Arranjos institucionais para acompanhamento
+5.16.Políticas de marinha mercante no mundo
+a.Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de marinha mercante – evolução desde o pós-guerra
+b.Histórico – modelos e instrumentos de proteção e incentivo nos principais países marítimos
+c.Regulação nacional e multilateral
+d.Análise de casos relevantes – Europa Ocidental, China, Coréia, Japão, EUA, Austrália, Nova Zelândia, Cingapura, Europa Oriental, Turquia, Índia
+e.Mecanismos de proteção e incentivo – registros alternativos, financiamento e outros instrumentos financeiros, subsídios, incentivos fiscais, reserva de mercado e de carga, políticas de tripulação e de desenvolvimento tecnológico
+f.Acordos bilaterais e multilaterais
+5.17.Políticas de construção naval no mundo
+a.Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de construção naval – evolução desde o pós-guerra
+b.Histórico – modelos e instrumentos de proteção e incentivo nos países produtores, nos principais ciclos de industrialização e realocação geográfica
+c.Regulamentação nacional e multilateral
+d.Análise de casos relevantes – Europa Ocidental, China, Coréia, Japão, EUA, Cingapura, Europa Oriental, Turquia, Índia, Indonésia e Vietnam
+e.Mecanismos de proteção e incentivo – restrições de mercado, estatização, planejamento governamental, subsídios, incentivos fiscais, instrumentos financeiros, créditos de exportação, compras governamentais
+f.Pesquisa e Desenvolvimento
+g.Acordos bilaterais e multilaterais
+5.18.Políticas brasileiras de marinha mercante e construção naval
+a.Histórico
+b.Sucessos e falhas
+c.FMM e outras fontes de financiamento
+d.Evolução da participação do setor público e compras governamentais
+e.Regulamentação do mercado: Leis 9.432 e 14.301 (BR do Mar)
+f.Legislação tributária
+g.Os Programas de Construção Naval
+h.Conteúdo local
+i.P&D e formação de recursos humanos
+j.Cenário atual – ambiente político e institucional
+5.19.O Fundo da Marinha Mercante
+a.Histórico e relevância para a indústria marítima brasileira
+b.Evolução da regulamentação – AFRMM e FMM
+c.Evolução da arrecadação, distribuição e aplicação
+d.Eficiência dos projetos financiados (obras concluídas, prazos)
+e.Eficácia do sistema (consolidação de empresas e evolução da competitividade)
+f.Alocação de custos e benefícios – efeitos distributivos intersetoriais e inter-regionais
+g.Justificativa econômica e estratégica do modelo atual (BR do Mar)
+5.20.Aspectos geopolíticos da indústria marítima
+a.Tendências e cenários internacionais relevantes
+b.Questões críticas
+c.Desafios e oportunidades para o Brasil
+5.21.Cenários econômicos e institucionais brasileiros
+a.Cenários para reorientação de política industriais e implantação de novos modelos
+b.Aspectos determinantes para a indústria marítima: marinha mercante, O&G, defesa, energia e construção naval
+c.Cenários e estratégias: desafios e oportunidades
+
+
+A equipe técnica do estudo é composta por
+EQUIPE TÉCNICA
+NomeCargoInstituição Quant.hh/mêsmesesTotal horasFloriano Carlos Martins Pires Jr.ProfessorUFRJ-328256Segen Farid EstefenProfessorUFRJ-328256Carlos Frederico Leão RochaProfessorUFRJ-328256Luiz Felipe AssisProfessorUFRJ-12896Jean David J. E. Marie CapraceProfessorUFRJ-12896Marcelo Igor Lourenço de SouzaProfessorUFRJ-208160Marta Cecilia Tapia ReyesProfessorUFRJ-328256Marcelo Colomer FerraroProfessorUFRJ-328256Helder Queiroz Pinto JuniorProfessorUFRJ-20480Luiz Antônio Vaz PintoProfessorUFRJ-12896Andre Ricardo Mendonça PinheiroDoutorandoUFRJ-405200Marcos Pedreira da SilvaTécnico TIUFRJ8864Estudante Graduação-UFRJ88085.120Mestrando-UFRJ44081.280Doutorando-UFRJ44081.280Pesquisador Pleno--2164128Crístofer Hood MarquesProfessorFURG-10880Marcos PereiraProfessorUFPE-12336Carlos Daher PadoveziPesquisadorIPT-228176André Mitsuo KogishiPesquisadorIPT-12896Pesquisador-IPT1308240Pedro Igor Dias LameiraProfessorUFPA-10880Hito Braga de MoraesProfessorUFPA-10880Nelio Moura de FigueiredoProfessorUFPA-12896Emannuel LoureiroProfessorUFPA-12896Germano Mendes de PaulaProfessorUFU-188144Rodrigo Coelho SabbatiniProfessorFACAMP-18472Antonio João PratesConsultor--228176Armando Freigedo Rodrigues FilhoConsultor--228176Paulo Octavio de Paiva AlmeidaConsultor--228176Marcos B. Cozzolino do NascimentoConsultor--12896Cassiano Marins de SouzaConsultor--328256João Candido Gonçalves da SilvaConsultor--12224Sergio Lamarca LeiteConsultor--12224Jeom-Kee Paik ProfessorUCL-16464Consultor Internacional--3164192
+
+A biblioteca de referências fica em: C:\Users\PC\OneDrive\0.Projects\0.Estudo BNDES\RAG

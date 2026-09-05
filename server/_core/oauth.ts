@@ -1,0 +1,126 @@
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import type { Express, Request, Response } from "express";
+import * as db from "../db";
+import { getSessionCookieOptions } from "./cookies";
+import { sdk } from "./sdk";
+
+function getQueryParam(req: Request, key: string): string | undefined {
+  const value = req.query[key];
+  return typeof value === "string" ? value : undefined;
+}
+
+export function registerOAuthRoutes(app: Express) {
+  app.get("/api/oauth/callback", async (req: Request, res: Response) => {
+    const code = getQueryParam(req, "code");
+    const state = getQueryParam(req, "state");
+
+    if (!code || !state) {
+      res.status(400).json({ error: "code and state are required" });
+      return;
+    }
+
+    try {
+      const tokenResponse = await sdk.exchangeCodeForToken(code, state);
+      const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+
+      if (!userInfo.openId) {
+        res.status(400).json({ error: "openId missing from user info" });
+        return;
+      }
+
+      await db.upsertUser({
+        openId: userInfo.openId,
+        name: userInfo.name || null,
+        email: userInfo.email ?? null,
+        loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
+        lastSignedIn: new Date(),
+      });
+
+      const sessionToken = await sdk.createSessionToken(userInfo.openId, {
+        name: userInfo.name || "",
+        expiresInMs: ONE_YEAR_MS,
+      });
+
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+      res.redirect(302, "/");
+    } catch (error) {
+      console.error("[OAuth] Callback failed", error);
+      res.status(500).json({ error: "OAuth callback failed" });
+    }
+  });
+
+  // Logout endpoint
+  app.get(["/api/oauth/logout", "/api/logout"], (req: Request, res: Response) => {
+    const cookieOptions = getSessionCookieOptions(req);
+    res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+    const redirect = (req.query.redirect as string) || "/login";
+    res.redirect(302, redirect);
+  });
+
+  // Local development login endpoint
+  app.get(["/api/oauth/dev-login", "/api/login"], async (req: Request, res: Response) => {
+    let openId = req.query.openId as string | undefined;
+    let email = req.query.email as string | undefined;
+    let name = req.query.name as string | undefined;
+    let appRole = req.query.appRole as "administrador" | "coordenador" | "executor" | undefined;
+    let role: "admin" | "user" = req.query.role === "admin" ? "admin" : "user";
+
+    try {
+      if (email) {
+        const found = await db.getUserByEmail(email);
+        if (found) {
+          openId = found.openId;
+          name = found.name || name;
+          appRole = (found.appRole as any) || appRole;
+          role = found.role as any;
+        }
+      } else if (openId && openId !== "local_admin") {
+        const found = await db.getUserByOpenId(openId);
+        if (found) {
+          name = found.name || name;
+          appRole = (found.appRole as any) || appRole;
+          role = found.role as any;
+          email = found.email || email;
+        }
+      }
+
+      if (!openId) openId = "local_admin";
+      if (!name) name = "Administrador do Estudo";
+      if (!appRole) appRole = role === "admin" ? "administrador" : "executor";
+
+      await db.upsertUser({
+        openId,
+        name,
+        email: email || "admin@estudo.ufrj.br",
+        loginMethod: "local",
+        role: (appRole === "administrador" || role === "admin") ? "admin" : "user",
+        appRole,
+        accessStatus: "ativo",
+        lastSignedIn: new Date(),
+      });
+
+      const sessionToken = await sdk.createSessionToken(openId, {
+        name,
+        expiresInMs: ONE_YEAR_MS,
+      });
+
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+      const redirect = (req.query.redirect as string) || "/";
+      res.redirect(302, redirect);
+    } catch (error) {
+      console.warn("[OAuth] Local login database warning (continuing with session cookie):", error);
+      const sessionToken = await sdk.createSessionToken(openId || "local_admin", {
+        name: name || "Administrador do Estudo",
+        expiresInMs: ONE_YEAR_MS,
+      });
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      res.redirect(302, "/");
+    }
+  });
+}
+

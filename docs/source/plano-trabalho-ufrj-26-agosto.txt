@@ -1,0 +1,991 @@
+ Oportunidades da Descarbonização e da Transição Energética para a
+                Reestruturação da Indústria Naval
+
+O Anexo 1 do contrato nº 26.2.0131.1 entre o BNDES e a Fundação COPPETEC, com
+interveniência da UFRJ estabelece:
+  “Em até uma semana após a contratação, haverá a primeira reunião de trabalho entre o
+  BNDES e o Parceiro Executor para definição do cronograma detalhado e do Plano de
+  Trabalho para execução do estudo, que deverá respeitar o prazo de 8 (oito) meses corridos,
+  a contar da data da contratação.”
+
+O contrato foi assinado em 21 de agosto de 2026. A primeira reunião de trabalho ocorreu
+no dia 25 de agosto de 2026.
+O presente documento apresenta o Plano de Trabalho e o Cronograma, atendendo ao
+requisito do Anexo 1.
+
+
+
+
+Rio de Janeiro, 26 de agosto de 2026
+
+
+
+
+                                Floriano C. M. Pires Jr.
+                         Universidade Federal do Rio de Janeiro
+                                   Professor Titular
+                                Coordenador do Projeto
+ Oportunidades da Descarbonização e da Transição Energética para a
+                Reestruturação da Indústria Naval
+
+                                Plano de Trabalho
+
+1. Produtos
+   O contrato prevê a entrega dos seguintes produtos:
+
+1.1. Plataforma Digital Interativa
+        Todo o material produzido será integrado em uma Plataforma Digital Interativa,
+para visualização e divulgação, descrita no Anexo 1 do contrato.
+       A entrega da Plataforma ocorrerá na conclusão do estudo.
+       Para fins de acompanhamento uma versão parcial será disponibilizada na entrega
+do Relatório de Diagnóstico.
+
+1.2. Banco de Dados
+       As características principais e o conteúdo mínimo do Banco de Dados encontram-
+se descritos no Anexo 1 do contrato.
+       A entrega da versão final do banco de dados ocorrerá no mês 7. Na entrega do
+Relatório de Diagnóstico será disponibilizada uma versão preliminar, contendo o
+conjunto de dados utilizados até a data.
+
+1.3. Relatório de Diagnóstico
+       A estrutura do Relatório 1 – Relatório de Diagnóstico encontra-se no Anexo A
+deste documento e o Índice Analítico, no Anexo B. O cronograma de entregas parciais
+do Relatório 1 encontra-se na Planilha EXCEL Cronograma-R1-e-R2.xlsm.
+      Durante a elaboração do relatório, poderão ser propostas alterações, que serão
+devidamente submetidas à apreciação do BNDES.
+
+1.4. Relatório de Proposta de Estratégias de desenvolvimento e instrumentos de
+     política setorial e Plano de Ação
+      A estrutura e organização do Relatório 2 encontram-se descritas na Seção E do
+Anexo 1 do contrato.
+       O cronograma encontra-se na Planilha EXCEL Cronograma-R1-e-R2.xlsm.
+
+1.5. Sumário Executivo
+       Documento de síntese, contendo um resumo do Relatório de Diagnóstico, as
+principais conclusões e recomendações do estudo e o Plano de Ação, em versões em
+português e inglês.
+       A entrega do Sumário Executivo ocorrerá na conclusão do estudo.
+       1.6. Seminários Técnicos e Seminário Final Público
+               Serão organizados os seminários de trabalho, restritos e abertos, requeridos no
+       Edital, e um Seminário Final para apresentação e discussão das conclusões finais e
+       recomendações, e lançamento da Plataforma Digital.
+              Os seminários de trabalho serão realizados com intervalos aproximados de 30 dias
+       e o Seminário Final, após a aprovação final do Estudo pelo BNDES.
+
+       1.7. Produção Audiovisual
+             Será produzido um conjunto de materiais audiovisuais complementares, descritos
+       no Anexo 1.
+                     O conjunto será entregue na ocasião da entrega do Portal.
+
+       2. Cronograma
+               O Cronograma encontra-se na tabela abaixo. O detalhamento do cronograma das
+               entregas parciais dos Relatórios 1 e 2, encontram-se no arquivo EXCEL Cronograma-
+               R1-e-R2.xlsm, anexo:
+
+                                                   1            2            3            4            5            6            7            8
+ Plataforma Digital Interativa
+ Versão Parcial
+
+ Versão Final
+
+ Banco de Dados
+ Versão Preliminar
+
+ Versão Final
+
+ Relatório 1: Diagnóstico
+ Relatório 2: Estratégias e Plano de Ação
+ Sumário Executivo
+ Produção Audiovisual
+ Seminários Técnicos de Trabalho
+ Seminário 1                                   22/09/2026
+
+ Seminário 2                                                20/10/2026
+
+ Seminário 3                                                             19/11/2026
+
+ Seminário 4                                                                          05/01/2027
+
+ Seminário 5                                                                                       19/01/2027
+
+ Seminário 6                                                                                                    17/02/2027
+
+ Seminário 7                                                                                                                 23/03/2027
+
+ Seminário Final Público                                                                                                                  20/04/2027
+
+
+
+
+3. Equipe
+   A composição da equipe encontra-se discriminada na tabela abaixo.
+                    Nome                        Cargo             Instituição          Quant.
+ Floriano Carlos Martins Pires Jr.            Professor               UFRJ               -
+ Segen Farid Estefen                          Professor               UFRJ               -
+ Carlos Frederico Leão Rocha                  Professor               UFRJ               -
+ Luiz Felipe Assis                            Professor               UFRJ               -
+ Jean David Job Emmanuel Marie Caprace        Professor               UFRJ               -
+ Marcelo Igor Lourenço de Souza               Professor               UFRJ               -
+ Marta Cecilia Tapia Reyes                    Professor               UFRJ               -
+ Marcelo Colomer Ferraro                      Professor               UFRJ               -
+ Helder Queiroz Pinto Junior                  Professor               UFRJ               -
+ Luiz Antônio Vaz Pinto                       Professor               UFRJ               -
+ Andre Ricardo Mendonça Pinheiro             Doutorando               UFRJ               -
+ Denise Cunha Dantas*                       Técnica suporte           UFRJ
+ Estudante Graduação                               -                  UFRJ               8
+ Mestrando                                         -                  UFRJ               4
+ Doutorando                                       -                   UFRJ               4
+ Pesquisador Pleno                                -                     -                2
+ Crístofer Hood Marques **                    Professor               UFRJ               -
+ Marcos Pereira                               Professor              UFPE                -
+ Carlos Daher Padovezi                       Pesquisador              IPT                -
+ André Mitsuo Kogishi                        Pesquisador              IPT                -
+ Pesquisador                                      -                   IPT                1
+ Pedro Igor Dias Lameira                      Professor              UFPA                -
+ Hito Braga de Moraes                         Professor              UFPA                -
+ Nelio Moura de Figueiredo                    Professor              UFPA                -
+ Emannuel Loureiro                            Professor             UFPA                 -
+ Germano Mendes de Paula                      Professor              UFU                 -
+ Rodrigo Coelho Sabbatini                     Professor            FACAMP                -
+ Antonio João Prates                          Consultor                 -                -
+ Armando Freigedo Rodrigues Filho             Consultor                 -                -
+ Paulo Octavio de Paiva Almeida               Consultor                 -                -
+ Marcos Bernardes Cozzolino do Nascimento     Consultor                 -                -
+ Cassiano Marins de Souza                     Consultor                 -                -
+ João Candido Gonçalves da Silva              Consultor                 -                -
+ Sergio Lamarca Leite                         Consultor                 -                -
+ S. Navaneetha Krishnan***                    Professor       Institute TPMI - India     -
+ Consultor Internacional                          -                     -                3
+* substituiu Marcos Pedreira da Silva
+** transferiu-se da FURG para a UFRJ
+*** substituiu Jeom-Kee Paik
+Oportunidades da Descarbonização e da Transição Energética para a
+                Reestruturação da Indústria Naval
+
+
+
+                           Anexo A
+
+
+
+                    Estrutura do Relatório 1
+
+
+
+
+      Indústria Naval: Diagnóstico e Perspectivas
+                                      Apresentação
+        Apresentação geral do Estudo. Descrição do objetivo, metodologia, equipe. Estrutura do
+Portal e do Relatório. Banco de dados. Audiovisual. Sumário Executivo. Conteúdo dos Relatórios 1
+e 2.
+                          Tomo I
+
+
+Economia Marítima, Mercados e Demanda para a Indústria Naval
+1. Introdução
+        Objetivos do Relatório 1: diagnósticos e cenários. Análise da evolução da indústria naval
+brasileira, em particular nos períodos 1970-80 e 2000-2010. Sucessos e falhas. Escopo. Construção
+de navios, embarcações fluviais, offshore, fabricação e integração de módulos, reparo,
+descomissionamento/desmantelamento.
+       Estrutura do relatório. Os temas são examinados em diferentes capítulos segundo perspectivas
+complementares. O Tomo I analisa os setores geradores de demanda; o Tomo II, a capacidade de
+resposta da base produtiva; o Tomo III, as políticas e instituições que condicionam essa resposta; e o
+Tomo IV integra essas dimensões na construção dos cenários.
+
+2. Economia Marítima
+        Economia marítima. Indústria naval, marinha mercante, óleo e gás, geração de energia, pesca,
+defesa. Interrelação entre os setores. A natureza estratégica da indústria naval e da economia do mar.
+Aspectos econômicos dos principais segmentos geradores da demanda da indústria naval. Aspectos
+tecnológicos e geopolíticos. Mudanças econômicas, geopolíticas, ambientais, regulatórias e
+tecnológicas que afetam as indústrias marítimas, e, em particular, a indústria naval. Reorganização
+das cadeias globais, regionalização produtiva, transição energética. Oportunidades e desafios para a
+indústria naval brasileira.
+
+3. Transporte Marítimo Mundial
+       Estrutura e organização dos mercados de transporte marítimo internacional. Regulação.
+Comportamento dos principais segmentos do mercado: granéis líquidos, gás, químicos, granéis
+sólidos e contêineres. Outros segmentos: veículos, cargas de projeto, carga geral, apoio marítimo e
+portuário. Principais fluxos. Análise dos mercados: tipos de navios, bandeiras, aspectos tecnológicos
+e operacionais, fretes, preços, carteiras de encomendas. Navegação e meio ambiente. Evolução e
+dinâmica recente. Fatores econômicos, geopolíticos e ambientais que condicionam a expansão,
+renovação e transformação tecnológica das frotas. Tendências. Cenários de demanda para a indústria
+naval. Desafios e oportunidades para a marinha mercante e a indústria naval no Brasil.
+
+4. Transporte Marítimo no Brasil
+       Evolução da marinha mercante brasileira. Principais fluxos de transporte marítimo de
+cabotagem e longo curso. Regulamentação. Organização dos mercados. Gargalos de infraestrutura.
+Empresas brasileiras de navegação. Frotas. Bandeiras. Afretamento. Integração às redes globais.
+Apoio portuário. Apoio marítimo (enquadramento como segmento da navegação brasileira). Custos
+diferenciais da bandeira brasileira. Panorama do setor pesqueiro. Cenários de demanda para
+construção, reparo, conversão e modernização de navios e embarcações de apoio.
+
+5. Transporte Hidroviário Interior
+       Análise das principais bacias. Infraestrutura. Principais fluxos de carga. Estrutura e
+organização dos mercados: empresas, frotas. Transporte multimodal. Navegação fluvial de percurso
+internacional. Impactos ambientais. Transporte de passageiros na Região Amazônica. Transporte
+hidroviário urbano. Navegação e desenvolvimento regional. Cenários de demanda para construção de
+embarcações fluviais.
+
+6. Indústria de Óleo e Gás e de Energia Eólica Offshore
+       Evolução e perspectivas da indústria de óleo e gás offshore. Regiões de produção. Principais
+empresas e países. Marcos regulatórios nos principais polos. Tipos de unidades flutuantes de
+exploração e produção. Análise dos sistemas de operação em função das características físicas e
+logísticas dos campos. Comportamento dos mercados de óleo e gás e interrelação com o mercado de
+unidades de E&P, em particular FPSO e Sondas. Análise dos mercados de construção e afretamento.
+Tendências e cenários globais de demanda: construção, fabricação e integração de módulos,
+conversão, descomissionamento
+       Atividade offshore no Brasil. Principais campos. Empresas e participação no mercado. Tipos
+de unidades em operação e perspectivas. Descomissionamento. Cenários de demanda: construção,
+fabricação e integração de módulos, conversão e descomissionamento.
+        Mercado mundial de navios aliviadores e embarcações de apoio offshore. Tipos de
+embarcações e padrões de operação. Participação do Brasil no mercado mundial. Estrutura do
+mercado brasileiro. Comparação do mercado brasileiro com as principais regiões: modos de operação,
+tipos de afretamento, preços. regulamentação. Empresas, frotas, verticalização. Cenários de demanda
+por aliviadores e OSV no Brasil.
+        O setor de geração eólica no Brasil. Tipos de instalações e embarcações de apoio. Evolução e
+perspectivas. Cenários de demanda por embarcações de apoio especializadas e construção de
+instalações de geração eólica offshore.
+
+7. Construção naval militar
+       Evolução e perspectivas dos programas de construção naval militar no Brasil. Experiências
+internacionais relevantes de desenvolvimento da indústria naval militar. Programas de offset,
+conteúdo local, clusters produtivos e estratégias de capacitação tecnológica e inovação. Cenários de
+demanda por navios e embarcações militares.
+
+8. Descarbonização na Indústria Marítima
+       Análise do processo de descarbonização da indústria marítima mundial, com foco nas metas
+da IMO e nas principais estratégias nacionais e regionais. Respostas de armadores, operadores, portos
+e fornecedores de combustíveis. Identificação e classificação das tecnologias emergentes voltadas à
+descarbonização e à melhoria da eficiência energética de embarcações e unidades offshore,
+abrangendo soluções de projeto, propulsão, operação e digitalização. Infraestrutura de abastecimento.
+        Análise do estado atual da frota global e brasileira em relação ao uso de combustíveis
+alternativos e de tecnologias de eficiência energética.
+       Análise do efeito da transição energética sobre mercados, frotas e demanda por embarcações
+novas e retrofitting.
+       Análise do potencial competitivo do Brasil na produção e uso de combustíveis renováveis
+para o transporte marítimo e identificação das necessidades de infraestrutura portuária e logística
+verde.
+                          Tomo II
+
+
+Indústria Naval: Base Produtiva, Tecnologia e Competitividade
+1. Construção Naval Mundial
+       Análise da trajetória e da estrutura atual da construção naval mundial. Evolução da produção,
+capacidade de estaleiros, padrão tecnológico. Capacidade instalada, por país e por classe de estaleiro
+e segmento do mercado. Principais grupos empresariais e principais estaleiros. Especialização e
+seriação. Segmentos de construção de navios, embarcações de apoio marítimo, offshore e defesa.
+Protecionismo. Fatores de competitividade. Tecnologia. Cadeia produtiva. Comportamento dos
+mercados. Impactos recentes ambientais, tecnológicos, geopolíticos.
+
+2. Experiências nacionais de desenvolvimento da construção naval
+        Estudos dos casos de China, Coreia do Sul, Japão, Singapura, Estados Unidos, países europeus
+e produtores emergentes, incluindo Índia, Vietnã e Indonésia. Protecionismo. Evolução da indústria,
+estrutura empresarial, especialização, qualificação tecnológica, recursos humanos, cadeia de
+fornecedores, inserção internacional. Evolução da produtividade. Competitividade. Resultados
+produtivos. Estratégias de desenvolvimento tecnológico – catching up. O trabalho inclui visitas a
+estaleiros e organizações relevantes na China, Coreia e Índia.
+
+3. Construção naval e offshore no Brasil
+        Histórico. Evolução da indústria naval moderna brasileira. Planos e Programas de
+desenvolvimento. Os ciclos de 1970-1980 e 2000-2010: expansão da capacidade e retração
+subsequente. Construção de unidades offshore. Construção militar. Embarcações fluviais. Evolução
+da estrutura da indústria: trajetória das empresas, da capacidade produtiva e da cadeia de
+fornecedores. Desempenho. Qualificação tecnológica e recursos humanos. Contratos e produção
+realizada. Preços e prazos. Distribuição geográfica. Fatores econômicos, empresariais, tecnológicos,
+regulatórios e institucionais que determinaram os resultados alcançados.
+
+4. Estrutura atual e capacidade dos estaleiros brasileiros
+       Diagnóstico abrangente da indústria naval brasileira, avaliando infraestrutura, capacidade
+produtiva, níveis de produtividade, capacitação tecnológica, cadeia de suprimentos e potencial de
+modernização dos estaleiros nacionais.
+       Levantamento de todos os estaleiros e instalações de fabricação e integração de módulos
+relevantes, em operação ou não. Análise da evolução das instalações, organização corporativa,
+capacidade, produção e desempenho. Estrutura e situação atuais. Carteiras, engenharia de projeto e
+de processos, infraestrutura industrial, processos, modelo de organização e gestão.
+       Cadeia produtiva, por tipo de produto e região.
+       Análise do potencial de reativação ou adaptação para operação sustentável e competitiva, para
+os segmentos de maior viabilidade.
+       Serão considerados os estaleiros dedicados à construção de navios convencionais,
+embarcações fluviais, embarcações de apoio offshore, plataformas offshore e módulos de plantas de
+processo bem como os estaleiros de reparo, conversão e desmonte de plataformas e navios. O
+levantamento e análise dos dados focará a situação atual, o melhor período de operação e o potencial
+de cada unidade.
+       O trabalho inclui visitas às instalações para levantamento de campo.
+
+5. Reparo, conversão, desmantelamento e descomissionamento
+      Situação atual e tendências do mercado mundial. Regulação internacional e nacional. Análise
+comparativa entre estaleiros de reparo e construção e instalações de descomissionamento.
+       Diagnóstico da demanda, da infraestrutura, das empresas e da capacidade nacional para
+reparo, docagem, conversão e modernização de embarcações e unidades offshore, considerando a
+competição internacional.
+       Desafios e oportunidades em reparo, conversão, retrofitting e desmantelamento.
+
+6. Cadeia produtiva da indústria de construção naval
+       Perfil de nacionalização de componentes na indústria de construção naval nos principais
+países produtores. Importância das indústrias siderúrgica e de materiais, equipamentos e sistemas
+navais para a indústria de construção naval dos países selecionados.
+       Evolução do índice de nacionalização nas diferentes fases da indústria naval brasileira.
+       Levantamento e análise da cadeia de suprimentos no cenário atual, para as principais classes
+de estaleiros, regiões e tipos de produto. Serão examinadas localização, capacidade, conteúdo
+nacional, dependências externas, lacunas produtivas e tecnológicas, relações entre estaleiros e
+fornecedores e diferenças entre as cadeias de construção de navios, fluvial, offshore e militar.
+
+7. Padrão tecnológico e recursos humanos
+       Análise da capacitação dos estaleiros brasileiros em engenharia de produto e de processo e de
+gestão da produção. Perfil da força de trabalho empregada nos estaleiros, nos níveis básico, técnico e
+gerencial.
+        Análise das capacidades de pesquisa, desenvolvimento e inovação disponíveis em empresas,
+universidades e centros de pesquisa nas áreas relevantes para a indústria naval. Avaliação das relações
+entre essas instituições e a base produtiva.
+        Análise da disponibilidade de força de trabalho no Brasil nos níveis operacional, técnico, de
+engenharia e gerencial, bem como dos sistemas de formação e qualificação de recursos humanos nos
+níveis básico, técnico e superior.
+
+8. Produtividade e competitividade
+       Metodologia para avaliação tecnológica de estaleiros. Proposição de indicadores
+simplificados para avaliação de desempenho e benchmarking.
+        Análise dos padrões tecnológicos, produtividade e desempenho para as principais classes de
+estaleiros mundiais, em função da capacidade produtiva, especialização e seriação.
+        Análise dos padrões tecnológicos, produtividade e desempenho dos estaleiros brasileiros, em
+comparação com as classes relevantes. Serão considerados os últimos períodos de operação contínua,
+a situação atual e o potencial de cada estaleiro.
+       Análise das possibilidades de inserção competitiva de cada estaleiro, com identificação de
+potencialidades, limitações e gargalos. Análise de metas de produtividade e desempenho.
+
+9. Descarbonização: oportunidades e desafios para a indústria naval
+       Síntese das mudanças de mercado e das tendências tecnológicas associadas à descarbonização,
+analisadas no Tomo I, e impactos sobre o projeto, construção, conversão e reparo de embarcações e
+unidades offshore.
+        Análise das competências requeridas para projeto e construção de navios capazes ou
+preparados para utilização de novos combustíveis, e para desenvolvimento e aplicação de sistemas
+de eficiência energética, captura de carbono e tecnologias correlatas.
+      Avaliação das capacidades e deficiências da indústria naval brasileira para inserção
+competitiva nesses mercados.
+      Análise da descarbonização dos próprios processos de construção naval.
+       Identificação dos desafios e das oportunidades para estaleiros, empresas de engenharia e
+fornecedores brasileiros.
+              Tomo III
+
+
+Política Industrial e Política Marítima
+1. Fundamentos e tendências
+        Política industrial: Revisão da literatura, conceitos teóricos e justificativas econômicas.
+Políticas horizontais e setoriais. Transformações ambientais e geopolíticas em curso e tendências. O
+papel das organizações multilaterais.
+       Evolução das políticas industriais praticadas no Brasil.
+       Políticas marítimas e políticas de construção naval. Justificativas econômicas, estratégicas e
+geopolíticas. Cenário atual e tendências.
+       Desenvolvimento de metodologia de análise da evolução das políticas setoriais voltadas para
+a indústria naval aplicadas no Brasil e no mundo nos períodos relevantes.
+       Relevância de instrumentos horizontais existentes para impulsionar a indústria naval, como
+os propostos na Nova Indústria Brasil (NIB) e em outras políticas.
+       Políticas públicas e mecanismos de fomento à descarbonização marítima. Avaliação de sua
+aplicabilidade ao contexto brasileiro. Desafios regulatórios nacionais e internacionais para a
+introdução de novos combustíveis marítimos. Possibilidades para o Brasil na transição energética
+marítima global.
+
+2. Políticas de marinha mercante no mundo
+       Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de marinha
+mercante – evolução desde o pós-guerra. Histórico (modelos e instrumentos de proteção e incentivo)
+nos principais países marítimos. Regulação nacional e internacional e acordos bilaterais e
+multilaterais.
+       Análise de casos relevantes: Europa Ocidental, China, Coreia, Japão, EUA, Austrália, Nova
+Zelândia, Singapura, Europa Oriental, Turquia, Índia, com foco nas últimas décadas.
+       Análise dos principais mecanismos de proteção e incentivo: registros alternativos,
+financiamento e outros instrumentos financeiros, subsídios, incentivos fiscais, reserva de mercado e
+de carga, preferência de bandeira, políticas de tripulação e de desenvolvimento tecnológico.
+        Identificação dos casos mais expressivos de sucesso e falha e dos resultados sobre frota,
+participação no mercado e competitividade.
+
+3. Políticas de construção naval no mundo
+       Inter-relação entre políticas de construção naval e de transporte marítimo.
+       Justificativas econômicas, estratégicas e geopolíticas para políticas setoriais de construção
+naval – evolução desde o pós-guerra. Regulamentação nacional e internacional. Organismos
+internacionais e acordos bilaterais e multilaterais.
+       Histórico nos principais países produtores, principais ciclos de industrialização e processos de
+realocação geográfica. Impacto das políticas setoriais e horizontais na consolidação das indústrias
+nacionais e na distribuição geográfica da produção.
+        Análise de casos relevantes: Europa, EUA, Japão, Coreia, China, Singapura, Europa Oriental,
+Turquia, Índia, Indonésia e Vietnã. Síntese dos resultados das políticas, com base na evolução das
+indústrias nacionais analisada no Tomo II.
+      Mecanismos de proteção e incentivo: planejamento governamental, estatização, restrições de
+mercado, subsídios, incentivos fiscais, instrumentos financeiros, garantias e créditos para exportação
+e compras governamentais.
+       Cooperação internacional. Integração das estratégias de catching-up tecnológico nas políticas
+do Japão, da Coreia e da China.
+       Impactos das transformações em curso e tendências.
+
+4. Políticas brasileiras de marinha mercante e construção naval
+        Evolução das políticas marítimas no Brasil – marinha mercante, construção naval, navegação
+interior, óleo e gás offshore, energias oceânicas e defesa. Inter-relações entre as políticas dos
+diferentes setores.
+        Os Planos de Desenvolvimento e os Planos de Construção Naval. Os ciclos de expansão e
+queda de 1970-1980 e 2000-2010. Principais mecanismos de intervenção: reserva de mercado e de
+carga, preferência de bandeira, políticas de tripulação, financiamento, incentivos fiscais, conteúdo
+local e compras governamentais. O FMM como principal instrumento de financiamento (analisado
+detalhadamente no Capítulo 5).
+       Síntese dos resultados alcançados, deixando a análise de sucessos e falhas para o Capítulo 7.
+       Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval.
+       Cenário atual: Lei nº 14.301/2022 (BR do Mar), conteúdo local, legislação tributária e demais
+instrumentos em vigor.
+
+5. O Fundo da Marinha Mercante
+       Histórico e relevância para a indústria marítima brasileira. Evolução da regulamentação do
+AFRMM e do FMM. Estrutura institucional, agentes financeiros e processo de aprovação e concessão
+dos financiamentos.
+       Evolução da arrecadação, distribuição e aplicação dos recursos. Eficiência dos projetos
+financiados (obras concluídas, custos e prazos). Eficácia do sistema (consolidação de empresas e
+evolução da competitividade).
+       Análise do efeito do financiamento e do emprego das contas vinculadas sobre o custo efetivo
+de capital. Simulação para situações representativas e relevantes. Riscos, garantias e custos
+financeiros.
+       Alocação de custos e benefícios. Efeitos distributivos intersetoriais e inter-regionais. Impacto
+sobre a navegação interior e o desenvolvimento regional.
+       Análise da racionalidade econômica e estratégica do sistema.
+       Alterações introduzidas pela Lei nº 14.301/2022 (BR do Mar) e avaliação do modelo atual.
+
+6. Setores críticos da cadeia de suprimentos: siderurgia e materiais e equipamentos navais
+       Políticas industriais e perfil de nacionalização de componentes na indústria de construção
+naval nos principais países produtores.
+       Políticas de conteúdo local como instrumento de política industrial. Efeito sobre os índices de
+nacionalização e sobre o desempenho da indústria naval.
+        Importância da indústria siderúrgica e da indústria de materiais e equipamentos navais para a
+indústria de construção naval dos países relevantes. Políticas industriais voltadas para esses setores e
+sua articulação com as políticas de construção naval.
+      Histórico e estrutura da indústria siderúrgica e da indústria de materiais e equipamentos navais
+no Brasil. Principais empresas, localização, capacidade produtiva, tecnologia, recursos humanos e
+dependência de importações.
+       Políticas industriais adotadas e evolução dos índices de nacionalização da indústria naval nas
+diferentes fases.
+       Cenários prospectivos. Oportunidades e desafios para o desenvolvimento da cadeia nacional
+de suprimentos. Importância para o desenvolvimento competitivo da indústria naval.
+
+7. Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas
+        O ciclo de expansão das décadas de 1970 e 1980 no Brasil. Objetivos, instrumentos e
+resultados das políticas adotadas. Fatores endógenos e exógenos da crise e da retração. Comparação
+com a trajetória da Coreia do Sul no mesmo período.
+        O ciclo de expansão das décadas de 2000 e 2010. Objetivos, instrumentos e resultados das
+políticas adotadas. Fatores que determinaram a expansão e a posterior queda da atividade.
+Comparação com a trajetória da China.
+       Análise comparativa das políticas e de seus resultados, considerando continuidade e
+coordenação institucional, demanda, financiamento, escala de produção, produtividade, aprendizado
+tecnológico e inserção internacional.
+      Identificação dos principais problemas sistêmicos e das lições para uma nova política de
+desenvolvimento da indústria naval brasileira.
+
+8. Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval
+   brasileira
+       Síntese das transformações geopolíticas e ambientais em curso, examinadas nos Tomos I e II,
+que afetam os mercados internacionais e a indústria naval. Mudanças nos setores de energia,
+navegação e defesa. Reorganização das cadeias produtivas, segurança econômica, transição
+energética e novas exigências ambientais.
+      Impactos sobre a distribuição geográfica da produção, o acesso a mercados e tecnologias, a
+demanda por embarcações e a formação de parcerias internacionais.
+       Riscos, desafios e oportunidades para a reestruturação da indústria naval brasileira.
+Implicações para as políticas industriais e marítimas nacionais.
+
+9. Ambiente econômico e institucional da indústria marítima brasileira
+        Síntese das condições econômicas do país que afetam a indústria marítima. Volume e
+estabilidade da demanda, condições macroeconômicas, custo de capital, restrições fiscais, taxa de
+câmbio e ambiente de investimento.
+       Organização institucional dos órgãos do Estado com atribuições sobre a indústria marítima.
+Formulação das políticas, regulamentação e regulação dos setores, fiscalização das atividades e
+gestão dos mecanismos de fomento e financiamento.
+       Avaliação da racionalidade da estrutura institucional, da coordenação entre os órgãos
+envolvidos e dos efeitos da ausência de orientação programática estável e consolidada.
+       Avaliação da capacitação técnica, autonomia decisória e continuidade institucional dos órgãos
+e agências envolvidos.
+       Riscos políticos, econômicos e regulatórios para a reestruturação da indústria naval.
+       Aspectos determinantes para a reorientação das políticas industriais e a implantação de novos
+modelos para a indústria naval, considerando suas interfaces com marinha mercante, óleo e gás,
+defesa e energia. Desafios e oportunidades.
+           Tomo IV
+
+
+Diagnóstico Integrado e Cenários
+1. Diagnóstico integrado da competividade da indústria naval brasileira
+       Consolidação dos resultados dos Tomos I, II e III. Articulação entre demanda, capacidade
+produtiva, tecnologia, produtividade, competitividade, cadeia de suprimentos, políticas públicas e
+ambiente institucional.
+       Análise das relações entre volume e estabilidade da demanda, capacidade dos estaleiros,
+produtividade, custos, prazos, qualidade e condições de financiamento. Compatibilidade entre a
+demanda potencial e a capacidade de atendimento da indústria brasileira nos diferentes segmentos.
+      Identificação das principais potencialidades, limitações, dependências e gargalos da indústria
+naval brasileira. Inter-relações e possíveis sinergias entre construção naval, reparo,
+descomissionamento, navegação interior, óleo e gás, energias oceânicas e defesa.
+       Análise de como a descarbonização, a transição energética e as mudanças tecnológicas e
+geopolíticas alteram a composição da demanda, os requisitos tecnológicos e as oportunidades de
+inserção da indústria naval brasileira.
+       Identificação dos fatores críticos, das incertezas e das variáveis que deverão ser consideradas
+na construção dos cenários para a indústria naval brasileira.
+
+2. Cenários para a indústria naval brasileira
+        Consolidação das projeções de demanda para transporte marítimo e navegação interior, óleo
+e gás offshore, energias oceânicas, defesa, reparo e descomissionamento, apresentadas nos tomos
+anteriores.
+       Definição de cenários alternativos e das respectivas hipóteses, horizontes temporais e
+principais incertezas. Projeção do volume e da composição da demanda por segmento.
+        Simulação das condições necessárias para que a demanda por embarcações e serviços seja
+atendida pela indústria naval brasileira. Diferenciais de custos e prazos de entrega, qualidade e
+confiabilidade, condições de financiamento, tributação, regras de utilização das contas vinculadas,
+regras de tripulação da bandeira brasileira, regras de preferência de bandeira e afretamento, conteúdo
+local e demais instrumentos regulatórios e de incentivo. Efeitos sobre a competitividade da bandeira
+brasileira em relação às bandeiras estrangeiras e sobre a competitividade dos navios construídos no
+Brasil em relação aos importados.
+       Avaliação das possibilidades de inserção internacional competitiva dos estaleiros brasileiros,
+nos diferentes segmentos de mercado e classes de estaleiros. Metas e desafios de produtividade e
+desempenho.
+        Avaliação das exigências tecnológicas e de recursos humanos em cada cenário. Capacidades
+e deficiências em engenharia, projeto, produção, gestão, pesquisa e desenvolvimento e formação
+profissional. Necessidades de qualificação, desenvolvimento e transferência de tecnologia.
+        Necessidades de investimento em modernização, ampliação ou implantação de instalações.
+Efeitos sobre a capacidade produtiva, a cadeia de suprimentos e o potencial de produção nacional em
+cada cenário.
+
+3. Conclusões do Relatório 1
+        Síntese das principais conclusões derivadas do diagnóstico integrado e dos cenários.
+Potencialidades, limitações, gargalos e condições necessárias para o desenvolvimento competitivo da
+indústria naval brasileira.
+      Explicitação do que pode ser afirmado com base nas evidências disponíveis e do que
+permanece condicionado por incertezas, hipóteses ou lacunas de informação.
+       Indicação das questões que deverão orientar a identificação dos segmentos estratégicos, a
+formulação das políticas e a elaboração do Plano de Ação.
+       O enfrentamento dessas questões será objeto do Relatório 2.
+Oportunidades da Descarbonização e da Transição Energética para a
+                Reestruturação da Indústria Naval
+
+
+
+                            Anexo B
+
+
+
+                  Índice Analítico do Relatório 1
+
+
+
+
+      Indústria Naval: Diagnóstico e Perspectivas
+                                      Apresentação
+        Apresentação geral do Estudo. Descrição do objetivo, metodologia, equipe. Estrutura do
+Portal e do Relatório. Banco de dados. Audiovisual. Sumário Executivo. Conteúdo dos Relatórios 1
+e 2.
+                          Tomo I
+
+
+Economia Marítima, Mercados e Demanda para a Indústria Naval
+1. Introdução
+   1.1. Objetivos
+   1.2. Escopo setorial, temporal e geográfico
+   1.3. Metodologia e fontes de informação
+   1.4. Estrutura do relatório e articulação entre os tomos
+
+2. Economia Marítima
+   2.1. Conceito e delimitação da economia marítima
+   2.2. Interdependências entre a construção naval e demais setores marítimos
+   2.3. Relevância estratégica e econômica da economia marítima
+   2.4. Vetores de transformação: geopolítica, transição energética, cadeias globais e regulação
+        ambiental
+
+3. Transporte Marítimo Mundial
+   3.1. Evolução do comércio e do transporte marítimo mundial
+   3.2. Regulamentação internacional do transporte marítimo
+   3.3. Principais tipos de embarcações: aspectos tecnológicos e operacionais
+   3.4. Estrutura e evolução da frota mercante
+   3.5. Mercado de transporte de granéis líquidos, gases liquefeitos e produtos químicos
+   3.6. Mercado de transporte de granéis sólidos
+   3.7. Mercado de transporte de contêineres
+   3.8. Outros segmentos: veículos, cargas de projeto, apoio marítimo e portuário
+   3.9. Evolução dos preços, fretes e condições de mercado
+   3.10.    Carteira de encomendas, renovação da frota e perspectivas de demanda por novas
+       embarcações
+   3.11.     Fatores econômicos, geopolíticos e ambientais que condicionam a expansão,
+       renovação e transformação tecnológica das frotas
+   3.12.      Perspectivas do transporte marítimo mundial e implicações para a marinha mercante
+       e a indústria naval brasileiras
+
+4. Transporte Marítimo no Brasil
+   4.1. Evolução da marinha mercante brasileira
+   4.2. Principais fluxos de transporte marítimo de cabotagem e longo curso
+   4.3. Regulamentação do transporte marítimo no Brasil
+   4.4. Estrutura e organização dos mercados: empresas, frotas, bandeiras e afretamento
+   4.5. Integração às redes mundiais de transporte marítimo
+   4.6. Apoio portuário e apoio marítimo
+   4.7. Custos diferenciais da bandeira brasileira
+   4.8. Panorama do setor pesqueiro
+   4.9. Cenários de demanda para construção, reparo, conversão e modernização de navios e
+        embarcações de apoio
+
+5. Transporte Hidroviário Interior
+   5.1. Principais bacias e sistemas de navegação interior no Brasil
+   5.2. Regulamentação da navegação interior
+   5.3. Principais tipos de embarcações: aspectos tecnológicos e operacionais
+   5.4. Infraestrutura e condições de navegabilidade
+   5.5. Fluxos e estrutura das operações
+   5.6. Empresas e frotas
+   5.7. Transporte multimodal
+   5.8. Navegação fluvial de percurso internacional
+   5.9. Transporte de passageiros na Região Amazônica
+   5.10.      Transporte hidroviário urbano
+   5.11.      Navegação interior e desenvolvimento regional
+   5.12.      Cenários de demanda para construção de embarcações fluviais
+
+6. Indústria de Óleo e Gás e de Energia Eólica Offshore
+   6.1. Evolução e perspectivas da indústria mundial de óleo e gás offshore
+   6.2. Marcos regulatórios nos principais polos
+   6.3. Principais tipos de unidades flutuantes de exploração e produção: aspectos tecnológicos e
+        operacionais
+   6.4. Mercado internacional de unidades de exploração e produção offshore: demanda, oferta,
+        formas de contratação e preços
+   6.5. Embarcações de apoio e aliviadores: aspectos tecnológicos e operacionais
+   6.6. Mercado internacional de embarcações de apoio e aliviadores: regiões de operação,
+        demanda, oferta, formas de contratação e preços
+   6.7. Atividade offshore no Brasil: campos, empresas e perspectivas
+   6.8. Frota e demanda por unidades flutuantes de produção e sondas no Brasil
+   6.9. Cenários de demanda de E&P no Brasil: construção, fabricação e integração de módulos e
+        descomissionamento
+   6.10.      Mercado brasileiro de navios aliviadores e embarcações de apoio offshore
+   6.11.     O setor de geração eólica offshore no Brasil: evolução, perspectivas e
+       regulamentação
+   6.12.     Tipos de instalações e embarcações para energia eólica offshore: aspectos
+       tecnológicos e operacionais
+   6.13.      Cenários de demanda por navios aliviadores, embarcações de apoio especializadas e
+       instalações de geração eólica offshore no Brasil
+
+7. Construção naval militar
+   7.1. Construção naval militar no mundo: políticas navais e modelos de governança
+   7.2. Principais tipos de navios e embarcações militares: aspectos tecnológicos e operacionais
+   7.3. Evolução da construção naval militar no Brasil
+   7.4. Programas navais em curso e previstos
+   7.5. Programas de offset, clusters navais e estratégias de inovação
+   7.6. Participação da indústria local e processos de transferência de tecnologia
+   7.7. Gargalos econômicos, produtivos e tecnológicos
+   7.8. Oportunidades para inserção nas cadeias globais
+
+8. Descarbonização na Indústria Marítima
+   8.1. Direcionadores globais, metas e regulamentação internacional da descarbonização marítima
+   8.2. Estratégias de descarbonização nos principais países e regiões
+   8.3. Respostas de armadores, operadores, portos e fornecedores de energia à descarbonização
+   8.4. Combustíveis marítimos alternativos: características, disponibilidade, custos e perspectivas
+   8.5. Tecnologias de eficiência energética e redução de emissões: casco, propulsão, sistemas de
+        controle e digitalização
+   8.6. Maturidade tecnológica, custos e perspectivas de adoção das tecnologias de
+        descarbonização
+   8.7. Frota mundial: adoção de combustíveis alternativos e tecnologias de eficiência energética
+        por segmento, país e perfil de empresa
+   8.8. Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas
+        embarcações e retrofitting
+   8.9. Frota brasileira: estratégias de descarbonização dos armadores
+8.10.     Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos
+    renováveis
+8.11.     Infraestrutura de abastecimento, bunkering, portos e corredores verdes
+                          Tomo II
+
+
+Indústria Naval: Base Produtiva, Tecnologia e Competitividade
+1. Construção Naval Mundial
+   1.1. Análise da trajetória e da estrutura atual da construção naval mundial
+   1.2. Evolução da produção, da capacidade dos estaleiros e dos padrões de produção
+   1.3. Segmentos da indústria naval: navios mercantes, offshore, apoio marítimo, defesa e outros
+   1.4. Principais estaleiros e organizações empresariais: estatais e privados, grupos de estaleiros,
+        verticalização e escala
+   1.5. Protecionismo e fatores de competitividade
+   1.6. Estrutura e integração da cadeia produtiva
+   1.7. Transformações ambientais, tecnológicas e geopolíticas e tendências da construção naval
+        mundial
+
+2. Experiências nacionais de desenvolvimento da indústria naval
+   2.1. Dimensões de análise das experiências nacionais: protecionismo; evolução da indústria;
+        estrutura empresarial; especialização; qualificação tecnológica; recursos humanos; cadeia
+        de fornecedores; inserção internacional; evolução da produtividade; competitividade;
+        resultados produtivos; estratégias de desenvolvimento tecnológico e catching-up
+   2.2. Japão
+   2.3. Coreia do Sul
+   2.4. China
+   2.5. Singapura
+   2.6. Estados Unidos
+   2.7. Países europeus selecionados
+   2.8. Índia
+   2.9. Vietnã
+   2.10.         Indonésia
+   2.11.         Outros produtores emergentes
+
+3. Construção naval e offshore no Brasil
+   3.1. Antecedentes e formação da indústria naval moderna brasileira
+   3.2. O ciclo das décadas de 1970 e 1980
+   3.3. O ciclo das décadas de 2000 e 2010
+   3.4. Evolução da construção de navios e embarcações
+   3.5. Evolução da construção de unidades offshore, fabricação de módulos, integração e
+        comissionamento
+   3.6. Evolução da construção naval militar
+   3.7. Evolução da estrutura industrial: empresas, capacidade produtiva, distribuição geográfica e
+        cadeia de fornecedores
+   3.8. Evolução da qualificação tecnológica e dos recursos humanos
+   3.9. Contratos, produção realizada, preços, prazos e desempenho
+   3.10.     Fatores econômicos, empresariais, tecnológicos, regulatórios e institucionais
+       associados aos ciclos de expansão e retração
+
+4. Estrutura atual e capacidade dos estaleiros brasileiros
+   4.1. Dimensões de análise dos estaleiros e instalações: evolução das instalações, organização
+        corporativa, capacidade, produção e desempenho; estrutura e situação atuais; segmentos de
+        atuação; carteiras de encomendas; engenharia de projeto e de processos; infraestrutura
+        industrial; processos produtivos; organização e gestão; potencial de reativação,
+        modernização e adaptação
+   4.2. Estaleiros de construção de navios e embarcações
+   4.3. Estaleiros de construção de embarcações fluviais
+   4.4. Estaleiros e instalações para construção de unidades offshore, fabricação e integração de
+        módulos
+   4.5. Estaleiros de construção naval militar
+   4.6. Cadeia produtiva, por tipo de produto e região
+   4.7. Economias e deseconomias de localização e os polos navais
+
+5. Reparo, conversão, desmantelamento e descomissionamento
+   5.1. Reparo naval: características do mercado mundial e principais polos
+   5.2. Estaleiros de construção e de reparo: diferenças estruturais, tecnológicas e operacionais
+   5.3. Regulamentação internacional do desmantelamento e reciclagem de navios: Convenção de
+        Hong Kong e requisitos ambientais
+   5.4. Mercado mundial de desmantelamento e reciclagem de navios: estrutura, principais polos e
+        tendências
+   5.5. Descomissionamento de unidades offshore: características, regulamentação e mercado
+        mundial
+   5.6. Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas
+   5.7. Demanda brasileira por reparo, docagem e retrofitting de embarcações
+   5.8. Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore
+   5.9. Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e
+        descomissionamento
+   5.10.      Competição internacional e competitividade das atividades no Brasil
+   5.11.    Desafios e oportunidades para reparo, retrofitting, desmantelamento e
+       descomissionamento no Brasil
+
+
+
+6. Cadeia produtiva da indústria de construção naval
+   6.1. Estrutura da cadeia produtiva da construção naval: principais segmentos, produtos e
+        relações entre estaleiros e fornecedores
+   6.2. Perfil de nacionalização de componentes nos principais países produtores de navios
+   6.3. Indústrias de materiais, equipamentos e sistemas navais nos principais países produtores
+   6.4. Evolução do conteúdo nacional e da cadeia de fornecedores nas diferentes fases da indústria
+        naval brasileira
+   6.5. Estrutura atual da cadeia de fornecedores da indústria naval brasileira
+   6.6. Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore
+        e construção naval militar
+   6.7. Distribuição regional e capacidade dos fornecedores nacionais
+   6.8. Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas
+   6.9. Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos
+   6.10.      Desafios e oportunidades para a estaleiros brasileiros
+
+7. Padrão tecnológico e recursos humanos
+   7.1. Capacitação dos estaleiros brasileiros em engenharia de produto e de processo
+   7.2. Capacitação dos estaleiros brasileiros em planejamento, organização e gestão da produção
+   7.3. Força de trabalho empregada nos estaleiros: perfil e qualificação
+   7.4. Capacidade de pesquisa, desenvolvimento e inovação em empresas, universidades e centros
+        de pesquisa
+   7.5. Relações entre universidades, centros de pesquisa, empresas e a base produtiva da indústria
+        naval
+   7.6. Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico,
+        de engenharia e gerencial
+   7.7. Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior
+
+8. Produtividade e competitividade
+   8.1. Metodologia e indicadores para avaliação tecnológica, de produtividade e desempenho dos
+        estaleiros
+   8.2. Padrões tecnológicos, produtividade e desempenho das principais classes de estaleiros
+        mundiais
+   8.3. Padrões tecnológicos, produtividade e desempenho dos estaleiros brasileiros nos últimos
+        períodos de operação contínua, na situação atual e potencial
+   8.4. Benchmarking dos estaleiros brasileiros em relação às classes internacionais relevantes
+   8.5. Potencialidades, limitações e gargalos de produtividade e competitividade dos estaleiros
+        brasileiros
+   8.6. Possibilidades de inserção competitiva e metas de produtividade e desempenho por classe
+        de estaleiro
+
+9. Descarbonização: oportunidades e desafios para a indústria naval
+   9.1. Impactos da descarbonização sobre o projeto, a construção e o retrofitting de navios
+   9.2. Competências requeridas para projeto e construção de navios capazes ou preparados para
+        novos combustíveis
+   9.3. Competências requeridas para desenvolvimento e aplicação de tecnologias de eficiência
+        energética, captura de carbono e correlatas
+   9.4. Requisitos tecnológicos e produtivos para retrofitting de navios
+   9.5. Capacidades e deficiências dos estaleiros brasileiros para atendimento às novas demandas
+        tecnológicas
+   9.6. Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de
+        equipamentos e sistemas
+   9.7. Descarbonização dos processos de construção naval
+   9.8. Oportunidades de inserção competitiva da indústria naval brasileira nos mercados
+        associados à descarbonização
+   9.9. Principais desafios tecnológicos e produtivos
+              Tomo III
+
+
+Política Industrial e Política Marítima
+1. Fundamentos e tendências
+   1.1. Conceitos e fundamentos da política industrial
+   1.2. Justificativas econômicas e estratégicas para políticas industriais
+   1.3. Objetivos e instrumentos de política industrial: políticas horizontais e setoriais
+   1.4. Transformações ambientais e geopolíticas em curso e tendências
+   1.5. Evolução das políticas industriais praticadas no Brasil e tendências recentes
+   1.6. Metodologia para análise da evolução das políticas setoriais voltadas para a indústria naval
+        no Brasil e no mundo
+   1.7. Relevância dos instrumentos horizontais para a indústria naval: Nova Indústria Brasil (NIB)
+        e outras políticas
+   1.8. Políticas públicas e mecanismos de fomento à descarbonização marítima e sua
+        aplicabilidade ao Brasil
+
+2. Políticas de marinha mercante no mundo
+   2.1. Justificativas econômicas, estratégicas e geopolíticas para políticas de marinha mercante
+   2.2. Evolução das políticas de marinha mercante desde o pós-guerra
+   2.3. Regulamentação e organismos internacionais
+   2.4. Dimensões de análise das experiências nacionais: evolução das políticas; registros
+        alternativos; financiamento; subsídios; incentivos fiscais; reserva de mercado e de carga;
+        preferência de bandeira; políticas de tripulação; desenvolvimento tecnológico; resultados
+        sobre frota, participação no mercado e competitividade; identificação dos casos mais
+        expressivos de sucesso e falha
+   2.5. Europa Ocidental
+   2.6. Estados Unidos
+   2.7. Japão
+   2.8. Coreia do Sul
+   2.9. China
+   2.10.        Singapura
+   2.11.        Austrália e Nova Zelândia
+   2.12.        Europa Oriental e Turquia
+   2.13.        Índia
+   2.14.        Outros casos relevantes
+3. Políticas de construção naval no mundo
+   3.1. Justificativas econômicas, estratégicas e geopolíticas para políticas de construção naval
+   3.2. Inter-relação entre políticas de marinha mercante e de construção naval
+   3.3. Evolução das políticas de construção naval e dos ciclos de industrialização e realocação da
+        produção mundial
+   3.4. Regulamentação e organismos internacionais
+   3.5. Dimensões de análise das experiências nacionais: planejamento e políticas de
+        desenvolvimento da indústria; proteção do mercado; participação e controle estatal;
+        subsídios e incentivos fiscais; financiamento; garantias e créditos à exportação; compras
+        governamentais; políticas de conteúdo local; desenvolvimento tecnológico e transferência
+        de tecnologia; cooperação internacional; impacto das políticas governamentais na
+        consolidação da indústria; identificação dos casos mais expressivos de sucesso e falha
+   3.6. Japão
+   3.7. Coreia do Sul
+   3.8. China
+   3.9. Singapura
+   3.10.        Estados Unidos
+   3.11.        Europa Ocidental
+   3.12.        Índia
+   3.13.        Vietnã
+   3.14.        Indonésia
+   3.15.        Turquia e Europa Oriental
+   3.16.        Outros casos relevantes
+
+4. Políticas brasileiras de marinha mercante e construção naval
+   4.1. Políticas marítimas no Brasil: marinha mercante, construção naval, navegação interior, óleo
+        e gás offshore, energias oceânicas e defesa
+   4.2. Evolução das políticas brasileiras de marinha mercante
+   4.3. Evolução das políticas brasileiras de construção naval
+   4.4. Os Planos de Desenvolvimento e os Planos de Construção Naval: ciclos de 1970–1980 e
+        2000–2010
+   4.5. Instrumentos de proteção e incentivo à marinha mercante: reserva de mercado e de carga,
+        preferência de bandeira, afretamento, tripulação e incentivos fiscais
+   4.6. Instrumentos de apoio à construção naval: barreiras tributárias e restrições ao afretamento,
+        incentivos fiscais, conteúdo local e compras governamentais
+   4.7. Financiamento e outros instrumentos financeiros
+   4.8. Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos
+   4.9. Clusters navais e políticas de desenvolvimento regional
+   4.10.      Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a
+       indústria naval
+   4.11.      Resultados das políticas brasileiras de marinha mercante e construção naval
+   4.12.      Mudanças recentes e principais questões em debate no Brasil
+
+5. O Fundo da Marinha Mercante
+   5.1. Descrição geral do sistema
+   5.2. Histórico e relevância do FMM para a indústria marítima brasileira
+   5.3. Evolução da regulamentação do AFRMM e do FMM
+   5.4. Arrecadação, distribuição e aplicação do AFRMM
+   5.5. Eficiência do sistema: projetos financiados, obras concluídas e prazos
+   5.6. Eficácia do sistema: consolidação das empresas e evolução da competitividade
+   5.7. Efeitos do financiamento e da utilização das contas vinculadas sobre o custo efetivo de
+        capital: análise e simulações
+   5.8. Alocação de custos e benefícios: efeitos distributivos intersetoriais e inter-regionais
+   5.9. Justificativa econômica e estratégica do modelo atual por segmento da navegação
+
+6. Setores críticos da cadeia de suprimentos: siderurgia e materiais e equipamentos navais
+   6.1. Políticas industriais e perfil de nacionalização da cadeia de suprimentos da indústria naval
+        nos principais países produtores
+   6.2. Importância da siderurgia e da indústria de materiais e equipamentos navais para a
+        construção naval
+   6.3. Evolução das indústrias siderúrgica e de materiais e equipamentos navais no Brasil
+   6.4. Estrutura atual da oferta de produtos siderúrgicos para a indústria naval brasileira:
+        empresas, capacidade, tecnologia e dependência de importações
+   6.5. Estrutura atual da indústria brasileira de materiais e equipamentos navais: setores,
+        empresas, capacidade, tecnologia e dependência de importações
+   6.6. Políticas industriais e de conteúdo local e evolução dos índices de nacionalização no Brasil
+   6.7. Cenários prospectivos, oportunidades e desafios para o desenvolvimento da siderurgia e da
+        indústria de materiais e equipamentos navais
+   6.8. Importância do desenvolvimento da cadeia nacional de suprimentos para a competitividade
+        da indústria naval brasileira
+7. Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas
+   7.1. O ciclo das décadas de 1970 e 1980 no Brasil: objetivos, instrumentos e resultados
+   7.2. Fatores endógenos e exógenos da crise e retração nas décadas de 1980 e 1990
+   7.3. Brasil e Coreia do Sul: análise comparada das trajetórias da indústria naval
+   7.4. O ciclo das décadas de 2000 e 2010 no Brasil: objetivos, instrumentos e resultados
+   7.5. Fatores determinantes da retração da indústria naval brasileira após o ciclo de expansão dos
+        anos 2000
+   7.6. Brasil e China: análise comparada das trajetórias da indústria naval a partir dos anos 2000
+   7.7. Análise comparativa dos ciclos brasileiros: continuidade e coordenação institucional,
+        demanda, financiamento, escala de produção, produtividade, aprendizado tecnológico e
+        inserção internacional
+   7.8. Problemas sistêmicos e lições para uma nova política de desenvolvimento da indústria
+        naval brasileira
+
+8. Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval
+   brasileira
+   8.1. Transformações geopolíticas e seus impactos sobre o comércio, o transporte marítimo e a
+        indústria naval
+   8.2. Segurança econômica e reorganização das cadeias globais de produção e suprimento
+   8.3. Descarbonização e novas exigências ambientais: impactos sobre a demanda e a estrutura da
+        indústria naval
+   8.4. Reconfiguração da indústria naval mundial: relocalização de capacidades produtivas,
+        políticas de reindustrialização e novos países produtores
+   8.5. Segurança e defesa e seus impactos sobre a indústria naval
+   8.6. Riscos e oportunidades decorrentes das transformações geopolíticas e ambientais para a
+        indústria naval brasileira
+
+9. Ambiente econômico e institucional da indústria marítima brasileira
+   9.1. Condições econômicas para o desenvolvimento da indústria marítima brasileira: demanda,
+        ambiente macroeconômico, custo de capital, restrições fiscais, taxa de câmbio e ambiente
+        de investimento
+   9.2. Organização institucional dos órgãos do Estado com atribuições sobre a indústria marítima
+   9.3. Coordenação entre órgãos e políticas e continuidade da orientação programática
+   9.4. Capacitação técnica, autonomia decisória e continuidade institucional dos órgãos e agências
+   9.5. Riscos políticos, econômicos, institucionais e regulatórios para a reestruturação da indústria
+        naval
+           Tomo IV
+
+
+Diagnóstico Integrado e Cenários
+1. Diagnóstico integrado da indústria naval brasileira
+   1.1. Relações entre volume e estabilidade da demanda, capacidade dos estaleiros, produtividade,
+        custos, prazos, qualidade e condições de financiamento
+   1.2. Compatibilidade entre a demanda potencial e a capacidade de atendimento da indústria
+        naval brasileira nos diferentes segmentos
+   1.3. Potencialidades, limitações e gargalos da indústria naval brasileira
+   1.4. Potencialidades, limitações e gargalos dos segmentos de reparo, conversão e
+        descomissionamento
+   1.5. Impactos da descarbonização e das transformações tecnológicas e geopolíticas sobre a
+        demanda, requisitos tecnológicos e oportunidades para a indústria naval brasileira
+   1.6. Fatores críticos e incertezas para a construção dos cenários para a indústria naval brasileira
+
+2. Cenários para a indústria naval brasileira
+   2.1. Premissas, hipóteses, horizontes temporais e principais incertezas
+   2.2. Consolidação das projeções de demanda para transporte marítimo, navegação interior, óleo
+        e gás offshore, energias oceânicas, defesa, reparo e descomissionamento
+   2.3. Cenários alternativos de volume e composição da demanda por segmento
+   2.4. Capacidade da indústria naval brasileira para atendimento da demanda nos diferentes
+        cenários
+   2.5. Simulação das condições necessárias para que a demanda seja atendida pela indústria
+        nacional
+   2.6. Possibilidades e desafios para a inserção competitiva no mercado internacional
+   2.7. Requisitos de infraestrutura, tecnologia e recursos humanos para os diferentes cenários
+
+3. Conclusões do Relatório 1
+   3.1. Principais conclusões do diagnóstico integrado e dos cenários
+   3.2. Incertezas, hipóteses e lacunas de informação que condicionam as conclusões
+   3.3. Questões para a identificação dos segmentos estratégicos e a formulação das políticas
+

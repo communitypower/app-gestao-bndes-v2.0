@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `accessStatus` enum('ativo','revogado') DEFAULT 'ativo' NOT NULL;

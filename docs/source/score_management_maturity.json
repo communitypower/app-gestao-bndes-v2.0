@@ -1,0 +1,184 @@
+{
+  "results": [
+    {
+      "input": "Governança",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Governança",
+        "evidence": "A plataforma possui estrutura organizacional cadastrada (9 grupos, 9 coordenadores) e controles de acesso baseados em papéis (RBAC/ABAC) implementados no código. No entanto, há apenas 1 usuário autenticado (administrador), nenhuma conta vinculada aos coordenadores ou participantes, e os alertas automáticos e rotinas estão desativados.",
+        "impact": "A gestão depende inteiramente de um único administrador para atualização manual, impedindo a responsabilização distribuída, a operação em tempo real e a eficácia dos controles de qualidade e prazos desenhados.",
+        "root_limitation": "A ausência de contas vinculadas aos usuários e a inatividade das rotinas automáticas impedem a adoção operacional dos fluxos de governança.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Planejamento",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Planejamento",
+        "evidence": "A plataforma possui 21 atividades cadastradas com prazos e responsáveis, mas não há marcos, dependências, critérios de aceite, esforço restante ou linha de base. Além disso, nenhuma hora foi alocada e os alertas automáticos estão desativados.",
+        "impact": "A gestão consegue visualizar prazos finais, mas não consegue antecipar gargalos, analisar a capacidade da equipe ou prevenir desvios no cronograma.",
+        "root_limitation": "Falta de decomposição do trabalho, gestão de dependências e controle de capacidade/esforço.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Controle de prazo",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Controle de prazo",
+        "evidence": "A plataforma possui capacidade implementada para monitorar prazos, com cronograma mestre, alertas visuais de atraso e motor de notificações via WhatsApp configurado. No entanto, o uso operacional é nulo: não há horas alocadas, as rotinas automáticas e o WhatsApp estão desativados, e não há marcos ou dependências cadastradas.",
+        "impact": "A gestão não consegue antecipar desvios ou avaliar a capacidade real da equipe, dependendo exclusivamente de dados iniciais estáticos.",
+        "root_limitation": "A ausência de uso operacional dos recursos de alocação e notificação impede a transição de um controle reativo para um preventivo.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Capacidade e horas",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Capacidade e horas",
+        "evidence": "A plataforma possui estrutura para alocar horas por membro da equipe, mas não há disponibilidade por período, horas realizadas ou saldo. Operacionalmente, nenhuma hora foi alocada e nenhum integrante possui conta vinculada.",
+        "impact": "A ausência de dados de capacidade impede a análise de sobrecarga, gargalos e esforço restante, tornando o planejamento irrealista.",
+        "root_limitation": "Falta de recursos para gestão de disponibilidade e ausência de uso operacional da alocação de horas.",
+        "score": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "Qualidade das entregas",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Qualidade das entregas",
+        "evidence": "A plataforma possui fluxo formal de revisão, versionamento e pareceres desenhado e testado tecnicamente, mas não há critérios de aceite definidos, e operacionalmente existem 0 materiais cadastrados, 0 revisores alocados e 0 submissões realizadas.",
+        "impact": "A qualidade formal prevista ainda não produz controle efetivo sobre as entregas, impedindo a avaliação real de adequação, tempo de ciclo e aprovação do trabalho produzido.",
+        "root_limitation": "A ausência de uso operacional do fluxo de produção e a falta de critérios de aceite impedem a transição de uma capacidade funcional para uma maturidade gerencial efetiva.",
+        "score": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "Revisão por pares",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Revisão por pares",
+        "evidence": "A plataforma possui fluxo formal de revisão implementado (alocação, submissão, comentários e pareceres), mas o uso operacional é nulo: 0 revisores alocados, 0 submissões e 0 pareceres registrados.",
+        "impact": "A qualidade formal prevista não produz controle efetivo sobre as entregas, impedindo a garantia de qualidade e a segregação de papéis na prática.",
+        "root_limitation": "Falta de adoção operacional do fluxo de revisão pelos atores envolvidos, mantendo a prática fora da plataforma.",
+        "score": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "Interfaces entre seções",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Interfaces",
+        "evidence": "A plataforma possui formulário, filtros, fluxo de resolução e histórico auditável para interfaces, mas não há nenhuma interface cadastrada. Além disso, a solução pactuada não altera automaticamente o planejamento e faltam alertas ou indicadores de idade para as interfaces.",
+        "impact": "O mecanismo de coordenação transversal existe, mas a ausência de uso impede a identificação antecipada de dependências ou sobreposições, limitando a prevenção de desvios.",
+        "root_limitation": "A ausência de dados operacionais e de integração sistêmica com o planejamento impede que a capacidade funcional se traduza em maturidade gerencial.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Riscos e impedimentos",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Riscos e impedimentos",
+        "evidence": "O modelo de dados não possui entidades para riscos, impedimentos ou dependências entre atividades. O mecanismo de interfaces existe para coordenação transversal, mas não altera automaticamente o planejamento e não há alertas para interfaces. A rotina de alertas de prazo e WhatsApp estão desativados e não há operação multiusuário ativa.",
+        "impact": "A gestão não consegue antecipar desvios, dependendo de ações manuais para identificar gargalos e colisões de capacidade.",
+        "root_limitation": "Ausência de estruturas de dados e fluxos específicos para gestão proativa de riscos e dependências, limitando a plataforma a um controle reativo de prazos.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Comunicação",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Comunicação",
+        "evidence": "A plataforma possui motor de notificações via WhatsApp com controle de opt-in, idempotência e retentativas, porém a integração está desabilitada, não há credenciais ativas e nenhuma notificação foi enviada. O escopo atual cobre apenas atribuição e alertas de prazo, sem escalonamento.",
+        "impact": "A ausência de comunicação ativa e automatizada mantém a coordenação dependente de interações externas informais, reduzindo a tempestividade na resposta a atrasos e riscos.",
+        "root_limitation": "A integração de comunicação está desativada e seu escopo funcional é restrito a alertas básicos, sem abranger interfaces, revisões ou escalonamento gerencial.",
+        "score": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "Informação gerencial",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Informação gerencial",
+        "evidence": "A plataforma possui painéis de visão geral, calendário e rastreabilidade de interfaces e atividades, mas os indicadores refletem apenas dados iniciais (0h alocadas, 0 revisores, 0 materiais). Faltam métricas de capacidade, riscos, qualidade e histórico de alterações.",
+        "impact": "A gestão consegue visualizar o estado cadastrado, mas não possui informações preditivas ou analíticas para antecipar desvios, avaliar a capacidade real da equipe ou tomar decisões baseadas em tendências.",
+        "root_limitation": "A ausência de uso operacional real e a falta de entidades para riscos, dependências e capacidade limitam a geração de informações gerenciais completas.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Qualidade dos dados",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Qualidade dos dados",
+        "evidence": "O sistema possui validações estruturais, controle de acesso e testes técnicos, mas os dados operacionais estão vazios (0 horas, 0 revisores, 0 materiais). Faltam trilhas de auditoria completas para mutações administrativas e transações explícitas em operações críticas.",
+        "impact": "A ausência de dados reais e de rastreabilidade completa impede a análise de capacidade, qualidade e risco, limitando a plataforma a um cadastro estático.",
+        "root_limitation": "A falta de uso operacional e de controles transacionais/auditabilidade impede a confiabilidade e o uso gerencial dos dados.",
+        "score": 1
+      },
+      "error": ""
+    },
+    {
+      "input": "Experiência e acessibilidade",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Experiência e acessibilidade",
+        "evidence": "A plataforma possui interface responsiva com reorganização em coluna para celular, calendário com visualização em lista/grade e sistema de cores para prazos. No entanto, a visualização móvel do cronograma e das atividades gera páginas muito longas sem paginação ou filtros de exceção.",
+        "impact": "A operação em dispositivos móveis é possível, mas a alta carga cognitiva e a falta de filtros dificultam a priorização e a gestão ágil.",
+        "root_limitation": "Falta de paginação, agrupamento e visões focadas em exceção na interface móvel.",
+        "score": 3
+      },
+      "error": ""
+    },
+    {
+      "input": "Automação e alertas",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Automação e alertas",
+        "evidence": "A plataforma possui motor de notificação com idempotência, fila de retentativas e rotina diária para prazos, mas o WhatsApp e a rotina estão desativados e não há registros de uso.",
+        "impact": "A gestão depende de acompanhamento manual dos prazos, reduzindo a capacidade de antecipar desvios e sobrecarregando a coordenação.",
+        "root_limitation": "A automação está implementada tecnicamente, mas inativa operacionalmente e restrita a prazos finais, sem cobrir marcos ou interfaces.",
+        "score": 2
+      },
+      "error": ""
+    },
+    {
+      "input": "Segurança e segregação",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Segurança e segregação",
+        "evidence": "O sistema implementa RBAC/ABAC granular (isAdministrator, isActiveCoordinator) e validações rigorosas para mutações, mas não possui logs de auditoria para alterações críticas de configuração ou perfis, e a operação multiusuário ainda não foi iniciada (apenas 1 admin autenticado).",
+        "impact": "A arquitetura protege o acesso e segrega funções adequadamente no desenho, mas a ausência de trilhas de auditoria completas e de uso real impede a validação da segurança operacional e a investigação de incidentes.",
+        "root_limitation": "Falta de logs de auditoria detalhados para alterações críticas e ausência de operação multiusuário real para validar a eficácia dos controles de acesso.",
+        "score": 3
+      },
+      "error": ""
+    },
+    {
+      "input": "Orientação ao resultado final",
+      "output": {
+        "confidence": "Alta",
+        "dimension": "Orientação ao resultado final",
+        "evidence": "A plataforma possui painéis de progresso, controle de status e cronograma mestre, mas não há critérios de aceite, gestão de riscos, dependências complexas ou indicadores de qualidade. Além disso, o uso operacional é nulo, com 0 horas alocadas, 0 materiais e 0 revisores.",
+        "impact": "A gestão consegue visualizar prazos e status básicos, mas não tem ferramentas para antecipar desvios complexos, garantir a qualidade das entregas ou medir a capacidade real da equipe, limitando a eficácia na entrega de resultados.",
+        "root_limitation": "A ausência de uso operacional e a falta de mecanismos avançados de gestão de riscos e qualidade impedem uma orientação efetiva a resultados.",
+        "score": 2
+      },
+      "error": ""
+    }
+  ]
+}

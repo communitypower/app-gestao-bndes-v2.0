@@ -1,0 +1,1 @@
+ALTER TABLE `study_sections` MODIFY COLUMN `code` varchar(8) NOT NULL;

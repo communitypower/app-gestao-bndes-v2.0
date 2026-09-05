@@ -1,0 +1,134 @@
+# Terminal Full Output
+# Terminal: default
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test
+# PID: 26981
+# Timestamp: 2026-07-31_09-13-17.196711
+# Original Length: 14881 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test
+[43m[33m[[39m[49m[43m[30mWARN[39m[49m[43m[33m][39m[49m The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.patchedDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+> estudo-bndes-gestao@1.0.0 test /home/ubuntu/estudo-bndes-gestao
+> vitest run
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/home/ubuntu/estudo-bndes-gestao
+[22m[39m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 775[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [31m❯[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (2)
+[22m   [31m❯[39m áreas autorizadas do colaborador[2m (2)
+[22m     [32m✓[39m permite consultar a biblioteca com busca e filtros tipados
+     [31m×[39m permite consultar a produção colaborativa
+ [32m✓[39m [2mserver/[22mcoordinatorActivities[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [31m❯[39m [2mserver/[22mreviewInterfaces[2m.test.ts[22m[2m (10)
+[22m   [31m❯[39m alocação de revisores por atividade[2m (2)
+[22m     [31m×[39m permite ao administrador e ao coordenador responsável atualizar revisores
+     [32m✓[39m bloqueia coordenador alheio e participante do grupo responsável
+   [32m✓[39m escopo de visualização e ciclo de revisão[2m (4)
+[22m   [32m✓[39m gestão e resolução de interfaces entre grupos[2m (4)
+[22m [32m✓[39m [2mserver/[22mwhatsappCredentials[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (6)
+[22m [32m✓[39m [2mshared/[22mteamStructure[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 547[2mms
+[22m[39m [31m❯[39m [2mclient/src/pages/[22mteamActivitiesStructure[2m.test.tsx[22m[2m (2)
+[22m   [32m✓[39m estrutura hierárquica da equipe[2m (1)
+[22m   [31m❯[39m ficha visível da atividade[2m (1)
+[22m     [31m×[39m abre a ficha completa por uma ação distinta da edição
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 3 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m server/collaboratorAreas.test.ts[2m > [22máreas autorizadas do colaborador[2m > [22mpermite consultar a produção colaborativa
+[31m[1mAssertionError[22m: promise rejected "TRPCError: [vitest] No "getTeamMemberByUs… { code: '…' }" instead of resolving
+[39m[36m [2m❯[22m server/collaboratorAreas.test.ts:[2m56:42
+[22m[39m    [90m 54| [39m  [34mit[39m([32m"permite consultar a produção colaborativa"[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m 55| [39m    [35mconst[39m caller [33m=[39m appRouter[33m.[39m[34mcreateCaller[39m([34mcollaboratorContext[39m())[33m;
+[39m    [90m 56| [39m    [35mawait[39m [34mexpect[39m(caller[33m.[39mproduction[33m.[39m[34mlist[39m())[33m.[39mresolves[33m.[39m[34mtoEqual[39m([])[33m;
+[39m    [90m   | [39m                                         [31m^
+[39m    [90m 57| [39m    [34mexpect[39m(dbMocks[33m.[39mlistProductionMaterials)[33m.[39m[34mtoHaveBeenCalledTimes[39m([34m1[39m)[33m;
+[39m    [90m 58| [39m  })[33m;
+[39m[31m[1mCaused by: TRPCError[22m: [vitest] No "getTeamMemberByUserId" export is defined on the "./db" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39m[36m [2m❯[22m server/routers/production.ts:[2m119:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:28
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:26
+[22m[39m[90m [2m❯[22m next node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m646:16
+[22m[39m[90m [2m❯[22m server/_core/trpc.ts:[2m20:10
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:26
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:26
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:26
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[22m[39m[31m[1mSerialized Error:[22m[39m [90m{ code: 'INTERNAL_SERVER_ERROR' }
+[39m[31m[1mCaused by: Error[22m: [vitest] No "getTeamMemberByUserId" export is defined on the "./db" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+[39mvi.mock(import("./db"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+[36m [2m❯[22m server/routers/production.ts:[2m119:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:28
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:26
+[22m[39m[90m [2m❯[22m next node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m646:16
+[22m[39m[90m [2m❯[22m server/_core/trpc.ts:[2m20:10
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:26
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:26
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:26
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m server/reviewInterfaces.test.ts[2m > [22malocação de revisores por atividade[2m > [22mpermite ao administrador e ao coordenador responsável atualizar revisores
+[31m[1mAssertionError[22m: promise rejected "TRPCError: db.select is not a function { code: '…' }" instead of resolving
+[39m[36m [2m❯[22m server/reviewInterfaces.test.ts:[2m231:5
+[22m[39m    [90m229| [39m    [35mawait[39m [34mexpect[39m(
+    [90m230| [39m      admin[33m.[39mactivities[33m.[39m[34mupdateReviewers[39m({ id[33m:[39m [34m21[39m[33m,[39m reviewerIds[33m:[39m [[34m14[39m] })
+    [90m231| [39m    )[33m.[39mresolves[33m.[39m[34mtoMatchObject[39m({ id[33m:[39m [34m21[39m })[33m;
+[39m    [90m   | [39m    [31m^
+[39m    [90m232| [39m    [35mawait[39m [34mexpect[39m(
+    [90m233| [39m      coordinator[33m.[39mactivities[33m.[39m[34mupdateReviewers[39m({ id[33m:[39m [34m21[39m[33m,[39m reviewerIds[33m:[39m [[34m1[39m…
+[31m[1mCaused by: TRPCError[22m: db.select is not a function
+[39m[36m [2m❯[22m replaceActivityReviewers server/routers/activities.ts:[2m77:6
+[22m[39m[90m [2m❯[22m server/routers/activities.ts:[2m229:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m229:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[22m[39m[31m[1mSerialized Error:[22m[39m [90m{ code: 'INTERNAL_SERVER_ERROR' }
+[39m[31m[1mCaused by: TypeError[22m: db.select is not a function
+[39m[36m [2m❯[22m replaceActivityReviewers server/routers/activities.ts:[2m77:6
+[22m[39m[90m [2m❯[22m server/routers/activities.ts:[2m229:7
+[22m[39m[90m [2m❯[22m resolveMiddleware node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m571:22
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m callRecursive node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m633:20
+[22m[39m[90m [2m❯[22m procedure node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/procedureBuilder.ts:[2m673:20
+[22m[39m[90m [2m❯[22m node_modules/.pnpm/@trpc+server@11.6.0_typescript@5.9.3/node_modules/@trpc/server/src/unstable-core-do-not-import/router.ts:[2m474:20
+[22m[39m[90m [2m❯[22m server/reviewInterfaces.test.ts:[2m229:5
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+[22m[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/teamActivitiesStructure.test.tsx[2m > [22mficha visível da atividade[2m > [22mabre a ficha completa por uma ação distinta da edição
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'length')
+[39m[36m [2m❯[22m client/src/pages/Activities.tsx:[2m1127:77
+[22m[39m    [90m1125| [39m                [33mclassName[39m[33m=[39m[32m"rounded-none uppercase tracking-[.08em]"
+[39m    [90m1126| [39m              [33m>
+[39m    [90m1127| [39m                [33m<[39m[33mClipboardCheck[39m [33mclassName[39m[33m=[39m[32m"mr-2 h-4 w-4"[39m [33m/[39m[33m>[39m [33m{[39mitem[33m.[39mrevi…
+    [90m   | [39m                                                                            [31m^
+[39m    [90m1128| [39m              [33m<[39m[33m/[39m[33mButton[39m[33m>
+[39m    [90m1129| [39m              [33m{[39misAdmin [33m&&[39m (
+[90m [2m❯[22m ActivitiesContent client/src/pages/Activities.tsx:[2m1058:19
+[22m[39m[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20
+[22m[39m[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22
+[22m[39m[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19
+[22m[39m[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18
+[22m[39m[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13
+[22m[39m[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22
+[22m[39m[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.1_react@19.2.1/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+[22m[39m[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m11 passed[39m[22m[90m (14)
+[39m[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m54 passed[39m[22m[90m (57)
+[39m[2m   Start at [22m 09:13:12
+[2m   Duration [22m 4.15s[2m (transform 881ms, setup 0ms, collect 5.83s, tests 1.64s, environment 1.97s, prepare 1.35s)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

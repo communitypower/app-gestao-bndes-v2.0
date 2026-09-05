@@ -1,0 +1,224 @@
+# Terminal Full Output
+# Terminal: default
+# Command: cd /home/ubuntu/estudo-bndes-gestao && pnpm test && pnpm check
+# PID: 734
+# Timestamp: 2026-07-31_00-46-22.231674
+# Original Length: 11781 characters
+# ----------------------------------------
+
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0mcd /home/ubuntu/estudo-bndes-gestao && pnpm test && pnpm check
+[43m[33m[[39m[49m[43m[30mWARN[39m[49m[43m[33m][39m[49m The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.patchedDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+> estudo-bndes-gestao@1.0.0 test /home/ubuntu/estudo-bndes-gestao
+> vitest run
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/home/ubuntu/estudo-bndes-gestao
+[22m[90mstderr[2m | client/src/pages/collaborationPages.test.tsx[2m > [22m[2minterface da biblioteca[2m > [22m[2mrenderiza o acervo, aplica a busca e abre a ação de nova referência
+[22m[39mWarning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[22m [32m✓[39m [2mserver/[22maccess[2m.test.ts[22m[2m (13)[22m[33m 365[2mms
+[22m[39m [32m✓[39m [2mserver/[22mauth[2m.logout.test.ts[22m[2m (1)
+[22m [32m✓[39m [2mserver/[22mcollaboratorAreas[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mserver/[22mlibraryFilters[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mserver/[22mnotificationEngine[2m.test.ts[22m[2m (3)
+[22m [32m✓[39m [2mserver/[22mwhatsappSettings[2m.test.ts[22m[2m (2)
+[22m [32m✓[39m [2mshared/[22mdomain[2m.test.ts[22m[2m (4)
+[22m [32m✓[39m [2mclient/src/lib/[22mformat[2m.test.ts[22m[2m (1)
+[22m [31m❯[39m [2mclient/src/pages/[22mcollaborationPages[2m.test.tsx[22m[2m (4)[22m[33m 1492[2mms
+[22m[39m   [32m✓[39m interface da biblioteca[2m (2)[22m[33m 414[2mms
+[22m[39m   [31m❯[39m interface da administração do WhatsApp[2m (2)[22m[33m 1078[2mms
+[22m[39m     [31m×[39m renderiza o estado da integração, salva o modelo e processa alertas[33m 1069[2mms
+[22m[39m     [32m✓[39m mostra o bloqueio e os destinos permitidos ao colaborador
+[31m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 1 [27m[22m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+[39m[31m[1m[7m FAIL [27m[22m[39m client/src/pages/collaborationPages.test.tsx[2m > [22minterface da administração do WhatsApp[2m > [22mrenderiza o estado da integração, salva o modelo e processa alertas
+[31m[1mAssertionError[22m[39m: expected "spy" to be called with arguments: [ ObjectContaining{…} ]
+Received: 
+  1st spy call:
+  Array [
+-   ObjectContaining {
++   Object {
++     "whatsappEnabled": false,
+      "whatsappLanguageCode": "pt_BR",
+-     "whatsappTemplateName": "estudo_bndes_prazo",
++     "whatsappTemplateName": "estudo_bndes_alerta_atividade",
+    },
+  ]
+Number of calls: 1
+Ignored nodes: comments, script, style
+[36m<html>
+[39m  [36m<head />
+[39m  [36m<body
+[39m    [33mstyle[39m=[32m""
+[39m  [36m>
+[39m    [36m<div>
+[39m      [36m<div
+[39m        [33mclass[39m=[32m"mx-auto max-w-[1500px] space-y-10"
+[39m      [36m>
+[39m        [36m<header
+[39m          [33mclass[39m=[32m"editorial-enter border-b paper-rule pb-7 md:pb-10"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"mb-8 flex items-center justify-between gap-4"
+[39m          [36m>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"editorial-kicker text-primary"
+[39m            [36m>
+[39m              [0mGovernança da plataforma
+[0m            [36m</p>
+[39m            [36m<span
+[39m              [33mclass[39m=[32m"font-editorial text-lg italic text-muted-foreground"
+[39m            [36m>
+[39m              [0m07 — Administração
+[0m            [36m</span>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"grid items-end gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,.42fr)]"
+[39m          [36m>
+[39m            [36m<div>
+[39m              [36m<h1
+[39m                [33mclass[39m=[32m"font-display balance max-w-4xl text-[clamp(3rem,7vw,6.9rem)] font-semibold leading-[.84] tracking-[-.055em]"
+[39m              [36m>
+[39m                [0mAcesso, alertas e rastreabilidade.
+[0m              [36m</h1>
+[39m            [36m</div>
+[39m            [36m<div
+[39m              [33mclass[39m=[32m"md:border-l md:pl-6 paper-rule"
+[39m            [36m>
+[39m              [36m<p
+[39m                [33mclass[39m=[32m"font-editorial text-xl leading-snug text-muted-foreground md:text-2xl"
+[39m              [36m>
+[39m                [0mDefina perfis, controle a integração oficial de WhatsApp e acompanhe o histórico operacional.
+[0m              [36m</p>
+[39m            [36m</div>
+[39m          [36m</div>
+[39m        [36m</header>
+[39m        [36m<section
+[39m          [33mclass[39m=[32m"grid gap-5 lg:grid-cols-3"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"border-t-2 border-foreground p-5"
+[39m          [36m>
+[39m            [36m<svg
+[39m              [33mclass[39m=[32m"lucide lucide-shield-check h-5 w-5 text-primary"
+[39m              [33mfill[39m=[32m"none"
+[39m              [33mheight[39m=[32m"24"
+[39m              [33mstroke[39m=[32m"currentColor"
+[39m              [33mstroke-linecap[39m=[32m"round"
+[39m              [33mstroke-linejoin[39m=[32m"round"
+[39m              [33mstroke-width[39m=[32m"2"
+[39m              [33mviewBox[39m=[32m"0 0 24 24"
+[39m              [33mwidth[39m=[32m"24"
+[39m              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m            [36m>
+[39m              [36m<path
+[39m                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+[39m              [36m/>
+[39m              [36m<path
+[39m                [33md[39m=[32m"m9 12 2 2 4-4"
+[39m              [36m/>
+[39m            [36m</svg>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"editorial-kicker mt-5 text-muted-foreground"
+[39m            [36m>
+[39m              [0mPerfis cadastrados
+[0m            [36m</p>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"font-display mt-2 text-5xl"
+[39m            [36m>
+[39m              [0m0
+[0m            [36m</p>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"border-t-2 border-foreground p-5"
+[39m          [36m>
+[39m            [36m<svg
+[39m              [33mclass[39m=[32m"lucide lucide-triangle-alert h-5 w-5 text-primary"
+[39m              [33mfill[39m=[32m"none"
+[39m              [33mheight[39m=[32m"24"
+[39m              [33mstroke[39m=[32m"currentColor"
+[39m              [33mstroke-linecap[39m=[32m"round"
+[39m              [33mstroke-linejoin[39m=[32m"round"
+[39m              [33mstroke-width[39m=[32m"2"
+[39m              [33mviewBox[39m=[32m"0 0 24 24"
+[39m              [33mwidth[39m=[32m"24"
+[39m              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m            [36m>
+[39m              [36m<path
+[39m                [33md[39m=[32m"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+[39m              [36m/>
+[39m              [36m<path
+[39m                [33md[39m=[32m"M12 9v4"
+[39m              [36m/>
+[39m              [36m<path
+[39m                [33md[39m=[32m"M12 17h.01"
+[39m              [36m/>
+[39m            [36m</svg>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"editorial-kicker mt-5 text-muted-foreground"
+[39m            [36m>
+[39m              [0mAPI WhatsApp
+[0m            [36m</p>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"font-editorial mt-2 text-2xl"
+[39m            [36m>
+[39m              [0mCredenciais pendentes
+[0m            [36m</p>
+[39m          [36m</div>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"border-t-2 border-primary p-5"
+[39m          [36m>
+[39m            [36m<svg
+[39m              [33mclass[39m=[32m"lucide lucide-clock3 h-5 w-5 text-primary"
+[39m              [33mfill[39m=[32m"none"
+[39m              [33mheight[39m=[32m"24"
+[39m              [33mstroke[39m=[32m"currentColor"
+[39m              [33mstroke-linecap[39m=[32m"round"
+[39m              [33mstroke-linejoin[39m=[32m"round"
+[39m              [33mstroke-width[39m=[32m"2"
+[39m              [33mviewBox[39m=[32m"0 0 24 24"
+[39m              [33mwidth[39m=[32m"24"
+[39m              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"
+[39m            [36m>
+[39m              [36m<circle
+[39m                [33mcx[39m=[32m"12"
+[39m                [33mcy[39m=[32m"12"
+[39m                [33mr[39m=[32m"10"
+[39m              [36m/>
+[39m              [36m<polyline
+[39m                [33mpoints[39m=[32m"12 6 12 12 16.5 12"
+[39m              [36m/>
+[39m            [36m</svg>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"editorial-kicker mt-5 text-muted-foreground"
+[39m            [36m>
+[39m              [0mRotina automática
+[0m            [36m</p>
+[39m            [36m<p
+[39m              [33mclass[39m=[32m"font-editorial mt-2 text-2xl"
+[39m            [36m>
+[39m              [0mAguardando ativação
+[0m            [36m</p>
+[39m          [36m</div>
+[39m        [36m</section>
+[39m        [36m<section
+[39m          [33mclass[39m=[32m"grid gap-8 xl:grid-cols-2"
+[39m        [36m>
+[39m          [36m<div
+[39m            [33mclass[39m=[32m"border-t-2 border-foreground pt-6"
+[39m          [36m>
+[39m            [36m<p
+[39m              [33mclass...
+[36m [2m❯[22m client/src/pages/collaborationPages.test.tsx:[2m195:36
+[22m[39m    [90m193| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByRole[39m([32m"button"[39m[33m,[39m { name[33m:[39m [36m/salvar integra[39m…
+    [90m194| [39m    [35mawait[39m [34mwaitFor[39m(() [33m=>
+[39m    [90m195| [39m      [34mexpect[39m(mocks[33m.[39mupdateWhatsApp)[33m.[39m[34mtoHaveBeenCalledWith[39m(
+    [90m   | [39m                                   [31m^
+[39m    [90m196| [39m        expect[33m.[39m[34mobjectContaining[39m({
+    [90m197| [39m          whatsappTemplateName[33m:[39m [32m"estudo_bndes_prazo"[39m[33m,
+[39m[90m [2m❯[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m47:12
+[22m[39m[90m [2m❯[22m checkCallback node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77
+[22m[39m[90m [2m❯[22m Timeout.checkRealTimersCallback node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16
+[22m[39m[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+[22m[39m[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (9)
+[39m[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m33 passed[39m[22m[90m (34)
+[39m[2m   Start at [22m 00:46:18
+[2m   Duration [22m 3.34s[2m (transform 511ms, setup 0ms, collect 3.27s, tests 1.92s, environment 974ms, prepare 799ms)
+[22m[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.
+[32mubuntu@sandbox:~/estudo-bndes-gestao$ [0m

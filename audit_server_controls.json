@@ -1,0 +1,95 @@
+{
+  "results": [
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/access.ts",
+      "output": {
+        "code_evidence": "Linhas 11-13 (isAdministrator); Linhas 24-32 (isActiveCoordinator); Linhas 54-67 (assertCanManageActivityAllocations); Linhas 102-115 (assertCanManageActivityReview); Linhas 117-128 (assertCanReviewActivity); Linhas 173-187 (assertCanResolveCoordinationInterface)",
+        "component": "access.ts",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do arquivo access.ts, que contém as regras de autorização explícitas e implementadas.",
+        "gaps_and_risks": "O arquivo concentra-se exclusivamente em regras de autorização (RBAC/ABAC), não apresentando evidências de mecanismos de auditoria (logs de quem acessou ou modificou o quê), automações de processos ou garantias de consistência transacional. A ausência de rastreabilidade nativa neste componente pode dificultar a investigação de incidentes de segurança ou auditorias de conformidade.",
+        "implemented_controls": "O arquivo implementa um sistema robusto de controle de acesso baseado em papéis (RBAC) e atributos (ABAC). Define funções para verificar se um usuário é administrador (`isAdministrator`) ou coordenador ativo (`isActiveCoordinator`). Além disso, estabelece regras granulares para acesso a atividades, alocação de horas, revisão de materiais e gestão de interfaces de coordenação, garantindo que apenas usuários com os perfis e vínculos corretos (ex: coordenador responsável, revisor apontado) possam realizar ações específicas, lançando erros `TRPCError` com código `FORBIDDEN` em caso de violação.",
+        "priority_improvements": "Implementar um sistema de logs de auditoria para registrar tentativas de acesso negadas e ações críticas realizadas; Integrar verificações de consistência transacional nas operações de modificação de dados; Adicionar testes automatizados para garantir que as regras de autorização não sejam quebradas em futuras atualizações.",
+        "strengths": "A centralização das regras de autorização em um único arquivo promove a reutilização de código e facilita a manutenção. A granularidade das permissões, que considera não apenas o papel do usuário (admin, coordenador, participante), mas também seu vínculo com grupos e atividades específicas (ex: `responsibleId`, `reviewerIds`), demonstra um design de segurança bem estruturado e focado no princípio do menor privilégio."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/routers/activities.ts",
+      "output": {
+        "code_evidence": "assertActivityAccess, assertAdministrator, assertCanManageActivityAllocations, assertCanManageActivityReview; validateActivityTeamSelection; replaceActivityAllocations, replaceActivityReviewers; sendActivityNotification; createdBy: ctx.user.id; assignedBy: ctx.user.id",
+        "component": "activitiesRouter",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do router de atividades, identificando funções de controle de acesso, validação de regras de negócio e envio de notificações.",
+        "gaps_and_risks": "As operações de atualização de alocações e revisores (replaceActivityAllocations e replaceActivityReviewers) realizam exclusões e inserções no banco de dados sem o uso explícito de transações (transactions), o que pode levar a inconsistências em caso de falha parcial. Além disso, a auditoria de alterações (histórico de modificações) parece limitada, registrando apenas quem criou ou atribuiu, sem um log detalhado de mudanças de estado ou horas.",
+        "implemented_controls": "O componente implementa controles de acesso baseados em papéis e responsabilidades (assertAdministrator, assertActivityAccess, assertCanManageActivityAllocations). Valida regras de negócio para seleção de equipe e revisores, garantindo que apenas membros ativos e elegíveis sejam alocados. Registra a autoria de criações e atribuições (createdBy, assignedBy) e dispara notificações automáticas para atribuições e atrasos.",
+        "priority_improvements": "Implementar transações de banco de dados (DB transactions) nas funções que modificam múltiplas tabelas ou realizam delete/insert em lote; Adicionar um sistema de log de auditoria mais robusto para rastrear todas as alterações de estado e alocações; Centralizar a lógica de notificação para garantir que todas as mudanças críticas gerem alertas apropriados.",
+        "strengths": "Forte separação de responsabilidades com funções de validação dedicadas. Uso consistente de middlewares de proteção (protectedProcedure) e verificações de autorização granulares antes de qualquer mutação. Integração com um motor de notificações para eventos importantes como atribuição e atraso."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/routers/production.ts",
+      "output": {
+        "code_evidence": "assertAdministrator; assertCanManageActivityReview; assertCanReviewActivity; assertCanViewActivityReview; canViewActivityReview; isAdministrator; isActiveCoordinator; markPreviousSubmissionsReplaced; uploadProjectFile; storageGetSignedUrl; fileInputSchema; reviewDecisionSchema; getMaterialOrThrow; markPreviousSubmissionsReplaced; addRevision; submitForReview; addComment; resolveComment; reviewDecision; setReviewStatus; accessRevision",
+        "component": "productionRouter",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do arquivo `production.ts`, que implementa as regras de negócio, controles de acesso e fluxo de revisão de materiais.",
+        "gaps_and_risks": "O código não implementa paginação ou limites na listagem de materiais (`listProductionMaterials`), o que pode causar problemas de desempenho com o crescimento da base de dados. Além disso, a exclusão lógica ou física de materiais não está implementada, impedindo a remoção de registros criados indevidamente. Não há validação explícita de tipos de arquivos permitidos ou tamanho máximo além do que pode estar no `fileInputSchema` (não visível aqui), o que pode representar um risco de segurança no upload de arquivos. O método `setReviewStatus` permite que administradores alterem o status de revisão de materiais não vinculados a atividades sem um fluxo formal, o que pode comprometer a rastreabilidade.",
+        "implemented_controls": "O componente implementa controles rigorosos de acesso baseados em papéis e grupos (RBAC/ABAC), garantindo que apenas usuários autorizados possam visualizar, editar, submeter ou revisar materiais. O fluxo de revisão é estruturado, exigindo a vinculação a uma atividade e a alocação de revisores antes da submissão. Há controle de concorrência e versionamento, onde novas submissões marcam as anteriores como substituídas. A rastreabilidade é mantida registrando o autor de ações críticas (criação, upload, comentários, decisões) e a data/hora das operações. O acesso aos arquivos é protegido por URLs assinadas (`storageGetSignedUrl`).",
+        "priority_improvements": "Implementar paginação e filtros na listagem de materiais para garantir escalabilidade; Adicionar funcionalidade de exclusão lógica (soft delete) para materiais e revisões; Reforçar a validação de arquivos no upload (tipos permitidos, tamanho máximo, varredura de malware) caso não esteja totalmente coberto pelo schema.",
+        "strengths": "Forte governança no fluxo de revisão, com regras claras sobre quem pode comentar, solicitar ajustes ou aprovar materiais. A consistência transacional é mantida ao atualizar o status da atividade e do material em conjunto durante as decisões de revisão. A segurança é reforçada pelo uso de URLs assinadas para acesso aos arquivos e validação de permissões em cada endpoint. O versionamento de materiais garante a preservação do histórico de alterações."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/routers/interfaces.ts",
+      "output": {
+        "code_evidence": "Linhas 44-49 (validação de seções); Linhas 53-58 (validação de grupos ativos); Linhas 60-71 (validação do responsável como coordenador ativo); Linhas 72-77 (exigência de resolução para status resolvida); Linhas 218-223 e 284-299 (registro de eventos de auditoria); Linhas 130-142 (permissões calculadas no list); Linhas 174-187 (regras de criação para não-administradores); Linhas 240-250 (regras de transferência de responsável)",
+        "component": "interfacesRouter",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do arquivo interfaces.ts, que contém as regras de negócio, validações e integrações com o banco de dados.",
+        "gaps_and_risks": "O sistema confia na data do servidor (Date.now()) para o campo resolvedAt, o que pode ser inconsistente em ambientes distribuídos. A função replaceRelations exclui e recria relações (delete e insert) sem envolver uma transação explícita do banco de dados, criando um risco de inconsistência transacional caso ocorra uma falha entre as operações. Não há validação de limite de tamanho para a resolução, apenas verificação de preenchimento. A paginação não está implementada na listagem (listCoordinationInterfaces), o que pode causar problemas de desempenho com o crescimento dos dados.",
+        "implemented_controls": "O código implementa validações rigorosas para a criação e atualização de interfaces, exigindo que as seções existam, os grupos estejam ativos e o responsável seja um coordenador ativo de um dos grupos envolvidos. Há controle de acesso baseado em papéis (administrador vs coordenador) e pertencimento a grupos. A transição para o status 'resolvida' exige obrigatoriamente o preenchimento do campo de resolução. O sistema mantém um histórico de eventos (interfaceEvents) para criação, atualização, resolução e reabertura, garantindo rastreabilidade.",
+        "priority_improvements": "Envolver as operações de banco de dados (especialmente em replaceRelations, create e update) em transações explícitas para garantir consistência; Implementar paginação e filtros na rota de listagem para evitar sobrecarga; Adicionar validações de tamanho máximo para campos de texto como resolution e title.",
+        "strengths": "Forte rastreabilidade através do registro automático de eventos (interfaceEvents) com descrições claras das ações realizadas. Controle de acesso granular e bem definido, separando permissões de visualização, gerenciamento e resolução com base no papel do usuário e seu grupo. Validações de integridade referencial e de estado de negócio (ex: grupos ativos, coordenador responsável) antes de persistir os dados."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/routers/administration.ts",
+      "output": {
+        "code_evidence": "Uso de `protectedProcedure` em todas as rotas; Chamadas a `assertAdministrator(ctx.user)` nas mutações; Validação com `zod` (ex: `whatsappSettingsSchema`, `updateProject`); Verificação de papéis (`isAdministrator`, `isActiveCoordinator`); Integração com `processScheduledActivityAlerts` e `createHeartbeatJob`",
+        "component": "administrationRouter",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte do roteador, que define explicitamente as regras de acesso, validações de entrada e integrações de automação.",
+        "gaps_and_risks": "A ausência de logs de auditoria detalhados para alterações críticas (como mudanças de papel de usuário ou configurações do projeto) representa um risco de rastreabilidade. Além disso, a atualização de configurações assume que o ID do projeto é sempre 1 (`eq(projectSettings.id, 1)`), o que pode limitar a escalabilidade caso o sistema precise suportar múltiplos projetos no futuro.",
+        "implemented_controls": "O componente implementa controle de acesso rigoroso, exigindo autenticação (`protectedProcedure`) e privilégios de administrador (`assertAdministrator`) para operações de mutação. Utiliza a biblioteca Zod para validação estrita de dados de entrada, garantindo a integridade das configurações do projeto e do WhatsApp. Também gerencia a visibilidade de dados na rota de status com base nos papéis do usuário (administrador, coordenador ou membro da equipe).",
+        "priority_improvements": "Implementar registro de auditoria (audit logs) para todas as mutações administrativas; Remover o hardcode do ID do projeto (`eq(projectSettings.id, 1)`) para suportar múltiplos projetos ou usar uma constante configurável; Adicionar tratamento de erros mais granular nas integrações externas (como na criação de jobs de heartbeat).",
+        "strengths": "A segurança é reforçada pelo uso consistente de validação de esquemas (Zod) e verificações de autorização antes de qualquer alteração de estado. A automação de alertas é bem estruturada, permitindo a configuração dinâmica de jobs agendados (cron) para notificações de prazos, o que melhora a governança e o acompanhamento das atividades."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/notificationEngine.ts",
+      "output": {
+        "code_evidence": "Verificação de idempotencyKey na tabela notificationLogs (linhas 37-39); Validação de whatsappOptIn, whatsappEnabled e recipientPhone (linhas 107-111); Lógica de retentativa com backoff exponencial simulado (linhas 148-156); Processamento em lote com limite de 25 itens (linha 180); Transações ausentes nas atualizações de status e envio de notificação (linhas 244-255)",
+        "component": "notificationEngine.ts",
+        "confidence": "Alta, pois a análise baseia-se diretamente no código-fonte fornecido, permitindo identificar com precisão as regras de negócio, controles de idempotência, automações e ausência de transações.",
+        "gaps_and_risks": "A principal lacuna é a ausência de controle transacional ao atualizar o status da atividade para 'atrasado' e inserir a notificação correspondente, o que pode gerar inconsistências em caso de falha. Além disso, a varredura de todas as atividades na função processScheduledActivityAlerts sem paginação ou filtros prévios no banco de dados pode causar problemas de desempenho e consumo excessivo de memória à medida que o volume de dados cresce.",
+        "implemented_controls": "O componente implementa controle de idempotência para evitar notificações duplicadas usando uma chave única. Há validação explícita de consentimento do usuário (opt-in), verificação de telefone cadastrado e status global da integração do WhatsApp antes do envio. O sistema também possui um mecanismo de fila com até 3 tentativas de reenvio em caso de falha, aplicando um atraso progressivo entre as tentativas.",
+        "priority_improvements": "Implementar transações de banco de dados (DB transactions) para garantir atomicidade ao atualizar status de atividades e criar notificações; Otimizar a consulta em processScheduledActivityAlerts filtrando atividades não concluídas diretamente no banco de dados em vez de carregar todas em memória; Adicionar paginação ou processamento em lotes na varredura de atividades agendadas para melhorar a escalabilidade.",
+        "strengths": "O código demonstra boa governança ao respeitar o consentimento do usuário (opt-in) e o status global da integração. A resiliência é fortalecida pelo uso de chaves de idempotência e um sistema de fila com retentativas automáticas. A rastreabilidade é garantida pelo registro detalhado de tentativas, status de envio e mensagens de erro no banco de dados."
+      },
+      "error": ""
+    },
+    {
+      "input": "/home/ubuntu/estudo-bndes-gestao/server/fileUpload.ts",
+      "output": {
+        "code_evidence": "validateUploadedFileMetadata; ALLOWED_UPLOAD_EXTENSIONS; MAX_UPLOAD_BYTES; sanitizeUploadedFileName; Buffer.from(rawBase64, \"base64\"); storagePut",
+        "component": "fileUpload.ts",
+        "confidence": "Alta, pois a análise é baseada diretamente no código-fonte fornecido, que apresenta funções claras de validação e upload.",
+        "gaps_and_risks": "Não há verificação de autenticação ou autorização explícita no arquivo (depende de camadas superiores). A validação de tipo de arquivo baseia-se apenas na extensão do nome e não no conteúdo real (magic numbers), o que pode permitir bypass. O uso de base64 em memória para arquivos de até 20MB pode causar alto consumo de RAM no servidor sob carga intensa. Não há varredura de malware.",
+        "implemented_controls": "O código implementa validação de extensão de arquivo contra uma lista permitida (ALLOWED_UPLOAD_EXTENSIONS), validação de tamanho máximo (MAX_UPLOAD_BYTES, até 20 MB), sanitização do nome do arquivo (removendo acentos, caracteres especiais e limitando a 180 caracteres) e validação do tamanho do buffer decodificado de base64.",
+        "priority_improvements": "Implementar validação de tipo de arquivo baseada no conteúdo (magic numbers) em vez de apenas extensão; Substituir o upload via base64 por streaming (multipart/form-data) para reduzir o consumo de memória; Adicionar verificação de autorização/autenticação caso não esteja sendo feita na camada de roteamento.",
+        "strengths": "A sanitização rigorosa de nomes de arquivos previne ataques de path traversal e problemas de codificação. A dupla checagem de tamanho (nos metadados e no buffer decodificado) garante que o limite de 20MB seja respeitado. O uso de prefixo com timestamp (Date.now()) evita colisão de nomes no armazenamento."
+      },
+      "error": ""
+    }
+  ]
+}

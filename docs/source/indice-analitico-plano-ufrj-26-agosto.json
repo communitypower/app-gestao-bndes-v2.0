@@ -1,0 +1,1509 @@
+{
+  "source": "Plano_de_Trabalho-UFRJ_26_agosto.pdf",
+  "sourceLabel": "Anexo B — Índice Analítico do Relatório 1",
+  "extractedAt": "2026-08-28T17:41:13.906Z",
+  "tomes": [
+    {
+      "code": "AP",
+      "title": "Apresentação",
+      "chapters": []
+    },
+    {
+      "code": "Tomo I",
+      "title": "Economia Marítima, Mercados e Demanda para a Indústria Naval",
+      "chapters": [
+        {
+          "code": "I.1",
+          "sourceNumber": "1",
+          "title": "Introdução",
+          "items": [
+            {
+              "code": "I.1.1",
+              "sourceNumber": "1.1",
+              "title": "Objetivos"
+            },
+            {
+              "code": "I.1.2",
+              "sourceNumber": "1.2",
+              "title": "Escopo setorial, temporal e geográfico"
+            },
+            {
+              "code": "I.1.3",
+              "sourceNumber": "1.3",
+              "title": "Metodologia e fontes de informação"
+            },
+            {
+              "code": "I.1.4",
+              "sourceNumber": "1.4",
+              "title": "Estrutura do relatório e articulação entre os tomos"
+            }
+          ]
+        },
+        {
+          "code": "I.2",
+          "sourceNumber": "2",
+          "title": "Economia Marítima",
+          "items": [
+            {
+              "code": "I.2.1",
+              "sourceNumber": "2.1",
+              "title": "Conceito e delimitação da economia marítima"
+            },
+            {
+              "code": "I.2.2",
+              "sourceNumber": "2.2",
+              "title": "Interdependências entre a construção naval e demais setores marítimos"
+            },
+            {
+              "code": "I.2.3",
+              "sourceNumber": "2.3",
+              "title": "Relevância estratégica e econômica da economia marítima"
+            },
+            {
+              "code": "I.2.4",
+              "sourceNumber": "2.4",
+              "title": "Vetores de transformação: geopolítica, transição energética, cadeias globais e regulação ambiental"
+            }
+          ]
+        },
+        {
+          "code": "I.3",
+          "sourceNumber": "3",
+          "title": "Transporte Marítimo Mundial",
+          "items": [
+            {
+              "code": "I.3.1",
+              "sourceNumber": "3.1",
+              "title": "Evolução do comércio e do transporte marítimo mundial"
+            },
+            {
+              "code": "I.3.2",
+              "sourceNumber": "3.2",
+              "title": "Regulamentação internacional do transporte marítimo"
+            },
+            {
+              "code": "I.3.3",
+              "sourceNumber": "3.3",
+              "title": "Principais tipos de embarcações: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.3.4",
+              "sourceNumber": "3.4",
+              "title": "Estrutura e evolução da frota mercante"
+            },
+            {
+              "code": "I.3.5",
+              "sourceNumber": "3.5",
+              "title": "Mercado de transporte de granéis líquidos, gases liquefeitos e produtos químicos"
+            },
+            {
+              "code": "I.3.6",
+              "sourceNumber": "3.6",
+              "title": "Mercado de transporte de granéis sólidos"
+            },
+            {
+              "code": "I.3.7",
+              "sourceNumber": "3.7",
+              "title": "Mercado de transporte de contêineres"
+            },
+            {
+              "code": "I.3.8",
+              "sourceNumber": "3.8",
+              "title": "Outros segmentos: veículos, cargas de projeto, apoio marítimo e portuário"
+            },
+            {
+              "code": "I.3.9",
+              "sourceNumber": "3.9",
+              "title": "Evolução dos preços, fretes e condições de mercado"
+            },
+            {
+              "code": "I.3.10",
+              "sourceNumber": "3.10",
+              "title": "Carteira de encomendas, renovação da frota e perspectivas de demanda por novas embarcações"
+            },
+            {
+              "code": "I.3.11",
+              "sourceNumber": "3.11",
+              "title": "Fatores econômicos, geopolíticos e ambientais que condicionam a expansão, renovação e transformação tecnológica das frotas"
+            },
+            {
+              "code": "I.3.12",
+              "sourceNumber": "3.12",
+              "title": "Perspectivas do transporte marítimo mundial e implicações para a marinha mercante e a indústria naval brasileiras"
+            }
+          ]
+        },
+        {
+          "code": "I.4",
+          "sourceNumber": "4",
+          "title": "Transporte Marítimo no Brasil",
+          "items": [
+            {
+              "code": "I.4.1",
+              "sourceNumber": "4.1",
+              "title": "Evolução da marinha mercante brasileira"
+            },
+            {
+              "code": "I.4.2",
+              "sourceNumber": "4.2",
+              "title": "Principais fluxos de transporte marítimo de cabotagem e longo curso"
+            },
+            {
+              "code": "I.4.3",
+              "sourceNumber": "4.3",
+              "title": "Regulamentação do transporte marítimo no Brasil"
+            },
+            {
+              "code": "I.4.4",
+              "sourceNumber": "4.4",
+              "title": "Estrutura e organização dos mercados: empresas, frotas, bandeiras e afretamento"
+            },
+            {
+              "code": "I.4.5",
+              "sourceNumber": "4.5",
+              "title": "Integração às redes mundiais de transporte marítimo"
+            },
+            {
+              "code": "I.4.6",
+              "sourceNumber": "4.6",
+              "title": "Apoio portuário e apoio marítimo"
+            },
+            {
+              "code": "I.4.7",
+              "sourceNumber": "4.7",
+              "title": "Custos diferenciais da bandeira brasileira"
+            },
+            {
+              "code": "I.4.8",
+              "sourceNumber": "4.8",
+              "title": "Panorama do setor pesqueiro"
+            },
+            {
+              "code": "I.4.9",
+              "sourceNumber": "4.9",
+              "title": "Cenários de demanda para construção, reparo, conversão e modernização de navios e embarcações de apoio"
+            }
+          ]
+        },
+        {
+          "code": "I.5",
+          "sourceNumber": "5",
+          "title": "Transporte Hidroviário Interior",
+          "items": [
+            {
+              "code": "I.5.1",
+              "sourceNumber": "5.1",
+              "title": "Principais bacias e sistemas de navegação interior no Brasil"
+            },
+            {
+              "code": "I.5.2",
+              "sourceNumber": "5.2",
+              "title": "Regulamentação da navegação interior"
+            },
+            {
+              "code": "I.5.3",
+              "sourceNumber": "5.3",
+              "title": "Principais tipos de embarcações: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.5.4",
+              "sourceNumber": "5.4",
+              "title": "Infraestrutura e condições de navegabilidade"
+            },
+            {
+              "code": "I.5.5",
+              "sourceNumber": "5.5",
+              "title": "Fluxos e estrutura das operações"
+            },
+            {
+              "code": "I.5.6",
+              "sourceNumber": "5.6",
+              "title": "Empresas e frotas"
+            },
+            {
+              "code": "I.5.7",
+              "sourceNumber": "5.7",
+              "title": "Transporte multimodal"
+            },
+            {
+              "code": "I.5.8",
+              "sourceNumber": "5.8",
+              "title": "Navegação fluvial de percurso internacional"
+            },
+            {
+              "code": "I.5.9",
+              "sourceNumber": "5.9",
+              "title": "Transporte de passageiros na Região Amazônica"
+            },
+            {
+              "code": "I.5.10",
+              "sourceNumber": "5.10",
+              "title": "Transporte hidroviário urbano"
+            },
+            {
+              "code": "I.5.11",
+              "sourceNumber": "5.11",
+              "title": "Navegação interior e desenvolvimento regional"
+            },
+            {
+              "code": "I.5.12",
+              "sourceNumber": "5.12",
+              "title": "Cenários de demanda para construção de embarcações fluviais"
+            }
+          ]
+        },
+        {
+          "code": "I.6",
+          "sourceNumber": "6",
+          "title": "Indústria de Óleo e Gás e de Energia Eólica Offshore",
+          "items": [
+            {
+              "code": "I.6.1",
+              "sourceNumber": "6.1",
+              "title": "Evolução e perspectivas da indústria mundial de óleo e gás offshore"
+            },
+            {
+              "code": "I.6.2",
+              "sourceNumber": "6.2",
+              "title": "Marcos regulatórios nos principais polos"
+            },
+            {
+              "code": "I.6.3",
+              "sourceNumber": "6.3",
+              "title": "Principais tipos de unidades flutuantes de exploração e produção: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.6.4",
+              "sourceNumber": "6.4",
+              "title": "Mercado internacional de unidades de exploração e produção offshore: demanda, oferta, formas de contratação e preços"
+            },
+            {
+              "code": "I.6.5",
+              "sourceNumber": "6.5",
+              "title": "Embarcações de apoio e aliviadores: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.6.6",
+              "sourceNumber": "6.6",
+              "title": "Mercado internacional de embarcações de apoio e aliviadores: regiões de operação, demanda, oferta, formas de contratação e preços"
+            },
+            {
+              "code": "I.6.7",
+              "sourceNumber": "6.7",
+              "title": "Atividade offshore no Brasil: campos, empresas e perspectivas"
+            },
+            {
+              "code": "I.6.8",
+              "sourceNumber": "6.8",
+              "title": "Frota e demanda por unidades flutuantes de produção e sondas no Brasil"
+            },
+            {
+              "code": "I.6.9",
+              "sourceNumber": "6.9",
+              "title": "Cenários de demanda de E&P no Brasil: construção, fabricação e integração de módulos e descomissionamento"
+            },
+            {
+              "code": "I.6.10",
+              "sourceNumber": "6.10",
+              "title": "Mercado brasileiro de navios aliviadores e embarcações de apoio offshore"
+            },
+            {
+              "code": "I.6.11",
+              "sourceNumber": "6.11",
+              "title": "O setor de geração eólica offshore no Brasil: evolução, perspectivas e regulamentação"
+            },
+            {
+              "code": "I.6.12",
+              "sourceNumber": "6.12",
+              "title": "Tipos de instalações e embarcações para energia eólica offshore: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.6.13",
+              "sourceNumber": "6.13",
+              "title": "Cenários de demanda por navios aliviadores, embarcações de apoio especializadas e instalações de geração eólica offshore no Brasil"
+            }
+          ]
+        },
+        {
+          "code": "I.7",
+          "sourceNumber": "7",
+          "title": "Construção naval militar",
+          "items": [
+            {
+              "code": "I.7.1",
+              "sourceNumber": "7.1",
+              "title": "Construção naval militar no mundo: políticas navais e modelos de governança"
+            },
+            {
+              "code": "I.7.2",
+              "sourceNumber": "7.2",
+              "title": "Principais tipos de navios e embarcações militares: aspectos tecnológicos e operacionais"
+            },
+            {
+              "code": "I.7.3",
+              "sourceNumber": "7.3",
+              "title": "Evolução da construção naval militar no Brasil"
+            },
+            {
+              "code": "I.7.4",
+              "sourceNumber": "7.4",
+              "title": "Programas navais em curso e previstos"
+            },
+            {
+              "code": "I.7.5",
+              "sourceNumber": "7.5",
+              "title": "Programas de offset, clusters navais e estratégias de inovação"
+            },
+            {
+              "code": "I.7.6",
+              "sourceNumber": "7.6",
+              "title": "Participação da indústria local e processos de transferência de tecnologia"
+            },
+            {
+              "code": "I.7.7",
+              "sourceNumber": "7.7",
+              "title": "Gargalos econômicos, produtivos e tecnológicos"
+            },
+            {
+              "code": "I.7.8",
+              "sourceNumber": "7.8",
+              "title": "Oportunidades para inserção nas cadeias globais"
+            }
+          ]
+        },
+        {
+          "code": "I.8",
+          "sourceNumber": "8",
+          "title": "Descarbonização na Indústria Marítima",
+          "items": [
+            {
+              "code": "I.8.1",
+              "sourceNumber": "8.1",
+              "title": "Direcionadores globais, metas e regulamentação internacional da descarbonização marítima"
+            },
+            {
+              "code": "I.8.2",
+              "sourceNumber": "8.2",
+              "title": "Estratégias de descarbonização nos principais países e regiões"
+            },
+            {
+              "code": "I.8.3",
+              "sourceNumber": "8.3",
+              "title": "Respostas de armadores, operadores, portos e fornecedores de energia à descarbonização"
+            },
+            {
+              "code": "I.8.4",
+              "sourceNumber": "8.4",
+              "title": "Combustíveis marítimos alternativos: características, disponibilidade, custos e perspectivas"
+            },
+            {
+              "code": "I.8.5",
+              "sourceNumber": "8.5",
+              "title": "Tecnologias de eficiência energética e redução de emissões: casco, propulsão, sistemas de controle e digitalização"
+            },
+            {
+              "code": "I.8.6",
+              "sourceNumber": "8.6",
+              "title": "Maturidade tecnológica, custos e perspectivas de adoção das tecnologias de descarbonização"
+            },
+            {
+              "code": "I.8.7",
+              "sourceNumber": "8.7",
+              "title": "Frota mundial: adoção de combustíveis alternativos e tecnologias de eficiência energética por segmento, país e perfil de empresa"
+            },
+            {
+              "code": "I.8.8",
+              "sourceNumber": "8.8",
+              "title": "Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas embarcações e retrofitting"
+            },
+            {
+              "code": "I.8.9",
+              "sourceNumber": "8.9",
+              "title": "Frota brasileira: estratégias de descarbonização dos armadores"
+            },
+            {
+              "code": "I.8.10",
+              "sourceNumber": "8.10",
+              "title": "Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos renováveis"
+            },
+            {
+              "code": "I.8.11",
+              "sourceNumber": "8.11",
+              "title": "Infraestrutura de abastecimento, bunkering, portos e corredores verdes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "Tomo II",
+      "title": "",
+      "chapters": [
+        {
+          "code": "II.1",
+          "sourceNumber": "1",
+          "title": "Construção Naval Mundial",
+          "items": [
+            {
+              "code": "II.1.1",
+              "sourceNumber": "1.1",
+              "title": "Análise da trajetória e da estrutura atual da construção naval mundial"
+            },
+            {
+              "code": "II.1.2",
+              "sourceNumber": "1.2",
+              "title": "Evolução da produção, da capacidade dos estaleiros e dos padrões de produção"
+            },
+            {
+              "code": "II.1.3",
+              "sourceNumber": "1.3",
+              "title": "Segmentos da indústria naval: navios mercantes, offshore, apoio marítimo, defesa e outros"
+            },
+            {
+              "code": "II.1.4",
+              "sourceNumber": "1.4",
+              "title": "Principais estaleiros e organizações empresariais: estatais e privados, grupos de estaleiros, verticalização e escala"
+            },
+            {
+              "code": "II.1.5",
+              "sourceNumber": "1.5",
+              "title": "Protecionismo e fatores de competitividade"
+            },
+            {
+              "code": "II.1.6",
+              "sourceNumber": "1.6",
+              "title": "Estrutura e integração da cadeia produtiva"
+            },
+            {
+              "code": "II.1.7",
+              "sourceNumber": "1.7",
+              "title": "Transformações ambientais, tecnológicas e geopolíticas e tendências da construção naval mundial"
+            }
+          ]
+        },
+        {
+          "code": "II.2",
+          "sourceNumber": "2",
+          "title": "Experiências nacionais de desenvolvimento da indústria naval",
+          "items": [
+            {
+              "code": "II.2.1",
+              "sourceNumber": "2.1",
+              "title": "Dimensões de análise das experiências nacionais: protecionismo; evolução da indústria; estrutura empresarial; especialização; qualificação tecnológica; recursos humanos; cadeia de fornecedores; inserção internacional; evolução da produtividade; competitividade; resultados produtivos; estratégias de desenvolvimento tecnológico e catching-up"
+            },
+            {
+              "code": "II.2.2",
+              "sourceNumber": "2.2",
+              "title": "Japão"
+            },
+            {
+              "code": "II.2.3",
+              "sourceNumber": "2.3",
+              "title": "Coreia do Sul"
+            },
+            {
+              "code": "II.2.4",
+              "sourceNumber": "2.4",
+              "title": "China"
+            },
+            {
+              "code": "II.2.5",
+              "sourceNumber": "2.5",
+              "title": "Singapura"
+            },
+            {
+              "code": "II.2.6",
+              "sourceNumber": "2.6",
+              "title": "Estados Unidos"
+            },
+            {
+              "code": "II.2.7",
+              "sourceNumber": "2.7",
+              "title": "Países europeus selecionados"
+            },
+            {
+              "code": "II.2.8",
+              "sourceNumber": "2.8",
+              "title": "Índia"
+            },
+            {
+              "code": "II.2.9",
+              "sourceNumber": "2.9",
+              "title": "Vietnã"
+            },
+            {
+              "code": "II.2.10",
+              "sourceNumber": "2.10",
+              "title": "Indonésia"
+            },
+            {
+              "code": "II.2.11",
+              "sourceNumber": "2.11",
+              "title": "Outros produtores emergentes"
+            }
+          ]
+        },
+        {
+          "code": "II.3",
+          "sourceNumber": "3",
+          "title": "Construção naval e offshore no Brasil",
+          "items": [
+            {
+              "code": "II.3.1",
+              "sourceNumber": "3.1",
+              "title": "Antecedentes e formação da indústria naval moderna brasileira"
+            },
+            {
+              "code": "II.3.2",
+              "sourceNumber": "3.2",
+              "title": "O ciclo das décadas de 1970 e 1980"
+            },
+            {
+              "code": "II.3.3",
+              "sourceNumber": "3.3",
+              "title": "O ciclo das décadas de 2000 e 2010"
+            },
+            {
+              "code": "II.3.4",
+              "sourceNumber": "3.4",
+              "title": "Evolução da construção de navios e embarcações"
+            },
+            {
+              "code": "II.3.5",
+              "sourceNumber": "3.5",
+              "title": "Evolução da construção de unidades offshore, fabricação de módulos, integração e comissionamento"
+            },
+            {
+              "code": "II.3.6",
+              "sourceNumber": "3.6",
+              "title": "Evolução da construção naval militar"
+            },
+            {
+              "code": "II.3.7",
+              "sourceNumber": "3.7",
+              "title": "Evolução da estrutura industrial: empresas, capacidade produtiva, distribuição geográfica e cadeia de fornecedores"
+            },
+            {
+              "code": "II.3.8",
+              "sourceNumber": "3.8",
+              "title": "Evolução da qualificação tecnológica e dos recursos humanos"
+            },
+            {
+              "code": "II.3.9",
+              "sourceNumber": "3.9",
+              "title": "Contratos, produção realizada, preços, prazos e desempenho"
+            },
+            {
+              "code": "II.3.10",
+              "sourceNumber": "3.10",
+              "title": "Fatores econômicos, empresariais, tecnológicos, regulatórios e institucionais associados aos ciclos de expansão e retração"
+            }
+          ]
+        },
+        {
+          "code": "II.4",
+          "sourceNumber": "4",
+          "title": "Estrutura atual e capacidade dos estaleiros brasileiros",
+          "items": [
+            {
+              "code": "II.4.1",
+              "sourceNumber": "4.1",
+              "title": "Dimensões de análise dos estaleiros e instalações: evolução das instalações, organização corporativa, capacidade, produção e desempenho; estrutura e situação atuais; segmentos de atuação; carteiras de encomendas; engenharia de projeto e de processos; infraestrutura industrial; processos produtivos; organização e gestão; potencial de reativação, modernização e adaptação"
+            },
+            {
+              "code": "II.4.2",
+              "sourceNumber": "4.2",
+              "title": "Estaleiros de construção de navios e embarcações"
+            },
+            {
+              "code": "II.4.3",
+              "sourceNumber": "4.3",
+              "title": "Estaleiros de construção de embarcações fluviais"
+            },
+            {
+              "code": "II.4.4",
+              "sourceNumber": "4.4",
+              "title": "Estaleiros e instalações para construção de unidades offshore, fabricação e integração de módulos"
+            },
+            {
+              "code": "II.4.5",
+              "sourceNumber": "4.5",
+              "title": "Estaleiros de construção naval militar"
+            },
+            {
+              "code": "II.4.6",
+              "sourceNumber": "4.6",
+              "title": "Cadeia produtiva, por tipo de produto e região"
+            },
+            {
+              "code": "II.4.7",
+              "sourceNumber": "4.7",
+              "title": "Economias e deseconomias de localização e os polos navais"
+            }
+          ]
+        },
+        {
+          "code": "II.5",
+          "sourceNumber": "5",
+          "title": "Reparo, conversão, desmantelamento e descomissionamento",
+          "items": [
+            {
+              "code": "II.5.1",
+              "sourceNumber": "5.1",
+              "title": "Reparo naval: características do mercado mundial e principais polos"
+            },
+            {
+              "code": "II.5.2",
+              "sourceNumber": "5.2",
+              "title": "Estaleiros de construção e de reparo: diferenças estruturais, tecnológicas e operacionais"
+            },
+            {
+              "code": "II.5.3",
+              "sourceNumber": "5.3",
+              "title": "Regulamentação internacional do desmantelamento e reciclagem de navios: Convenção de Hong Kong e requisitos ambientais"
+            },
+            {
+              "code": "II.5.4",
+              "sourceNumber": "5.4",
+              "title": "Mercado mundial de desmantelamento e reciclagem de navios: estrutura, principais polos e tendências"
+            },
+            {
+              "code": "II.5.5",
+              "sourceNumber": "5.5",
+              "title": "Descomissionamento de unidades offshore: características, regulamentação e mercado mundial"
+            },
+            {
+              "code": "II.5.6",
+              "sourceNumber": "5.6",
+              "title": "Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas"
+            },
+            {
+              "code": "II.5.7",
+              "sourceNumber": "5.7",
+              "title": "Demanda brasileira por reparo, docagem e retrofitting de embarcações"
+            },
+            {
+              "code": "II.5.8",
+              "sourceNumber": "5.8",
+              "title": "Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore"
+            },
+            {
+              "code": "II.5.9",
+              "sourceNumber": "5.9",
+              "title": "Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e descomissionamento"
+            },
+            {
+              "code": "II.5.10",
+              "sourceNumber": "5.10",
+              "title": "Competição internacional e competitividade das atividades no Brasil"
+            },
+            {
+              "code": "II.5.11",
+              "sourceNumber": "5.11",
+              "title": "Desafios e oportunidades para reparo, retrofitting, desmantelamento e descomissionamento no Brasil"
+            }
+          ]
+        },
+        {
+          "code": "II.6",
+          "sourceNumber": "6",
+          "title": "Cadeia produtiva da indústria de construção naval",
+          "items": [
+            {
+              "code": "II.6.1",
+              "sourceNumber": "6.1",
+              "title": "Estrutura da cadeia produtiva da construção naval: principais segmentos, produtos e relações entre estaleiros e fornecedores"
+            },
+            {
+              "code": "II.6.2",
+              "sourceNumber": "6.2",
+              "title": "Perfil de nacionalização de componentes nos principais países produtores de navios"
+            },
+            {
+              "code": "II.6.3",
+              "sourceNumber": "6.3",
+              "title": "Indústrias de materiais, equipamentos e sistemas navais nos principais países produtores"
+            },
+            {
+              "code": "II.6.4",
+              "sourceNumber": "6.4",
+              "title": "Evolução do conteúdo nacional e da cadeia de fornecedores nas diferentes fases da indústria naval brasileira"
+            },
+            {
+              "code": "II.6.5",
+              "sourceNumber": "6.5",
+              "title": "Estrutura atual da cadeia de fornecedores da indústria naval brasileira"
+            },
+            {
+              "code": "II.6.6",
+              "sourceNumber": "6.6",
+              "title": "Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore e construção naval militar"
+            },
+            {
+              "code": "II.6.7",
+              "sourceNumber": "6.7",
+              "title": "Distribuição regional e capacidade dos fornecedores nacionais"
+            },
+            {
+              "code": "II.6.8",
+              "sourceNumber": "6.8",
+              "title": "Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas"
+            },
+            {
+              "code": "II.6.9",
+              "sourceNumber": "6.9",
+              "title": "Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos"
+            },
+            {
+              "code": "II.6.10",
+              "sourceNumber": "6.10",
+              "title": "Desafios e oportunidades para a estaleiros brasileiros"
+            }
+          ]
+        },
+        {
+          "code": "II.7",
+          "sourceNumber": "7",
+          "title": "Padrão tecnológico e recursos humanos",
+          "items": [
+            {
+              "code": "II.7.1",
+              "sourceNumber": "7.1",
+              "title": "Capacitação dos estaleiros brasileiros em engenharia de produto e de processo"
+            },
+            {
+              "code": "II.7.2",
+              "sourceNumber": "7.2",
+              "title": "Capacitação dos estaleiros brasileiros em planejamento, organização e gestão da produção"
+            },
+            {
+              "code": "II.7.3",
+              "sourceNumber": "7.3",
+              "title": "Força de trabalho empregada nos estaleiros: perfil e qualificação"
+            },
+            {
+              "code": "II.7.4",
+              "sourceNumber": "7.4",
+              "title": "Capacidade de pesquisa, desenvolvimento e inovação em empresas, universidades e centros de pesquisa"
+            },
+            {
+              "code": "II.7.5",
+              "sourceNumber": "7.5",
+              "title": "Relações entre universidades, centros de pesquisa, empresas e a base produtiva da indústria naval"
+            },
+            {
+              "code": "II.7.6",
+              "sourceNumber": "7.6",
+              "title": "Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico, de engenharia e gerencial"
+            },
+            {
+              "code": "II.7.7",
+              "sourceNumber": "7.7",
+              "title": "Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior"
+            }
+          ]
+        },
+        {
+          "code": "II.8",
+          "sourceNumber": "8",
+          "title": "Produtividade e competitividade",
+          "items": [
+            {
+              "code": "II.8.1",
+              "sourceNumber": "8.1",
+              "title": "Metodologia e indicadores para avaliação tecnológica, de produtividade e desempenho dos estaleiros"
+            },
+            {
+              "code": "II.8.2",
+              "sourceNumber": "8.2",
+              "title": "Padrões tecnológicos, produtividade e desempenho das principais classes de estaleiros mundiais"
+            },
+            {
+              "code": "II.8.3",
+              "sourceNumber": "8.3",
+              "title": "Padrões tecnológicos, produtividade e desempenho dos estaleiros brasileiros nos últimos períodos de operação contínua, na situação atual e potencial"
+            },
+            {
+              "code": "II.8.4",
+              "sourceNumber": "8.4",
+              "title": "Benchmarking dos estaleiros brasileiros em relação às classes internacionais relevantes"
+            },
+            {
+              "code": "II.8.5",
+              "sourceNumber": "8.5",
+              "title": "Potencialidades, limitações e gargalos de produtividade e competitividade dos estaleiros brasileiros"
+            },
+            {
+              "code": "II.8.6",
+              "sourceNumber": "8.6",
+              "title": "Possibilidades de inserção competitiva e metas de produtividade e desempenho por classe de estaleiro"
+            }
+          ]
+        },
+        {
+          "code": "II.9",
+          "sourceNumber": "9",
+          "title": "Descarbonização: oportunidades e desafios para a indústria naval",
+          "items": [
+            {
+              "code": "II.9.1",
+              "sourceNumber": "9.1",
+              "title": "Impactos da descarbonização sobre o projeto, a construção e o retrofitting de navios"
+            },
+            {
+              "code": "II.9.2",
+              "sourceNumber": "9.2",
+              "title": "Competências requeridas para projeto e construção de navios capazes ou preparados para novos combustíveis"
+            },
+            {
+              "code": "II.9.3",
+              "sourceNumber": "9.3",
+              "title": "Competências requeridas para desenvolvimento e aplicação de tecnologias de eficiência energética, captura de carbono e correlatas"
+            },
+            {
+              "code": "II.9.4",
+              "sourceNumber": "9.4",
+              "title": "Requisitos tecnológicos e produtivos para retrofitting de navios"
+            },
+            {
+              "code": "II.9.5",
+              "sourceNumber": "9.5",
+              "title": "Capacidades e deficiências dos estaleiros brasileiros para atendimento às novas demandas tecnológicas"
+            },
+            {
+              "code": "II.9.6",
+              "sourceNumber": "9.6",
+              "title": "Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de equipamentos e sistemas"
+            },
+            {
+              "code": "II.9.7",
+              "sourceNumber": "9.7",
+              "title": "Descarbonização dos processos de construção naval"
+            },
+            {
+              "code": "II.9.8",
+              "sourceNumber": "9.8",
+              "title": "Oportunidades de inserção competitiva da indústria naval brasileira nos mercados associados à descarbonização"
+            },
+            {
+              "code": "II.9.9",
+              "sourceNumber": "9.9",
+              "title": "Principais desafios tecnológicos e produtivos"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "Tomo III",
+      "title": "Política Industrial e Política Marítima",
+      "chapters": [
+        {
+          "code": "III.1",
+          "sourceNumber": "1",
+          "title": "Fundamentos e tendências",
+          "items": [
+            {
+              "code": "III.1.1",
+              "sourceNumber": "1.1",
+              "title": "Conceitos e fundamentos da política industrial"
+            },
+            {
+              "code": "III.1.2",
+              "sourceNumber": "1.2",
+              "title": "Justificativas econômicas e estratégicas para políticas industriais"
+            },
+            {
+              "code": "III.1.3",
+              "sourceNumber": "1.3",
+              "title": "Objetivos e instrumentos de política industrial: políticas horizontais e setoriais"
+            },
+            {
+              "code": "III.1.4",
+              "sourceNumber": "1.4",
+              "title": "Transformações ambientais e geopolíticas em curso e tendências"
+            },
+            {
+              "code": "III.1.5",
+              "sourceNumber": "1.5",
+              "title": "Evolução das políticas industriais praticadas no Brasil e tendências recentes"
+            },
+            {
+              "code": "III.1.6",
+              "sourceNumber": "1.6",
+              "title": "Metodologia para análise da evolução das políticas setoriais voltadas para a indústria naval no Brasil e no mundo"
+            },
+            {
+              "code": "III.1.7",
+              "sourceNumber": "1.7",
+              "title": "Relevância dos instrumentos horizontais para a indústria naval: Nova Indústria Brasil (NIB) e outras políticas"
+            },
+            {
+              "code": "III.1.8",
+              "sourceNumber": "1.8",
+              "title": "Políticas públicas e mecanismos de fomento à descarbonização marítima e sua aplicabilidade ao Brasil"
+            }
+          ]
+        },
+        {
+          "code": "III.2",
+          "sourceNumber": "2",
+          "title": "Políticas de marinha mercante no mundo",
+          "items": [
+            {
+              "code": "III.2.1",
+              "sourceNumber": "2.1",
+              "title": "Justificativas econômicas, estratégicas e geopolíticas para políticas de marinha mercante"
+            },
+            {
+              "code": "III.2.2",
+              "sourceNumber": "2.2",
+              "title": "Evolução das políticas de marinha mercante desde o pós-guerra"
+            },
+            {
+              "code": "III.2.3",
+              "sourceNumber": "2.3",
+              "title": "Regulamentação e organismos internacionais"
+            },
+            {
+              "code": "III.2.4",
+              "sourceNumber": "2.4",
+              "title": "Dimensões de análise das experiências nacionais: evolução das políticas; registros alternativos; financiamento; subsídios; incentivos fiscais; reserva de mercado e de carga; preferência de bandeira; políticas de tripulação; desenvolvimento tecnológico; resultados sobre frota, participação no mercado e competitividade; identificação dos casos mais expressivos de sucesso e falha"
+            },
+            {
+              "code": "III.2.5",
+              "sourceNumber": "2.5",
+              "title": "Europa Ocidental"
+            },
+            {
+              "code": "III.2.6",
+              "sourceNumber": "2.6",
+              "title": "Estados Unidos"
+            },
+            {
+              "code": "III.2.7",
+              "sourceNumber": "2.7",
+              "title": "Japão"
+            },
+            {
+              "code": "III.2.8",
+              "sourceNumber": "2.8",
+              "title": "Coreia do Sul"
+            },
+            {
+              "code": "III.2.9",
+              "sourceNumber": "2.9",
+              "title": "China"
+            },
+            {
+              "code": "III.2.10",
+              "sourceNumber": "2.10",
+              "title": "Singapura"
+            },
+            {
+              "code": "III.2.11",
+              "sourceNumber": "2.11",
+              "title": "Austrália e Nova Zelândia"
+            },
+            {
+              "code": "III.2.12",
+              "sourceNumber": "2.12",
+              "title": "Europa Oriental e Turquia"
+            },
+            {
+              "code": "III.2.13",
+              "sourceNumber": "2.13",
+              "title": "Índia"
+            },
+            {
+              "code": "III.2.14",
+              "sourceNumber": "2.14",
+              "title": "Outros casos relevantes"
+            }
+          ]
+        },
+        {
+          "code": "III.3",
+          "sourceNumber": "3",
+          "title": "Políticas de construção naval no mundo",
+          "items": [
+            {
+              "code": "III.3.1",
+              "sourceNumber": "3.1",
+              "title": "Justificativas econômicas, estratégicas e geopolíticas para políticas de construção naval"
+            },
+            {
+              "code": "III.3.2",
+              "sourceNumber": "3.2",
+              "title": "Inter-relação entre políticas de marinha mercante e de construção naval"
+            },
+            {
+              "code": "III.3.3",
+              "sourceNumber": "3.3",
+              "title": "Evolução das políticas de construção naval e dos ciclos de industrialização e realocação da produção mundial"
+            },
+            {
+              "code": "III.3.4",
+              "sourceNumber": "3.4",
+              "title": "Regulamentação e organismos internacionais"
+            },
+            {
+              "code": "III.3.5",
+              "sourceNumber": "3.5",
+              "title": "Dimensões de análise das experiências nacionais: planejamento e políticas de desenvolvimento da indústria; proteção do mercado; participação e controle estatal; subsídios e incentivos fiscais; financiamento; garantias e créditos à exportação; compras governamentais; políticas de conteúdo local; desenvolvimento tecnológico e transferência de tecnologia; cooperação internacional; impacto das políticas governamentais na consolidação da indústria; identificação dos casos mais expressivos de sucesso e falha"
+            },
+            {
+              "code": "III.3.6",
+              "sourceNumber": "3.6",
+              "title": "Japão"
+            },
+            {
+              "code": "III.3.7",
+              "sourceNumber": "3.7",
+              "title": "Coreia do Sul"
+            },
+            {
+              "code": "III.3.8",
+              "sourceNumber": "3.8",
+              "title": "China"
+            },
+            {
+              "code": "III.3.9",
+              "sourceNumber": "3.9",
+              "title": "Singapura"
+            },
+            {
+              "code": "III.3.10",
+              "sourceNumber": "3.10",
+              "title": "Estados Unidos"
+            },
+            {
+              "code": "III.3.11",
+              "sourceNumber": "3.11",
+              "title": "Europa Ocidental"
+            },
+            {
+              "code": "III.3.12",
+              "sourceNumber": "3.12",
+              "title": "Índia"
+            },
+            {
+              "code": "III.3.13",
+              "sourceNumber": "3.13",
+              "title": "Vietnã"
+            },
+            {
+              "code": "III.3.14",
+              "sourceNumber": "3.14",
+              "title": "Indonésia"
+            },
+            {
+              "code": "III.3.15",
+              "sourceNumber": "3.15",
+              "title": "Turquia e Europa Oriental"
+            },
+            {
+              "code": "III.3.16",
+              "sourceNumber": "3.16",
+              "title": "Outros casos relevantes"
+            }
+          ]
+        },
+        {
+          "code": "III.4",
+          "sourceNumber": "4",
+          "title": "Políticas brasileiras de marinha mercante e construção naval",
+          "items": [
+            {
+              "code": "III.4.1",
+              "sourceNumber": "4.1",
+              "title": "Políticas marítimas no Brasil: marinha mercante, construção naval, navegação interior, óleo e gás offshore, energias oceânicas e defesa"
+            },
+            {
+              "code": "III.4.2",
+              "sourceNumber": "4.2",
+              "title": "Evolução das políticas brasileiras de marinha mercante"
+            },
+            {
+              "code": "III.4.3",
+              "sourceNumber": "4.3",
+              "title": "Evolução das políticas brasileiras de construção naval"
+            },
+            {
+              "code": "III.4.4",
+              "sourceNumber": "4.4",
+              "title": "Os Planos de Desenvolvimento e os Planos de Construção Naval: ciclos de 1970–1980 e 2000–2010"
+            },
+            {
+              "code": "III.4.5",
+              "sourceNumber": "4.5",
+              "title": "Instrumentos de proteção e incentivo à marinha mercante: reserva de mercado e de carga, preferência de bandeira, afretamento, tripulação e incentivos fiscais"
+            },
+            {
+              "code": "III.4.6",
+              "sourceNumber": "4.6",
+              "title": "Instrumentos de apoio à construção naval: barreiras tributárias e restrições ao afretamento, incentivos fiscais, conteúdo local e compras governamentais"
+            },
+            {
+              "code": "III.4.7",
+              "sourceNumber": "4.7",
+              "title": "Financiamento e outros instrumentos financeiros"
+            },
+            {
+              "code": "III.4.8",
+              "sourceNumber": "4.8",
+              "title": "Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos"
+            },
+            {
+              "code": "III.4.9",
+              "sourceNumber": "4.9",
+              "title": "Clusters navais e políticas de desenvolvimento regional"
+            },
+            {
+              "code": "III.4.10",
+              "sourceNumber": "4.10",
+              "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval"
+            },
+            {
+              "code": "III.4.11",
+              "sourceNumber": "4.11",
+              "title": "Resultados das políticas brasileiras de marinha mercante e construção naval"
+            },
+            {
+              "code": "III.4.12",
+              "sourceNumber": "4.12",
+              "title": "Mudanças recentes e principais questões em debate no Brasil"
+            }
+          ]
+        },
+        {
+          "code": "III.5",
+          "sourceNumber": "5",
+          "title": "O Fundo da Marinha Mercante",
+          "items": [
+            {
+              "code": "III.5.1",
+              "sourceNumber": "5.1",
+              "title": "Descrição geral do sistema"
+            },
+            {
+              "code": "III.5.2",
+              "sourceNumber": "5.2",
+              "title": "Histórico e relevância do FMM para a indústria marítima brasileira"
+            },
+            {
+              "code": "III.5.3",
+              "sourceNumber": "5.3",
+              "title": "Evolução da regulamentação do AFRMM e do FMM"
+            },
+            {
+              "code": "III.5.4",
+              "sourceNumber": "5.4",
+              "title": "Arrecadação, distribuição e aplicação do AFRMM"
+            },
+            {
+              "code": "III.5.5",
+              "sourceNumber": "5.5",
+              "title": "Eficiência do sistema: projetos financiados, obras concluídas e prazos"
+            },
+            {
+              "code": "III.5.6",
+              "sourceNumber": "5.6",
+              "title": "Eficácia do sistema: consolidação das empresas e evolução da competitividade"
+            },
+            {
+              "code": "III.5.7",
+              "sourceNumber": "5.7",
+              "title": "Efeitos do financiamento e da utilização das contas vinculadas sobre o custo efetivo de capital: análise e simulações"
+            },
+            {
+              "code": "III.5.8",
+              "sourceNumber": "5.8",
+              "title": "Alocação de custos e benefícios: efeitos distributivos intersetoriais e inter-regionais"
+            },
+            {
+              "code": "III.5.9",
+              "sourceNumber": "5.9",
+              "title": "Justificativa econômica e estratégica do modelo atual por segmento da navegação"
+            }
+          ]
+        },
+        {
+          "code": "III.6",
+          "sourceNumber": "6",
+          "title": "Setores críticos da cadeia de suprimentos: siderurgia e materiais e equipamentos navais",
+          "items": [
+            {
+              "code": "III.6.1",
+              "sourceNumber": "6.1",
+              "title": "Políticas industriais e perfil de nacionalização da cadeia de suprimentos da indústria naval nos principais países produtores"
+            },
+            {
+              "code": "III.6.2",
+              "sourceNumber": "6.2",
+              "title": "Importância da siderurgia e da indústria de materiais e equipamentos navais para a construção naval"
+            },
+            {
+              "code": "III.6.3",
+              "sourceNumber": "6.3",
+              "title": "Evolução das indústrias siderúrgica e de materiais e equipamentos navais no Brasil"
+            },
+            {
+              "code": "III.6.4",
+              "sourceNumber": "6.4",
+              "title": "Estrutura atual da oferta de produtos siderúrgicos para a indústria naval brasileira: empresas, capacidade, tecnologia e dependência de importações"
+            },
+            {
+              "code": "III.6.5",
+              "sourceNumber": "6.5",
+              "title": "Estrutura atual da indústria brasileira de materiais e equipamentos navais: setores, empresas, capacidade, tecnologia e dependência de importações"
+            },
+            {
+              "code": "III.6.6",
+              "sourceNumber": "6.6",
+              "title": "Políticas industriais e de conteúdo local e evolução dos índices de nacionalização no Brasil"
+            },
+            {
+              "code": "III.6.7",
+              "sourceNumber": "6.7",
+              "title": "Cenários prospectivos, oportunidades e desafios para o desenvolvimento da siderurgia e da indústria de materiais e equipamentos navais"
+            },
+            {
+              "code": "III.6.8",
+              "sourceNumber": "6.8",
+              "title": "Importância do desenvolvimento da cadeia nacional de suprimentos para a competitividade da indústria naval brasileira"
+            }
+          ]
+        },
+        {
+          "code": "III.7",
+          "sourceNumber": "7",
+          "title": "Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas",
+          "items": [
+            {
+              "code": "III.7.1",
+              "sourceNumber": "7.1",
+              "title": "O ciclo das décadas de 1970 e 1980 no Brasil: objetivos, instrumentos e resultados"
+            },
+            {
+              "code": "III.7.2",
+              "sourceNumber": "7.2",
+              "title": "Fatores endógenos e exógenos da crise e retração nas décadas de 1980 e 1990"
+            },
+            {
+              "code": "III.7.3",
+              "sourceNumber": "7.3",
+              "title": "Brasil e Coreia do Sul: análise comparada das trajetórias da indústria naval"
+            },
+            {
+              "code": "III.7.4",
+              "sourceNumber": "7.4",
+              "title": "O ciclo das décadas de 2000 e 2010 no Brasil: objetivos, instrumentos e resultados"
+            },
+            {
+              "code": "III.7.5",
+              "sourceNumber": "7.5",
+              "title": "Fatores determinantes da retração da indústria naval brasileira após o ciclo de expansão dos anos 2000"
+            },
+            {
+              "code": "III.7.6",
+              "sourceNumber": "7.6",
+              "title": "Brasil e China: análise comparada das trajetórias da indústria naval a partir dos anos 2000"
+            },
+            {
+              "code": "III.7.7",
+              "sourceNumber": "7.7",
+              "title": "Análise comparativa dos ciclos brasileiros: continuidade e coordenação institucional, demanda, financiamento, escala de produção, produtividade, aprendizado tecnológico e inserção internacional"
+            },
+            {
+              "code": "III.7.8",
+              "sourceNumber": "7.8",
+              "title": "Problemas sistêmicos e lições para uma nova política de desenvolvimento da indústria naval brasileira"
+            }
+          ]
+        },
+        {
+          "code": "III.8",
+          "sourceNumber": "8",
+          "title": "Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval brasileira",
+          "items": [
+            {
+              "code": "III.8.1",
+              "sourceNumber": "8.1",
+              "title": "Transformações geopolíticas e seus impactos sobre o comércio, o transporte marítimo e a indústria naval"
+            },
+            {
+              "code": "III.8.2",
+              "sourceNumber": "8.2",
+              "title": "Segurança econômica e reorganização das cadeias globais de produção e suprimento"
+            },
+            {
+              "code": "III.8.3",
+              "sourceNumber": "8.3",
+              "title": "Descarbonização e novas exigências ambientais: impactos sobre a demanda e a estrutura da indústria naval"
+            },
+            {
+              "code": "III.8.4",
+              "sourceNumber": "8.4",
+              "title": "Reconfiguração da indústria naval mundial: relocalização de capacidades produtivas, políticas de reindustrialização e novos países produtores"
+            },
+            {
+              "code": "III.8.5",
+              "sourceNumber": "8.5",
+              "title": "Segurança e defesa e seus impactos sobre a indústria naval"
+            },
+            {
+              "code": "III.8.6",
+              "sourceNumber": "8.6",
+              "title": "Riscos e oportunidades decorrentes das transformações geopolíticas e ambientais para a indústria naval brasileira"
+            }
+          ]
+        },
+        {
+          "code": "III.9",
+          "sourceNumber": "9",
+          "title": "Ambiente econômico e institucional da indústria marítima brasileira",
+          "items": [
+            {
+              "code": "III.9.1",
+              "sourceNumber": "9.1",
+              "title": "Condições econômicas para o desenvolvimento da indústria marítima brasileira: demanda, ambiente macroeconômico, custo de capital, restrições fiscais, taxa de câmbio e ambiente de investimento"
+            },
+            {
+              "code": "III.9.2",
+              "sourceNumber": "9.2",
+              "title": "Organização institucional dos órgãos do Estado com atribuições sobre a indústria marítima"
+            },
+            {
+              "code": "III.9.3",
+              "sourceNumber": "9.3",
+              "title": "Coordenação entre órgãos e políticas e continuidade da orientação programática"
+            },
+            {
+              "code": "III.9.4",
+              "sourceNumber": "9.4",
+              "title": "Capacitação técnica, autonomia decisória e continuidade institucional dos órgãos e agências"
+            },
+            {
+              "code": "III.9.5",
+              "sourceNumber": "9.5",
+              "title": "Riscos políticos, econômicos, institucionais e regulatórios para a reestruturação da indústria naval"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "Tomo IV",
+      "title": "Diagnóstico Integrado e Cenários",
+      "chapters": [
+        {
+          "code": "IV.1",
+          "sourceNumber": "1",
+          "title": "Diagnóstico integrado da indústria naval brasileira",
+          "items": [
+            {
+              "code": "IV.1.1",
+              "sourceNumber": "1.1",
+              "title": "Relações entre volume e estabilidade da demanda, capacidade dos estaleiros, produtividade, custos, prazos, qualidade e condições de financiamento"
+            },
+            {
+              "code": "IV.1.2",
+              "sourceNumber": "1.2",
+              "title": "Compatibilidade entre a demanda potencial e a capacidade de atendimento da indústria naval brasileira nos diferentes segmentos"
+            },
+            {
+              "code": "IV.1.3",
+              "sourceNumber": "1.3",
+              "title": "Potencialidades, limitações e gargalos da indústria naval brasileira"
+            },
+            {
+              "code": "IV.1.4",
+              "sourceNumber": "1.4",
+              "title": "Potencialidades, limitações e gargalos dos segmentos de reparo, conversão e descomissionamento"
+            },
+            {
+              "code": "IV.1.5",
+              "sourceNumber": "1.5",
+              "title": "Impactos da descarbonização e das transformações tecnológicas e geopolíticas sobre a demanda, requisitos tecnológicos e oportunidades para a indústria naval brasileira"
+            },
+            {
+              "code": "IV.1.6",
+              "sourceNumber": "1.6",
+              "title": "Fatores críticos e incertezas para a construção dos cenários para a indústria naval brasileira"
+            }
+          ]
+        },
+        {
+          "code": "IV.2",
+          "sourceNumber": "2",
+          "title": "Cenários para a indústria naval brasileira",
+          "items": [
+            {
+              "code": "IV.2.1",
+              "sourceNumber": "2.1",
+              "title": "Premissas, hipóteses, horizontes temporais e principais incertezas"
+            },
+            {
+              "code": "IV.2.2",
+              "sourceNumber": "2.2",
+              "title": "Consolidação das projeções de demanda para transporte marítimo, navegação interior, óleo e gás offshore, energias oceânicas, defesa, reparo e descomissionamento"
+            },
+            {
+              "code": "IV.2.3",
+              "sourceNumber": "2.3",
+              "title": "Cenários alternativos de volume e composição da demanda por segmento"
+            },
+            {
+              "code": "IV.2.4",
+              "sourceNumber": "2.4",
+              "title": "Capacidade da indústria naval brasileira para atendimento da demanda nos diferentes cenários"
+            },
+            {
+              "code": "IV.2.5",
+              "sourceNumber": "2.5",
+              "title": "Simulação das condições necessárias para que a demanda seja atendida pela indústria nacional"
+            },
+            {
+              "code": "IV.2.6",
+              "sourceNumber": "2.6",
+              "title": "Possibilidades e desafios para a inserção competitiva no mercado internacional"
+            },
+            {
+              "code": "IV.2.7",
+              "sourceNumber": "2.7",
+              "title": "Requisitos de infraestrutura, tecnologia e recursos humanos para os diferentes cenários"
+            }
+          ]
+        },
+        {
+          "code": "IV.3",
+          "sourceNumber": "3",
+          "title": "Conclusões do Relatório 1",
+          "items": [
+            {
+              "code": "IV.3.1",
+              "sourceNumber": "3.1",
+              "title": "Principais conclusões do diagnóstico integrado e dos cenários"
+            },
+            {
+              "code": "IV.3.2",
+              "sourceNumber": "3.2",
+              "title": "Incertezas, hipóteses e lacunas de informação que condicionam as conclusões"
+            },
+            {
+              "code": "IV.3.3",
+              "sourceNumber": "3.3",
+              "title": "Questões para a identificação dos segmentos estratégicos e a formulação das políticas"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tomes": 5,
+    "chapters": 29,
+    "items": 253
+  }
+}
