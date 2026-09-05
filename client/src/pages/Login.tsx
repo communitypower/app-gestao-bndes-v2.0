@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { COOKIE_NAME } from "@shared/const";
 import { groupDisplayName } from "@shared/groupDisplay";
@@ -14,8 +14,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  AlertCircle,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  EyeOff,
   KeyRound,
+  Lock,
   LogIn,
   Mail,
   Search,
@@ -27,15 +33,84 @@ import {
 import { toast } from "sonner";
 
 export default function LoginPage() {
-  const [search, setSearch] = useState("");
-  const [selectedRoleFilter, setSelectedRoleFilter] = useState<
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Dev mode state
+  const [showDevDirectory, setShowDevDirectory] = useState(false);
+  const [devSearch, setDevSearch] = useState("");
+  const [devRoleFilter, setDevRoleFilter] = useState<
     "todos" | "administrador" | "coordenador" | "executor"
   >("todos");
-  const [customEmail, setCustomEmail] = useState("");
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const utils = trpc.useUtils();
-  const { data: usersDirectory, isLoading } = trpc.auth.loginList.useQuery(
+
+  // Parse URL query params for OAuth errors or messages
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    const errorEmail = params.get("email");
+
+    if (error === "unauthorized") {
+      setErrorMessage(
+        errorEmail
+          ? `Acesso Não Autorizado: O e-mail "${errorEmail}" não consta na lista de participantes do Estudo BNDES. Solicite autorização à coordenação.`
+          : "Acesso Não Autorizado: Sua conta não possui permissão para acessar o portal do Estudo BNDES."
+      );
+    } else if (error === "missing_google_config") {
+      setErrorMessage(
+        "A integração com o Google OAuth ainda não foi configurada no servidor (GOOGLE_CLIENT_ID ausente). Utilize a entrada por E-mail e Senha."
+      );
+    } else if (error === "auth_failed" || error === "google_failed") {
+      setErrorMessage(
+        "Falha na autenticação com o Google. Verifique sua conexão e tente novamente ou entre com sua Senha/Chave."
+      );
+    }
+  }, []);
+
+  // Secure login mutation (Email + Password/Master Key)
+  const loginMutation = trpc.auth.login.useMutation({
+    onSuccess: data => {
+      if (data.token) {
+        try {
+          sessionStorage.setItem("manus-cookie", `${COOKIE_NAME}=${data.token}`);
+          localStorage.setItem("manus-session-token", data.token);
+        } catch {}
+      }
+      utils.auth.me.setData(undefined, data.user as any);
+      toast.success(`Bem-vindo(a), ${data.user.name || "Usuário"}!`);
+      window.location.href = "/";
+    },
+    onError: error => {
+      setIsLoggingIn(false);
+      setErrorMessage(error.message || "Erro ao realizar autenticação.");
+      toast.error(error.message || "Credenciais inválidas.");
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !password.trim()) {
+      toast.warning("Preencha o e-mail e a senha/chave de acesso.");
+      return;
+    }
+    setErrorMessage(null);
+    setIsLoggingIn(true);
+    try {
+      await loginMutation.mutateAsync({
+        email: email.trim(),
+        password: password.trim(),
+      });
+    } catch {
+      setIsLoggingIn(false);
+    }
+  };
+
+  // Dev directory query (only returned when not in production)
+  const { data: usersDirectory, isLoading: isDevLoading } = trpc.auth.loginList.useQuery(
     undefined,
     {
       refetchOnWindowFocus: false,
@@ -51,303 +126,249 @@ export default function LoginPage() {
         } catch {}
       }
       utils.auth.me.setData(undefined, data.user as any);
-      toast.success(`Bem-vindo(a), ${data.user.name || "Usuário"}!`);
-      // Redirect to dashboard
+      toast.success(`Acessando como: ${data.user.name || "Usuário"}`);
       window.location.href = "/";
     },
     onError: error => {
       setIsLoggingIn(false);
-      toast.error(error.message || "Erro ao autenticar.");
+      toast.error(error.message || "Acesso direto bloqueado.");
     },
   });
 
-  const handleLoginUser = async (user: {
-    kind?: "conta" | "pre-cadastro";
-    id: number;
-    openId?: string | null;
-    email?: string | null;
-    name?: string | null;
-  }) => {
-    setIsLoggingIn(true);
-    try {
-      if (user.kind === "conta") {
-        await loginAsMutation.mutateAsync({
-          userId: user.id,
-          openId: user.openId || undefined,
-          email: user.email || undefined,
-        });
-      } else {
-        await loginAsMutation.mutateAsync({
-          email: user.email || undefined,
-        });
-      }
-    } catch {
-      setIsLoggingIn(false);
-    }
-  };
+  const allDevUsers = usersDirectory?.entries ?? [];
+  const isDevModeAvailable = allDevUsers.length > 0;
 
-  const handleCustomEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!customEmail.trim()) return;
-    setIsLoggingIn(true);
-    try {
-      await loginAsMutation.mutateAsync({
-        email: customEmail.trim(),
-      });
-    } catch {
-      setIsLoggingIn(false);
-    }
-  };
-
-  const allUsers = usersDirectory?.entries ?? [];
-
-  const filteredUsers = useMemo(() => {
-    return allUsers.filter(u => {
-      const query = search.toLowerCase();
+  const filteredDevUsers = useMemo(() => {
+    return allDevUsers.filter(u => {
+      const query = devSearch.toLowerCase();
       const matchesSearch =
-        !search ||
+        !devSearch ||
         (u.name && u.name.toLowerCase().includes(query)) ||
         (u.email && u.email.toLowerCase().includes(query)) ||
         (u.groupName && u.groupName.toLowerCase().includes(query)) ||
         (u.institution && u.institution.toLowerCase().includes(query));
 
       const matchesRole =
-        selectedRoleFilter === "todos" || u.appRole === selectedRoleFilter;
+        devRoleFilter === "todos" || u.appRole === devRoleFilter;
 
       return matchesSearch && matchesRole;
     });
-  }, [allUsers, search, selectedRoleFilter]);
-
-  const counts = useMemo(() => {
-    return {
-      total: allUsers.length,
-      administradores: allUsers.filter(u => u.appRole === "administrador").length,
-      coordenadores: allUsers.filter(u => u.appRole === "coordenador").length,
-      executores: allUsers.filter(u => u.appRole === "executor").length,
-    };
-  }, [allUsers]);
+  }, [allDevUsers, devSearch, devRoleFilter]);
 
   return (
-    <div className="min-h-screen bg-muted/20 px-4 py-8 md:py-12">
-      <div className="mx-auto max-w-5xl space-y-8">
+    <div className="min-h-screen bg-muted/20 px-4 py-8 md:py-16">
+      <div className="mx-auto max-w-xl space-y-6">
         {/* Header Institucional */}
-        <header className="border-b paper-rule pb-6 text-center md:text-left">
-          <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
+        <header className="text-center space-y-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
               Estudo Estratégico BNDES · Indústria Naval
             </span>
             <span className="text-xs text-muted-foreground">·</span>
             <span className="font-mono text-xs text-muted-foreground">
-              UFRJ · COPPE · Instituto de Economia
+              UFRJ · COPPE · IE
             </span>
           </div>
-          <h1 className="font-display mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Acesso ao Portal de Gestão
+          <h1 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            Portal de Gestão do Estudo
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground md:text-base">
-            Selecione seu perfil de participante do estudo para autenticar com as permissões correspondentes.
+          <p className="text-xs text-muted-foreground md:text-sm">
+            Acesso restrito e exclusivo aos pesquisadores e membros autorizados da equipe.
           </p>
         </header>
 
-        {/* Login com E-mail Direto (Alternativa Rápida) */}
-        <Card className="border-primary/20 bg-primary/[0.02]">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-base font-semibold">
-              <Mail className="h-4 w-4 text-primary" /> Entrada por E-mail Institucional
-            </CardTitle>
+        {/* Alerta de Erro */}
+        {errorMessage && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-xs md:text-sm text-destructive flex items-start gap-3 animate-in fade-in">
+            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+            <div className="flex-1 leading-relaxed">{errorMessage}</div>
+          </div>
+        )}
+
+        {/* Card Principal de Login */}
+        <Card className="border-border/60 shadow-md">
+          <CardHeader className="pb-4 text-center">
+            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Lock className="h-6 w-6" />
+            </div>
+            <CardTitle className="text-lg font-semibold">Entrar com Credenciais</CardTitle>
             <CardDescription className="text-xs">
-              Caso prefira, digite diretamente o seu e-mail institucional cadastrado na equipe.
+              Informe seu e-mail cadastrado e sua senha ou chave de acesso da equipe.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form
-              onSubmit={handleCustomEmailLogin}
-              className="flex flex-col gap-3 sm:flex-row"
-            >
-              <Input
-                type="email"
-                placeholder="exemplo@poli.ufrj.br ou seu e-mail cadastrado"
-                value={customEmail}
-                onChange={e => setCustomEmail(e.target.value)}
-                className="bg-background"
-                disabled={isLoggingIn}
-              />
+          <CardContent className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5 text-muted-foreground" /> E-mail Institucional
+                </label>
+                <Input
+                  type="email"
+                  placeholder="exemplo@poli.ufrj.br, @ie.ufrj.br, etc."
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="bg-background"
+                  disabled={isLoggingIn}
+                  autoComplete="email"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                    <KeyRound className="h-3.5 w-3.5 text-muted-foreground" /> Senha ou Chave de Acesso
+                  </label>
+                </div>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Sua senha ou a chave da equipe"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="bg-background pr-10"
+                    disabled={isLoggingIn}
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground transition-colors"
+                    title={showPassword ? "Ocultar senha" : "Ver senha"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Dica de Chave Inicial */}
+              <div className="rounded-md border border-primary/20 bg-primary/[0.03] p-2.5 text-[11px] text-muted-foreground leading-relaxed">
+                <p className="font-semibold text-primary mb-0.5">Primeiro acesso?</p>
+                Utilize a Chave de Acesso da Equipe: <code className="rounded bg-muted px-1.5 py-0.5 font-mono font-semibold text-foreground">BNDES2026#Naval</code>. Você poderá cadastrar sua senha pessoal após entrar.
+              </div>
+
               <Button
                 type="submit"
-                disabled={isLoggingIn || !customEmail.trim()}
-                className="shrink-0"
+                disabled={isLoggingIn || !email.trim() || !password.trim()}
+                className="w-full text-xs font-semibold py-5"
               >
                 <LogIn className="mr-2 h-4 w-4" />
-                {isLoggingIn ? "Autenticando…" : "Entrar com E-mail"}
+                {isLoggingIn ? "Autenticando..." : "Entrar no Portal"}
               </Button>
             </form>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground text-[10px]">
+                  Ou continue com
+                </span>
+              </div>
+            </div>
+
+            {/* Botão Google OAuth */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                window.location.href = "/api/auth/google";
+              }}
+              className="w-full text-xs font-medium py-5 flex items-center justify-center gap-2 hover:bg-muted/50"
+            >
+              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                />
+              </svg>
+              Entrar com Conta Google (Gmail / Workspace)
+            </Button>
           </CardContent>
         </Card>
 
-        {/* Seleção de Participante / Perfil */}
-        <div className="space-y-4">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                Participantes e Perfis do Estudo
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                Clique em "Acessar" no seu nome para carregar sua sessão e permissões.
-              </p>
-            </div>
-            {/* Filtros de Perfil */}
-            <div className="flex flex-wrap items-center gap-1.5">
-              <Button
-                variant={selectedRoleFilter === "todos" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedRoleFilter("todos")}
-                className="rounded-full text-xs"
-              >
-                Todos ({counts.total})
-              </Button>
-              <Button
-                variant={
-                  selectedRoleFilter === "administrador" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setSelectedRoleFilter("administrador")}
-                className="rounded-full text-xs"
-              >
-                Administradores ({counts.administradores})
-              </Button>
-              <Button
-                variant={
-                  selectedRoleFilter === "coordenador" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setSelectedRoleFilter("coordenador")}
-                className="rounded-full text-xs"
-              >
-                Coordenadores ({counts.coordenadores})
-              </Button>
-              <Button
-                variant={
-                  selectedRoleFilter === "executor" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setSelectedRoleFilter("executor")}
-                className="rounded-full text-xs"
-              >
-                Executores ({counts.executores})
-              </Button>
-            </div>
-          </div>
+        {/* Seção Exclusiva de Desenvolvimento Local (Oculta em Produção) */}
+        {isDevModeAvailable && (
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setShowDevDirectory(!showDevDirectory)}
+              className="w-full flex items-center justify-between text-xs text-muted-foreground hover:text-foreground py-2 border-t border-dashed"
+            >
+              <span className="flex items-center gap-1.5 font-mono text-[11px]">
+                <ShieldCheck className="h-3.5 w-3.5 text-amber-500" />
+                [Modo Dev Local] Alternar Usuários de Teste ({allDevUsers.length})
+              </span>
+              {showDevDirectory ? (
+                <ChevronUp className="h-3.5 w-3.5" />
+              ) : (
+                <ChevronDown className="h-3.5 w-3.5" />
+              )}
+            </button>
 
-          {/* Barra de Busca */}
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Buscar por nome, e-mail, grupo (ex.: G3, G7) ou instituição..."
-              className="bg-background pl-10"
-            />
-          </div>
-
-          {/* Grid de Usuários */}
-          {isLoading ? (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-28 animate-pulse rounded-lg border bg-muted/40 p-4"
-                />
-              ))}
-            </div>
-          ) : filteredUsers.length === 0 ? (
-            <div className="rounded-lg border border-dashed py-12 text-center">
-              <Users className="mx-auto h-8 w-8 text-muted-foreground opacity-50" />
-              <p className="mt-2 text-sm font-medium text-foreground">
-                Nenhum participante encontrado
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Tente ajustar os termos da busca ou o filtro de perfil.
-              </p>
-            </div>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredUsers.map(user => {
-                const isCoordinator = user.appRole === "coordenador";
-                const isAdmin = user.appRole === "administrador";
-
-                return (
-                  <Card
-                    key={user.id}
-                    className="flex flex-col justify-between transition-all hover:border-primary/40 hover:shadow-sm"
-                  >
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-9 w-9 border border-border">
-                            <AvatarFallback className="text-xs font-semibold">
-                              {user.name?.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-foreground">
-                              {user.name}
-                            </p>
-                            <p className="truncate text-xs text-muted-foreground">
-                              {user.email || "Sem e-mail"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-1">
-                      <div className="mb-3 flex flex-wrap items-center gap-1.5">
-                        <Badge
-                          variant={
-                            isAdmin
-                              ? "default"
-                              : isCoordinator
-                              ? "secondary"
-                              : "outline"
-                          }
-                          className="text-[10px] font-semibold"
-                        >
-                          {isAdmin ? (
-                            <ShieldCheck className="mr-1 h-3 w-3" />
-                          ) : isCoordinator ? (
-                            <UserCheck className="mr-1 h-3 w-3" />
-                          ) : (
-                            <Users className="mr-1 h-3 w-3" />
-                          )}
-                          {user.appRole}
-                        </Badge>
-                        {user.groupName && (
-                          <span className="inline-flex items-center rounded border border-muted-foreground/20 bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            {groupDisplayName(user.groupName)}
-                          </span>
-                        )}
-                        {user.institution && (
-                          <span className="text-[10px] text-muted-foreground">
-                            · {user.institution}
-                          </span>
-                        )}
+            {showDevDirectory && (
+              <div className="mt-3 space-y-3 p-3 rounded-lg border border-amber-500/20 bg-amber-500/[0.02]">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Input
+                    placeholder="Filtrar participante de teste..."
+                    value={devSearch}
+                    onChange={e => setDevSearch(e.target.value)}
+                    className="h-8 text-xs bg-background"
+                  />
+                </div>
+                <div className="grid gap-2 max-h-60 overflow-y-auto pr-1 sm:grid-cols-2">
+                  {filteredDevUsers.map(user => (
+                    <div
+                      key={user.id}
+                      className="p-2 rounded border bg-background flex flex-col justify-between gap-1 text-xs"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-semibold truncate">{user.name}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {user.email || user.groupName || user.appRole}
+                        </p>
                       </div>
                       <Button
                         size="sm"
-                        variant={isAdmin ? "default" : "outline"}
-                        className="w-full text-xs font-medium"
+                        variant="secondary"
+                        className="h-7 text-[11px] w-full"
                         disabled={isLoggingIn}
-                        onClick={() => handleLoginUser(user)}
+                        onClick={() => {
+                          setIsLoggingIn(true);
+                          loginAsMutation.mutate({
+                            userId: user.id,
+                            openId: user.openId || undefined,
+                            email: user.email || undefined,
+                          });
+                        }}
                       >
-                        <LogIn className="mr-1.5 h-3.5 w-3.5" />
                         Acessar como {user.name?.split(" ")[0]}
                       </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

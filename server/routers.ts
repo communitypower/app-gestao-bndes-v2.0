@@ -17,6 +17,8 @@ import { interfacesRouter } from "./routers/interfaces";
 import { libraryRouter } from "./routers/library";
 import { productionRouter } from "./routers/production";
 import { teamRouter } from "./routers/team";
+import { hashPassword, verifyPassword, verifyProjectMasterKey } from "./authPassword";
+import { getAuthorizedUserByEmail } from "./authGoogle";
 import { notificationsRouter } from "./routers/notifications";
 
 export const appRouter = router({
@@ -31,7 +33,120 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+    login: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email("Formato de e-mail inválido"),
+          password: z.string().min(1, "A senha ou chave de acesso é obrigatória"),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        await ensureSeedData();
+        const trimmedEmail = input.email.trim().toLowerCase();
+        const authResult = await getAuthorizedUserByEmail(trimmedEmail);
+
+        if (!authResult.authorized) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message:
+              "E-mail não autorizado: este endereço não consta na lista de participantes do Estudo BNDES. Solicite acesso à coordenação.",
+          });
+        }
+
+        const targetUser = authResult.user;
+
+        // Validação da Senha / Chave de Acesso
+        const isMasterKeyValid = verifyProjectMasterKey(input.password);
+        const isPersonalPasswordValid = verifyPassword(input.password, targetUser.passwordHash);
+
+        if (!isMasterKeyValid && !isPersonalPasswordValid) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message:
+              "Senha ou Chave de Acesso incorreta. Utilize a chave da equipe ou sua senha cadastrada.",
+          });
+        }
+
+        const dbInstance = await requireDb();
+        await dbInstance
+          .update(users)
+          .set({
+            lastSignedIn: new Date(),
+            accessStatus: "ativo",
+          })
+          .where(eq(users.id, targetUser.id));
+
+        const sessionToken = await sdk.createSessionToken(targetUser.openId, {
+          name: targetUser.name || "",
+          expiresInMs: ONE_YEAR_MS,
+        });
+
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, sessionToken, {
+          ...cookieOptions,
+          maxAge: ONE_YEAR_MS,
+        });
+
+        return {
+          success: true,
+          user: targetUser,
+          token: sessionToken,
+        };
+      }),
+    changePassword: publicProcedure
+      .input(
+        z.object({
+          currentPassword: z.string().min(1, "Senha atual é obrigatória"),
+          newPassword: z.string().min(6, "A nova senha deve ter no mínimo 6 caracteres"),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.user) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Você precisa estar autenticado para alterar a senha.",
+          });
+        }
+
+        const dbInstance = await requireDb();
+        const userRows = await dbInstance
+          .select()
+          .from(users)
+          .where(eq(users.id, ctx.user.id))
+          .limit(1);
+        const currentUser = userRows[0];
+        if (!currentUser) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Usuário não encontrado." });
+        }
+
+        const isMasterKeyValid = verifyProjectMasterKey(input.currentPassword);
+        const isPersonalPasswordValid = verifyPassword(input.currentPassword, currentUser.passwordHash);
+
+        if (!isMasterKeyValid && !isPersonalPasswordValid) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Senha atual incorreta.",
+          });
+        }
+
+        const newHash = hashPassword(input.newPassword);
+        await dbInstance
+          .update(users)
+          .set({
+            passwordHash: newHash,
+            updatedAt: new Date(),
+          })
+          .where(eq(users.id, currentUser.id));
+
+        return {
+          success: true,
+          message: "Senha alterada com sucesso.",
+        };
+      }),
     loginList: publicProcedure.query(async () => {
+      if (process.env.NODE_ENV === "production") {
+        return { entries: [] };
+      }
       await ensureSeedData();
       return listUserAccessDirectory();
     }),
@@ -44,6 +159,12 @@ export const appRouter = router({
         })
       )
       .mutation(async ({ ctx, input }) => {
+        if (process.env.NODE_ENV === "production") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "O acesso direto está desabilitado em ambiente de produção. Utilize o login por e-mail e senha.",
+          });
+        }
         await ensureSeedData();
         const dbInstance = await requireDb();
         let targetUser;

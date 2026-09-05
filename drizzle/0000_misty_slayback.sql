@@ -552,6 +552,7 @@ CREATE TABLE "users" (
 	"openId" varchar(64) NOT NULL,
 	"name" text,
 	"email" varchar(320),
+	"passwordHash" varchar(255),
 	"loginMethod" varchar(64),
 	"role" "user_role" DEFAULT 'user' NOT NULL,
 	"appRole" "app_role" DEFAULT 'executor' NOT NULL,

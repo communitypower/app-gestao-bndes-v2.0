@@ -607,6 +607,7 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
         openId,
         name: memberSeed.name,
         email: memberSeed.email,
+        passwordHash: null,
         loginMethod: "local",
         role,
         appRole: memberSeed.appRole,
