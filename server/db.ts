@@ -285,7 +285,8 @@ export async function syncPdfAnalyticCatalog(
         !existing.description ||
         existing.description === existing.title ||
         existing.description === section.title ||
-        existing.description.trim().length < 60;
+        existing.description.trim().length < 60 ||
+        section.code === "III.3";
       await db.update(activities).set({
         planCode: section.code,
         planSortOrder: section.sortOrder,
@@ -369,6 +370,7 @@ export async function syncPdfAnalyticCatalog(
       });
     }
   }
+  await db.delete(activities).where(eq(activities.detailCode, "III.3.16"));
 }
 
 export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {

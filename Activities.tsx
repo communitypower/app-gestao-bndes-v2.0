@@ -425,7 +425,7 @@ function ActivityDetailDialog({
               <section className="border-l-4 border-primary bg-card/55 px-5 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="editorial-kicker text-primary">
-                    {data.officialDescription ? "Notas operacionais / Observações da atividade" : "Descrição da atividade"}
+                    Descrição da atividade
                   </p>
                   {data.canManageAllocations && !editingDescription && (
                     <Button type="button" variant="outline" size="sm" onClick={() => setEditingDescription(true)}>
@@ -2255,7 +2255,7 @@ function ActivitiesContent() {
       <PageHeader
         eyebrow="Controle de atividades"
         title="Gestão de atividades"
-        description="Controle documental de 30 capítulos e 253 seções de trabalho. Cada ficha concentra execução, revisão, interfaces, consolidação e aprovação; as seções são acompanhadas dentro do capítulo correspondente."
+        description="Controle documental de 30 capítulos e 250 seções de trabalho. Cada ficha concentra execução, revisão, interfaces, consolidação e aprovação; as seções são acompanhadas dentro do capítulo correspondente."
         index="02 — Atividades"
         action={isAdmin ? (
           <div className="flex flex-wrap gap-2">

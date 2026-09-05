@@ -25,9 +25,9 @@ describe("estrutura canônica do estudo", () => {
     expect(studyTomeFromCode("IV.3")).toBe("Tomo IV");
   });
 
-  it("mantém 251 seções de trabalho e descrições derivadas da mesma fonte canônica", () => {
+  it("mantém 250 seções de trabalho e descrições derivadas da mesma fonte canônica", () => {
     expect(PDF_ANALYTIC_SOURCE).toBe("Plano_de_Trabalho-UFRJ_26_agosto.pdf");
-    expect(PDF_ANALYTIC_ITEMS).toHaveLength(251);
+    expect(PDF_ANALYTIC_ITEMS).toHaveLength(250);
     expect(Object.keys(STUDY_SECTION_DESCRIPTIONS)).toEqual(STUDY_SECTION_CODES);
     for (const section of STUDY_SECTIONS) {
       expect(studySectionDescription(section.code)).toBe(section.officialDescription);
@@ -39,6 +39,7 @@ describe("estrutura canônica do estudo", () => {
     expect(Object.values(V1_SECTION_DESCRIPTIONS).every(description => description.length > 120)).toBe(true);
     expect(V1_SECTION_DESCRIPTIONS["I.2"]).toContain("economia do mar");
     expect(V1_SECTION_DESCRIPTIONS["II.2"]).toContain("Dimensões de análise das experiências nacionais");
+    expect(V1_SECTION_DESCRIPTIONS["III.3"]).toContain("Dimensões de análise das experiências nacionais");
     expect(V1_SECTION_DESCRIPTIONS["IV.3"]).toContain("Relatório 2");
   });
 

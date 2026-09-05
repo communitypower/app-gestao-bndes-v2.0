@@ -172,7 +172,7 @@ export const PDF_ANALYTIC_SECTIONS = [
     "tome": "Tomo III",
     "tomeTitle": "Política Industrial e Política Marítima",
     "title": "Políticas de construção naval no mundo",
-    "description": "Políticas de construção naval no mundo",
+    "description": "Dimensões de análise das experiências nacionais: planejamento e políticas de desenvolvimento da indústria; proteção do mercado; participação e controle estatal; subsídios e incentivos fiscais; financiamento; garantias e créditos à exportação; compras governamentais; políticas de conteúdo local; desenvolvimento tecnológico e transferência de tecnologia; cooperação internacional; impacto das políticas governamentais na consolidação da indústria; identificação dos casos mais expressivos de sucesso e falha.",
     "sortOrder": 21
   },
   {
@@ -1304,72 +1304,66 @@ export const PDF_ANALYTIC_ITEMS = [
     "sectionCode": "III.3",
     "detailCode": "III.3.5",
     "detailSortOrder": 5,
-    "title": "Dimensões de análise das experiências nacionais: planejamento e políticas de desenvolvimento da indústria; proteção do mercado; participação e controle estatal; subsídios e incentivos fiscais; financiamento; garantias e créditos à exportação; compras governamentais; políticas de conteúdo local; desenvolvimento tecnológico e transferência de tecnologia; cooperação internacional; impacto das políticas governamentais na consolidação da indústria; identificação dos casos mais expressivos de sucesso e falha"
+    "title": "Japão"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.6",
     "detailSortOrder": 6,
-    "title": "Japão"
+    "title": "Coreia do Sul"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.7",
     "detailSortOrder": 7,
-    "title": "Coreia do Sul"
+    "title": "China"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.8",
     "detailSortOrder": 8,
-    "title": "China"
+    "title": "Singapura"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.9",
     "detailSortOrder": 9,
-    "title": "Singapura"
+    "title": "Estados Unidos"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.10",
     "detailSortOrder": 10,
-    "title": "Estados Unidos"
+    "title": "Europa Ocidental"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.11",
     "detailSortOrder": 11,
-    "title": "Europa Ocidental"
+    "title": "Índia"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.12",
     "detailSortOrder": 12,
-    "title": "Índia"
+    "title": "Vietnã"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.13",
     "detailSortOrder": 13,
-    "title": "Vietnã"
+    "title": "Indonésia"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.14",
     "detailSortOrder": 14,
-    "title": "Indonésia"
+    "title": "Turquia e Europa Oriental"
   },
   {
     "sectionCode": "III.3",
     "detailCode": "III.3.15",
     "detailSortOrder": 15,
-    "title": "Turquia e Europa Oriental"
-  },
-  {
-    "sectionCode": "III.3",
-    "detailCode": "III.3.16",
-    "detailSortOrder": 16,
     "title": "Outros casos relevantes"
   },
   {
