@@ -326,36 +326,54 @@ class SDKServer {
     const signedInAt = new Date();
     let user = await db.getUserByOpenId(sessionUserId);
 
-    // If user not in DB, sync from OAuth server automatically
+    // If user not in DB, sync from OAuth server if configured, or restore locally
     if (!user) {
-      if (!ENV.isProduction && !ENV.oAuthServerUrl) {
-        return {
-          id: 1,
-          openId: session.openId,
-          name: session.name || "Administrador do Estudo",
-          email: "admin@estudo.ufrj.br",
-          role: "admin",
-          appRole: "administrador",
-          accessStatus: "ativo",
-          loginMethod: "local",
-          createdAt: signedInAt,
-          updatedAt: signedInAt,
-          lastSignedIn: signedInAt,
-        } as AuthenticatedUser;
-      }
-      try {
-        const userInfo = await this.getUserInfoWithJwt(sessionToken ?? "");
-        await db.upsertUser({
-          openId: userInfo.openId,
-          name: userInfo.name || null,
-          email: userInfo.email ?? null,
-          loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
-          lastSignedIn: signedInAt,
-        });
-        user = await db.getUserByOpenId(userInfo.openId);
-      } catch (error) {
-        console.error("[Auth] Failed to sync user from OAuth:", error);
-        throw ForbiddenError("Failed to sync user info");
+      if (!ENV.oAuthServerUrl) {
+        try {
+          await db.upsertUser({
+            openId: session.openId,
+            name: session.name || "Participante do Estudo",
+            role: session.openId === "local_admin" ? "admin" : "user",
+            appRole: session.openId === "local_admin" ? "administrador" : "executor",
+            accessStatus: "ativo",
+            loginMethod: "local",
+            lastSignedIn: signedInAt,
+          });
+          user = await db.getUserByOpenId(session.openId);
+        } catch {
+          // DB fallback
+        }
+
+        if (!user) {
+          return {
+            id: 1,
+            openId: session.openId,
+            name: session.name || "Participante do Estudo",
+            email: session.openId === "local_admin" ? "admin@estudo.ufrj.br" : null,
+            role: session.openId === "local_admin" ? "admin" : "user",
+            appRole: session.openId === "local_admin" ? "administrador" : "executor",
+            accessStatus: "ativo",
+            loginMethod: "local",
+            createdAt: signedInAt,
+            updatedAt: signedInAt,
+            lastSignedIn: signedInAt,
+          } as AuthenticatedUser;
+        }
+      } else {
+        try {
+          const userInfo = await this.getUserInfoWithJwt(sessionToken ?? "");
+          await db.upsertUser({
+            openId: userInfo.openId,
+            name: userInfo.name || null,
+            email: userInfo.email ?? null,
+            loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
+            lastSignedIn: signedInAt,
+          });
+          user = await db.getUserByOpenId(userInfo.openId);
+        } catch (error) {
+          console.error("[Auth] Failed to sync user from OAuth:", error);
+          throw ForbiddenError("Failed to sync user info");
+        }
       }
     }
 

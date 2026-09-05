@@ -81,46 +81,122 @@ let _db: DbClient | null = null;
 let _pool: pg.Pool | null = null;
 let _initDbPromise: Promise<DbClient | null> | null = null;
 
+async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
+  const drizzleDir = path.resolve(process.cwd(), "drizzle");
+  if (!fs.existsSync(drizzleDir)) return;
+
+  try {
+    console.log("[Database] Running Drizzle migrations on PostgreSQL...");
+    await migrate(client, { migrationsFolder: drizzleDir });
+    console.log("[Database] Drizzle migrations applied successfully.");
+    return;
+  } catch (migErr: any) {
+    console.warn("[Database] Drizzle migrator notice, falling back to direct SQL execution:", migErr?.message || migErr);
+  }
+
+  try {
+    const files = fs
+      .readdirSync(drizzleDir)
+      .filter(f => f.endsWith(".sql"))
+      .sort();
+
+    for (const file of files) {
+      const content = fs.readFileSync(path.join(drizzleDir, file), "utf-8");
+      const statements = content
+        .split("--> statement-breakpoint")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      for (const stmt of statements) {
+        try {
+          await pool.query(stmt);
+        } catch (err: any) {
+          if (!err?.message?.includes("already exists") && !err?.message?.includes("duplicate")) {
+            console.warn(`[Database] Migration statement notice:`, err?.message || err);
+          }
+        }
+      }
+    }
+    console.log("[Database] Direct SQL migrations completed.");
+  } catch (err) {
+    console.error("[Database] Direct SQL migration error:", err);
+  }
+}
+
 // Lazily create the drizzle instance so local tooling can run without a DB or fallback to embedded Postgres.
 export async function getDb(): Promise<DbClient | null> {
   if (_db) return _db;
   if (_initDbPromise) return _initDbPromise;
 
   _initDbPromise = (async () => {
-    if (process.env.DATABASE_URL) {
+    const rawUrl = process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL;
+    if (rawUrl) {
       try {
-        const urlStr = process.env.DATABASE_URL;
-        const isLocal =
+        const urlStr = rawUrl.trim();
+        const shouldDisableSsl =
           urlStr.includes("localhost") ||
           urlStr.includes("127.0.0.1") ||
-          urlStr.includes("host.docker.internal");
+          urlStr.includes("host.docker.internal") ||
+          urlStr.includes(".railway.internal") ||
+          urlStr.includes("sslmode=disable");
+
+        let sslConfig: boolean | { rejectUnauthorized: boolean } = shouldDisableSsl
+          ? false
+          : { rejectUnauthorized: false };
 
         _pool = new pg.Pool({
           connectionString: urlStr,
-          ssl: isLocal ? undefined : { rejectUnauthorized: false },
+          ssl: sslConfig,
         });
 
-        // Test connectivity
-        const testClient = await _pool.connect();
-        testClient.release();
-
-        const client = drizzle(_pool, { schema });
-        _db = client;
-        console.log("[Database] Connected to PostgreSQL via DATABASE_URL");
-
-        // Automatically run migrations if drizzle directory exists
-        const drizzleDir = path.resolve(process.cwd(), "drizzle");
-        if (fs.existsSync(drizzleDir)) {
-          try {
-            console.log("[Database] Applying database migrations to PostgreSQL...");
-            await migrate(client, { migrationsFolder: drizzleDir });
-            console.log("[Database] Migrations applied successfully.");
-          } catch (migErr: any) {
-            console.warn("[Database] Migration notice:", migErr?.message || migErr);
+        // Test connectivity with auto-retry for SSL mismatch (common on Railway)
+        try {
+          const testClient = await _pool.connect();
+          testClient.release();
+        } catch (connErr: any) {
+          const errMsg = connErr?.message || "";
+          if (
+            sslConfig !== false &&
+            (errMsg.includes("does not support SSL") ||
+              errMsg.includes("The server does not support SSL") ||
+              errMsg.includes("no pg_hba.conf entry for host") ||
+              errMsg.includes("SSL connection has been closed unexpectedly"))
+          ) {
+            console.log("[Database] SSL connection refused by PostgreSQL server, retrying without SSL (Railway private network mode)...");
+            await _pool.end().catch(() => {});
+            sslConfig = false;
+            _pool = new pg.Pool({
+              connectionString: urlStr,
+              ssl: false,
+            });
+            const testClient = await _pool.connect();
+            testClient.release();
+          } else if (
+            sslConfig === false &&
+            (errMsg.includes("server requires SSL") || errMsg.includes("SSL is required"))
+          ) {
+            console.log("[Database] Server requires SSL, retrying with SSL...");
+            await _pool.end().catch(() => {});
+            sslConfig = { rejectUnauthorized: false };
+            _pool = new pg.Pool({
+              connectionString: urlStr,
+              ssl: sslConfig,
+            });
+            const testClient = await _pool.connect();
+            testClient.release();
+          } else {
+            throw connErr;
           }
         }
 
-        // Automatically ensure seed data exists
+        const client = drizzle(_pool, { schema });
+        _db = client;
+        console.log("[Database] Connected to PostgreSQL successfully!");
+
+        // Run migrations
+        await runPostgresMigrations(client, _pool);
+
+        // Ensure canonical seed data exists
         try {
           console.log("[Database] Ensuring canonical seed data...");
           await ensureSeedData(client);
