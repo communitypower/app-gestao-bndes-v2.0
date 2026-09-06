@@ -121,6 +121,15 @@ async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
   } catch (err) {
     console.error("[Database] Direct SQL migration error:", err);
   }
+
+  // Ensure critical unique indexes exist in PostgreSQL production
+  try {
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "users_openId_unique" ON "users" ("openId");`);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "user_access_provisions_email_unique" ON "user_access_provisions" ("email");`);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "study_sections_code_unique" ON "study_sections" ("code");`);
+  } catch (idxErr: any) {
+    // Ignore if already existing
+  }
 }
 
 // Lazily create the drizzle instance so local tooling can run without a DB or fallback to embedded Postgres.
@@ -312,10 +321,12 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onConflictDoUpdate({
-      target: users.openId,
-      set: updateSet,
-    });
+    const existingUser = await getUserByOpenId(user.openId);
+    if (existingUser) {
+      await db.update(users).set(updateSet).where(eq(users.id, existingUser.id));
+    } else {
+      await db.insert(users).values(values);
+    }
 
     if (provision) {
       const activatedUser = await getUserByOpenId(user.openId);
@@ -517,27 +528,43 @@ export async function syncPdfAnalyticCatalog(
 export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {
   const db = explicitDb ?? (await requireDb());
 
-  // 0. Ensure default local admin user exists
-  await db
-    .insert(users)
-    .values({
-      openId: "local_admin",
-      name: "Administrador do Estudo",
-      email: "admin@estudo.ufrj.br",
-      role: "admin",
-      appRole: "administrador",
-      accessStatus: "ativo",
-      loginMethod: "local",
-    })
-    .onConflictDoUpdate({
-      target: users.openId,
-      set: {
+  // 0. Ensure default local admin user exists safely without failing on conflict
+  try {
+    const existingAdmin = (
+      await db
+        .select()
+        .from(users)
+        .where(or(eq(users.openId, "local_admin"), eq(users.email, "admin@estudo.ufrj.br")))
+        .limit(1)
+    )[0];
+
+    if (existingAdmin) {
+      await db
+        .update(users)
+        .set({
+          openId: "local_admin",
+          name: "Administrador do Estudo",
+          email: "admin@estudo.ufrj.br",
+          role: "admin",
+          appRole: "administrador",
+          accessStatus: "ativo",
+          loginMethod: "local",
+        })
+        .where(eq(users.id, existingAdmin.id));
+    } else {
+      await db.insert(users).values({
+        openId: "local_admin",
         name: "Administrador do Estudo",
+        email: "admin@estudo.ufrj.br",
         role: "admin",
         appRole: "administrador",
         accessStatus: "ativo",
-      },
-    });
+        loginMethod: "local",
+      });
+    }
+  } catch (adminErr: any) {
+    console.warn("[Database] Notice ensuring local_admin user:", adminErr?.message || adminErr);
+  }
 
   const settings = await db.select().from(projectSettings).limit(1);
   if (settings.length === 0) {

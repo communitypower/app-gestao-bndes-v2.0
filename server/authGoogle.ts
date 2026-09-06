@@ -56,32 +56,43 @@ export async function getAuthorizedUserByEmail(email: string, nameFallback?: str
   if (provisions[0]) {
     const prov = provisions[0];
     const openId = `google_${prov.email.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-    const [created] = await dbInstance
-      .insert(users)
-      .values({
-        openId,
-        name: prov.name || nameFallback || "Participante do Estudo",
-        email: prov.email,
-        role: prov.role,
-        appRole: prov.appRole,
-        accessStatus: "ativo",
-        loginMethod: "google",
-        lastSignedIn: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: users.openId,
-        set: {
+    const existing = (await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1))[0];
+    let createdUser;
+
+    if (existing) {
+      const [updated] = await dbInstance
+        .update(users)
+        .set({
           name: prov.name || nameFallback,
           email: prov.email,
+          role: prov.role,
+          appRole: prov.appRole,
           lastSignedIn: new Date(),
           accessStatus: "ativo",
-        },
-      })
-      .returning();
+        })
+        .where(eq(users.id, existing.id))
+        .returning();
+      createdUser = updated;
+    } else {
+      const [inserted] = await dbInstance
+        .insert(users)
+        .values({
+          openId,
+          name: prov.name || nameFallback || "Participante do Estudo",
+          email: prov.email,
+          role: prov.role,
+          appRole: prov.appRole,
+          accessStatus: "ativo",
+          loginMethod: "google",
+          lastSignedIn: new Date(),
+        })
+        .returning();
+      createdUser = inserted;
+    }
 
     return {
       authorized: true as const,
-      user: created,
+      user: createdUser,
     };
   }
 
@@ -97,65 +108,84 @@ export async function getAuthorizedUserByEmail(email: string, nameFallback?: str
     const openId = `google_${member.email!.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     const role = member.name.includes("Floriano") ? ("admin" as const) : ("user" as const);
     const appRole = member.groupRole === "coordenador" ? ("coordenador" as const) : ("executor" as const);
+    const existing = (await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1))[0];
+    let createdUser;
 
-    const [created] = await dbInstance
-      .insert(users)
-      .values({
-        openId,
-        name: member.name || nameFallback || "Participante do Estudo",
-        email: member.email,
-        role,
-        appRole,
-        accessStatus: "ativo",
-        loginMethod: "google",
-        lastSignedIn: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: users.openId,
-        set: {
+    if (existing) {
+      const [updated] = await dbInstance
+        .update(users)
+        .set({
           name: member.name,
           email: member.email,
+          role,
+          appRole,
           lastSignedIn: new Date(),
           accessStatus: "ativo",
-        },
-      })
-      .returning();
+        })
+        .where(eq(users.id, existing.id))
+        .returning();
+      createdUser = updated;
+    } else {
+      const [inserted] = await dbInstance
+        .insert(users)
+        .values({
+          openId,
+          name: member.name || nameFallback || "Participante do Estudo",
+          email: member.email,
+          role,
+          appRole,
+          accessStatus: "ativo",
+          loginMethod: "google",
+          lastSignedIn: new Date(),
+        })
+        .returning();
+      createdUser = inserted;
+    }
 
     return {
       authorized: true as const,
-      user: created,
+      user: createdUser,
     };
   }
 
   // 4. E-mail de Administrador Especial
   if (normalized === "admin@estudo.ufrj.br" || normalized === "cassianomarins@gmail.com") {
     const openId = `google_${normalized.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-    const [created] = await dbInstance
-      .insert(users)
-      .values({
-        openId,
-        name: nameFallback || "Administrador do Estudo",
-        email: normalized,
-        role: "admin",
-        appRole: "administrador",
-        accessStatus: "ativo",
-        loginMethod: "google",
-        lastSignedIn: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: users.openId,
-        set: {
+    const existing = (await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1))[0];
+    let createdUser;
+
+    if (existing) {
+      const [updated] = await dbInstance
+        .update(users)
+        .set({
           role: "admin",
           appRole: "administrador",
           accessStatus: "ativo",
           lastSignedIn: new Date(),
-        },
-      })
-      .returning();
+        })
+        .where(eq(users.id, existing.id))
+        .returning();
+      createdUser = updated;
+    } else {
+      const [inserted] = await dbInstance
+        .insert(users)
+        .values({
+          openId,
+          name: nameFallback || "Administrador do Estudo",
+          email: normalized,
+          role: "admin",
+          appRole: "administrador",
+          accessStatus: "ativo",
+          loginMethod: "google",
+          lastSignedIn: new Date(),
+        })
+        .returning();
+      createdUser = inserted;
+    }
 
     return {
       authorized: true as const,
-      user: created,
+      user: createdUser,
     };
   }
 
