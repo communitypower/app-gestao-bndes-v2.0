@@ -82,13 +82,140 @@ let _pool: pg.Pool | null = null;
 let _initDbPromise: Promise<DbClient | null> | null = null;
 
 async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
-  // Always ensure critical unique indexes exist in PostgreSQL immediately
+  // 1. Ensure all custom enum types exist in PostgreSQL
   try {
-    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "users_openId_unique" ON "users" ("openId");`);
-    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "user_access_provisions_email_unique" ON "user_access_provisions" ("email");`);
-    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "study_sections_code_unique" ON "study_sections" ("code");`);
-  } catch (idxErr: any) {
-    // Ignore if tables not yet created
+    await pool.query(`
+      DO $$ 
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
+          CREATE TYPE "public"."user_role" AS ENUM('user', 'admin');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'app_role') THEN
+          CREATE TYPE "public"."app_role" AS ENUM('administrador', 'coordenador', 'executor');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'access_status') THEN
+          CREATE TYPE "public"."access_status" AS ENUM('ativo', 'revogado');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'provision_status') THEN
+          CREATE TYPE "public"."provision_status" AS ENUM('pendente', 'ativado', 'revogado');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'access_event_type') THEN
+          CREATE TYPE "public"."access_event_type" AS ENUM('perfil_alterado', 'acesso_revogado', 'acesso_reativado', 'pre_cadastro_atualizado', 'convite_enviado');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'governance_decision_type') THEN
+          CREATE TYPE "public"."governance_decision_type" AS ENUM('implementacao_p0');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'governance_decision') THEN
+          CREATE TYPE "public"."governance_decision" AS ENUM('aprovada');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'tome_enum') THEN
+          CREATE TYPE "public"."tome_enum" AS ENUM('Apresentação', 'Tomo I', 'Tomo II', 'Tomo III', 'Tomo IV');
+        END IF;
+      END $$;
+    `);
+  } catch (enumErr: any) {
+    console.warn("[Database] Enum creation notice:", enumErr?.message || enumErr);
+  }
+
+  // 2. Ensure users and auth tables exist with all current columns
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS "users" (
+        "id" serial PRIMARY KEY,
+        "openId" varchar(64) NOT NULL,
+        "name" text,
+        "email" varchar(320),
+        "passwordHash" varchar(255),
+        "loginMethod" varchar(64),
+        "role" "public"."user_role" DEFAULT 'user' NOT NULL,
+        "appRole" "public"."app_role" DEFAULT 'executor' NOT NULL,
+        "accessStatus" "public"."access_status" DEFAULT 'ativo' NOT NULL,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL,
+        "lastSignedIn" timestamp DEFAULT now() NOT NULL
+      );
+
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "openId" varchar(64);
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "name" text;
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "email" varchar(320);
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "passwordHash" varchar(255);
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "loginMethod" varchar(64);
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "role" "public"."user_role" DEFAULT 'user';
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "appRole" "public"."app_role" DEFAULT 'executor';
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "accessStatus" "public"."access_status" DEFAULT 'ativo';
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "createdAt" timestamp DEFAULT now();
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "updatedAt" timestamp DEFAULT now();
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "lastSignedIn" timestamp DEFAULT now();
+
+      CREATE TABLE IF NOT EXISTS "user_access_provisions" (
+        "id" serial PRIMARY KEY,
+        "email" varchar(320) NOT NULL,
+        "name" text NOT NULL,
+        "role" "public"."user_role" DEFAULT 'user' NOT NULL,
+        "appRole" "public"."app_role" DEFAULT 'executor' NOT NULL,
+        "status" "public"."provision_status" DEFAULT 'pendente' NOT NULL,
+        "userId" integer,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "activatedAt" timestamp,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "email" varchar(320);
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "name" text;
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "role" "public"."user_role" DEFAULT 'user';
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "appRole" "public"."app_role" DEFAULT 'executor';
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "status" "public"."provision_status" DEFAULT 'pendente';
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "userId" integer;
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "createdAt" timestamp DEFAULT now();
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "activatedAt" timestamp;
+      ALTER TABLE "user_access_provisions" ADD COLUMN IF NOT EXISTS "updatedAt" timestamp DEFAULT now();
+
+      CREATE TABLE IF NOT EXISTS "user_access_events" (
+        "id" serial PRIMARY KEY,
+        "userId" integer,
+        "provisionId" integer,
+        "actorUserId" integer NOT NULL,
+        "eventType" "public"."access_event_type" NOT NULL,
+        "previousAppRole" "public"."app_role",
+        "nextAppRole" "public"."app_role",
+        "note" text,
+        "createdAt" timestamp DEFAULT now() NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS "project_governance_decisions" (
+        "id" serial PRIMARY KEY,
+        "decisionType" "public"."governance_decision_type" NOT NULL,
+        "decision" "public"."governance_decision" NOT NULL,
+        "note" text,
+        "decidedBy" integer NOT NULL,
+        "decidedAt" bigint NOT NULL,
+        "createdAt" timestamp DEFAULT now() NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS "tome_governance_assignments" (
+        "id" serial PRIMARY KEY,
+        "tome" "public"."tome_enum" NOT NULL,
+        "coordinatorId" integer,
+        "substituteId" integer,
+        "assignedBy" integer NOT NULL,
+        "assignedAt" bigint NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS "tome_governance_events" (
+        "id" serial PRIMARY KEY,
+        "tome" "public"."tome_enum" NOT NULL,
+        "previousCoordinatorId" integer,
+        "nextCoordinatorId" integer,
+        "previousSubstituteId" integer,
+        "nextSubstituteId" integer,
+        "actorUserId" integer NOT NULL,
+        "note" text,
+        "createdAt" timestamp DEFAULT now() NOT NULL
+      );
+    `);
+  } catch (tblErr: any) {
+    console.warn("[Database] Base tables reconciliation notice:", tblErr?.message || tblErr);
   }
 
   const drizzleDir = path.resolve(process.cwd(), "drizzle");
@@ -129,11 +256,12 @@ async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
     }
   }
 
-  // Ensure critical unique indexes exist in PostgreSQL production
+  // 3. Ensure critical unique indexes exist in PostgreSQL production
   try {
     await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "users_openId_unique" ON "users" ("openId");`);
     await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "user_access_provisions_email_unique" ON "user_access_provisions" ("email");`);
     await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "study_sections_code_unique" ON "study_sections" ("code");`);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "tome_governance_assignments_tome_unique" ON "tome_governance_assignments" ("tome");`);
   } catch (idxErr: any) {
     // Ignore if already existing
   }
