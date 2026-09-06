@@ -27,9 +27,11 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc";
 import { formatDate, initials } from "@/lib/format";
-import { groupDisplayName } from "./shared/groupDisplay";
-import type { TeamGroupRole } from "@shared/domain";
+import { groupDisplayName } from "@shared/groupDisplay";
+import { TEAM_SEED, type TeamGroupRole, type AppRole } from "@shared/domain";
+import { Badge } from "@/components/ui/badge";
 import {
+  Briefcase,
   Building2,
   BookMarked,
   ChevronDown,
@@ -39,6 +41,8 @@ import {
   Pencil,
   Plus,
   Search,
+  ShieldCheck,
+  Sparkles,
   UserRound,
   UsersRound,
 } from "lucide-react";
@@ -70,6 +74,43 @@ const emptyMember: MemberForm = {
   whatsappOptIn: false,
   active: true,
 };
+
+function getMemberAppRoleBadge(name: string, isCoordinator = false) {
+  const seed = TEAM_SEED.find(m => m.name.toLowerCase() === name.toLowerCase());
+  const role: AppRole = seed?.appRole || (isCoordinator ? "coordenador" : "executor");
+
+  if (role === "administrador") {
+    return (
+      <Badge
+        variant="outline"
+        className="h-5 gap-1 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
+      >
+        <Crown className="h-3 w-3 text-purple-600 dark:text-purple-400" />
+        Administrador
+      </Badge>
+    );
+  }
+  if (role === "coordenador" || isCoordinator) {
+    return (
+      <Badge
+        variant="outline"
+        className="h-5 gap-1 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+      >
+        <ShieldCheck className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+        Coordenador
+      </Badge>
+    );
+  }
+  return (
+    <Badge
+      variant="outline"
+      className="h-5 gap-1 border-emerald-200 bg-emerald-50 px-1.5 py-0 text-[10px] font-medium text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+    >
+      <Briefcase className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+      Executor
+    </Badge>
+  );
+}
 
 function TeamContent() {
   const { data, isLoading } = trpc.team.hierarchy.useQuery();
@@ -204,6 +245,180 @@ function TeamContent() {
         <Metric label="Integrantes ativos" value={activeMembers} note="Coordenadores e participantes" accent />
       </section>
 
+      {/* Seção Executiva de Coordenação Geral e Administradores */}
+      <section className="technical-panel overflow-hidden border-t-[3px] border-t-purple-600 dark:border-t-purple-400">
+        <header className="border-b bg-purple-50/50 dark:bg-purple-950/20 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="data-label flex items-center gap-1.5 font-semibold text-purple-700 dark:text-purple-300">
+                <Crown className="h-4 w-4" /> Governança e Administração do Sistema
+              </p>
+              <h2 className="font-display mt-1 text-2xl font-semibold tracking-[-.025em]">
+                Coordenação Geral, Administração Executiva e Suporte Técnico
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Membros com perfil de Administrador responsáveis pela coordenação geral, gestão executiva, governança editorial e suporte de TI.
+              </p>
+            </div>
+            <Badge variant="outline" className="border-purple-300 bg-purple-100/60 font-mono text-xs text-purple-800 dark:border-purple-800 dark:bg-purple-950/60 dark:text-purple-300">
+              5 Administradores Ativos
+            </Badge>
+          </div>
+        </header>
+
+        <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Floriano Carlos Martins Pires Jr. */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-purple-200">
+                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
+                  FP
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Prof. Floriano Carlos Martins Pires Jr.
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Administrador
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Coordenador Geral do Projeto (UFRJ · FEP/BNDES)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coord. G1 (Sistematização) · Membro G4 e G10
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> floriano@poli.ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Denise Cunha */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-purple-200">
+                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
+                  DC
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Denise Cunha
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Administrador
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Administradora Executiva do Projeto (UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Gestão Administrativa e Executiva do Estudo
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> denisecunha@poli.ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cassiano Marins de Souza */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-purple-200">
+                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
+                  CS
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Cassiano Marins de Souza
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Administrador
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Substituto Editorial da Coordenação do Projeto
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coord. G10 (Construção Naval Mundial) · Membro G1
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> cassianomarins@gmail.com
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Prof. Luiz Felipe Assis */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-purple-200">
+                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
+                  LA
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Prof. Luiz Felipe Assis
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Administrador
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Coordenador do Grupo G4 e Membro do G1 (UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coord. G4 (Transporte Marítimo Mundial) · Membro G1
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> lfelipe@oceanica.ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Marcos Pedreira da Silva */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-purple-200">
+                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
+                  MP
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Marcos Pedreira da Silva
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Administrador
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Técnico de TI / Suporte Técnico (UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Suporte Técnico, Infraestrutura e TI da Plataforma
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> marcos.pedreira@ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="technical-panel max-w-2xl p-4">
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -267,9 +482,12 @@ function TeamContent() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-sm font-semibold leading-5">
-                        {group.coordinator.name}
-                      </h3>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-sm font-semibold leading-5">
+                          {group.coordinator.name}
+                        </h3>
+                        {getMemberAppRoleBadge(group.coordinator.name, true)}
+                      </div>
                       <p className="mt-1 text-xs leading-5 text-muted-foreground">
                         {group.coordinator.title} · {group.coordinator.institution}
                       </p>
@@ -328,9 +546,12 @@ function TeamContent() {
                       >
                         <UserRound className="mt-1 h-4 w-4 shrink-0 text-primary" />
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-semibold leading-5">
-                            {member.name}
-                          </p>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <p className="text-sm font-semibold leading-5">
+                              {member.name}
+                            </p>
+                            {getMemberAppRoleBadge(member.name, false)}
+                          </div>
                           <p className="mt-1 text-xs text-muted-foreground">
                             {member.title} · {member.institution}
                           </p>

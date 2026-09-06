@@ -45,7 +45,7 @@ import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: true },
+  { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: false },
   { icon: ChartNoAxesCombined, label: "KPIs documentais", path: "/kpis", admin: true, coordinator: true },
   { icon: ClipboardList, label: "Gestão de atividades", path: "/atividades", admin: true, coordinator: true },
   { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: true, coordinator: true },

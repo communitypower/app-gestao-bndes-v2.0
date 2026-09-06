@@ -568,17 +568,20 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
 
   // 2. Ensure users exist and are provisioned for all team members
   const existingUsers = await db.select().from(users);
-  const userByEmail = new Map(existingUsers.filter(u => u.email).map(u => [u.email!.toLowerCase(), u]));
+  const userByEmail = new Map(existingUsers.filter(u => u.email).map(u => [u.email!.trim().toLowerCase(), u]));
+  const userByName = new Map(existingUsers.filter(u => u.name).map(u => [u.name!.trim().toLowerCase(), u]));
   const existingProvisions = await db.select().from(userAccessProvisions);
-  const provisionByEmail = new Map(existingProvisions.map(p => [p.email.toLowerCase(), p]));
+  const provisionByEmail = new Map(existingProvisions.filter(p => p.email).map(p => [p.email.trim().toLowerCase(), p]));
+  const provisionByName = new Map(existingProvisions.filter(p => p.name).map(p => [p.name.trim().toLowerCase(), p]));
 
   for (const memberSeed of TEAM_SEED) {
-    const emailNorm = memberSeed.email.toLowerCase();
+    const emailNorm = memberSeed.email.trim().toLowerCase();
+    const nameNorm = memberSeed.name.trim().toLowerCase();
     const openId = `seed_user_${emailNorm.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     const role = memberSeed.appRole === "administrador" ? ("admin" as const) : ("user" as const);
     let userId: number;
 
-    const userObj = userByEmail.get(emailNorm);
+    const userObj = userByEmail.get(emailNorm) || userByName.get(nameNorm);
     if (userObj) {
       userId = userObj.id;
       await db
@@ -616,9 +619,23 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
         updatedAt: new Date(),
         lastSignedIn: new Date(),
       });
+      userByName.set(nameNorm, userByEmail.get(emailNorm)!);
     }
 
-    if (!provisionByEmail.has(emailNorm)) {
+    const provObj = provisionByEmail.get(emailNorm) || provisionByName.get(nameNorm);
+    if (provObj) {
+      await db
+        .update(userAccessProvisions)
+        .set({
+          name: memberSeed.name,
+          email: memberSeed.email,
+          role,
+          appRole: memberSeed.appRole,
+          status: "ativado",
+          userId,
+        })
+        .where(eq(userAccessProvisions.id, provObj.id));
+    } else {
       await db.insert(userAccessProvisions).values({
         email: memberSeed.email,
         name: memberSeed.name,
@@ -631,20 +648,22 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
   }
 
   const allUsersAfterSeed = await db.select().from(users);
-  const userMapByEmail = new Map(allUsersAfterSeed.filter(u => u.email).map(u => [u.email!.toLowerCase(), u]));
+  const userMapByEmail = new Map(allUsersAfterSeed.filter(u => u.email).map(u => [u.email!.trim().toLowerCase(), u]));
+  const userMapByName = new Map(allUsersAfterSeed.filter(u => u.name).map(u => [u.name!.trim().toLowerCase(), u]));
 
   // 3. Ensure all members from TEAM_SEED exist and are updated with userId links
   const existingMembers = await db.select().from(teamMembers);
-  const memberByName = new Map(existingMembers.map(m => [m.name, m]));
+  const memberByName = new Map(existingMembers.filter(m => m.name).map(m => [m.name.trim().toLowerCase(), m]));
+  const memberByEmail = new Map(existingMembers.filter(m => m.email).map(m => [m.email!.trim().toLowerCase(), m]));
 
   for (const memberSeed of TEAM_SEED) {
     const seedGroup = teamGroupForMember(memberSeed.name);
     const group = seedGroup ? seededGroupByName.get(seedGroup.name) : null;
     const targetRole = seedGroup?.coordinatorName === memberSeed.name ? ("coordenador" as const) : ("participante" as const);
-    const targetActive = Boolean(seedGroup) || memberSeed.name === "Denise Cunha";
-    const linkedUserId = userMapByEmail.get(memberSeed.email.toLowerCase())?.id ?? null;
+    const targetActive = Boolean(seedGroup) || memberSeed.name === "Denise Cunha" || memberSeed.name === "Marcos Pedreira da Silva";
+    const linkedUserId = userMapByEmail.get(memberSeed.email.trim().toLowerCase())?.id ?? userMapByName.get(memberSeed.name.trim().toLowerCase())?.id ?? null;
 
-    const existing = memberByName.get(memberSeed.name);
+    const existing = memberByName.get(memberSeed.name.trim().toLowerCase()) || (memberSeed.email ? memberByEmail.get(memberSeed.email.trim().toLowerCase()) : null);
     if (existing) {
       await db
         .update(teamMembers)

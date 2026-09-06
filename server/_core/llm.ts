@@ -212,14 +212,34 @@ const normalizeToolChoice = (
   return toolChoice;
 };
 
-const resolveApiUrl = () =>
-  ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
-    ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
-    : "https://forge.manus.im/v1/chat/completions";
+const resolveApiUrl = () => {
+  if (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0) {
+    return `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`;
+  }
+  if (ENV.openaiApiKey || process.env.OPENAI_API_KEY) {
+    return "https://api.openai.com/v1/chat/completions";
+  }
+  if (ENV.geminiApiKey || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY) {
+    return "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+  }
+  return "https://forge.manus.im/v1/chat/completions";
+};
+
+export const resolveApiKey = () => {
+  return (
+    ENV.forgeApiKey ||
+    ENV.openaiApiKey ||
+    ENV.geminiApiKey ||
+    process.env.OPENAI_API_KEY ||
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    ""
+  );
+};
 
 const assertApiKey = () => {
-  if (!ENV.forgeApiKey) {
-    throw new Error("OPENAI_API_KEY is not configured");
+  if (!resolveApiKey()) {
+    throw new Error("Chave de API LLM (OPENAI_API_KEY / GEMINI_API_KEY / FORGE_KEY) não configurada");
   }
 };
 
@@ -405,7 +425,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
+      authorization: `Bearer ${resolveApiKey()}`,
     },
     body: JSON.stringify(payload),
   });
@@ -440,7 +460,7 @@ export async function listLLMModels(): Promise<ModelsResponse> {
     : "https://forge.manus.im/v1/models";
 
   const response = await fetchWithBackoff(url, {
-    headers: { authorization: `Bearer ${ENV.forgeApiKey}` },
+    headers: { authorization: `Bearer ${resolveApiKey()}` },
   });
 
   if (!response.ok) {

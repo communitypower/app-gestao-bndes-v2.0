@@ -10,6 +10,7 @@ const pages = [
   ["Production.tsx", "Produção e revisão de materiais"],
   ["Interfaces.tsx", "Gestão de interfaces entre seções"],
   ["Fieldwork.tsx", "Atividades de campo e divulgação"],
+  ["Assistant.tsx", "Assistente técnico de inteligência artificial"],
   ["Administration.tsx", "Administração da plataforma"],
 ] as const;
 

@@ -18,6 +18,7 @@ const FieldworkPage = lazy(() => import("./pages/Fieldwork"));
 const AdministrationPage = lazy(() => import("./pages/Administration"));
 const UserAccessPage = lazy(() => import("./pages/UserAccess"));
 const ManualPage = lazy(() => import("./pages/Manual"));
+const AssistantPage = lazy(() => import("./pages/Assistant"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
@@ -52,6 +53,7 @@ function Router() {
                 <Route path="/producao" component={ProductionPage} />
                 <Route path="/interfaces" component={InterfacesPage} />
                 <Route path="/campo-divulgacao" component={FieldworkPage} />
+                <Route path="/assistente" component={AssistantPage} />
                 <Route path="/manual" component={ManualPage} />
                 <Route path="/administracao" component={AdministrationPage} />
                 <Route path="/usuarios-permissoes" component={UserAccessPage} />

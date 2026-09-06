@@ -9,6 +9,7 @@ import {
   STUDY_SECTION_DESCRIPTIONS,
   STUDY_SECTIONS,
   STUDY_TOMES,
+  TEAM_SEED,
   studySectionDescription,
   studyTomeFromCode,
 } from "./domain";
@@ -51,5 +52,32 @@ describe("estrutura canônica do estudo", () => {
     expect(ACTIVITY_STATUSES).toEqual(["pendente", "em andamento", "concluído", "atrasado"]);
     expect(APP_ROLES).toEqual(["administrador", "coordenador", "executor"]);
     expect(NOTIFICATION_EVENTS).toEqual(["atribuicao", "prazo_3_dias", "atraso"]);
+  });
+
+  it("calibra a base de integrantes e perfis de administrador", () => {
+    const adminMembers = TEAM_SEED.filter(m => m.appRole === "administrador");
+    expect(adminMembers.map(m => m.name)).toEqual([
+      "Floriano Carlos Martins Pires Jr.",
+      "Denise Cunha",
+      "Cassiano Marins de Souza",
+      "Luiz Felipe Assis",
+      "Marcos Pedreira da Silva",
+    ]);
+
+    const marcosPedreira = TEAM_SEED.find(m => m.name === "Marcos Pedreira da Silva");
+    expect(marcosPedreira).toMatchObject({
+      name: "Marcos Pedreira da Silva",
+      title: "Técnico de TI",
+      institution: "UFRJ",
+      appRole: "administrador",
+    });
+
+    const marcosPereira = TEAM_SEED.find(m => m.name === "Marcos Pereira");
+    expect(marcosPereira).toMatchObject({
+      name: "Marcos Pereira",
+      title: "Professor",
+      institution: "UFPE",
+      appRole: "executor",
+    });
   });
 });

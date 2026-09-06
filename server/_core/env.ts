@@ -6,7 +6,9 @@ export const ENV = {
   ownerOpenId: process.env.OWNER_OPEN_ID ?? "local_admin",
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
-  forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
+  forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY || process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "",
+  openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+  geminiApiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "",
   googleDriveClientId: process.env.GOOGLE_DRIVE_CLIENT_ID ?? "",
   googleDriveClientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET ?? "",
 };

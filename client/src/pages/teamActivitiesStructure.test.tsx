@@ -389,10 +389,10 @@ describe("estrutura hierárquica da equipe", () => {
   it("exibe grupos inicialmente recolhidos e revela o coordenador e participantes ao expandir", () => {
     render(<TeamPage />);
     expect(screen.getByText("G1 · Sistematização")).toBeInTheDocument();
-    expect(screen.queryByText("Floriano Carlos Martins Pires Jr.")).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Floriano Carlos Martins Pires Jr./i).length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole("button", { name: /expandir informações do grupo g1/i }));
-    expect(screen.getAllByText("Floriano Carlos Martins Pires Jr.").length).toBeGreaterThan(0);
-    expect(screen.getByText("Cassiano Marins de Souza")).toBeInTheDocument();
+    expect(screen.getAllByText(/Floriano Carlos Martins Pires Jr./i).length).toBeGreaterThan(1);
+    expect(screen.getAllByText(/Cassiano Marins de Souza/i).length).toBeGreaterThan(0);
     expect(screen.getByText("Segen Farid Estefen")).toBeInTheDocument();
     expect(screen.getByText("Coordenador responsável")).toBeInTheDocument();
     expect(screen.getByText("Participantes indicados no kick-off")).toBeInTheDocument();

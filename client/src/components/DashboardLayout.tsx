@@ -38,15 +38,18 @@ import {
   PanelLeft,
   Settings,
   Users,
+  Bot,
+  Sparkles,
 } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
+import { AiAssistantDrawer } from "./AiAssistantDrawer";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: true },
+  { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: false },
   { icon: ChartNoAxesCombined, label: "KPIs documentais", path: "/kpis", admin: true, coordinator: true },
   { icon: ClipboardList, label: "Gestão de atividades", path: "/atividades", admin: true, coordinator: true },
   { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: true, coordinator: true },
@@ -55,6 +58,7 @@ const menuItems = [
   { icon: FilePenLine, label: "Produção e revisão", path: "/producao", admin: false },
   { icon: GitMerge, label: "Interfaces entre seções", path: "/interfaces", admin: true, interfaces: true },
   { icon: MapPinned, label: "Campo e divulgação", path: "/campo-divulgacao", admin: false },
+  { icon: Bot, label: "Assistente de IA", path: "/assistente", admin: false },
   { icon: HelpCircle, label: "Manual da equipe", path: "/manual", admin: false },
   { icon: Settings, label: "Administração", path: "/administracao", admin: true },
   { icon: Users, label: "Usuários e permissões", path: "/usuarios-permissoes", admin: true },
@@ -149,6 +153,7 @@ function DashboardLayoutContent({
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
+  const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const visibleItems = menuItems.filter(
     item =>
@@ -325,6 +330,16 @@ function DashboardLayoutContent({
             </span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsAssistantDrawerOpen(true)}
+              className="h-8 gap-1.5 px-2 text-xs text-primary hover:bg-primary/10 hover:text-primary"
+              title="Abrir Assistente Técnico de Inteligência Artificial"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span className="hidden md:inline font-medium">Assistente IA</span>
+            </Button>
             <Link href="/manual">
               <Button
                 variant="ghost"
@@ -341,6 +356,7 @@ function DashboardLayoutContent({
         </header>
         <main className="page-grid flex-1 overflow-x-hidden px-4 py-6 sm:px-6 md:px-8 md:py-8 xl:px-10 xl:py-10"><div className="mx-auto w-full max-w-[1560px]">{children}</div></main>
       </SidebarInset>
+      <AiAssistantDrawer isOpen={isAssistantDrawerOpen} onOpenChange={setIsAssistantDrawerOpen} />
     </>
   );
 }

@@ -97,21 +97,21 @@ export const TEAM_SEED: ReadonlyArray<{
   email: string;
   appRole: AppRole;
 }> = [
-  // 1. Administradores (Coordenação Geral, Executiva e Suporte TI)
+  // 1. Administradores da Coordenação e Suporte Técnico do Projeto
   { name: "Floriano Carlos Martins Pires Jr.", title: "Professor", institution: "UFRJ", email: "floriano@poli.ufrj.br", appRole: "administrador" },
   { name: "Denise Cunha", title: "Administradora", institution: "UFRJ", email: "denisecunha@poli.ufrj.br", appRole: "administrador" },
+  { name: "Cassiano Marins de Souza", title: "Consultor", institution: "Consultoria", email: "cassianomarins@gmail.com", appRole: "administrador" },
+  { name: "Luiz Felipe Assis", title: "Professor", institution: "UFRJ", email: "lfelipe@oceanica.ufrj.br", appRole: "administrador" },
   { name: "Marcos Pedreira da Silva", title: "Técnico de TI", institution: "UFRJ", email: "marcos.pedreira@ufrj.br", appRole: "administrador" },
 
   // 2. Coordenadores de Grupos Temáticos / Frentes
   { name: "Carlos Frederico Leão Rocha", title: "Professor", institution: "UFRJ", email: "carlos.rocha@ie.ufrj.br", appRole: "coordenador" },
   { name: "Armando Freigedo Rodrigues Filho", title: "Consultor", institution: "Consultoria", email: "armando.freigedo@aquapar.com.br", appRole: "coordenador" },
-  { name: "Luiz Felipe Assis", title: "Professor", institution: "UFRJ", email: "lfelipe@oceanica.ufrj.br", appRole: "coordenador" },
   { name: "Marcos Bernardes Cozzolino do Nascimento", title: "Consultor", institution: "Consultoria", email: "marcos.cozzolino@consultoria.com", appRole: "coordenador" },
   { name: "Marcelo Igor Lourenço de Souza", title: "Professor", institution: "UFRJ", email: "igor@oceanica.ufrj.br", appRole: "coordenador" },
   { name: "Carlos Daher Padovezi", title: "Pesquisador", institution: "IPT", email: "padovezi@ipt.br", appRole: "coordenador" },
   { name: "Jean David Job Emmanuel Marie Caprace", title: "Professor", institution: "UFRJ", email: "caprace@oceanica.ufrj.br", appRole: "coordenador" },
   { name: "Andre Ricardo Mendonça Pinheiro", title: "Doutorando", institution: "UFRJ", email: "andre.pinheiro@oceanica.ufrj.br", appRole: "coordenador" },
-  { name: "Cassiano Marins de Souza", title: "Consultor", institution: "Consultoria", email: "cassianomarins@gmail.com", appRole: "coordenador" },
   { name: "Marta Cecilia Tapia Reyes", title: "Professor", institution: "UFRJ", email: "marta@oceanica.ufrj.br", appRole: "coordenador" },
   { name: "Segen Farid Estefen", title: "Professor", institution: "UFRJ", email: "segen@oceanica.ufrj.br", appRole: "coordenador" },
 

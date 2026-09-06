@@ -119,8 +119,8 @@ import HomePage from "./Home";
 
 afterEach(() => cleanup());
 
-describe("descrições oficiais no painel", () => {
-  it("exibe a descrição no panorama da frente e na próxima entrega", () => {
+describe("painel de visão geral estático e somente leitura", () => {
+  it("exibe a descrição no panorama da frente e na próxima entrega de forma estática sem links", () => {
     render(<HomePage />);
     expect(screen.getByText("Visão geral do projeto")).toBeInTheDocument();
     expect(
@@ -128,16 +128,21 @@ describe("descrições oficiais no painel", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText(officialDescription)).toHaveLength(2);
     expect(screen.getAllByText("Construção Naval Mundial")).toHaveLength(2);
-    expect(screen.getByRole("button", { name: /aprovar implementação do p0/i })).toBeInTheDocument();
     expect(screen.getByText("Execução por tomo")).toBeInTheDocument();
     expect(screen.getAllByText("Tomo II").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByRole("link", { name: /Construção Naval Mundial/i }).map(link => link.getAttribute("href"))).toContain("/atividades?ficha=21");
+    expect(screen.getByText("Implementação do pacote P0")).toBeInTheDocument();
+    // Confirma que a página é estática e não possui links de navegação/edição
+    expect(screen.queryAllByRole("link")).toHaveLength(0);
   });
 
-  it("abre a lista do mês e oferece acesso à ficha completa da atividade", () => {
+  it("apresenta o cronograma mestre de meses e os indicadores gerais de forma informativa", () => {
     render(<HomePage />);
-    fireEvent.click(screen.getByRole("button", { name: /Listar atividades com entrega em set/i }));
-    expect(screen.getByText(/Atividades com entrega em set/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Construção Naval Mundial/i })).toHaveAttribute("href", "/atividades?ficha=21");
+    expect(screen.getByText("M1")).toBeInTheDocument();
+    expect(screen.getByText("M2")).toBeInTheDocument();
+    expect(screen.getByText("Equipe")).toBeInTheDocument();
+    expect(screen.getByText("16 participantes ativos")).toBeInTheDocument();
+    expect(screen.getByText("Biblioteca")).toBeInTheDocument();
+    expect(screen.getByText("Produção")).toBeInTheDocument();
+    expect(screen.getByText("Interfaces")).toBeInTheDocument();
   });
 });

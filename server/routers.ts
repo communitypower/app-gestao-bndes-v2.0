@@ -20,6 +20,7 @@ import { teamRouter } from "./routers/team";
 import { hashPassword, verifyPassword, verifyProjectMasterKey } from "./authPassword";
 import { getAuthorizedUserByEmail } from "./authGoogle";
 import { notificationsRouter } from "./routers/notifications";
+import { assistantRouter } from "./routers/assistant";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -240,6 +241,7 @@ export const appRouter = router({
   administration: administrationRouter,
   governance: governanceRouter,
   notifications: notificationsRouter,
+  assistant: assistantRouter,
 });
 
 export type AppRouter = typeof appRouter;
