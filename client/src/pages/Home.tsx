@@ -2,8 +2,7 @@ import { Metric, PageHeader, PageLoading, SectionMark, StatusBadge } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { trpc } from "@/lib/trpc";
 import { formatDate } from "@/lib/format";
-import { groupDisplayName } from "../../../shared/groupDisplay";
-import { BookOpen, CheckCircle2, FilePenLine, GitMerge, ShieldCheck, Users } from "lucide-react";
+import { BookOpen, FilePenLine, GitMerge, Users } from "lucide-react";
 
 export default function Home() {
   const { data, isLoading } = trpc.dashboard.overview.useQuery();
@@ -29,12 +28,13 @@ export default function Home() {
   });
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-6">
       <PageHeader
         eyebrow="Gestão da execução"
         title="Visão geral do projeto"
         description={`Controle documental do Estudo, no período de ${formatDate(start)} a ${formatDate(end)}. A estrutura reúne 5 tomos, ${data.hierarchy.parentCount} capítulos e ${data.hierarchy.stepCount} seções de trabalho, conforme o Anexo B do Plano de Trabalho — UFRJ, 26 de agosto.`}
         index="01 — Visão geral"
+        action={<span className="font-mono text-xs text-muted-foreground">Implementação do pacote P0</span>}
       />
 
       {/* Métricas consolidadas */}
@@ -74,58 +74,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Governança do pacote P0 (Estático / Somente Leitura) */}
-      <section className="technical-panel overflow-hidden">
-        <div className="grid gap-5 p-5 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
-          <div className={`flex h-11 w-11 items-center justify-center rounded-md ${governance.p0Approval ? "bg-[#2F6B4F]/10 text-[#2F6B4F]" : "bg-primary/10 text-primary"}`}>
-            {governance.p0Approval ? <CheckCircle2 className="h-5 w-5" /> : <ShieldCheck className="h-5 w-5" />}
-          </div>
-          <div>
-            <p className="data-label text-primary">Governança do plano de revisão</p>
-            <h2 className="font-display mt-2 text-2xl font-semibold tracking-[-.025em]">Implementação do pacote P0</h2>
-            {governance.p0Approval ? (
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Aprovada por {governance.p0Approval.decidedByName} em {formatDate(governance.p0Approval.decidedAt)}. O registro é mantido como decisão de governança.
-              </p>
-            ) : (
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Status de governança: implantação do workflow documental, revisores designados e matriz de interfaces.
-              </p>
-            )}
-          </div>
-          <div>
-            <StatusBadge status={governance.p0Approval ? "concluído" : "planejada"} />
-          </div>
-        </div>
-      </section>
-
-      {/* Coordenação editorial do projeto */}
-      {governance.projectEditorial && (
-        <section className="grid gap-4 border-y paper-rule bg-muted/20 p-5 md:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)] md:items-center">
-          <ShieldCheck className="h-6 w-6 text-primary" />
-          <div>
-            <p className="data-label text-primary">Coordenação editorial do projeto</p>
-            <p className="mt-2 text-sm font-semibold">{governance.projectEditorial.coordinatorName}</p>
-            <p className="mt-1 text-xs text-muted-foreground">Substituto: {governance.projectEditorial.substituteName}</p>
-          </div>
-          <p className="text-sm leading-6 text-muted-foreground">
-            A documentação recebida até o dia 15 segue para consolidação, recebimento técnico e editoração entre os dias 16 e 29, antes da entrega contratual ao BNDES.
-          </p>
-        </section>
-      )}
-
-      {/* Controle documental informativo */}
-      <section className="technical-panel grid gap-4 p-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
-        <FilePenLine className="h-6 w-6 text-primary" />
-        <div>
-          <p className="data-label text-primary">Controle documental</p>
-          <h2 className="font-display mt-2 text-2xl font-semibold tracking-[-.025em]">Seção → capítulo → tomo → projeto</h2>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            A ficha de cada atividade consolida a entrega interna, a entrega ao BNDES, o checklist formal, as interfaces prioritárias e a governança de aprovações.
-          </p>
-        </div>
-      </section>
-
       {/* Cronograma mestre e Próximas entregas (Estático / Somente Leitura) */}
       <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
         <div className="technical-panel overflow-hidden">
@@ -161,31 +109,10 @@ export default function Home() {
                       <span className="font-mono font-medium">{section.progress}%</span>
                     </div>
                     <p className="mb-2 line-clamp-1 text-xs leading-5 text-muted-foreground">{section.officialDescription}</p>
-                    <p className="mb-2 text-[11px] leading-4 text-muted-foreground">
+                    <p className="text-[11px] leading-4 text-muted-foreground">
                       {section.total} atividade{section.total === 1 ? "" : "s"}-mãe · {section.subitemCount} etapa{section.subitemCount === 1 ? "" : "s"} de execução
                     </p>
-                    <Progress value={section.progress} className="h-1.5 bg-muted" />
-                    {sectionInterfaces.slice(0, 2).map(item => {
-                      const latestEvent = item.events[item.events.length - 1];
-                      const isBlocked = blockedInterfaces.some(blocked => blocked.id === item.id);
-                      return (
-                        <div
-                          key={item.id}
-                          className={`mt-2 rounded-sm border-l-2 px-3 py-2 text-xs leading-5 ${isBlocked ? "border-[#B5482D] bg-[#B5482D]/10" : "border-primary bg-primary/5"}`}
-                        >
-                          <span className="font-semibold">{isBlocked ? "Bloqueada · " : ""}{item.title}</span>
-                          <span className="text-muted-foreground"> · {item.status}</span>
-                          <span className="mt-1 block text-muted-foreground">
-                            {item.groups.map(group => groupDisplayName(group.name)).join(" · ")} · {item.responsibleName}
-                          </span>
-                          {latestEvent && (
-                            <span className="mt-1 block text-muted-foreground">
-                              Encaminhamento: {latestEvent.summary}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
+                    <Progress value={section.progress} className="mt-2 h-1.5 bg-muted" />
                   </div>
                   <span className="data-label text-right">
                     {openInterfaces} interface{openInterfaces === 1 ? "" : "s"} aberta{openInterfaces === 1 ? "" : "s"}
