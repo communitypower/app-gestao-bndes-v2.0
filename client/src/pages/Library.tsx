@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "wouter";
 import { EmptyEditorial, PageHeader, PageLoading, SectionMark } from "@/components/EditorialUI";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,15 +11,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
 import { fileSize, formatDate } from "@/lib/format";
 import { fileToBase64 } from "@/lib/files";
-import { BookOpen, ExternalLink, FileText, Link2, Plus, Search, UploadCloud } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, Link2, Plus, Search, Sparkles, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 
 const PAGE_SIZE = 50;
 
 export default function LibraryPage() {
-  const [search, setSearch] = useState("");
-  const [theme, setTheme] = useState("");
-  const [sectionId, setSectionId] = useState("todos");
+  const [location] = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(typeof window !== "undefined" ? window.location.search : ""), [location]);
+
+  const [search, setSearch] = useState(() => searchParams.get("search") || "");
+  const [theme, setTheme] = useState(() => searchParams.get("theme") || "");
+  const [sectionId, setSectionId] = useState(() => searchParams.get("sectionId") || "todos");
+  const [highlightedItemId, setHighlightedItemId] = useState<number | null>(() => {
+    const itemParam = searchParams.get("item");
+    return itemParam ? Number(itemParam) : null;
+  });
+
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,6 +36,20 @@ export default function LibraryPage() {
   const [externalUrl, setExternalUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [page, setPage] = useState(1);
+
+  // Sync state if URL query params change
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const s = params.get("search");
+    const t = params.get("theme");
+    const sec = params.get("sectionId");
+    const it = params.get("item");
+    if (s !== null) setSearch(s);
+    if (t !== null) setTheme(t);
+    if (sec !== null) setSectionId(sec);
+    if (it !== null) setHighlightedItemId(Number(it));
+  }, [location]);
+
   const filters = useMemo(() => ({
     search: search || undefined,
     theme: theme || undefined,
@@ -44,6 +67,11 @@ export default function LibraryPage() {
     () => (data ?? []).slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
     [currentPage, data]
   );
+
+  const highlightedItem = useMemo(() => {
+    if (!highlightedItemId || !data) return null;
+    return data.find(i => i.id === highlightedItemId) || null;
+  }, [highlightedItemId, data]);
 
   useEffect(() => setPage(1), [search, sectionId, theme]);
 
@@ -104,6 +132,51 @@ export default function LibraryPage() {
         </Select>
         <p className="data-label self-center text-right">{data.length} referências</p>
       </div>
+      {highlightedItem && (
+        <div className="rounded-lg border border-primary/40 bg-primary/5 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5 text-primary text-xs font-semibold uppercase tracking-wider">
+              <Sparkles className="h-3.5 w-3.5" /> Referência Destacada da Consulta
+            </div>
+            <h3 className="text-sm font-semibold text-foreground">{highlightedItem.title}</h3>
+            {highlightedItem.description && (
+              <p className="text-xs text-muted-foreground line-clamp-2">{highlightedItem.description}</p>
+            )}
+            <div className="flex items-center gap-2 pt-0.5">
+              {highlightedItem.fileName && (
+                <span className="font-mono text-[11px] text-muted-foreground">{highlightedItem.fileName}</span>
+              )}
+              {highlightedItem.theme && (
+                <span className="text-[11px] text-muted-foreground">· {highlightedItem.theme}</span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              size="sm"
+              className="rounded-md gap-1.5"
+              onClick={() => {
+                const targetUrl = highlightedItem.itemType === "link" ? highlightedItem.externalUrl : highlightedItem.storageUrl;
+                if (targetUrl) {
+                  window.open(targetUrl, "_blank", "noopener,noreferrer");
+                } else {
+                  toast.info("Esta referência não possui arquivo direto anexado.");
+                }
+              }}
+            >
+              <BookOpen className="h-3.5 w-3.5" /> Abrir Documento Diretamente
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setHighlightedItemId(null)}
+              className="text-xs"
+            >
+              Remover destaque
+            </Button>
+          </div>
+        </div>
+      )}
       {data.length === 0 ? (
         <EmptyEditorial title="Nenhuma referência cadastrada" text="Cadastre uma referência ou altere os filtros de busca." />
       ) : (
@@ -117,7 +190,13 @@ export default function LibraryPage() {
           </div>
           <div className="divide-y paper-rule">
             {visibleItems.map(item => (
-              <article key={item.id} className="grid gap-3 px-4 py-3.5 hover:bg-muted/35 md:grid-cols-[96px_minmax(0,1fr)_210px_120px_100px] md:items-center">
+              <article
+                key={item.id}
+                id={`library-item-${item.id}`}
+                className={`grid gap-3 px-4 py-3.5 hover:bg-muted/35 md:grid-cols-[96px_minmax(0,1fr)_210px_120px_100px] md:items-center transition-colors ${
+                  item.id === highlightedItemId ? "ring-2 ring-primary/60 bg-primary/5 rounded-md" : ""
+                }`}
+              >
                 <div className="flex items-center gap-2 md:block">
                   <div className="flex items-center gap-2 text-primary">
                     {item.itemType === "arquivo" ? <FileText className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}

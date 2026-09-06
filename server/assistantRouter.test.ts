@@ -120,5 +120,32 @@ describe("assistantRouter — Assistente de IA do Estudo BNDES", () => {
     expect(respRocha.content).toContain("Carlos Frederico Leão Rocha");
     expect(respRocha.content).toContain("G2");
   });
+
+  it("retorna referências com URLs diretas e metadados completos de arquivo/link", async () => {
+    const response = await caller.ask({
+      message: "Quais documentos e normas do FMM temos na biblioteca?",
+      scope: "library",
+      history: [],
+    });
+
+    expect(Array.isArray(response.references)).toBe(true);
+    if (response.references.length > 0) {
+      const firstRef = response.references[0];
+      expect(firstRef).toHaveProperty("id");
+      expect(firstRef).toHaveProperty("title");
+      expect(firstRef).toHaveProperty("itemType");
+      expect(firstRef).toHaveProperty("fileUrl");
+      expect(firstRef).toHaveProperty("url");
+    }
+  });
+
+  it("searchKnowledge retorna campos detalhados da biblioteca incluindo itemType e storageUrl", async () => {
+    const results = await caller.searchKnowledge({ query: "Fundo", limit: 5 });
+    expect(results.library).toBeDefined();
+    if (results.library.length > 0) {
+      expect(results.library[0]).toHaveProperty("itemType");
+      expect(results.library[0]).toHaveProperty("storageUrl");
+    }
+  });
 });
 

@@ -31,16 +31,29 @@ import {
   UserCheck,
   GitMerge,
   Users,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
+
+type ChatReference = {
+  id: number;
+  title: string;
+  itemType?: "arquivo" | "link" | string;
+  externalUrl?: string | null;
+  storageUrl?: string | null;
+  fileName?: string | null;
+  theme?: string | null;
+  url?: string | null;
+  fileUrl?: string | null;
+};
 
 type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
   mode?: "generative_llm" | "deterministic_grounded";
-  references?: Array<{ id: number; title: string; url?: string | null }>;
+  references?: ChatReference[];
   activities?: Array<{ code: string; title: string }>;
   timestamp: string;
 };
@@ -427,21 +440,82 @@ export default function AssistantPage() {
                       <div className="whitespace-pre-wrap font-sans space-y-2">{msg.content}</div>
                     </div>
 
-                    {/* Referências de Apoio Clicáveis */}
+                    {/* Referências de Apoio Clicáveis com Abertura Direta */}
                     {isAssistant && msg.references && msg.references.length > 0 && (
-                      <div className="mt-4 pt-3 border-t border-border/60 space-y-1.5">
-                        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-                          <BookOpen className="h-3 w-3 text-primary" /> Referências Catalogadas Relacionadas:
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {msg.references.map(ref => (
-                            <Link key={ref.id} href="/biblioteca">
-                              <span className="inline-flex items-center gap-1 rounded bg-muted/60 hover:bg-muted px-2 py-1 text-[11px] text-foreground transition-colors cursor-pointer border border-border/40">
-                                <span>{ref.title}</span>
-                                <ExternalLink className="h-2.5 w-2.5 text-muted-foreground" />
-                              </span>
-                            </Link>
-                          ))}
+                      <div className="mt-4 pt-3 border-t border-border/60 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                            <BookOpen className="h-3.5 w-3.5 text-primary" /> Referências Citadas (Clique para abrir diretamente o arquivo):
+                          </p>
+                          <Link
+                            href="/biblioteca"
+                            className="text-[10px] text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline"
+                          >
+                            Ver acervo ({msg.references.length})
+                          </Link>
+                        </div>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {msg.references.map(ref => {
+                            const directUrl = ref.storageUrl || ref.externalUrl || ref.url || ref.fileUrl;
+                            const isLink = ref.itemType === "link";
+                            return (
+                              <div
+                                key={ref.id}
+                                className="group/ref flex items-center justify-between gap-2 rounded-md border border-border/60 bg-muted/40 p-2.5 text-xs transition-all hover:border-primary/40 hover:bg-muted/80 hover:shadow-xs"
+                              >
+                                <a
+                                  href={directUrl || `/biblioteca?search=${encodeURIComponent(ref.title)}&item=${ref.id}`}
+                                  target={directUrl ? "_blank" : "_self"}
+                                  rel={directUrl ? "noopener noreferrer" : undefined}
+                                  className="flex min-w-0 flex-1 items-center gap-2 text-foreground group-hover/ref:text-primary transition-colors"
+                                  title={directUrl ? `Abrir arquivo/link: ${ref.title}` : `Localizar na biblioteca: ${ref.title}`}
+                                >
+                                  {isLink ? (
+                                    <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
+                                  ) : (
+                                    <FileText className="h-4 w-4 shrink-0 text-primary" />
+                                  )}
+                                  <div className="min-w-0 flex-1">
+                                    <p className="truncate font-medium leading-tight">{ref.title}</p>
+                                    <div className="flex items-center gap-1.5 mt-0.5">
+                                      {ref.fileName && (
+                                        <span className="font-mono truncate text-[10px] text-muted-foreground max-w-[140px]">
+                                          {ref.fileName}
+                                        </span>
+                                      )}
+                                      {ref.theme && (
+                                        <span className="text-[10px] text-muted-foreground/80">
+                                          · {ref.theme}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </a>
+
+                                <div className="flex shrink-0 items-center gap-1">
+                                  {directUrl ? (
+                                    <a
+                                      href={directUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                                      title="Abrir diretamente em nova aba"
+                                    >
+                                      <span>Abrir</span>
+                                      <ExternalLink className="h-2.5 w-2.5" />
+                                    </a>
+                                  ) : null}
+                                  <Link
+                                    href={`/biblioteca?search=${encodeURIComponent(ref.title)}&item=${ref.id}`}
+                                    className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                                    title="Localizar na biblioteca"
+                                  >
+                                    <BookOpen className="h-3 w-3" />
+                                  </Link>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}

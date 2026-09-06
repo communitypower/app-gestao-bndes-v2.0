@@ -21,16 +21,29 @@ import {
   Layers,
   ArrowRight,
   ExternalLink,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
+
+type DrawerReference = {
+  id: number;
+  title: string;
+  itemType?: "arquivo" | "link" | string;
+  externalUrl?: string | null;
+  storageUrl?: string | null;
+  fileName?: string | null;
+  theme?: string | null;
+  url?: string | null;
+  fileUrl?: string | null;
+};
 
 type DrawerMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
   timestamp: string;
-  references?: Array<{ id: number; title: string; url?: string | null }>;
+  references?: DrawerReference[];
   activities?: Array<{ code: string; title: string }>;
 };
 
@@ -268,18 +281,41 @@ export function AiAssistantDrawer({
 
                       {/* Referências de Apoio */}
                       {isAssistant && msg.references && msg.references.length > 0 && (
-                        <div className="mt-2.5 pt-2 border-t border-border/40 space-y-1">
-                          <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
-                            Referências:
-                          </p>
-                          <div className="flex flex-wrap gap-1">
-                            {msg.references.slice(0, 3).map(r => (
-                              <Link key={r.id} href="/biblioteca">
-                                <span className="inline-flex items-center gap-0.5 rounded bg-background px-1.5 py-0.5 text-[10px] text-foreground border border-border/40 hover:text-primary">
-                                  <span className="truncate max-w-[120px]">{r.title}</span>
-                                </span>
-                              </Link>
-                            ))}
+                        <div className="mt-2.5 pt-2 border-t border-border/40 space-y-1.5">
+                          <div className="flex items-center justify-between text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            <span>Referências Citadas:</span>
+                            <Link href="/biblioteca" className="lowercase hover:text-primary transition-colors">
+                              ver acervo ({msg.references.length})
+                            </Link>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            {msg.references.slice(0, 4).map(r => {
+                              const directUrl = r.storageUrl || r.externalUrl || r.url || r.fileUrl;
+                              const isLink = r.itemType === "link";
+                              return (
+                                <a
+                                  key={r.id}
+                                  href={directUrl || `/biblioteca?search=${encodeURIComponent(r.title)}&item=${r.id}`}
+                                  target={directUrl ? "_blank" : "_self"}
+                                  rel={directUrl ? "noopener noreferrer" : undefined}
+                                  className="group flex items-center justify-between gap-1.5 rounded border border-border/50 bg-background/90 px-2 py-1 text-[10px] text-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+                                  title={directUrl ? `Abrir arquivo/link diretamente: ${r.title}` : `Localizar na biblioteca: ${r.title}`}
+                                >
+                                  <div className="flex min-w-0 items-center gap-1.5">
+                                    {isLink ? (
+                                      <ExternalLink className="h-3 w-3 shrink-0 text-primary" />
+                                    ) : (
+                                      <FileText className="h-3 w-3 shrink-0 text-primary" />
+                                    )}
+                                    <span className="truncate max-w-[170px] font-medium leading-tight">{r.title}</span>
+                                  </div>
+                                  <span className="shrink-0 flex items-center gap-0.5 text-[9px] font-semibold text-primary">
+                                    Abrir
+                                    <ExternalLink className="h-2 w-2" />
+                                  </span>
+                                </a>
+                              );
+                            })}
                           </div>
                         </div>
                       )}

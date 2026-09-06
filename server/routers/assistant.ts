@@ -243,7 +243,10 @@ export const assistantRouter = router({
             title: libraryItems.title,
             theme: libraryItems.theme,
             description: libraryItems.description,
+            itemType: libraryItems.itemType,
             externalUrl: libraryItems.externalUrl,
+            storageUrl: libraryItems.storageUrl,
+            fileName: libraryItems.fileName,
           })
           .from(libraryItems)
           .where(
@@ -341,8 +344,19 @@ export const assistantRouter = router({
         })
         .join("\n");
 
+      const sectionCodeMatch = userMessage.match(/\b(ap|[i|v|x]+[0-9]*\.[0-9]+)\b/i);
+      const matchedSection = sectionCodeMatch
+        ? allSections.find(s => s.code.toUpperCase() === sectionCodeMatch[1].toUpperCase())
+        : null;
+
       const relevantLibrary = sampleLibrary
         .filter(l => {
+          if (
+            matchedSection &&
+            (l.sectionId === matchedSection.id || l.title.toLowerCase().includes(matchedSection.code.toLowerCase()))
+          ) {
+            return true;
+          }
           const lowerQ = userMessage.toLowerCase();
           const words = lowerQ.split(/\s+/).filter(w => w.length > 3);
           const t = (l.title + " " + (l.theme || "") + " " + (l.description || "")).toLowerCase();
@@ -351,8 +365,23 @@ export const assistantRouter = router({
         .slice(0, 15);
 
       const libraryContext = relevantLibrary
-        .map(l => `- [Ref #${l.id}] "${l.title}" (Tema: ${l.theme || "Geral"}) ${l.externalUrl ? `[Link](${l.externalUrl})` : ""}`)
+        .map(l => {
+          const directUrl = l.storageUrl || l.externalUrl;
+          return `- [Ref #${l.id}] "${l.title}" (Tipo: ${l.itemType}${l.fileName ? `, Arquivo: ${l.fileName}` : ""}, Tema: ${l.theme || "Geral"})${directUrl ? ` — URL direta: ${directUrl}` : ""}`;
+        })
         .join("\n");
+
+      const mappedReferences = relevantLibrary.map(l => ({
+        id: l.id,
+        title: l.title,
+        itemType: l.itemType,
+        externalUrl: l.externalUrl,
+        storageUrl: l.storageUrl,
+        fileName: l.fileName,
+        theme: l.theme,
+        url: l.storageUrl || l.externalUrl || null,
+        fileUrl: l.storageUrl || l.externalUrl || null,
+      }));
 
       // Find activities relevant to query or mentioned member
       const matchedMemberInPrompt = matchMemberInText(userMessage);
@@ -386,6 +415,7 @@ DIRETRIZES FUNDAMENTAIS:
 4. Quando perguntado genericamente sobre os integrantes ou equipe do estudo, apresente a estrutura completa: Coordenação Geral, Coordenadores dos 11 Grupos Temáticos (G1 a G11), Pesquisadores e Instituições participantes.
 5. Quando citar capítulos ou seções, mencione o código canônico (ex.: "Tomo I.1", "Capítulo II.4", "Tomo III.5 - FMM").
 6. Formate as respostas com elegância em Markdown (títulos, listas com marcadores, destaques em negrito, tabelas quando apropriado).
+7. Quando referenciar documentos do acervo bibliográfico, forneça o link direto para abertura do arquivo/documento sempre que a URL estiver disponível no contexto.
 
 DADOS CANÔNICOS DO ESTUDO:
 ---
@@ -440,7 +470,7 @@ Escopo da consulta atual: ${scope}.`;
           return {
             content: textResponse,
             mode: "generative_llm" as const,
-            references: relevantLibrary.map(l => ({ id: l.id, title: l.title, url: l.externalUrl })),
+            references: mappedReferences,
             activities: relevantActivities.map(a => ({ code: a.detailCode || a.planCode || "", title: a.title })),
           };
         } catch (err: any) {
@@ -462,7 +492,7 @@ Escopo da consulta atual: ${scope}.`;
       return {
         content: fallbackResponse,
         mode: "deterministic_grounded" as const,
-        references: relevantLibrary.map(l => ({ id: l.id, title: l.title, url: l.externalUrl })),
+        references: mappedReferences,
         activities: relevantActivities.map(a => ({ code: a.detailCode || a.planCode || "", title: a.title })),
       };
     }),
@@ -613,7 +643,8 @@ function generateDeterministicAnswer(ctx: DeterministicContext): string {
       if (relatedLib.length > 0) {
         answer += `\n#### 📚 Referências Bibliográficas Relacionadas:\n`;
         relatedLib.slice(0, 4).forEach(l => {
-          answer += `- ${l.title} ${l.externalUrl ? `([Acessar Referência](${l.externalUrl}))` : ""}\n`;
+          const directUrl = l.storageUrl || l.externalUrl;
+          answer += `- ${l.title} ${directUrl ? `([Abrir Arquivo/Documento](${directUrl}))` : ""}\n`;
         });
       }
 
