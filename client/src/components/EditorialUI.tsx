@@ -16,23 +16,23 @@ export function PageHeader({
   index?: string;
 }) {
   return (
-    <header className="editorial-enter border-b paper-rule pb-6 md:pb-8">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <p className="editorial-kicker text-primary">{eyebrow}</p>
-        {index ? <span className="font-mono text-xs font-medium text-muted-foreground">{index}</span> : null}
+    <header className="editorial-enter border-b paper-rule pb-3.5 mb-5">
+      <div className="mb-1.5 flex items-center justify-between gap-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[.08em] text-primary">{eyebrow}</p>
+        {index ? <span className="font-mono text-[11px] font-medium text-muted-foreground">{index}</span> : null}
       </div>
-      <div className="grid items-end gap-5 lg:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="max-w-4xl">
-          <h1 className="font-display balance text-[clamp(2.35rem,4vw,4.25rem)] font-semibold leading-[1.02] tracking-[-.035em]">
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">
             {title}
           </h1>
           {description ? (
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground md:text-[15px]">
+            <p className="mt-1 max-w-3xl text-xs md:text-sm leading-relaxed text-muted-foreground">
               {description}
             </p>
           ) : null}
         </div>
-        {action ? <div className="lg:pb-1">{action}</div> : null}
+        {action ? <div className="shrink-0">{action}</div> : null}
       </div>
     </header>
   );

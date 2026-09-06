@@ -15,11 +15,11 @@ export function InterfacesAccessGate({ children }: { children: React.ReactNode }
     <div className="mx-auto flex min-h-[65vh] max-w-3xl items-center justify-center">
       <div className="w-full border-y paper-rule py-14 text-center">
         <LockKeyhole className="mx-auto h-8 w-8 text-primary" />
-        <p className="editorial-kicker mt-5 text-primary">Acesso por vínculo</p>
-        <h1 className="font-display mt-4 text-5xl tracking-[-.05em]">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Acesso por vínculo</p>
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-foreground">
           Interfaces dos grupos
         </h1>
-        <p className="font-editorial mx-auto mt-5 max-w-xl text-xl leading-relaxed text-muted-foreground">
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
           Esta área é visível para administradores e integrantes vinculados à
           equipe técnica. Solicite ao administrador o vínculo da sua conta.
         </p>
