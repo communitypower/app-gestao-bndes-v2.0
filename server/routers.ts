@@ -181,24 +181,27 @@ export const appRouter = router({
             if (provRows[0]) {
               const prov = provRows[0];
               const openId = `user_${prov.email.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-              await dbInstance.insert(users).values({
-                openId,
-                name: prov.name,
-                email: prov.email,
-                role: prov.role,
-                appRole: prov.appRole,
-                accessStatus: "ativo",
-                loginMethod: "local",
-                lastSignedIn: new Date(),
-              }).onConflictDoUpdate({
-                target: users.openId,
-                set: {
+              const existing = await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1);
+              if (existing[0]) {
+                await dbInstance.update(users).set({
                   lastSignedIn: new Date(),
                   accessStatus: "ativo",
-                },
-              });
-              const created = await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1);
-              targetUser = created[0];
+                }).where(eq(users.id, existing[0].id));
+                targetUser = { ...existing[0], lastSignedIn: new Date(), accessStatus: "ativo" };
+              } else {
+                await dbInstance.insert(users).values({
+                  openId,
+                  name: prov.name,
+                  email: prov.email,
+                  role: prov.role,
+                  appRole: prov.appRole,
+                  accessStatus: "ativo",
+                  loginMethod: "local",
+                  lastSignedIn: new Date(),
+                });
+                const created = await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1);
+                targetUser = created[0];
+              }
             }
           }
         } else if (input.openId) {

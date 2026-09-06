@@ -54,12 +54,18 @@ export async function initLocalDatabase(): Promise<any> {
         }
       }
 
-      // 2. Pre-create local admin user
-      await pgliteClient.exec(`
-        INSERT INTO users ("openId", "name", "email", "role", "appRole", "accessStatus", "loginMethod")
-        VALUES ('local_admin', 'Administrador do Estudo', 'admin@estudo.ufrj.br', 'admin', 'administrador', 'ativo', 'local')
-        ON CONFLICT ("openId") DO UPDATE SET "name" = EXCLUDED."name";
-      `);
+      // 2. Pre-create local admin user safely
+      try {
+        const adminCheck: any = await pgliteClient.query(`SELECT id FROM users WHERE "openId" = 'local_admin' LIMIT 1;`);
+        if (!adminCheck.rows || adminCheck.rows.length === 0) {
+          await pgliteClient.exec(`
+            INSERT INTO users ("openId", "name", "email", "role", "appRole", "accessStatus", "loginMethod")
+            VALUES ('local_admin', 'Administrador do Estudo', 'admin@estudo.ufrj.br', 'admin', 'administrador', 'ativo', 'local');
+          `);
+        }
+      } catch (adminErr: any) {
+        console.warn("[LocalDB] Notice pre-creating admin user:", adminErr?.message || adminErr);
+      }
 
       // 3. Ensure seed data (sections, groups, members, activities, interfaces, library items)
       try {

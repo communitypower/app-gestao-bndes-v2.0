@@ -82,44 +82,51 @@ let _pool: pg.Pool | null = null;
 let _initDbPromise: Promise<DbClient | null> | null = null;
 
 async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
-  const drizzleDir = path.resolve(process.cwd(), "drizzle");
-  if (!fs.existsSync(drizzleDir)) return;
-
+  // Always ensure critical unique indexes exist in PostgreSQL immediately
   try {
-    console.log("[Database] Running Drizzle migrations on PostgreSQL...");
-    await migrate(client, { migrationsFolder: drizzleDir });
-    console.log("[Database] Drizzle migrations applied successfully.");
-    return;
-  } catch (migErr: any) {
-    console.warn("[Database] Drizzle migrator notice, falling back to direct SQL execution:", migErr?.message || migErr);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "users_openId_unique" ON "users" ("openId");`);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "user_access_provisions_email_unique" ON "user_access_provisions" ("email");`);
+    await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS "study_sections_code_unique" ON "study_sections" ("code");`);
+  } catch (idxErr: any) {
+    // Ignore if tables not yet created
   }
 
-  try {
-    const files = fs
-      .readdirSync(drizzleDir)
-      .filter(f => f.endsWith(".sql"))
-      .sort();
+  const drizzleDir = path.resolve(process.cwd(), "drizzle");
+  if (fs.existsSync(drizzleDir)) {
+    try {
+      console.log("[Database] Running Drizzle migrations on PostgreSQL...");
+      await migrate(client, { migrationsFolder: drizzleDir });
+      console.log("[Database] Drizzle migrations applied successfully.");
+    } catch (migErr: any) {
+      console.warn("[Database] Drizzle migrator notice, falling back to direct SQL execution:", migErr?.message || migErr);
+      try {
+        const files = fs
+          .readdirSync(drizzleDir)
+          .filter(f => f.endsWith(".sql"))
+          .sort();
 
-    for (const file of files) {
-      const content = fs.readFileSync(path.join(drizzleDir, file), "utf-8");
-      const statements = content
-        .split("--> statement-breakpoint")
-        .map(s => s.trim())
-        .filter(Boolean);
+        for (const file of files) {
+          const content = fs.readFileSync(path.join(drizzleDir, file), "utf-8");
+          const statements = content
+            .split("--> statement-breakpoint")
+            .map(s => s.trim())
+            .filter(Boolean);
 
-      for (const stmt of statements) {
-        try {
-          await pool.query(stmt);
-        } catch (err: any) {
-          if (!err?.message?.includes("already exists") && !err?.message?.includes("duplicate")) {
-            console.warn(`[Database] Migration statement notice:`, err?.message || err);
+          for (const stmt of statements) {
+            try {
+              await pool.query(stmt);
+            } catch (err: any) {
+              if (!err?.message?.includes("already exists") && !err?.message?.includes("duplicate")) {
+                console.warn(`[Database] Migration statement notice:`, err?.message || err);
+              }
+            }
           }
         }
+        console.log("[Database] Direct SQL migrations completed.");
+      } catch (err) {
+        console.error("[Database] Direct SQL migration error:", err);
       }
     }
-    console.log("[Database] Direct SQL migrations completed.");
-  } catch (err) {
-    console.error("[Database] Direct SQL migration error:", err);
   }
 
   // Ensure critical unique indexes exist in PostgreSQL production
