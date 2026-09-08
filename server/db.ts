@@ -1846,7 +1846,7 @@ export async function getGovernanceOverview() {
 
 export async function getDashboardData() {
   const db = await requireDb();
-  const [settings, activityRows, sections, team, libraryCount, materialCount] =
+  const [settings, activityRows, sections, team, libraryCount, materialCount, groupRows] =
     await Promise.all([
       getProjectSettings(),
       listActivities(),
@@ -1854,6 +1854,7 @@ export async function getDashboardData() {
       listTeamMembers(),
       db.select({ count: sql<number>`count(*)` }).from(libraryItems),
       db.select({ count: sql<number>`count(*)` }).from(productionMaterials),
+      db.select().from(teamGroups).orderBy(desc(teamGroups.active), asc(teamGroups.name)),
     ]);
 
   const parentActivities = activityRows.filter(
@@ -1909,7 +1910,32 @@ export async function getDashboardData() {
 
   const bySection = sections.map(section => {
     const parents = parentActivities.filter(item => item.sectionId === section.id);
-    const steps = executionSteps.filter(item => item.sectionId === section.id);
+    const steps = executionSteps
+      .filter(item => item.sectionId === section.id)
+      .map(step => ({
+        id: step.id,
+        parentActivityId: step.parentActivityId,
+        detailCode: step.detailCode ?? step.planCode ?? "",
+        title: step.title,
+        description: step.description,
+        responsibleName: step.responsibleName,
+        responsibleRole: step.responsibleRole,
+        groupName: step.groupName,
+        status: step.status,
+        progress: step.progress,
+        startAt: step.startAt,
+        dueAt: step.dueAt,
+        allocations: step.allocations.map(a => ({
+          teamMemberId: a.teamMemberId,
+          memberName: a.memberName,
+          memberTitle: a.memberTitle,
+          allocatedHours: a.allocatedHours,
+          responsibility: a.responsibility,
+          isExecutionLead: a.isExecutionLead,
+        })),
+      }))
+      .sort((a, b) => (a.detailCode || "").localeCompare(b.detailCode || "", undefined, { numeric: true }));
+
     const tracked = steps.length ? steps : parents;
     const progress = tracked.length
       ? Math.round(
@@ -1931,6 +1957,7 @@ export async function getDashboardData() {
       dueAt: primary?.dueAt ?? null,
       tome: tomeBySectionCode.get(section.code) ?? "",
       activeMonths,
+      steps,
       progress,
       total: parents.length,
       subitemCount: steps.length,
@@ -1977,6 +2004,146 @@ export async function getDashboardData() {
     };
   });
 
+  // Encadeamento hierárquico por Recursos / Equipe
+  const teamHierarchy = groupRows
+    .filter(group => group.active)
+    .map(group => {
+      const groupMembers = team.filter(m => m.groupId === group.id && m.active);
+      const coordinator = groupMembers.find(m => m.groupRole === "coordenador") ?? null;
+
+      const members = groupMembers.map(member => {
+        const coordinatedActivities = activityRows.filter(act => act.responsibleId === member.id);
+        const allocatedActivities = activityRows.filter(act => act.allocations.some(a => a.teamMemberId === member.id));
+        const reviewedActivities = activityRows.filter(act => act.reviewers.some(r => r.teamMemberId === member.id));
+
+        const memberActivityMap = new Map<number, {
+          id: number;
+          code: string;
+          title: string;
+          sectionCode: string;
+          tome: string;
+          isParent: boolean;
+          roleInActivity: "coordenação" | "liderança de execução" | "executor" | "revisor";
+          allocatedHours: number;
+          responsibility: string | null;
+          status: string;
+          progress: number;
+          startAt: number | null;
+          dueAt: number;
+        }>();
+
+        coordinatedActivities.forEach(act => {
+          memberActivityMap.set(act.id, {
+            id: act.id,
+            code: act.detailCode || act.planCode || act.sectionCode,
+            title: act.title,
+            sectionCode: act.sectionCode,
+            tome: tomeBySectionCode.get(act.sectionCode) ?? "",
+            isParent: act.parentActivityId === null,
+            roleInActivity: "coordenação",
+            allocatedHours: act.allocations.find(a => a.teamMemberId === member.id)?.allocatedHours ?? 0,
+            responsibility: act.allocations.find(a => a.teamMemberId === member.id)?.responsibility ?? "Coordenação e consolidação",
+            status: act.status,
+            progress: act.progress,
+            startAt: act.startAt,
+            dueAt: act.dueAt,
+          });
+        });
+
+        allocatedActivities.forEach(act => {
+          const alloc = act.allocations.find(a => a.teamMemberId === member.id);
+          const isLead = alloc?.isExecutionLead ?? false;
+          if (!memberActivityMap.has(act.id) || isLead) {
+            memberActivityMap.set(act.id, {
+              id: act.id,
+              code: act.detailCode || act.planCode || act.sectionCode,
+              title: act.title,
+              sectionCode: act.sectionCode,
+              tome: tomeBySectionCode.get(act.sectionCode) ?? "",
+              isParent: act.parentActivityId === null,
+              roleInActivity: isLead ? "liderança de execução" : "executor",
+              allocatedHours: alloc?.allocatedHours ?? 0,
+              responsibility: alloc?.responsibility ?? "Execução e elaboração",
+              status: act.status,
+              progress: act.progress,
+              startAt: act.startAt,
+              dueAt: act.dueAt,
+            });
+          }
+        });
+
+        reviewedActivities.forEach(act => {
+          if (!memberActivityMap.has(act.id)) {
+            memberActivityMap.set(act.id, {
+              id: act.id,
+              code: act.detailCode || act.planCode || act.sectionCode,
+              title: act.title,
+              sectionCode: act.sectionCode,
+              tome: tomeBySectionCode.get(act.sectionCode) ?? "",
+              isParent: act.parentActivityId === null,
+              roleInActivity: "revisor",
+              allocatedHours: 0,
+              responsibility: "Revisão e validação metodológica",
+              status: act.status,
+              progress: act.progress,
+              startAt: act.startAt,
+              dueAt: act.dueAt,
+            });
+          }
+        });
+
+        const assignedActivities = Array.from(memberActivityMap.values()).sort((a, b) => a.dueAt - b.dueAt);
+        const totalAllocatedHours = assignedActivities.reduce((sum, item) => sum + (item.allocatedHours || 0), 0);
+
+        return {
+          id: member.id,
+          name: member.name,
+          title: member.title,
+          institution: member.institution,
+          email: member.email,
+          active: member.active,
+          groupRole: member.groupRole,
+          appRole: member.groupRole === "coordenador" ? ("coordenador" as const) : ("executor" as const),
+          totalAllocatedHours,
+          assignedActivitiesCount: assignedActivities.length,
+          assignedActivities,
+        };
+      });
+
+      const totalGroupHours = members.reduce((sum, m) => sum + m.totalAllocatedHours, 0);
+      const totalGroupActivities = new Set(members.flatMap(m => m.assignedActivities.map(a => a.id))).size;
+
+      return {
+        id: group.id,
+        name: group.name,
+        institution: group.institution,
+        active: group.active,
+        coordinator: coordinator
+          ? {
+              id: coordinator.id,
+              name: coordinator.name,
+              title: coordinator.title,
+              institution: coordinator.institution,
+              email: coordinator.email,
+            }
+          : null,
+        members: members.sort((a, b) => {
+          if (a.groupRole === "coordenador" && b.groupRole !== "coordenador") return -1;
+          if (b.groupRole === "coordenador" && a.groupRole !== "coordenador") return 1;
+          return a.name.localeCompare(b.name, "pt-BR");
+        }),
+        memberCount: members.length,
+        activeMemberCount: members.filter(m => m.active).length,
+        totalHours: totalGroupHours,
+        totalActivities: totalGroupActivities,
+      };
+    })
+    .sort(
+      (left, right) =>
+        TEAM_GROUP_SEED.findIndex(group => group.name === left.name) -
+        TEAM_GROUP_SEED.findIndex(group => group.name === right.name)
+    );
+
   return {
     settings,
     counts,
@@ -1990,6 +2157,7 @@ export async function getDashboardData() {
     months,
     bySection,
     byTome,
+    teamHierarchy,
     upcoming: parentActivities
       .filter(item => item.status !== "concluído")
       .sort((left, right) => left.dueAt - right.dueAt)

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
 import React from "react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const officialDescription =
@@ -110,6 +110,72 @@ vi.mock("@/lib/trpc", () => ({
                 activeMonths: [true, true, false, false, false, false],
                 startAt: Date.UTC(2026, 7, 1),
                 dueAt: Date.UTC(2026, 8, 25),
+                steps: [
+                  {
+                    id: 101,
+                    parentActivityId: 21,
+                    detailCode: "II.1.1",
+                    title: "Capacidade instalada dos estaleiros líderes",
+                    responsibleName: "Floriano Carlos Martins Pires Jr.",
+                    responsibleRole: "coordenador",
+                    groupName: "G10",
+                    status: "em andamento",
+                    progress: 40,
+                    startAt: Date.UTC(2026, 7, 1),
+                    dueAt: Date.UTC(2026, 8, 25),
+                    allocations: [],
+                  },
+                ],
+              },
+            ],
+            teamHierarchy: [
+              {
+                id: 10,
+                name: "G10 — Construção Naval Mundial e Análise Econômica",
+                institution: "UFRJ / COPPE",
+                active: true,
+                coordinator: {
+                  id: 1,
+                  name: "Floriano Carlos Martins Pires Jr.",
+                  title: "Professor Titular",
+                  institution: "UFRJ",
+                  email: "floriano@ufrj.br",
+                },
+                members: [
+                  {
+                    id: 1,
+                    name: "Floriano Carlos Martins Pires Jr.",
+                    title: "Professor Titular",
+                    institution: "UFRJ",
+                    email: "floriano@ufrj.br",
+                    active: true,
+                    groupRole: "coordenador",
+                    appRole: "coordenador",
+                    totalAllocatedHours: 80,
+                    assignedActivitiesCount: 2,
+                    assignedActivities: [
+                      {
+                        id: 21,
+                        code: "II.1",
+                        title: "Construção Naval Mundial",
+                        sectionCode: "II.1",
+                        tome: "Tomo II",
+                        isParent: true,
+                        roleInActivity: "coordenação",
+                        allocatedHours: 40,
+                        responsibility: "Coordenação geral do capítulo",
+                        status: "em andamento",
+                        progress: 35,
+                        startAt: Date.UTC(2026, 7, 1),
+                        dueAt: Date.UTC(2026, 8, 25),
+                      },
+                    ],
+                  },
+                ],
+                memberCount: 1,
+                activeMemberCount: 1,
+                totalHours: 80,
+                totalActivities: 2,
               },
             ],
             upcoming: [],
@@ -149,16 +215,19 @@ import HomePage from "./Home";
 
 afterEach(() => cleanup());
 
-describe("painel de visão geral reformulado e integrado", () => {
-  it("exibe o cabeçalho executivo sem informações duplicadas e torna os capítulos clicáveis", () => {
+describe("painel de visão geral reformulado e integrado com visões por atividades e recursos", () => {
+  it("exibe a visão por atividades com encadeamento hierárquico Tomo -> Capítulo e links clicáveis", () => {
     render(<HomePage />);
     expect(screen.getByText("Visão geral do projeto")).toBeInTheDocument();
     expect(
       screen.getByText(/5 tomos, 30 capítulos e 253 seções de trabalho/)
     ).toBeInTheDocument();
+    expect(screen.getByText("Visão por Atividades (Editorial)")).toBeInTheDocument();
+    expect(screen.getByText("Visão por Recursos / Equipe")).toBeInTheDocument();
+
+    // Valida exibição do Tomo e do Capítulo
     expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
-    expect(screen.getByText("Execução por tomo")).toBeInTheDocument();
-    expect(screen.getAllByText("Tomo II").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Tomo II — Indústria Naval Brasileira e Internacional")).toBeInTheDocument();
 
     // Confirma que os capítulos possuem link clicável para abrir a ficha de acompanhamento
     const chapterLinks = screen.getAllByRole("link");
@@ -169,15 +238,15 @@ describe("painel de visão geral reformulado e integrado", () => {
     expect(screen.queryByText("Próximas entregas")).not.toBeInTheDocument();
   });
 
-  it("apresenta o cronograma mestre de meses e os indicadores de recursos", () => {
+  it("permite alternar para a visão por recursos exibindo o encadeamento Grupo -> Integrante -> Atividades", () => {
     render(<HomePage />);
-    expect(screen.getByText("M1")).toBeInTheDocument();
-    expect(screen.getByText("M2")).toBeInTheDocument();
-    expect(screen.getByText("Cronograma Mestre de Capítulos")).toBeInTheDocument();
-    expect(screen.getByText("Equipe ativa")).toBeInTheDocument();
-    expect(screen.getByText("16 pesquisadores e especialistas")).toBeInTheDocument();
-    expect(screen.getByText("Biblioteca de apoio")).toBeInTheDocument();
-    expect(screen.getByText("Produção documental")).toBeInTheDocument();
-    expect(screen.getByText("Interfaces críticas")).toBeInTheDocument();
+    const resourcesButton = screen.getByRole("button", { name: /Visão por Recursos \/ Equipe/i });
+    fireEvent.click(resourcesButton);
+
+    // Verifica presença do grupo
+    expect(screen.getByText("G10 · CN mundial")).toBeInTheDocument();
+    expect(screen.getByText("Floriano Carlos Martins Pires Jr.")).toBeInTheDocument();
+    expect(screen.getByText("Coordenador(a)")).toBeInTheDocument();
+    expect(screen.getByText("80h alocadas")).toBeInTheDocument();
   });
 });
