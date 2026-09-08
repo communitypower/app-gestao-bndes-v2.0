@@ -1863,6 +1863,50 @@ export async function getDashboardData() {
     activity => activity.parentActivityId != null
   );
 
+  const tomeDefinitions = Array.from(
+    new Map<string, { tome: string; title: string }>(
+      PDF_ANALYTIC_SECTIONS.map(section => [
+        section.tome,
+        { tome: section.tome, title: section.tomeTitle || STUDY_TOME_TITLES[section.tome as keyof typeof STUDY_TOME_TITLES] || section.tome },
+      ])
+    ).values()
+  );
+  const tomeBySectionCode = new Map<string, string>(
+    PDF_ANALYTIC_SECTIONS.map(section => [section.code, section.tome])
+  );
+
+  const projectStart = new Date(settings.projectStartAt);
+  const months = Array.from({ length: 6 }, (_, index) => {
+    const monthStart = new Date(Date.UTC(projectStart.getUTCFullYear(), projectStart.getUTCMonth() + index, 1, 0, 0, 0));
+    const monthEnd = new Date(Date.UTC(projectStart.getUTCFullYear(), projectStart.getUTCMonth() + index + 1, 0, 23, 59, 59, 999));
+    const deliverables = parentActivities
+      .filter(item => item.dueAt >= monthStart.getTime() && item.dueAt <= monthEnd.getTime())
+      .map(item => ({
+        id: item.id,
+        planCode: item.planCode,
+        detailCode: item.detailCode,
+        sectionCode: item.sectionCode,
+        title: item.title,
+        responsibleName: item.responsibleName,
+        status: item.status,
+        progress: item.progress,
+        dueAt: item.dueAt,
+        tome: tomeBySectionCode.get(item.sectionCode) ?? "",
+      }))
+      .sort((a, b) => a.dueAt - b.dueAt);
+
+    return {
+      monthIndex: index,
+      monthNum: index + 1,
+      label: new Intl.DateTimeFormat("pt-BR", { month: "short" }).format(monthStart).replace(".", ""),
+      monthLabelFull: new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(monthStart),
+      start: monthStart.getTime(),
+      end: monthEnd.getTime(),
+      deliverables,
+      count: deliverables.length,
+    };
+  });
+
   const bySection = sections.map(section => {
     const parents = parentActivities.filter(item => item.sectionId === section.id);
     const steps = executionSteps.filter(item => item.sectionId === section.id);
@@ -1872,9 +1916,21 @@ export async function getDashboardData() {
           tracked.reduce((sum, item) => sum + item.progress, 0) / tracked.length
         )
       : 0;
+    const primary = parents[0];
+    const secStart = primary?.startAt ?? settings.projectStartAt;
+    const secDue = primary?.dueAt ?? settings.projectEndAt;
+    const activeMonths = months.map(m => (secStart <= m.end && secDue >= m.start));
+
     return {
       ...section,
-      primaryActivityId: parents[0]?.id ?? null,
+      primaryActivityId: primary?.id ?? null,
+      responsibleName: primary?.responsibleName ?? "",
+      groupName: primary?.groupName ?? null,
+      status: primary?.status ?? "pendente",
+      startAt: primary?.startAt ?? null,
+      dueAt: primary?.dueAt ?? null,
+      tome: tomeBySectionCode.get(section.code) ?? "",
+      activeMonths,
       progress,
       total: parents.length,
       subitemCount: steps.length,
@@ -1897,17 +1953,6 @@ export async function getDashboardData() {
       )
     : 0;
 
-  const tomeDefinitions = Array.from(
-    new Map<string, { tome: string; title: string }>(
-      PDF_ANALYTIC_SECTIONS.map(section => [
-        section.tome,
-        { tome: section.tome, title: section.tomeTitle || STUDY_TOME_TITLES[section.tome as keyof typeof STUDY_TOME_TITLES] || section.tome },
-      ])
-    ).values()
-  );
-  const tomeBySectionCode = new Map<string, string>(
-    PDF_ANALYTIC_SECTIONS.map(section => [section.code, section.tome])
-  );
   const byTome = tomeDefinitions.map(definition => {
     const tomeSections = bySection.filter(
       section => tomeBySectionCode.get(section.code) === definition.tome
@@ -1942,6 +1987,7 @@ export async function getDashboardData() {
       totalCount: activityRows.length,
     },
     overallProgress,
+    months,
     bySection,
     byTome,
     upcoming: parentActivities
