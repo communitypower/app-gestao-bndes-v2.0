@@ -48,6 +48,9 @@ import { ParticipantActionCenter } from "@/components/ParticipantActionCenter";
 import {
   ArrowRight,
   CalendarDays,
+  ChevronDown,
+  ChevronsDownUp,
+  ChevronsUpDown,
   ClipboardCheck,
   Clock3,
   Download,
@@ -2080,6 +2083,37 @@ function ActivitiesContent() {
   const [reviewerActivityId, setReviewerActivityId] = useState<number | null>(null);
   const [bulkAssignmentOpen, setBulkAssignmentOpen] = useState(false);
   const [form, setForm] = useState<ActivityForm>(emptyForm);
+  const [expandedIds, setExpandedIds] = useState<number[]>([]);
+
+  const childActivitiesMap = useMemo(() => {
+    const map = new Map<number, ActivityItem[]>();
+    (data ?? []).forEach(item => {
+      if (item.parentActivityId != null) {
+        const list = map.get(item.parentActivityId) ?? [];
+        list.push(item);
+        map.set(item.parentActivityId, list);
+      }
+    });
+    return map;
+  }, [data]);
+
+  const toggleExpand = (id: number) => {
+    setExpandedIds(current =>
+      current.includes(id) ? current.filter(i => i !== id) : [...current, id]
+    );
+  };
+
+  const expandAll = () => {
+    setExpandedIds(filtered.map(item => item.id));
+  };
+
+  const collapseAll = () => {
+    setExpandedIds([]);
+  };
+
+  const isItemExpanded = (id: number) => {
+    return search.trim().length > 0 || expandedIds.includes(id);
+  };
 
   useEffect(() => {
     if (linkedDetailHandled || !data) return;
@@ -2328,6 +2362,28 @@ function ActivitiesContent() {
         </Select>
         <div className="flex flex-wrap items-center justify-end gap-2">
           <p className="data-label whitespace-nowrap">{filtered.length} capítulos</p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={expandAll}
+            className="rounded-md text-xs"
+            title="Expandir todos os capítulos e etapas"
+          >
+            <ChevronsUpDown className="mr-1.5 h-3.5 w-3.5 text-primary" />
+            Expandir todos
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={collapseAll}
+            className="rounded-md text-xs"
+            title="Recolher todos os capítulos"
+          >
+            <ChevronsDownUp className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
+            Recolher todos
+          </Button>
           <Button type="button" variant="outline" size="sm" onClick={() => void exportStatus("csv")} disabled={exporting !== null || !statusReport}><Download className="mr-1.5 h-3.5 w-3.5" />{exporting === "csv" ? "Exportando…" : "CSV"}</Button>
           <Button type="button" variant="outline" size="sm" onClick={() => void exportStatus("pdf")} disabled={exporting !== null || !statusReport}><FileDown className="mr-1.5 h-3.5 w-3.5" />{exporting === "pdf" ? "Exportando…" : "PDF"}</Button>
         </div>
@@ -2344,19 +2400,44 @@ function ActivitiesContent() {
         </div>
         <div className="divide-y paper-rule">
           {filtered.map((item, index) => {
+            const childSteps = childActivitiesMap.get(item.id) ?? [];
+            const isOpen = isItemExpanded(item.id);
             return (
-            <div key={item.id}>
+            <div key={item.id} className="transition-colors">
             <article
               className="grid gap-4 px-4 py-4 hover:bg-muted/35 md:grid-cols-[40px_70px_minmax(0,1fr)_180px_120px_230px] md:items-center"
             >
-              <span className="font-mono text-xs text-muted-foreground">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => toggleExpand(item.id)}
+                  className="flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  aria-label={`${isOpen ? "Recolher" : "Expandir"} ${item.title}`}
+                  title={`${isOpen ? "Recolher" : "Expandir"} etapas e detalhes`}
+                >
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                </button>
+                <span className="font-mono text-xs text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
               <SectionMark code={item.detailCode ?? item.planCode ?? item.sectionCode} />
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="data-label text-primary">{item.detailCode ? "Seção de trabalho" : studyTomeFromCode(item.sectionCode)}</span>
                   <StatusBadge status={item.status} />
+                  {childSteps.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleExpand(item.id)}
+                      className="cursor-pointer"
+                      title={`${isOpen ? "Recolher" : "Expandir"} ${childSteps.length} etapas`}
+                    >
+                      <Badge variant="outline" className="text-[10px] font-mono hover:bg-muted">
+                        {childSteps.length} {childSteps.length === 1 ? "etapa" : "etapas"}
+                      </Badge>
+                    </button>
+                  )}
                 </div>
                 <h2 className="mt-1.5 text-[15px] font-semibold leading-5 text-foreground">
                   {item.title}
@@ -2416,6 +2497,17 @@ function ActivitiesContent() {
                 >
                   <Eye className="mr-1.5 h-3.5 w-3.5" /> Ficha
                 </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => toggleExpand(item.id)}
+                  className="rounded-md text-xs"
+                  aria-label={`${isOpen ? "Recolher" : "Expandir"} ${item.title}`}
+                  title={`${isOpen ? "Recolher" : "Expandir"} etapas e detalhes`}
+                >
+                  <ChevronDown className={`mr-1 h-3.5 w-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                  {isOpen ? "Recolher" : "Expandir"}
+                </Button>
                 {(isAdmin ||
                   (access.isCoordinator &&
                     access.teamMembership?.id === item.responsibleId)) && (
@@ -2451,6 +2543,171 @@ function ActivitiesContent() {
                 )}
               </div>
             </article>
+
+            {isOpen && (
+              <div className="border-t paper-rule bg-muted/15 p-4 sm:p-5 space-y-4 animate-in fade-in-50 duration-150">
+                {childSteps.length > 0 ? (
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b paper-rule pb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="data-label text-primary font-semibold">
+                          Etapas de execução do capítulo
+                        </span>
+                        <Badge variant="secondary" className="font-mono text-xs">
+                          {childSteps.length} {childSteps.length === 1 ? "seção" : "seções"}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Total de {formatHours(childSteps.reduce((acc, s) => acc + (s.totalAllocatedHours || 0), 0))}h alocadas nas etapas
+                      </p>
+                    </div>
+
+                    <div className="divide-y rounded-md border border-border/70 bg-card overflow-hidden">
+                      {childSteps.map((step, stepIdx) => {
+                        const leadMember = step.allocations.find(a => a.isExecutionLead)?.memberName;
+                        return (
+                          <div
+                            key={step.id}
+                            className="grid gap-3 p-3.5 text-xs hover:bg-muted/30 md:grid-cols-[65px_minmax(0,1.2fr)_180px_130px_140px] md:items-center"
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-mono text-[11px] text-muted-foreground">
+                                {item.sectionCode}.{stepIdx + 1}
+                              </span>
+                              <SectionMark code={step.detailCode ?? step.planCode ?? String(step.id)} />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="font-semibold text-foreground text-sm">
+                                  {step.title}
+                                </span>
+                                <StatusBadge status={step.status} />
+                              </div>
+                              {(step.officialDescription || step.description) && (
+                                <p className="mt-1 line-clamp-1 text-muted-foreground text-[11px]">
+                                  {step.officialDescription || step.description}
+                                </p>
+                              )}
+                              <div className="mt-2 flex items-center gap-2 max-w-xs">
+                                <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+                                  <div
+                                    className="h-full rounded-full bg-primary"
+                                    style={{ width: `${step.progress}%` }}
+                                  />
+                                </div>
+                                <span className="font-mono text-[10px] text-muted-foreground">
+                                  {step.progress}%
+                                </span>
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-[10px] uppercase font-semibold text-muted-foreground">Executor</p>
+                              <p className="font-medium text-foreground">
+                                {leadMember ?? step.responsibleName ?? "A definir"}
+                              </p>
+                              {step.allocations.length > 1 && (
+                                <p className="text-[10px] text-muted-foreground">
+                                  +{step.allocations.length - 1} participante(s)
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-[10px] uppercase font-semibold text-muted-foreground">Entrega</p>
+                              <p className="font-mono font-medium">
+                                {step.dueAt ? formatDate(step.dueAt) : "A definir"}
+                              </p>
+                              <p className="text-[10px] text-muted-foreground">
+                                {formatHours(step.totalAllocatedHours)}h alocadas
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1 md:justify-end">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 text-xs rounded px-2"
+                                onClick={() => setDetailId(step.id)}
+                                aria-label={`Ver ficha de ${step.title}`}
+                              >
+                                <Eye className="mr-1 h-3 w-3" /> Ficha
+                              </Button>
+                              {(isAdmin || (access.isCoordinator && (access.teamMembership?.id === item.responsibleId || access.teamMembership?.groupRole === "coordenador"))) && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  onClick={() => edit(step)}
+                                  aria-label={`Editar ${step.title}`}
+                                >
+                                  <Pencil className="h-3.5 w-3.5" />
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Detalhes consolidados e metadados do capítulo */}
+                <div className="grid gap-3 rounded-md border border-border/70 bg-card p-4 text-xs md:grid-cols-2 lg:grid-cols-4">
+                  <div className="space-y-1">
+                    <p className="data-label text-muted-foreground">Coordenação e Grupo</p>
+                    <p className="font-medium text-sm text-foreground">{item.responsibleName}</p>
+                    <p className="text-muted-foreground">{item.groupName ?? item.institution}</p>
+                    <p className="text-muted-foreground text-[11px]">{item.responsibleTitle}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="data-label text-muted-foreground">Equipe de Execução ({item.allocations.length})</p>
+                    {item.allocations.length > 0 ? (
+                      <div className="space-y-0.5">
+                        {item.allocations.slice(0, 3).map(a => (
+                          <p key={a.id} className="text-[11px]">
+                            <span className="font-medium text-foreground">{a.memberName}</span>
+                            {a.isExecutionLead && <span className="text-primary font-semibold ml-1">(Líder)</span>}
+                            <span className="text-muted-foreground ml-1">· {a.allocatedHours}h</span>
+                          </p>
+                        ))}
+                        {item.allocations.length > 3 && (
+                          <p className="text-[10px] text-muted-foreground">+{item.allocations.length - 3} integrante(s)</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground">Nenhuma alocação direta no capítulo</p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <p className="data-label text-muted-foreground">Revisores ({item.reviewers.length})</p>
+                    {item.reviewers.length > 0 ? (
+                      <div className="space-y-0.5">
+                        {item.reviewers.map(r => (
+                          <p key={r.id} className="text-[11px]">
+                            <span className="font-medium text-foreground">{r.reviewerName}</span>
+                            <span className="text-muted-foreground ml-1">({r.status})</span>
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground">Nenhum revisor designado</p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <p className="data-label text-muted-foreground">Prazos e Entregáveis</p>
+                    <p className="text-[11px]">
+                      <span className="text-muted-foreground">Início:</span> {item.startAt ? formatDate(item.startAt) : "A definir"}
+                    </p>
+                    <p className="text-[11px]">
+                      <span className="text-muted-foreground">Término:</span> {formatDate(item.dueAt)}
+                    </p>
+                    {item.portalDeliverable && (
+                      <p className="text-[11px] text-muted-foreground line-clamp-2">
+                        <span className="font-medium text-foreground">Portal:</span> {item.portalDeliverable}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
             </div>
             );
           })}

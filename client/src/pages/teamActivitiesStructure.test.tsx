@@ -133,7 +133,18 @@ const fixtures = vi.hoisted(() => {
   eligibleReviewers: [participant],
   };
 
-  return { coordinator, participant, activity, detailLoading: false };
+  const childActivity = {
+    ...activity,
+    id: 22,
+    parentActivityId: 21,
+    detailCode: "II.1.1",
+    title: "Trajetória histórica da indústria naval",
+    description: "Análise histórica da evolução dos estaleiros.",
+    officialDescription: "Análise histórica da evolução dos estaleiros.",
+    totalAllocatedHours: 12,
+  };
+
+  return { coordinator, participant, activity, childActivity, detailLoading: false };
 });
 
 vi.mock("sonner", () => ({
@@ -251,7 +262,7 @@ vi.mock("@/lib/trpc", () => ({
     },
     activities: {
       list: {
-        useQuery: () => ({ data: [fixtures.activity], isLoading: false }),
+        useQuery: () => ({ data: [fixtures.activity, fixtures.childActivity], isLoading: false }),
       },
       statusReport: {
         useQuery: () => ({
@@ -546,5 +557,38 @@ describe("ficha visível da atividade", () => {
       fixtures.detailLoading = false;
       consoleError.mockRestore();
     }
+  });
+
+  it("permite expandir e recolher itens individualmente e em lote na gestão de atividades", async () => {
+    render(<ActivitiesPage />);
+
+    // Verifica que os botões de expandir/recolher em lote estão presentes no topo
+    expect(screen.getByRole("button", { name: /expandir todos/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /recolher todos/i })).toBeInTheDocument();
+
+    // Inicialmente os detalhes da etapa filha não estão visíveis
+    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
+    expect(screen.queryByText("Etapas de execução do capítulo")).not.toBeInTheDocument();
+
+    // Clica no botão de expandir o item individual (chevron ou botão de ação)
+    fireEvent.click(screen.getAllByRole("button", { name: /expandir construção naval mundial/i })[0]);
+
+    // Agora os detalhes expandidos e a etapa filha estão visíveis
+    expect(screen.getByText("Trajetória histórica da indústria naval")).toBeInTheDocument();
+    expect(screen.getByText("Etapas de execução do capítulo")).toBeInTheDocument();
+    expect(screen.getAllByText("II.1.1").length).toBeGreaterThan(0);
+
+    // Clica em recolher o item individual
+    fireEvent.click(screen.getAllByRole("button", { name: /recolher construção naval mundial/i })[0]);
+    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
+
+    // Testa ação em lote "Expandir todos"
+    fireEvent.click(screen.getByRole("button", { name: /expandir todos/i }));
+    expect(screen.getByText("Trajetória histórica da indústria naval")).toBeInTheDocument();
+    expect(screen.getByText("Etapas de execução do capítulo")).toBeInTheDocument();
+
+    // Testa ação em lote "Recolher todos"
+    fireEvent.click(screen.getByRole("button", { name: /recolher todos/i }));
+    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
   });
 });
