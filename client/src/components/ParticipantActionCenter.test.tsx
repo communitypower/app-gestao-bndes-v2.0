@@ -131,20 +131,26 @@ describe("ParticipantActionCenter - Direct Display, Filtering and Month Distribu
     expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
   });
 
-  it("filtra as ações por mês de término do cronograma", () => {
+  it("filtra as ações por mês de término do cronograma via lista suspensa", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
-    // Filtra por Mês 1 (Set/26)
-    const m1Btn = screen.getByRole("button", { name: /M1 · Set\/26/i });
-    fireEvent.click(m1Btn);
+    // Abre o dropdown de seleção de meses
+    const monthDropdown = screen.getByRole("button", { name: /Selecionar meses do cronograma/i });
+    fireEvent.click(monthDropdown);
+
+    // Filtra por Mês 1 (Setembro de 2026)
+    const m1Option = screen.getByText("Setembro de 2026");
+    fireEvent.click(m1Option);
 
     expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
     expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();
     expect(screen.queryByText("Interface de Combustíveis Marítimos")).not.toBeInTheDocument();
 
-    // Filtra por Sem Prazo
-    const semPrazoBtn = screen.getByRole("button", { name: /Sem Prazo/i });
-    fireEvent.click(semPrazoBtn);
+    // Filtra também ou alterna para Sem Prazo
+    // Desmarca M1 clicando novamente
+    fireEvent.click(m1Option);
+    const semPrazoOption = screen.getByText("Sem Prazo Definido");
+    fireEvent.click(semPrazoOption);
 
     expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
     expect(screen.queryByText("Construção Naval Mundial")).not.toBeInTheDocument();

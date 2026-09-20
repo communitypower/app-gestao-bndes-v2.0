@@ -6,7 +6,9 @@ import {
   Calendar,
   CalendarClock,
   CalendarDays,
+  Check,
   CheckCircle2,
+  ChevronDown,
   Clock,
   FileCheck2,
   FileEdit,
@@ -18,10 +20,13 @@ import {
   Sparkles,
   UserCheck,
   Users,
+  X,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Skeleton } from "./ui/skeleton";
+import { Checkbox } from "./ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export interface ParticipantAction {
   id: string;
@@ -172,8 +177,9 @@ export function ParticipantActionCenter({
   onAssignReviewers,
 }: ParticipantActionCenterProps) {
   const [selectedRole, setSelectedRole] = useState<RoleFilter>("todos");
-  const [selectedMonth, setSelectedMonth] = useState<string>("todos");
+  const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"my_actions" | "all_pending">("my_actions");
+  const [isMonthPopoverOpen, setIsMonthPopoverOpen] = useState(false);
 
   const queryResult = trpc.activities?.myWorkloadActions?.useQuery
     ? trpc.activities.myWorkloadActions.useQuery({ viewMode }, { refetchInterval: 30_000 })
@@ -206,17 +212,32 @@ export function ParticipantActionCenter({
     return Array.from(map.values()).sort((a, b) => a.info.sortTime - b.info.sortTime);
   }, [allActions]);
 
-  // 2. Ações filtradas por papel e por mês
+  const handleToggleMonth = (key: string, isCtrl: boolean) => {
+    if (key === "todos") {
+      setSelectedMonths([]);
+      return;
+    }
+
+    setSelectedMonths(prev => {
+      if (prev.includes(key)) {
+        return prev.filter(k => k !== key);
+      } else {
+        return [...prev, key];
+      }
+    });
+  };
+
+  // 2. Ações filtradas por papel e por meses selecionados
   const filteredActions = useMemo(() => {
     return allActions.filter((action: ParticipantAction) => {
       if (selectedRole !== "todos" && action.role !== selectedRole) return false;
-      if (selectedMonth !== "todos") {
+      if (selectedMonths.length > 0) {
         const info = getMonthInfo(action.dueAt);
-        if (info.key !== selectedMonth) return false;
+        if (!selectedMonths.includes(info.key)) return false;
       }
       return true;
     });
-  }, [allActions, selectedRole, selectedMonth]);
+  }, [allActions, selectedRole, selectedMonths]);
 
   // 3. Estrutura cronológica em blocos mensais para renderização
   const chronologicalMonthGroups = useMemo(() => {
@@ -247,6 +268,32 @@ export function ParticipantActionCenter({
     return result.sort((a, b) => a.info.sortTime - b.info.sortTime);
   }, [filteredActions]);
 
+  const summary = (data?.summary as any) ?? {
+    total: 0,
+    executorCount: 0,
+    reviewerCount: 0,
+    coordinatorCount: 0,
+    interfaceCount: 0,
+  };
+
+  const monthFilterTriggerLabel = useMemo(() => {
+    if (selectedMonths.length === 0) {
+      return `Todos os Meses (${summary.total})`;
+    }
+    if (selectedMonths.length === 1) {
+      const m = availableMonths.find(item => item.info.key === selectedMonths[0]);
+      const count = selectedRole === "todos" ? m?.totalCount : (m?.roleCounts[selectedRole] ?? 0);
+      return `${m ? m.info.shortLabel : "1 mês"} (${count ?? 0})`;
+    }
+    const tags = availableMonths
+      .filter(item => selectedMonths.includes(item.info.key))
+      .map(item => item.info.monthTag ?? item.info.shortLabel);
+    const totalCount = availableMonths
+      .filter(item => selectedMonths.includes(item.info.key))
+      .reduce((sum, item) => sum + (selectedRole === "todos" ? item.totalCount : (item.roleCounts[selectedRole] ?? 0)), 0);
+    return `${tags.join(", ")} (${totalCount})`;
+  }, [selectedMonths, availableMonths, summary.total, selectedRole]);
+
   if (isLoading) {
     return (
       <div className="rounded-lg border border-border/60 bg-card p-5 space-y-3">
@@ -262,14 +309,6 @@ export function ParticipantActionCenter({
       </div>
     );
   }
-
-  const summary = (data?.summary as any) ?? {
-    total: 0,
-    executorCount: 0,
-    reviewerCount: 0,
-    coordinatorCount: 0,
-    interfaceCount: 0,
-  };
 
   const isAdmin = Boolean(data?.isAdmin);
 
@@ -429,138 +468,209 @@ export function ParticipantActionCenter({
         </p>
       </div>
 
-      {/* 2. Filtros Cronológicos por Mês de Término */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between gap-2">
+      {/* 2. Barra Unificada de Filtros: Dropdown de Mês + Filtros de Fluxo/Papel */}
+      <div className="flex flex-wrap items-center gap-3 pt-0.5">
+        {/* Seletor Dropdown de Meses com Suporte a Multi-seleção e Ctrl */}
+        <div className="flex items-center gap-2">
           <span className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5">
             <CalendarDays className="h-3.5 w-3.5 text-primary" />
-            Cronograma de Término:
+            Mês:
           </span>
-          {selectedMonth !== "todos" && (
+
+          <Popover open={isMonthPopoverOpen} onOpenChange={setIsMonthPopoverOpen}>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                aria-label="Selecionar meses do cronograma"
+                className={`inline-flex items-center justify-between gap-2 rounded-md border px-3 py-1.5 text-xs font-medium transition-all shadow-2xs cursor-pointer ${
+                  selectedMonths.length > 0
+                    ? "border-primary/50 bg-primary/10 text-primary font-semibold"
+                    : "border-border/70 bg-background text-foreground hover:bg-muted/60"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <span className="truncate max-w-[220px]">{monthFilterTriggerLabel}</span>
+                </div>
+                <ChevronDown className="h-3.5 w-3.5 opacity-60 shrink-0" />
+              </button>
+            </PopoverTrigger>
+
+            <PopoverContent align="start" className="w-80 p-3 shadow-xl border-border bg-card">
+              <div className="space-y-2.5">
+                <div className="border-b pb-2">
+                  <p className="text-xs font-semibold text-foreground">Selecionar Meses de Término</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    Clique nas caixas ou segure <kbd className="font-mono bg-muted px-1 py-0.2 rounded text-[9px] border">Ctrl</kbd> para selecionar múltiplos meses.
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-0.5 pb-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedMonths([]);
+                      setIsMonthPopoverOpen(false);
+                    }}
+                    className={`text-[11px] font-medium px-2 py-0.5 rounded transition-colors cursor-pointer ${
+                      selectedMonths.length === 0
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    Todos os Meses ({summary.total})
+                  </button>
+
+                  {selectedMonths.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMonths([])}
+                      className="text-[11px] text-primary hover:underline font-medium cursor-pointer"
+                    >
+                      Limpar seleção
+                    </button>
+                  )}
+                </div>
+
+                <div className="max-h-64 overflow-y-auto space-y-1 pr-1">
+                  {availableMonths.map(({ info, totalCount, roleCounts }) => {
+                    const countForActiveFilter = selectedRole === "todos" ? totalCount : roleCounts[selectedRole];
+                    const isSelected = selectedMonths.includes(info.key);
+
+                    return (
+                      <div
+                        key={info.key}
+                        onClick={(e) => handleToggleMonth(info.key, e.ctrlKey || e.metaKey)}
+                        className={`flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-xs cursor-pointer select-none transition-colors ${
+                          isSelected
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "hover:bg-muted/60 text-foreground"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <Checkbox
+                            checked={isSelected}
+                            onCheckedChange={() => handleToggleMonth(info.key, false)}
+                            className="h-4 w-4"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          {info.monthTag && (
+                            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-muted text-foreground shrink-0">
+                              {info.monthTag}
+                            </span>
+                          )}
+                          <span className="truncate">{info.label}</span>
+                        </div>
+                        <Badge
+                          variant={isSelected ? "default" : "secondary"}
+                          className="font-mono text-[10px] px-1.5 py-0 shrink-0"
+                        >
+                          {countForActiveFilter}
+                        </Badge>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-2 border-t flex justify-end">
+                  <Button
+                    size="sm"
+                    variant="default"
+                    onClick={() => setIsMonthPopoverOpen(false)}
+                    className="h-7 text-xs px-3"
+                  >
+                    Aplicar
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          {selectedMonths.length > 0 && (
             <button
               type="button"
-              onClick={() => setSelectedMonth("todos")}
-              className="text-[11px] text-primary hover:underline font-medium"
+              onClick={() => setSelectedMonths([])}
+              title="Limpar seleção de meses"
+              className="inline-flex items-center gap-1 rounded bg-muted/60 hover:bg-muted px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
-              Ver todos os meses
+              <X className="h-3 w-3" />
+              Limpar ({selectedMonths.length})
             </button>
           )}
         </div>
 
+        <div className="h-4 w-px bg-border/60 hidden md:block" />
+
+        {/* 3. Filtros Rápidos por Papel / Fluxo */}
         <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5 mr-0.5">
+            <Filter className="h-3.5 w-3.5 text-muted-foreground" />
+            Fluxo:
+          </span>
           <button
             type="button"
-            onClick={() => setSelectedMonth("todos")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all flex items-center gap-1.5 ${
-              selectedMonth === "todos"
+            onClick={() => setSelectedRole("todos")}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+              selectedRole === "todos"
                 ? "bg-primary text-primary-foreground shadow-xs"
-                : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/40"
+                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
-            <Calendar className="h-3 w-3" />
-            Todos os Meses ({summary.total})
+            Todos os Fluxos ({summary.total})
           </button>
-
-          {availableMonths.map(({ info, totalCount, roleCounts }) => {
-            const countForActiveFilter = selectedRole === "todos" ? totalCount : roleCounts[selectedRole];
-            if (countForActiveFilter === 0 && selectedMonth !== info.key) return null;
-
-            return (
-              <button
-                key={info.key}
-                type="button"
-                onClick={() => setSelectedMonth(info.key)}
-                className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all flex items-center gap-1.5 ${
-                  selectedMonth === info.key
-                    ? "bg-primary text-primary-foreground shadow-xs font-semibold"
-                    : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground border border-border/40"
-                }`}
-              >
-                <span>{info.shortLabel}</span>
-                <span
-                  className={`rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
-                    selectedMonth === info.key
-                      ? "bg-primary-foreground/20 text-primary-foreground"
-                      : "bg-background/80 text-foreground/80"
-                  }`}
-                >
-                  {countForActiveFilter}
-                </span>
-              </button>
-            );
-          })}
+          {summary.executorCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectedRole("executor")}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                selectedRole === "executor"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              📝 Elaboração ({summary.executorCount})
+            </button>
+          )}
+          {summary.reviewerCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectedRole("revisor")}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                selectedRole === "revisor"
+                  ? "bg-amber-600 text-white shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              🔍 Revisão Técnica ({summary.reviewerCount})
+            </button>
+          )}
+          {summary.coordinatorCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectedRole("coordenador")}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                selectedRole === "coordenador"
+                  ? "bg-sky-600 text-white shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              🏛️ Homologação ({summary.coordinatorCount})
+            </button>
+          )}
+          {summary.interfaceCount && summary.interfaceCount > 0 ? (
+            <button
+              type="button"
+              onClick={() => setSelectedRole("interfaces")}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+                selectedRole === "interfaces"
+                  ? "bg-teal-600 text-white shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              🔗 Interfaces ({summary.interfaceCount})
+            </button>
+          ) : null}
         </div>
-      </div>
-
-      {/* 3. Filtros Rápidos por Papel / Fluxo */}
-      <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-border/40">
-        <span className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5 mr-1">
-          <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-          Fluxo:
-        </span>
-        <button
-          type="button"
-          onClick={() => setSelectedRole("todos")}
-          className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-            selectedRole === "todos"
-              ? "bg-primary text-primary-foreground shadow-xs"
-              : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          Todos os Fluxos ({summary.total})
-        </button>
-        {summary.executorCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setSelectedRole("executor")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-              selectedRole === "executor"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            📝 Elaboração ({summary.executorCount})
-          </button>
-        )}
-        {summary.reviewerCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setSelectedRole("revisor")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-              selectedRole === "revisor"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            🔍 Revisão Técnica ({summary.reviewerCount})
-          </button>
-        )}
-        {summary.coordinatorCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setSelectedRole("coordenador")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-              selectedRole === "coordenador"
-                ? "bg-sky-600 text-white shadow-xs"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            🏛️ Homologação ({summary.coordinatorCount})
-          </button>
-        )}
-        {summary.interfaceCount && summary.interfaceCount > 0 ? (
-          <button
-            type="button"
-            onClick={() => setSelectedRole("interfaces")}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
-              selectedRole === "interfaces"
-                ? "bg-teal-600 text-white shadow-xs"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            🔗 Interfaces ({summary.interfaceCount})
-          </button>
-        ) : null}
       </div>
 
       {/* 4. Distribuição Cronológica de Ações em Blocos Mensais */}
@@ -575,14 +685,14 @@ export function ParticipantActionCenter({
           <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
             Não há pendências de elaboração, revisão técnica ou homologação para o mês e perfil selecionados.
           </p>
-          {(selectedRole !== "todos" || selectedMonth !== "todos") && (
+          {(selectedRole !== "todos" || selectedMonths.length > 0) && (
             <div className="mt-3">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => {
                   setSelectedRole("todos");
-                  setSelectedMonth("todos");
+                  setSelectedMonths([]);
                 }}
                 className="h-7 text-xs"
               >
