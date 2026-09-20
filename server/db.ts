@@ -67,6 +67,10 @@ import {
   PDF_ANALYTIC_ITEMS,
   PDF_ANALYTIC_SOURCE,
 } from "../shared/pdfAnalyticIndex";
+import {
+  getScheduleForDetailCode,
+  getScheduleForChapterCode,
+} from "../shared/officialScheduleMes3";
 import { totalAllocatedHours } from "../shared/teamStructure";
 import { ENV } from './_core/env';
 import { normalizeProvisionEmail } from "./accessProvisioning";
@@ -573,6 +577,10 @@ export async function syncPdfAnalyticCatalog(
     const coordinatorName = CHAPTER_RESPONSIBLE_MAP[section.code];
     const sectionResponsible = (coordinatorName ? memberByName.get(coordinatorName) : null) ?? fallbackResponsible;
 
+    const chapterSched = getScheduleForChapterCode(section.code);
+    const chapterStartAt = chapterSched?.startAt ?? null;
+    const chapterDueAt = chapterSched?.dueAt ?? DEFAULT_PROJECT_END_AT;
+
     const candidates = parentRows
       .filter(activity => activity.sectionId === storedSection.id)
       .sort((left, right) => (left.planSortOrder ?? Number.MAX_SAFE_INTEGER) - (right.planSortOrder ?? Number.MAX_SAFE_INTEGER) || left.id - right.id);
@@ -602,8 +610,10 @@ export async function syncPdfAnalyticCatalog(
         sourceBase: PDF_ANALYTIC_SOURCE,
         structureStatus: "canonica",
         responsibleId: sectionResponsible.id,
+        startAt: chapterStartAt,
+        dueAt: chapterDueAt,
       }).where(eq(activities.id, existing.id));
-      canonicalParents.set(storedSection.id, { ...existing, responsibleId: sectionResponsible.id });
+      canonicalParents.set(storedSection.id, { id: existing.id, responsibleId: sectionResponsible.id, startAt: chapterStartAt, dueAt: chapterDueAt });
     } else {
       const created = await db.insert(activities).values({
         planCode: section.code,
@@ -618,13 +628,14 @@ export async function syncPdfAnalyticCatalog(
         structureStatus: "canonica",
         sectionId: storedSection.id,
         responsibleId: sectionResponsible.id,
-        dueAt: DEFAULT_PROJECT_END_AT,
+        startAt: chapterStartAt,
+        dueAt: chapterDueAt,
         status: "pendente",
         progress: 0,
       }).returning({ id: activities.id });
       const id = created[0]?.id;
       if (!id) throw new Error(`Não foi possível criar o capítulo canônico ${section.code}.`);
-      canonicalParents.set(storedSection.id, { id, responsibleId: sectionResponsible.id, startAt: null, dueAt: DEFAULT_PROJECT_END_AT });
+      canonicalParents.set(storedSection.id, { id, responsibleId: sectionResponsible.id, startAt: chapterStartAt, dueAt: chapterDueAt });
     }
   }
 
@@ -640,6 +651,9 @@ export async function syncPdfAnalyticCatalog(
     const parent = canonicalParents.get(section.id);
     if (!parent) throw new Error(`Capítulo do item ${item.detailCode} não encontrado.`);
     const existing = itemByCode.get(item.detailCode);
+    const itemSched = getScheduleForDetailCode(item.detailCode);
+    const itemStartAt = itemSched?.startAt ?? parent.startAt;
+    const itemDueAt = itemSched?.dueAt ?? parent.dueAt;
     const values = {
       parentActivityId: parent.id,
       detailSortOrder: item.detailSortOrder,
@@ -652,6 +666,8 @@ export async function syncPdfAnalyticCatalog(
       sourceBase: PDF_ANALYTIC_SOURCE,
       structureStatus: "canonica" as const,
       sectionId: section.id,
+      startAt: itemStartAt,
+      dueAt: itemDueAt,
     };
     if (existing) {
       await db.update(activities).set({
@@ -663,14 +679,28 @@ export async function syncPdfAnalyticCatalog(
         ...values,
         detailCode: item.detailCode,
         responsibleId: parent.responsibleId,
-        startAt: parent.startAt,
-        dueAt: parent.dueAt,
         status: "pendente",
         progress: 0,
       });
     }
   }
   await db.delete(activities).where(eq(activities.detailCode, "III.3.16"));
+
+  // Reconcile parent chapter dates to tightly encompass child sections
+  const allUpdatedItems = await db.select().from(activities).where(eq(activities.structureStatus, "canonica"));
+  for (const [sectionId, parentInfo] of canonicalParents.entries()) {
+    const children = allUpdatedItems.filter(act => act.parentActivityId === parentInfo.id && act.dueAt);
+    if (children.length > 0) {
+      const childStartAts = children.map(c => c.startAt).filter((d): d is number => d !== null);
+      const childDueAts = children.map(c => c.dueAt).filter((d): d is number => d !== null);
+      const minStartAt = childStartAts.length > 0 ? Math.min(...childStartAts) : parentInfo.startAt;
+      const maxDueAt = childDueAts.length > 0 ? Math.max(...childDueAts) : parentInfo.dueAt;
+      await db.update(activities).set({
+        startAt: minStartAt,
+        dueAt: maxDueAt,
+      }).where(eq(activities.id, parentInfo.id));
+    }
+  }
 }
 
 export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {

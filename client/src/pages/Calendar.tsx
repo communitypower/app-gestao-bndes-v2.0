@@ -1430,7 +1430,7 @@ function CalendarContent() {
         </div>
 
         <p className="text-[11px] text-muted-foreground hidden sm:block">
-          💡 Clique nos meses <strong>M1 a M6</strong> no cabeçalho para ver os entregáveis planejados de cada mês.
+          💡 Clique nos meses <strong>M1 a M7</strong> no cabeçalho para ver os entregáveis planejados de cada mês.
         </p>
       </div>
 
