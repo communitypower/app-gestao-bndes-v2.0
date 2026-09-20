@@ -11,10 +11,10 @@ import { activities } from "../drizzle/schema";
 import { eq, and, isNull } from "drizzle-orm";
 
 describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
-  it("contém todos os 253 itens de seção com códigos únicos e limites mensais válidos (M1 a M7)", () => {
-    expect(OFFICIAL_SCHEDULE_MES3_SECTIONS).toHaveLength(253);
+  it("contém todos os 250 itens canônicos de seção com códigos únicos e limites mensais válidos (M1 a M7)", () => {
+    expect(OFFICIAL_SCHEDULE_MES3_SECTIONS).toHaveLength(250);
     const codes = new Set(OFFICIAL_SCHEDULE_MES3_SECTIONS.map(s => s.detailCode));
-    expect(codes.size).toBe(253);
+    expect(codes.size).toBe(250);
 
     for (const section of OFFICIAL_SCHEDULE_MES3_SECTIONS) {
       expect(section.startMonth).toBeGreaterThanOrEqual(1);
@@ -55,33 +55,33 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
     const capI1 = getScheduleForChapterCode("I.1");
     expect(capI1).toMatchObject({ startMonth: 1, endMonth: 4 });
 
-    // Item I.1.1 (Objetivos): M1 a M4, Grupo G1
+    // Item I.1.1 (Objetivos): M1 a M4
     const itemI11 = getScheduleForDetailCode("I.1.1");
-    expect(itemI11).toMatchObject({ startMonth: 1, endMonth: 4, group: "G1" });
+    expect(itemI11).toMatchObject({ startMonth: 1, endMonth: 4 });
 
-    // Item I.7.1 (Construção militar no mundo): M1 a M2, Grupo G9
+    // Item I.7.1 (Construção militar no mundo): M1 a M2
     const itemI71 = getScheduleForDetailCode("I.7.1");
-    expect(itemI71).toMatchObject({ startMonth: 1, endMonth: 2, group: "G9" });
+    expect(itemI71).toMatchObject({ startMonth: 1, endMonth: 2 });
 
-    // Item I.8.1 (Direcionadores de descarbonização): M1 a M1, Grupo G8
+    // Item I.8.1 (Direcionadores de descarbonização): M1 a M1
     const itemI81 = getScheduleForDetailCode("I.8.1");
-    expect(itemI81).toMatchObject({ startMonth: 1, endMonth: 1, group: "G8" });
+    expect(itemI81).toMatchObject({ startMonth: 1, endMonth: 1 });
 
-    // Conclusões do Relatório 1 (IV.3): M6 a M6
+    // Conclusões do Relatório 1 (IV.3): M1 a M6 (Término em M6)
     const capIV3 = getScheduleForChapterCode("IV.3");
-    expect(capIV3).toMatchObject({ startMonth: 6, endMonth: 6 });
+    expect(capIV3).toMatchObject({ startMonth: 1, endMonth: 6 });
 
     // Apresentação (AP): Término em M6
     const capAP = getScheduleForChapterCode("AP");
     expect(capAP).toMatchObject({ endMonth: 6 });
 
-    // Políticas de marinha mercante (III.2): Término em M6
+    // Políticas de marinha mercante (III.2): Término em M5
     const capIII2 = getScheduleForChapterCode("III.2");
-    expect(capIII2).toMatchObject({ endMonth: 6 });
+    expect(capIII2).toMatchObject({ endMonth: 5 });
 
-    // Ciclos de expansão e queda (III.7): Término em M6
+    // Ciclos de expansão e queda (III.7): Término em M5
     const capIII7 = getScheduleForChapterCode("III.7");
-    expect(capIII7).toMatchObject({ endMonth: 6 });
+    expect(capIII7).toMatchObject({ endMonth: 5 });
   });
 
   it("popula o banco de dados com os timestamps de início e fim corretos e agrega capítulos pais", async () => {

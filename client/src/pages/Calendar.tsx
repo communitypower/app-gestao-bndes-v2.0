@@ -209,7 +209,7 @@ function TimelineRow({
         </a>
         <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
           <span className="font-mono font-bold text-[10px] text-primary bg-primary/10 px-1.5 py-0.2 rounded">
-            Término: {formatDate(item.dueAt)}
+            Cronograma: Término em {formatDate(item.dueAt)}
           </span>
           {item.startAt && (
             <span className="font-mono text-[10px] text-muted-foreground">
@@ -782,7 +782,7 @@ function MonthDeliverablesDialog({
                   <span>{item.responsibleName}</span>
                   <span>·</span>
                   <span className="font-mono font-medium text-foreground">
-                    Prazo: {formatDate(item.dueAt)}
+                    Prazo no Cronograma: {formatDate(item.dueAt)}
                   </span>
                 </div>
               </div>
@@ -813,7 +813,7 @@ function MonthDeliverablesDialog({
 
           {!monthDeliverables.length && (
             <div className="py-12 text-center text-xs text-muted-foreground">
-              Nenhum entregável principal ou etapa com término previsto para este mês.
+              Nenhum entregável principal ou etapa com término previsto para este mês no Cronograma.
             </div>
           )}
         </div>
@@ -1233,7 +1233,7 @@ function CalendarContent() {
       <PageHeader
         eyebrow="03 — Cronograma"
         title="Execução por item"
-        description="Acompanhamento temporal por seções, capítulos e entregáveis mensais do estudo."
+        description="Acompanhamento temporal por seções, capítulos e entregáveis mensais conforme o Cronograma Oficial do Estudo (Cronograma_r1_200926)."
         index="M1–M7"
         action={
           <div className="flex flex-wrap items-center gap-1.5 shrink-0">
@@ -1619,7 +1619,7 @@ function CalendarContent() {
                                   </h3>
                                   {(chapter.parentItem?.dueAt || chapter.items[0]?.dueAt) && (
                                     <span className="font-mono text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded shrink-0 hidden sm:inline">
-                                      Término: {formatDate(chapter.parentItem?.dueAt ?? chapter.items[0]?.dueAt)}
+                                      Cronograma: Término em {formatDate(chapter.parentItem?.dueAt ?? chapter.items[0]?.dueAt)}
                                     </span>
                                   )}
                                 </div>

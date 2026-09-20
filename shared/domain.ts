@@ -86,8 +86,8 @@ export function initialActivityTitle(sectionTitle: string) {
   return sectionTitle.trim();
 }
 
-export const DEFAULT_PROJECT_START_AT = Date.UTC(2026, 7, 16, 0, 0, 0); // 16/08/2026 (M1)
-export const DEFAULT_PROJECT_END_AT = Date.UTC(2027, 2, 15, 23, 59, 59); // 15/03/2027 (M7)
+export const DEFAULT_PROJECT_START_AT = Date.UTC(2026, 7, 20, 0, 0, 0); // 20/08/2026 (M1 - Início)
+export const DEFAULT_PROJECT_END_AT = Date.UTC(2027, 2, 20, 23, 59, 59); // 20/03/2027 (M7 - Término)
 export const DEFAULT_TIMEZONE = "America/Sao_Paulo";
 
 export const TEAM_SEED: ReadonlyArray<{

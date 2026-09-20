@@ -617,7 +617,7 @@ function TeamContent() {
                       <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
                         {section.planningSummary ?? section.officialDescription}
                       </p>
-                      <p className="mt-3 text-[11px] text-muted-foreground">{Number.isFinite(section.dueAt) ? `Prazo: ${formatDate(section.dueAt!)}` : "Prazo a definir"} · Abrir ficha completa</p>
+                      <p className="mt-3 text-[11px] text-muted-foreground">{Number.isFinite(section.dueAt) ? `Cronograma: Término em ${formatDate(section.dueAt!)}` : "Prazo a definir no Cronograma"} · Abrir ficha completa</p>
                     </a>
                     );
                   })}

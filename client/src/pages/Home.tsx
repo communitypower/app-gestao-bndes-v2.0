@@ -639,7 +639,7 @@ export default function Home() {
                                         {chapter.dueAt && (
                                           <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
                                             <Calendar className="h-3 w-3" />
-                                            Término: {formatDate(chapter.dueAt)}
+                                            Cronograma: Término em {formatDate(chapter.dueAt)}
                                           </span>
                                         )}
                                         {openInterfaces > 0 && (
@@ -756,7 +756,7 @@ export default function Home() {
                                                 )}
                                                 {step.dueAt && (
                                                   <span className="font-mono font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
-                                                    Término: {formatDate(step.dueAt)}
+                                                    Cronograma: Término em {formatDate(step.dueAt)}
                                                   </span>
                                                 )}
                                               </div>
@@ -983,9 +983,9 @@ export default function Home() {
                                               {act.responsibility && (
                                                 <span>· {act.responsibility}</span>
                                               )}
-                                              {act.dueAt && (
-                                                <span>· Prazo: {formatDate(act.dueAt)}</span>
-                                              )}
+                                               {act.dueAt && (
+                                                 <span>· Cronograma: Término em {formatDate(act.dueAt)}</span>
+                                               )}
                                             </div>
                                           </div>
                                         </div>

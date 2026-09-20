@@ -705,7 +705,7 @@ function ActivityDetailDialog({
                   {data.dueAt && (
                     <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                       <CalendarDays className="h-3.5 w-3.5" />
-                      Término: {formatDate(data.dueAt)}
+                      Cronograma: Término em {formatDate(data.dueAt)}
                     </span>
                   )}
                 </>
@@ -1060,7 +1060,7 @@ function ActivityDetailDialog({
                     </div>
 
                     <div>
-                      <Label htmlFor="quick-start-date" className="text-xs font-semibold">Início Planejado</Label>
+                      <Label htmlFor="quick-start-date" className="text-xs font-semibold">Início no Cronograma</Label>
                       <Input
                         id="quick-start-date"
                         type="date"
@@ -1071,7 +1071,7 @@ function ActivityDetailDialog({
                     </div>
 
                     <div>
-                      <Label htmlFor="quick-due-date" className="text-xs font-semibold">Término Planejado</Label>
+                      <Label htmlFor="quick-due-date" className="text-xs font-semibold">Término no Cronograma</Label>
                       <Input
                         id="quick-due-date"
                         type="date"
@@ -1156,7 +1156,7 @@ function ActivityDetailDialog({
                 <div className="space-y-3">
                   <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4 text-xs">
                     <div className="rounded border bg-card p-3">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase">Início Planejado</span>
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase">Início no Cronograma</span>
                       <p className="mt-1 font-semibold text-foreground">
                         {data.startAt ? formatDate(data.startAt) : "A definir"}
                       </p>
@@ -1164,14 +1164,14 @@ function ActivityDetailDialog({
 
                     <div className="rounded border border-primary/30 bg-primary/5 p-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-primary uppercase">Término Planejado</span>
+                        <span className="text-[10px] font-bold text-primary uppercase">Término no Cronograma</span>
                         <CalendarDays className="h-3.5 w-3.5 text-primary" />
                       </div>
                       <p className="mt-1 font-mono text-sm font-bold text-primary">
                         {formatDate(data.dueAt)}
                       </p>
                       <span className="text-[10px] text-muted-foreground font-medium">
-                        (Interna: Dia 15 / BNDES: Dia 30)
+                        (Cronograma Oficial do Estudo)
                       </span>
                     </div>
 
@@ -1934,7 +1934,7 @@ function ActivityDetailDialog({
                               )}
                             </div>
                             {item.dueAt && (
-                              <p className="text-[10px] text-muted-foreground">Prazo oficial: {formatDate(item.dueAt)}</p>
+                              <p className="text-[10px] text-muted-foreground">Cronograma: Término em {formatDate(item.dueAt)}</p>
                             )}
                           </div>
 
@@ -2187,7 +2187,7 @@ function ActivityDetailDialog({
                                     ⚠️ Executor não associado
                                   </span>
                                 )}
-                                {step.dueAt && <span>Prazo: {formatDate(step.dueAt)}</span>}
+                                {step.dueAt && <span>Cronograma: {formatDate(step.dueAt)}</span>}
                               </div>
                             </div>
 

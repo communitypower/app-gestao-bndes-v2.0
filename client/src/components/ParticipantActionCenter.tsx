@@ -109,7 +109,7 @@ export function getMonthInfo(dueAt: number | null): MonthGroupInfo {
 function formatDeadlineDisplay(dueAt: number | null) {
   if (!dueAt) {
     return {
-      text: "Sem prazo fixado",
+      text: "Sem prazo fixado no Cronograma",
       monthTag: null,
       formattedDate: "—",
       badgeClass: "bg-muted/80 text-muted-foreground",
@@ -131,7 +131,7 @@ function formatDeadlineDisplay(dueAt: number | null) {
 
   if (daysDiff < 0) {
     return {
-      text: `Vencido (${formattedDate})`,
+      text: `Vencido no Cronograma (${formattedDate})`,
       monthTag: monthInfo.monthTag,
       formattedDate,
       daysDiff,
@@ -142,7 +142,7 @@ function formatDeadlineDisplay(dueAt: number | null) {
 
   if (daysDiff === 0) {
     return {
-      text: `Vence hoje (${formattedDate})`,
+      text: `Vence hoje no Cronograma (${formattedDate})`,
       monthTag: monthInfo.monthTag,
       formattedDate,
       daysDiff,
@@ -153,7 +153,7 @@ function formatDeadlineDisplay(dueAt: number | null) {
 
   if (daysDiff <= 7) {
     return {
-      text: `Vence em ${daysDiff} dias (${formattedDate})`,
+      text: `Vence em ${daysDiff} dias no Cronograma (${formattedDate})`,
       monthTag: monthInfo.monthTag,
       formattedDate,
       daysDiff,
@@ -163,7 +163,7 @@ function formatDeadlineDisplay(dueAt: number | null) {
   }
 
   return {
-    text: `Entrega: ${formattedDate}`,
+    text: `Cronograma: ${formattedDate}`,
     monthTag: monthInfo.monthTag,
     formattedDate,
     daysDiff,
@@ -814,7 +814,7 @@ export function ParticipantActionCenter({
                       <div className="mt-3.5 pt-3 border-t border-border/40 flex items-center justify-between gap-2">
                         <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground shrink-0 font-mono">
                           <Calendar className="h-3 w-3" />
-                          {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
+                          Cronograma: {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
                         </span>
 
                         <Button
