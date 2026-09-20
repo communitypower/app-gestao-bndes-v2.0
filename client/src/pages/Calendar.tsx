@@ -368,7 +368,10 @@ function ScheduleDialog({
       await Promise.all([
         utils.activities.list.invalidate(),
         utils.activities.detail.invalidate(),
+        utils.activities.myWorkloadActions.invalidate(),
         utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
+        utils.governance.overview.invalidate(),
       ]);
       toast.success("Período atualizado.");
       onOpenChange(false);
@@ -448,7 +451,10 @@ function ScheduleDialog({
         await Promise.all([
           utils.activities.list.invalidate(),
           utils.activities.detail.invalidate(),
+          utils.activities.myWorkloadActions.invalidate(),
           utils.dashboard.overview.invalidate(),
+          utils.dashboard.documentKpis.invalidate(),
+          utils.governance.overview.invalidate(),
         ]);
         toast.success("Período e marcos atualizados.");
         onOpenChange(false);

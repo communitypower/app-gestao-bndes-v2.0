@@ -39,6 +39,7 @@ const dbMocks = vi.hoisted(() => ({
   getTeamMemberByUserId: vi.fn(),
   listActivities: vi.fn(),
   listTeamMembers: vi.fn(),
+  reconcileActivityParentSchedule: vi.fn().mockResolvedValue(undefined),
   requireDb: vi.fn(),
 }));
 

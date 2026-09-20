@@ -379,7 +379,10 @@ function ActivityDetailDialog({
       await Promise.all([
         utils.activities.detail.invalidate({ id: activityId }),
         utils.activities.list.invalidate(),
+        utils.activities.myWorkloadActions.invalidate(),
         utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
+        utils.governance.overview.invalidate(),
       ]);
       setIsEditingInfo(false);
       toast.success("Informações do capítulo atualizadas com sucesso.");
@@ -412,6 +415,9 @@ function ActivityDetailDialog({
         utils.activities.detail.invalidate({ id: activityId }),
         utils.production.list.invalidate(),
         utils.activities.list.invalidate(),
+        utils.activities.myWorkloadActions.invalidate(),
+        utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
       ]);
       setUploadOpen(false);
       setMaterialTitle("");
@@ -545,7 +551,10 @@ function ActivityDetailDialog({
       await Promise.all([
         utils.activities.detail.invalidate({ id: activityId }),
         utils.activities.list.invalidate(),
+        utils.activities.myWorkloadActions.invalidate(),
         utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
+        utils.governance.overview.invalidate(),
       ]);
       toast.success(`Workflow atualizado para "${DOCUMENT_STATUS_LABELS[nextDocumentStatus]}".`);
     } catch (error) {
@@ -561,7 +570,12 @@ function ActivityDetailDialog({
     if (!activityId) return;
     try {
       await updateReviewChecklistItem.mutateAsync({ id: itemId, status });
-      await utils.activities.detail.invalidate({ id: activityId });
+      await Promise.all([
+        utils.activities.detail.invalidate({ id: activityId }),
+        utils.activities.list.invalidate(),
+        utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
+      ]);
       toast.success("Status do checklist atualizado.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Erro ao atualizar checklist.");
@@ -591,6 +605,8 @@ function ActivityDetailDialog({
         utils.activities.list.invalidate(),
         utils.activities.myWorkloadActions.invalidate(),
         utils.production.list.invalidate(),
+        utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
       ]);
       toast.success(
         isAlreadyReviewer
@@ -634,7 +650,12 @@ function ActivityDetailDialog({
         activityId,
         items: itemsToApply,
       });
-      await utils.activities.detail.invalidate({ id: activityId });
+      await Promise.all([
+        utils.activities.detail.invalidate({ id: activityId }),
+        utils.activities.list.invalidate(),
+        utils.dashboard.overview.invalidate(),
+        utils.dashboard.documentKpis.invalidate(),
+      ]);
       toast.success("✨ Checklist de revisão atualizado com base nas recomendações da IA.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Erro ao aplicar sugestões da IA.");
@@ -2758,10 +2779,10 @@ function ActivitiesContent() {
   const [detailId, setDetailId] = useState<number | null>(null);
   const [openInEdit, setOpenInEdit] = useState(false);
 
-  // Abrir Ficha automaticamente se query param `ficha` estiver presente
+  // Abrir Ficha automaticamente se query param `ficha`, `activityId` ou `id` estiver presente
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    const fichaId = params.get("ficha");
+    const fichaId = params.get("ficha") || params.get("activityId") || params.get("id");
     if (fichaId) {
       setDetailId(Number(fichaId));
     }

@@ -1740,6 +1740,61 @@ export async function getActivity(id: number) {
   };
 }
 
+export async function reconcileActivityParentSchedule(activityId: number) {
+  const db = await requireDb();
+  const [targetActivity] = await db
+    .select({
+      id: activities.id,
+      parentActivityId: activities.parentActivityId,
+      startAt: activities.startAt,
+      dueAt: activities.dueAt,
+    })
+    .from(activities)
+    .where(eq(activities.id, activityId));
+
+  if (!targetActivity) return;
+
+  const parentId = targetActivity.parentActivityId ?? targetActivity.id;
+
+  const children = await db
+    .select({
+      id: activities.id,
+      startAt: activities.startAt,
+      dueAt: activities.dueAt,
+    })
+    .from(activities)
+    .where(
+      and(
+        eq(activities.parentActivityId, parentId),
+        eq(activities.structureStatus, "canonica")
+      )
+    );
+
+  if (children.length > 0) {
+    const childStartAts = children
+      .map(c => c.startAt)
+      .filter((d): d is number => d !== null && d !== undefined);
+    const childDueAts = children
+      .map(c => c.dueAt)
+      .filter((d): d is number => d !== null && d !== undefined);
+
+    const updates: { startAt?: number | null; dueAt?: number | null } = {};
+    if (childStartAts.length > 0) {
+      updates.startAt = Math.min(...childStartAts);
+    }
+    if (childDueAts.length > 0) {
+      updates.dueAt = Math.max(...childDueAts);
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await db
+        .update(activities)
+        .set(updates)
+        .where(eq(activities.id, parentId));
+    }
+  }
+}
+
 export async function listActivityStatusReport() {
   const db = await requireDb();
   const [activityRows, checklistRows] = await Promise.all([

@@ -48,6 +48,7 @@ import {
   listCoordinationInterfaces,
   listTeamMembers,
   listProductionMaterials,
+  reconcileActivityParentSchedule,
   requireDb,
 } from "../db";
 import { createParticipantNotification } from "../notificationService";
@@ -1577,6 +1578,7 @@ export const activitiesRouter = router({
       }
 
       await db.update(activities).set(updates).where(eq(activities.id, activity.id));
+      await reconcileActivityParentSchedule(activity.id);
       return getActivity(activity.id);
     }),
 
@@ -1602,6 +1604,7 @@ export const activitiesRouter = router({
         .update(activities)
         .set({ startAt: input.startAt, dueAt: input.dueAt })
         .where(eq(activities.id, input.id));
+      await reconcileActivityParentSchedule(input.id);
       return getActivity(input.id);
     }),
 
@@ -1784,6 +1787,9 @@ export const activitiesRouter = router({
 
       if (Object.keys(changes).length) {
         await db.update(activities).set(changes).where(eq(activities.id, id));
+        if (changes.startAt !== undefined || changes.dueAt !== undefined) {
+          await reconcileActivityParentSchedule(id);
+        }
       }
       if (allocationChanges !== undefined) {
         await replaceActivityAllocations(id, allocationChanges, ctx.user.id);
