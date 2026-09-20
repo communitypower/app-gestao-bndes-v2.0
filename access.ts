@@ -166,6 +166,7 @@ export function assertCanReviewActivity(
   member: ActivityAccessMember | null | undefined,
   reviewerIds: number[]
 ) {
+  if (isAdministrator(user)) return;
   if (!member?.active || !reviewerIds.includes(member.id)) {
     throw new TRPCError({
       code: "FORBIDDEN",

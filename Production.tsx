@@ -911,7 +911,7 @@ export default function ProductionPage() {
                 <div className="rounded-md border border-primary/20 bg-primary/5 p-4 text-xs">
                   <div className="flex items-center gap-2 font-semibold text-primary">
                     <HelpCircle className="h-4 w-4" />
-                    <span>Guia de Ação para seu Perfil ({selected.permissions.canDevelop ? "Autor / Executor" : selected.permissions.canReview ? "Revisor Técnico" : "Coordenador / Visualizador"})</span>
+                    <span>Guia de Ação para seu Perfil ({selected.permissions.canDevelop ? "Autor (Coordenador do Grupo)" : selected.permissions.canReview ? "Revisor Técnico" : "Coordenador / Visualizador"})</span>
                   </div>
                   <div className="mt-1.5 text-foreground/80 leading-relaxed">
                     {selected.permissions.canDevelop && (

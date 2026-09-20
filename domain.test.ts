@@ -57,11 +57,7 @@ describe("estrutura canônica do estudo", () => {
   it("calibra a base de integrantes e perfis de administrador", () => {
     const adminMembers = TEAM_SEED.filter(m => m.appRole === "administrador");
     expect(adminMembers.map(m => m.name)).toEqual([
-      "Floriano Carlos Martins Pires Jr.",
       "Denise Cunha",
-      "Cassiano Marins de Souza",
-      "Luiz Felipe Assis",
-      "Marcos Pedreira da Silva",
     ]);
 
     const marcosPedreira = TEAM_SEED.find(m => m.name === "Marcos Pedreira da Silva");
@@ -69,7 +65,15 @@ describe("estrutura canônica do estudo", () => {
       name: "Marcos Pedreira da Silva",
       title: "Técnico de TI",
       institution: "UFRJ",
-      appRole: "administrador",
+      appRole: "coordenador",
+    });
+
+    const floriano = TEAM_SEED.find(m => m.name === "Floriano Carlos Martins Pires Jr.");
+    expect(floriano).toMatchObject({
+      name: "Floriano Carlos Martins Pires Jr.",
+      title: "Professor",
+      institution: "UFRJ",
+      appRole: "coordenador",
     });
 
     const marcosPereira = TEAM_SEED.find(m => m.name === "Marcos Pereira");

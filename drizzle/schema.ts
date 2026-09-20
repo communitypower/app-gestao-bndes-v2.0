@@ -433,6 +433,9 @@ export const activities = pgTable(
     responsibleId: integer("responsibleId").notNull().references(() => teamMembers.id),
     startAt: bigint("startAt", { mode: "number" }),
     dueAt: bigint("dueAt", { mode: "number" }).notNull(),
+    actualStartAt: bigint("actualStartAt", { mode: "number" }),
+    actualEndAt: bigint("actualEndAt", { mode: "number" }),
+    nextStep: text("nextStep"),
     editorialDeliveryAt: bigint("editorialDeliveryAt", { mode: "number" }),
     bndesDeliveryAt: bigint("bndesDeliveryAt", { mode: "number" }),
     documentStatus: documentStatusEnum("documentStatus").default("planejada").notNull(),
@@ -570,6 +573,11 @@ export const activityAllocations = pgTable(
     isExecutionLead: boolean("isExecutionLead").default(false).notNull(),
     assignedBy: integer("assignedBy").references(() => users.id),
     allocationType: allocationTypeEnum("allocationType").default("vigente").notNull(),
+    approvalStatus: varchar("approvalStatus", { length: 64 }).default("aprovado").notNull(),
+    requiresGeneralCoordinationApproval: boolean("requiresGeneralCoordinationApproval").default(false).notNull(),
+    approvedBy: integer("approvedBy").references(() => users.id),
+    approvedAt: bigint("approvedAt", { mode: "number" }),
+    rejectionReason: text("rejectionReason"),
     note: text("note"),
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
@@ -582,6 +590,7 @@ export const activityAllocations = pgTable(
       table.allocationType,
       table.isExecutionLead
     ),
+    index("activity_allocations_approval_idx").on(table.approvalStatus),
     uniqueIndex("activity_allocations_unique_idx").on(table.activityId, table.teamMemberId),
   ]
 );

@@ -78,12 +78,13 @@ describe("autorização das horas por atividade", () => {
       if (userId === 103) return fixtures.participant;
       return null;
     });
-
     const members = [
       fixtures.responsible,
       fixtures.otherCoordinator,
       fixtures.participant,
     ];
+    dbMocks.listTeamMembers.mockResolvedValue(members);
+    dbMocks.listActivities.mockResolvedValue([fixtures.activity]);
     dbMocks.requireDb.mockResolvedValue({
       select: vi.fn(() => ({
         from: vi.fn().mockResolvedValue(members),
@@ -231,5 +232,19 @@ describe("autorização das horas por atividade", () => {
         ],
       })
     ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("atribui isCoordinator: true apenas ao coordenador responsável do capítulo e não a coordenadores de outros grupos", async () => {
+    // Coordenador responsável
+    const responsibleCaller = appRouter.createCaller(context(101));
+    const responsibleDetail = await responsibleCaller.activities.detail({ id: fixtures.activity.id });
+    expect(responsibleDetail.isCoordinator).toBe(true);
+    expect(responsibleDetail.canManageReview).toBe(true);
+
+    // Coordenador de outro grupo (que pode atuar como revisor técnico ou visualizador)
+    const otherCaller = appRouter.createCaller(context(102));
+    const otherDetail = await otherCaller.activities.detail({ id: fixtures.activity.id });
+    expect(otherDetail.isCoordinator).toBe(false);
+    expect(otherDetail.canManageReview).toBe(false);
   });
 });

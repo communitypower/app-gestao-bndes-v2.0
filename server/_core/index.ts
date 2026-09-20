@@ -15,15 +15,16 @@ import { getDb } from "../db";
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
     const server = net.createServer();
-    server.listen(port, () => {
+    server.once("error", () => resolve(false));
+    server.once("listening", () => {
       server.close(() => resolve(true));
     });
-    server.on("error", () => resolve(false));
+    server.listen(port, "0.0.0.0");
   });
 }
 
 async function findAvailablePort(startPort: number = 3000): Promise<number> {
-  for (let port = startPort; port < startPort + 20; port++) {
+  for (let port = startPort; port < startPort + 50; port++) {
     if (await isPortAvailable(port)) {
       return port;
     }
@@ -72,7 +73,7 @@ async function startServer() {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
   }
 
-  server.listen(port, () => {
+  server.listen(port, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
 }

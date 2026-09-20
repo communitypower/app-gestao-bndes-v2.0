@@ -106,6 +106,9 @@ vi.mock("@/lib/trpc", () => ({
       sendFirstAccessInvitation: {
         useMutation: () => ({ mutateAsync: vi.fn().mockResolvedValue({ count: 1, latestInvitation: null }), isPending: false }),
       },
+      resetPilotEnvironment: {
+        useMutation: () => ({ mutateAsync: vi.fn().mockResolvedValue({ success: true, message: "OK", stats: { parentChapters: 30, totalActivities: 280 } }), isPending: false }),
+      },
     },
     governance: {
       overview: {
@@ -225,6 +228,10 @@ describe("interface da administração do WhatsApp", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /processar agora/i }));
     await waitFor(() => expect(mocks.processAlertsNow).toHaveBeenCalledTimes(1));
+
+    expect(screen.getByText("Preparação para Rodada Piloto")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /preparar nova rodada piloto/i }));
+    expect(await screen.findByText("Confirmar Preparação da Rodada Piloto")).toBeInTheDocument();
   });
 
   it("mostra o bloqueio e os destinos permitidos ao colaborador", () => {

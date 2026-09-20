@@ -245,6 +245,30 @@ function InterfaceDetail({
               </section>
             ) : null}
 
+            {item.chapterCoordinators && item.chapterCoordinators.length > 0 && (
+              <section className="rounded-lg border border-primary/20 bg-primary/5 p-4 space-y-2">
+                <p className="editorial-kicker flex items-center gap-2 text-primary font-bold">
+                  👑 Coordenadores de Capítulo Envolvidos
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  Os coordenadores responsáveis pelos capítulos vinculados possuem governança e acompanhamento ativo desta interface.
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2 pt-1">
+                  {item.chapterCoordinators.map(coord => (
+                    <div key={coord.id} className="rounded border bg-background/90 p-2.5 text-xs shadow-xs">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="font-semibold text-foreground">{coord.name}</span>
+                        {coord.sectionCode && (
+                          <span className="font-mono text-[10px] text-primary font-semibold">Cap. {coord.sectionCode}</span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{coord.sectionTitle || coord.role}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
             <section>
               <p className="editorial-kicker flex items-center gap-2 text-primary">
                 <UsersRound className="h-4 w-4" /> Grupos envolvidos
@@ -896,9 +920,21 @@ function InterfacesContent() {
                   </div>
                 </div>
                 <div>
-                  <p className="data-label lg:hidden">Responsável</p>
+                  <p className="data-label lg:hidden">Responsável e Coordenação</p>
                   <p className="mt-1 text-sm font-medium lg:mt-0">{item.responsibleName}</p>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">{groupDisplayName(item.responsibleGroupName)}</p>
+                  {item.chapterCoordinators && item.chapterCoordinators.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      <span className="text-[10px] uppercase font-semibold text-muted-foreground tracking-wider block">Coord. de Capítulos:</span>
+                      <div className="flex flex-col gap-0.5">
+                        {item.chapterCoordinators.map(coord => (
+                          <span key={coord.id} className="inline-flex items-center gap-1 text-[11px] text-foreground/90 font-medium truncate" title={`${coord.name} (${coord.sectionCode} - ${coord.sectionTitle})`}>
+                            👑 {coord.name} <span className="text-[10px] text-muted-foreground font-normal">({coord.sectionCode})</span>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-2 lg:justify-end">
                   <Button variant="outline" size="sm" onClick={() => setDetailId(item.id)} className="rounded-md">

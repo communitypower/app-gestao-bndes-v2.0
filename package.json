@@ -12,7 +12,8 @@
     "test": "vitest run",
     "db:push": "drizzle-kit push",
     "db:migrate": "tsx server/scripts/migrate.ts",
-    "db:seed": "tsx server/scripts/seed.ts"
+    "db:seed": "tsx server/scripts/seed.ts",
+    "db:reset-pilot": "tsx server/scripts/resetPilot.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",

@@ -97,14 +97,14 @@ export const TEAM_SEED: ReadonlyArray<{
   email: string;
   appRole: AppRole;
 }> = [
-  // 1. Administradores da Coordenação e Suporte Técnico do Projeto
-  { name: "Floriano Carlos Martins Pires Jr.", title: "Professor", institution: "UFRJ", email: "floriano@poli.ufrj.br", appRole: "administrador" },
+  // 1. Administradora da Coordenação e Gestão Executiva
   { name: "Denise Cunha", title: "Administradora", institution: "UFRJ", email: "denisecunha@poli.ufrj.br", appRole: "administrador" },
-  { name: "Cassiano Marins de Souza", title: "Consultor", institution: "Consultoria", email: "cassianomarins@gmail.com", appRole: "administrador" },
-  { name: "Luiz Felipe Assis", title: "Professor", institution: "UFRJ", email: "lfelipe@oceanica.ufrj.br", appRole: "administrador" },
-  { name: "Marcos Pedreira da Silva", title: "Técnico de TI", institution: "UFRJ", email: "marcos.pedreira@ufrj.br", appRole: "administrador" },
 
   // 2. Coordenadores de Grupos Temáticos / Frentes
+  { name: "Floriano Carlos Martins Pires Jr.", title: "Professor", institution: "UFRJ", email: "floriano@poli.ufrj.br", appRole: "coordenador" },
+  { name: "Cassiano Marins de Souza", title: "Consultor", institution: "Consultoria", email: "cassianomarins@gmail.com", appRole: "coordenador" },
+  { name: "Luiz Felipe Assis", title: "Professor", institution: "UFRJ", email: "lfelipe@oceanica.ufrj.br", appRole: "coordenador" },
+  { name: "Marcos Pedreira da Silva", title: "Técnico de TI", institution: "UFRJ", email: "marcos.pedreira@ufrj.br", appRole: "coordenador" },
   { name: "Carlos Frederico Leão Rocha", title: "Professor", institution: "UFRJ", email: "carlos.rocha@ie.ufrj.br", appRole: "coordenador" },
   { name: "Armando Freigedo Rodrigues Filho", title: "Consultor", institution: "Consultoria", email: "armando.freigedo@aquapar.com.br", appRole: "coordenador" },
   { name: "Marcos Bernardes Cozzolino do Nascimento", title: "Consultor", institution: "Consultoria", email: "marcos.cozzolino@consultoria.com", appRole: "coordenador" },
@@ -236,17 +236,17 @@ export const CHAPTER_RESPONSIBLE_MAP: Record<string, string> = {
   "I.7": "Andre Ricardo Mendonça Pinheiro",
   "I.8": "Jean David Job Emmanuel Marie Caprace",
   "II.1": "Cassiano Marins de Souza",
-  "II.2": "Cassiano Marins de Souza",
-  "II.3": "Marta Cecilia Tapia Reyes",
+  "II.2": "Floriano Carlos Martins Pires Jr.",
+  "II.3": "Floriano Carlos Martins Pires Jr.",
   "II.4": "Marta Cecilia Tapia Reyes",
   "II.5": "Marta Cecilia Tapia Reyes",
   "II.6": "Carlos Frederico Leão Rocha",
-  "II.7": "Marta Cecilia Tapia Reyes",
-  "II.8": "Marta Cecilia Tapia Reyes",
+  "II.7": "Cassiano Marins de Souza",
+  "II.8": "Cassiano Marins de Souza",
   "II.9": "Jean David Job Emmanuel Marie Caprace",
   "III.1": "Carlos Frederico Leão Rocha",
   "III.2": "Armando Freigedo Rodrigues Filho",
-  "III.3": "Cassiano Marins de Souza",
+  "III.3": "Armando Freigedo Rodrigues Filho",
   "III.4": "Armando Freigedo Rodrigues Filho",
   "III.5": "Marcos Bernardes Cozzolino do Nascimento",
   "III.6": "Carlos Frederico Leão Rocha",

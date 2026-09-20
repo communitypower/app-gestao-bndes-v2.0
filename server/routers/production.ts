@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq, ne, or, sql } from "drizzle-orm";
+import { and, desc, eq, ne, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import {
   activityReviewers,
@@ -28,6 +28,7 @@ import {
   getTeamMemberByUserId,
   listActivities,
   listProductionMaterials,
+  listTeamMembers,
   requireDb,
   syncActivityDocumentStatus,
 } from "../db";
@@ -61,18 +62,13 @@ function isExecutionAssignee(
 }
 
 function canViewMaterial(
-  user: Parameters<typeof isAdministrator>[0],
-  member: ActivityAccessMember | null,
-  material: ProductionMaterialRow,
-  activity?: Awaited<ReturnType<typeof getActivity>> | null
+  _user: Parameters<typeof isAdministrator>[0],
+  _member: ActivityAccessMember | null,
+  _material: ProductionMaterialRow,
+  _activity?: Awaited<ReturnType<typeof getActivity>> | null
 ) {
-  if (isAdministrator(user)) return true;
-  if (!material.activityId) return Boolean(member?.active);
-  const isAssignee = isExecutionAssignee(activity, member?.id);
-  return (
-    isAssignee ||
-    canViewActivityReview(user, member, reviewScope(material))
-  );
+  // Transparência total para toda a equipe e BNDES
+  return true;
 }
 
 function assertCanEditMaterial(
@@ -81,11 +77,16 @@ function assertCanEditMaterial(
   material: ProductionMaterialRow
 ) {
   if (!material.activityId || isAdministrator(user)) return;
-  if (!member?.active) {
+  const isCoordinator = Boolean(
+    member?.active && (
+      member.id === material.responsibleId ||
+      (member.groupId && member.groupId === material.responsibleGroupId && member.groupRole === "coordenador")
+    )
+  );
+  if (!isCoordinator) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message:
-        "Somente integrantes ativos podem desenvolver novas versões.",
+      message: "Somente o coordenador do capítulo ou o administrador pode acrescentar novas versões de material.",
     });
   }
 }
@@ -98,7 +99,10 @@ function isMaterialManager(
   return (
     isAdministrator(user) ||
     Boolean(
-      member?.active && member.id === material.responsibleId
+      member?.active && (
+        member.id === material.responsibleId ||
+        (member.groupId && member.groupId === material.responsibleGroupId && member.groupRole === "coordenador")
+      )
     )
   );
 }
@@ -262,6 +266,14 @@ export const productionRouter = router({
             message: "O material deve usar a mesma seção da atividade.",
           });
         }
+        const existingMaterials = (await listProductionMaterials()).filter(m => m.activityId === input.activityId);
+        const inReviewMaterial = existingMaterials.find(m => m.reviewStatus === "em revisão");
+        if (inReviewMaterial) {
+          throw new TRPCError({
+            code: "PRECONDITION_FAILED",
+            message: `O capítulo já possui um documento em revisão técnica ativa ("${inReviewMaterial.title}" — Revisão R0${inReviewMaterial.currentRevision}). Aguarde o parecer dos revisores antes de carregar novas versões.`,
+          });
+        }
       } else {
         if (!isAdministrator(ctx.user)) {
           throw new TRPCError({
@@ -323,6 +335,7 @@ export const productionRouter = router({
       z.object({
         materialId: z.number().int().positive(),
         notes: z.string().trim().max(10_000).nullable(),
+        autoSubmit: z.boolean().default(false),
         file: fileInputSchema,
       })
     )
@@ -332,6 +345,15 @@ export const productionRouter = router({
         getTeamMemberByUserId(ctx.user.id),
       ]);
       assertCanEditMaterial(ctx.user, member, material);
+
+      // Regra de Governança: Garantir que a versão anterior já tenha sido revisada
+      if (material.reviewStatus === "em revisão") {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: `A versão anterior (Revisão R0${material.currentRevision}) ainda está em processo ativo de avaliação técnica pelos revisores. Aguarde a emissão do parecer para carregar uma nova revisão caso sejam solicitados ajustes.`,
+        });
+      }
+
       const db = await requireDb();
       const stored = await uploadProjectFile(
         "production",
@@ -339,33 +361,89 @@ export const productionRouter = router({
         input.file
       );
       const nextRevision = material.currentRevision + 1;
-      await db.insert(materialRevisions).values({
-        materialId: input.materialId,
-        revisionNumber: nextRevision,
-        notes: input.notes,
-        fileName: input.file.fileName,
-        mimeType: input.file.mimeType,
-        fileSize: input.file.fileSize,
-        storageKey: stored.key,
-        storageUrl: stored.url,
-        uploadedBy: ctx.user.id,
-      });
+      const insertedRevs = await db
+        .insert(materialRevisions)
+        .values({
+          materialId: input.materialId,
+          revisionNumber: nextRevision,
+          notes: input.notes,
+          fileName: input.file.fileName,
+          mimeType: input.file.mimeType,
+          fileSize: input.file.fileSize,
+          storageKey: stored.key,
+          storageUrl: stored.url,
+          uploadedBy: ctx.user.id,
+        })
+        .returning({ id: materialRevisions.id });
+      const newRevId = insertedRevs[0]?.id;
+
       await markPreviousSubmissionsReplaced(input.materialId);
+
+      const targetStatus = input.autoSubmit && material.reviewers.length > 0
+        ? "em revisão"
+        : "em elaboração";
+
       await db
         .update(productionMaterials)
-        .set({ currentRevision: nextRevision, reviewStatus: "em elaboração" })
+        .set({ currentRevision: nextRevision, reviewStatus: targetStatus })
         .where(eq(productionMaterials.id, input.materialId));
+
       if (material.activityId) {
-        await db
-          .update(activityReviewers)
-          .set({ status: "pendente", decisionNote: null, decidedAt: null })
-          .where(eq(activityReviewers.activityId, material.activityId));
-        await syncActivityDocumentStatus(
-          material.activityId,
-          "em elaboração",
-          ctx.user.id,
-          input.notes ? `Nova versão ${nextRevision}: ${input.notes}` : `Nova versão ${nextRevision} registrada em elaboração.`
-        );
+        if (input.autoSubmit && material.reviewers.length > 0 && newRevId) {
+          await db
+            .insert(reviewSubmissions)
+            .values({
+              activityId: material.activityId,
+              materialId: material.id,
+              revisionId: newRevId,
+              submittedBy: ctx.user.id,
+              status: "em revisão",
+              message: input.notes ?? `Revisão R0${nextRevision} submetida em resposta aos apontamentos.`,
+              submittedAt: Date.now(),
+            });
+
+          await db
+            .update(activityReviewers)
+            .set({ status: "em revisão", decisionNote: null, decidedAt: null })
+            .where(eq(activityReviewers.activityId, material.activityId));
+
+          await syncActivityDocumentStatus(
+            material.activityId,
+            "submetida à revisão da seção",
+            ctx.user.id,
+            input.notes ? `Revisão R0${nextRevision} submetida à revisão: ${input.notes}` : `Revisão R0${nextRevision} submetida à revisão técnica.`
+          );
+
+          // Notificar revisores
+          const activity = await getActivity(material.activityId);
+          const actCode = activity?.planCode || activity?.detailCode || "";
+          for (const rev of material.reviewers) {
+            const revUserId = await getUserIdForTeamMember(rev.teamMemberId);
+            if (revUserId && revUserId !== ctx.user.id) {
+              await createParticipantNotification({
+                recipientUserId: revUserId,
+                actorUserId: ctx.user.id,
+                activityId: material.activityId,
+                type: "versao_submetida",
+                title: `Nova Revisão R0${nextRevision} submetida para revisão`,
+                message: `A atividade ${actCode ? `${actCode} — ` : ""}("${activity?.title ?? material.title}") recebeu a Revisão R0${nextRevision} para sua avaliação técnica.`,
+                actionUrl: `/atividades?ficha=${material.activityId}`,
+              });
+            }
+          }
+        } else {
+          await db
+            .update(activityReviewers)
+            .set({ status: "pendente", decisionNote: null, decidedAt: null })
+            .where(eq(activityReviewers.activityId, material.activityId));
+
+          await syncActivityDocumentStatus(
+            material.activityId,
+            "em elaboração",
+            ctx.user.id,
+            input.notes ? `Nova revisão R0${nextRevision} em elaboração: ${input.notes}` : `Nova revisão R0${nextRevision} registrada em elaboração.`
+          );
+        }
       }
       return getMaterialOrThrow(input.materialId);
     }),
@@ -388,21 +466,24 @@ export const productionRouter = router({
           message: "Vincule o material a uma atividade antes de submetê-lo.",
         });
       }
-      const activity = await getActivity(material.activityId);
-      const isAssignedExecutor = Boolean(
-        member?.active && (activity?.allocations ?? []).some(allocation => allocation.teamMemberId === member.id)
+      const isCoordinator = Boolean(
+        member?.active && (
+          member.id === material.responsibleId ||
+          (member.groupId && member.groupId === material.responsibleGroupId && member.groupRole === "coordenador")
+        )
       );
-      if (
-        !isAdministrator(ctx.user) &&
-        member?.id !== material.responsibleId &&
-        !isAssignedExecutor
-      ) {
+      if (!isAdministrator(ctx.user) && !isCoordinator) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Somente o executor designado ou o coordenador do capítulo pode submeter a versão à revisão.",
+          message: "Somente o coordenador do capítulo ou o administrador pode submeter a versão à revisão.",
         });
       }
-      if (!material.reviewers.length) {
+      const activity = material.activityId ? await getActivity(material.activityId) : null;
+      const combinedReviewers = [
+        ...(material.reviewers ?? []),
+        ...(activity?.reviewers ?? []),
+      ];
+      if (!combinedReviewers.length) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Aloque ao menos um revisor antes da submissão.",
@@ -449,8 +530,9 @@ export const productionRouter = router({
 
         // Notificar todos os revisores atribuídos
         const actCode = activity?.planCode || activity?.detailCode || "";
-        for (const rev of material.reviewers) {
-          const revUserId = await getUserIdForTeamMember(rev.teamMemberId);
+        const distinctReviewerTeamMemberIds = Array.from(new Set(combinedReviewers.map(r => r.teamMemberId)));
+        for (const revTeamMemberId of distinctReviewerTeamMemberIds) {
+          const revUserId = await getUserIdForTeamMember(revTeamMemberId);
           if (revUserId && revUserId !== ctx.user.id) {
             await createParticipantNotification({
               recipientUserId: revUserId,
@@ -471,7 +553,7 @@ export const productionRouter = router({
     .input(
       z.object({
         materialId: z.number().int().positive(),
-        submissionId: z.number().int().positive().nullable(),
+        submissionId: z.number().int().positive().nullable().optional(),
         content: z.string().trim().min(2).max(10_000),
         commentType: z.enum([
           "comentário",
@@ -667,21 +749,82 @@ export const productionRouter = router({
     .input(reviewDecisionSchema)
     .mutation(async ({ ctx, input }) => {
       const db = await requireDb();
-      const submissionRow = await db
-        .select({
-          id: reviewSubmissions.id,
-          materialId: reviewSubmissions.materialId,
-          activityId: reviewSubmissions.activityId,
-          status: reviewSubmissions.status,
-        })
-        .from(reviewSubmissions)
-        .where(eq(reviewSubmissions.id, input.submissionId))
-        .limit(1);
-      const submission = submissionRow[0];
+      let submission: { id: number; materialId: number; activityId: number; status: string } | null = null;
+
+      if (input.submissionId) {
+        const submissionRow = await db
+          .select({
+            id: reviewSubmissions.id,
+            materialId: reviewSubmissions.materialId,
+            activityId: reviewSubmissions.activityId,
+            status: reviewSubmissions.status,
+          })
+          .from(reviewSubmissions)
+          .where(eq(reviewSubmissions.id, input.submissionId))
+          .limit(1);
+        submission = submissionRow[0] ?? null;
+      } else if (input.materialId) {
+        const submissionRow = await db
+          .select({
+            id: reviewSubmissions.id,
+            materialId: reviewSubmissions.materialId,
+            activityId: reviewSubmissions.activityId,
+            status: reviewSubmissions.status,
+          })
+          .from(reviewSubmissions)
+          .where(
+            and(
+              eq(reviewSubmissions.materialId, input.materialId),
+              sql`${reviewSubmissions.status} != 'substituído'`
+            )
+          )
+          .orderBy(desc(reviewSubmissions.submittedAt))
+          .limit(1);
+        submission = submissionRow[0] ?? null;
+
+        if (!submission) {
+          const targetMat = await getMaterialOrThrow(input.materialId);
+          if (targetMat.activityId) {
+            const latestRev = targetMat.revisions?.[targetMat.revisions.length - 1];
+            const inserted = await db
+              .insert(reviewSubmissions)
+              .values({
+                activityId: targetMat.activityId,
+                materialId: targetMat.id,
+                revisionId: latestRev?.id ?? 1,
+                submittedBy: ctx.user.id,
+                submittedAt: Date.now(),
+                message: "Submissão para revisão técnica.",
+                status: "em revisão",
+              })
+              .returning();
+            submission = inserted[0] ?? null;
+          }
+        }
+      } else if (input.activityId) {
+        const submissionRow = await db
+          .select({
+            id: reviewSubmissions.id,
+            materialId: reviewSubmissions.materialId,
+            activityId: reviewSubmissions.activityId,
+            status: reviewSubmissions.status,
+          })
+          .from(reviewSubmissions)
+          .where(
+            and(
+              eq(reviewSubmissions.activityId, input.activityId),
+              sql`${reviewSubmissions.status} != 'substituído'`
+            )
+          )
+          .orderBy(desc(reviewSubmissions.submittedAt))
+          .limit(1);
+        submission = submissionRow[0] ?? null;
+      }
+
       if (!submission || submission.status === "substituído") {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Esta submissão não está aberta para parecer.",
+          message: "Esta submissão não está aberta para parecer ou o material não possui submissão ativa.",
         });
       }
       const [material, member, activity] = await Promise.all([
@@ -695,11 +838,31 @@ export const productionRouter = router({
           message: "O executor designado não pode emitir parecer sobre o próprio trabalho.",
         });
       }
+      const allowedReviewerIds = Array.from(
+        new Set([
+          ...(material.reviewers ?? []).map(item => item.teamMemberId),
+          ...(activity?.reviewers ?? []).map(item => item.teamMemberId),
+        ])
+      );
+
       assertCanReviewActivity(
         ctx.user,
         member,
-        material.reviewers.map(item => item.teamMemberId)
+        allowedReviewerIds
       );
+
+      let reviewerMemberId = member?.id;
+      if (!reviewerMemberId && isAdministrator(ctx.user)) {
+        const allMembers = await listTeamMembers();
+        reviewerMemberId = allMembers.find((m: any) => m.userId === ctx.user.id)?.id ?? allowedReviewerIds[0] ?? 1;
+      }
+
+      if (!reviewerMemberId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Revisor não identificado no sistema.",
+        });
+      }
 
       // Bloqueio mandatário: aprovação só é autorizada quando todos os apontamentos de ajuste estiverem resolvidos
       if (input.decision === "aprovado") {
@@ -732,11 +895,23 @@ export const productionRouter = router({
         }
       }
 
+      // Se foram solicitados ajustes com nota, registra também como apontamento formal
+      if (input.decision === "ajustes solicitados" && input.note?.trim()) {
+        await db.insert(materialComments).values({
+          materialId: material.id,
+          submissionId: submission.id,
+          authorId: ctx.user.id,
+          commentType: "solicitação de ajuste",
+          content: input.note.trim(),
+          status: "aberto",
+        });
+      }
+
       await db
         .insert(reviewDecisions)
         .values({
           submissionId: submission.id,
-          reviewerId: member!.id,
+          reviewerId: reviewerMemberId,
           decision: input.decision,
           note: input.note,
           decidedAt: Date.now(),
@@ -759,7 +934,7 @@ export const productionRouter = router({
         .where(
           and(
             eq(activityReviewers.activityId, submission.activityId),
-            eq(activityReviewers.teamMemberId, member!.id)
+            eq(activityReviewers.teamMemberId, reviewerMemberId)
           )
         );
       const decisions = await db

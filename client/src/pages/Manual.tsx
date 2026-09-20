@@ -143,24 +143,24 @@ export default function ManualPage() {
                   </Badge>
                   <Users className="h-5 w-5 text-primary" />
                 </div>
-                <CardTitle className="text-xl">Coordenador de Grupo</CardTitle>
+                <CardTitle className="text-xl">Coordenador de Grupo (Autor no Sistema)</CardTitle>
                 <CardDescription>
-                  Responsável pela integridade e entregas dos capítulos da sua frente.
+                  Autor formal e responsável perante o sistema pela integridade e entregas dos capítulos da sua frente.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-xs leading-relaxed text-muted-foreground flex-1">
                 <div className="space-y-2 rounded-md bg-muted/40 p-3 border border-border/50">
                   <p className="font-semibold text-foreground">Principais Tarefas:</p>
                   <ul className="list-inside list-disc space-y-1.5 text-foreground/80">
-                    <li>Conferir o escopo oficial do capítulo (Anexo B).</li>
+                    <li>Atuar como autor formal do capítulo no sistema, submetendo minutas e versões.</li>
+                    <li>Gerir internamente no grupo a distribuição de redação e tarefas com os pesquisadores.</li>
                     <li>Mapear e pactuar interfaces interdisciplinares com outros grupos temáticos.</li>
                     <li>Designar revisores técnicos independentes para cada seção.</li>
-                    <li>Acompanhar e atualizar o status/progresso das etapas.</li>
-                    <li>Homologar minutas após aprovação técnica dos revisores.</li>
+                    <li>Atender aos apontamentos de revisão e homologar o capítulo para o tomo.</li>
                   </ul>
                 </div>
                 <div className="rounded-md border border-amber-500/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-800 dark:text-amber-300">
-                  <strong>Regra de Ouro:</strong> Os revisores devem pertencer preferencialmente a grupos distintos para assegurar avaliação isenta por pares.
+                  <strong>Regra de Governança:</strong> O coordenador representa o grupo como autor formal no sistema, enquanto a organização interna de tarefas é conduzida autonomamente pelo próprio grupo.
                 </div>
               </CardContent>
               <div className="p-6 pt-0">
@@ -181,24 +181,22 @@ export default function ManualPage() {
                   </Badge>
                   <FileText className="h-5 w-5 text-indigo-500" />
                 </div>
-                <CardTitle className="text-xl">Autor / Executor</CardTitle>
+                <CardTitle className="text-xl">Pesquisador / Integrante do Grupo</CardTitle>
                 <CardDescription>
-                  Pesquisador encarregado da elaboração do texto e das análises empíricas.
+                  Pesquisador participante encarregado da elaboração interna do texto e análises empíricas.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-xs leading-relaxed text-muted-foreground flex-1">
                 <div className="space-y-2 rounded-md bg-muted/40 p-3 border border-border/50">
                   <p className="font-semibold text-foreground">Principais Tarefas:</p>
                   <ul className="list-inside list-disc space-y-1.5 text-foreground/80">
-                    <li>Consultar pendências nas abas "Como Autor" e "Interfaces" na Central de Ações.</li>
-                    <li>Conferir interfaces interdisciplinares vinculadas ao capítulo na Ficha da Atividade.</li>
-                    <li>Atualizar progresso percentual (0 a 100%) da etapa na Ficha.</li>
-                    <li>Submeter minutas na Estação de Revisão (upload ou link na nuvem).</li>
-                    <li>Implementar os ajustes apontados pelos revisores e responder.</li>
+                    <li>Colaborar com o coordenador do grupo na elaboração dos textos e bases de dados.</li>
+                    <li>Consultar o acervo bibliográfico e interfaces na plataforma.</li>
+                    <li>Subsidiar a preparação das minutas e o atendimento aos pareceres dos revisores.</li>
                   </ul>
                 </div>
                 <div className="rounded-md border border-indigo-500/20 bg-indigo-500/5 p-2.5 text-[11px] text-indigo-800 dark:text-indigo-300">
-                  <strong>Dica Prática:</strong> Sempre informe nas "Notas da Versão" o resumo das novidades e fontes utilizadas ao submeter nova minuta.
+                  <strong>Gestão Interna:</strong> A divisão operacional de tópicos e redação é definida diretamente entre o coordenador e os membros do grupo.
                 </div>
               </CardContent>
               <div className="p-6 pt-0">

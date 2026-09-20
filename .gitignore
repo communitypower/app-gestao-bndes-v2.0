@@ -44,5 +44,6 @@ desktop.ini
 .tempmediaStorage/
 .temp/
 tmp/
+.storage/
 
 scratch/

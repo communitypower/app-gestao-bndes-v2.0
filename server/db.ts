@@ -213,6 +213,16 @@ async function runPostgresMigrations(client: DbClient, pool: pg.Pool) {
         "note" text,
         "createdAt" timestamp DEFAULT now() NOT NULL
       );
+
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "actualStartAt" bigint;
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "actualEndAt" bigint;
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "nextStep" text;
+
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvalStatus" varchar(64) DEFAULT 'aprovado';
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "requiresGeneralCoordinationApproval" boolean DEFAULT false;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvedBy" integer;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvedAt" bigint;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "rejectionReason" text;
     `);
   } catch (tblErr: any) {
     console.warn("[Database] Base tables reconciliation notice:", tblErr?.message || tblErr);
@@ -644,7 +654,10 @@ export async function syncPdfAnalyticCatalog(
       sectionId: section.id,
     };
     if (existing) {
-      await db.update(activities).set(values).where(eq(activities.id, existing.id));
+      await db.update(activities).set({
+        ...values,
+        responsibleId: parent.responsibleId,
+      }).where(eq(activities.id, existing.id));
     } else {
       await db.insert(activities).values({
         ...values,
@@ -662,6 +675,21 @@ export async function syncPdfAnalyticCatalog(
 
 export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {
   const db = explicitDb ?? (await requireDb());
+
+  try {
+    await db.execute(sql`
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "actualStartAt" bigint;
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "actualEndAt" bigint;
+      ALTER TABLE "activities" ADD COLUMN IF NOT EXISTS "nextStep" text;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvalStatus" varchar(64) DEFAULT 'aprovado';
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "requiresGeneralCoordinationApproval" boolean DEFAULT false;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvedBy" integer;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "approvedAt" bigint;
+      ALTER TABLE "activity_allocations" ADD COLUMN IF NOT EXISTS "rejectionReason" text;
+    `);
+  } catch (migErr) {
+    // Ignore if table does not exist yet or in memory
+  }
 
   // 0. Ensure default local admin user exists safely without failing on conflict
   try {
@@ -695,6 +723,34 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
         appRole: "administrador",
         accessStatus: "ativo",
         loginMethod: "local",
+      });
+    }
+
+    const provAdmin = (
+      await db
+        .select()
+        .from(userAccessProvisions)
+        .where(eq(userAccessProvisions.email, "admin@estudo.ufrj.br"))
+        .limit(1)
+    )[0];
+    if (provAdmin) {
+      await db
+        .update(userAccessProvisions)
+        .set({
+          name: "Administrador do Estudo",
+          email: "admin@estudo.ufrj.br",
+          role: "admin",
+          appRole: "administrador",
+          status: "ativado",
+        })
+        .where(eq(userAccessProvisions.id, provAdmin.id));
+    } else {
+      await db.insert(userAccessProvisions).values({
+        email: "admin@estudo.ufrj.br",
+        name: "Administrador do Estudo",
+        role: "admin",
+        appRole: "administrador",
+        status: "ativado",
       });
     }
   } catch (adminErr: any) {
@@ -1087,6 +1143,106 @@ export async function syncIdentifiedInterfaces(db: Awaited<ReturnType<typeof req
   }
 }
 
+export async function resetAndSeedPilotDatabase(explicitDb?: Awaited<ReturnType<typeof requireDb>>) {
+  const db = explicitDb ?? (await requireDb());
+
+  console.log("[Pilot Reset] Starting clean reset of transient test data...");
+
+  // 1. Delete all transient review, material, comment and notification data in reverse dependency order
+  await db.delete(materialComments);
+  await db.delete(materialRevisions);
+  await db.delete(reviewDecisions);
+  await db.delete(reviewSubmissions);
+  await db.delete(productionMaterials);
+  await db.delete(activityReviewers);
+  await db.delete(reviewChecklistEvents);
+  await db.delete(reviewChecklistItems);
+  await db.delete(activityDocumentWorkflowEvents);
+  await db.delete(participantNotifications);
+  await db.delete(notificationLogs);
+  await db.delete(interfaceComments);
+  await db.delete(interfaceEvents);
+  await db.delete(interfaceAiAnalyses);
+  await db.delete(interfaceEvidenceFiles);
+  await db.delete(projectGovernanceDecisions);
+  await db.delete(tomeGovernanceEvents);
+  await db.delete(tomeGovernanceAssignments);
+  await db.delete(projectEditorialGovernanceEvents);
+  await db.delete(projectEditorialGovernance);
+  await db.delete(userAccessEvents);
+  await db.delete(activityEvidenceLinks);
+  await db.delete(activityLeadershipEvents);
+
+  // 2. Reset workflow and execution status across all activities
+  await db.update(activities).set({
+    documentStatus: "planejada",
+    status: "pendente",
+    actualStartAt: null,
+    actualEndAt: null,
+    nextStep: null,
+  });
+
+  // 3. Reset coordination interfaces status
+  await db.update(coordinationInterfaces).set({
+    status: "identificada",
+  });
+
+  // 4. Ensure 100% canonical structural seed is loaded and synced
+  console.log("[Pilot Reset] Re-syncing canonical structural database (sections, chapters, members, interfaces, library)...");
+  await ensureSeedData(db);
+
+  // 5. Gather and return verified structural statistics
+  const [
+    sectionsCount,
+    groupsCount,
+    membersCount,
+    membershipsCount,
+    activitiesCount,
+    parentActivitiesCount,
+    interfacesCount,
+    libraryCount,
+    usersCount,
+    materialsCount,
+    submissionsCount,
+    notificationsCount,
+  ] = await Promise.all([
+    db.select({ count: sql<number>`count(*)` }).from(studySections),
+    db.select({ count: sql<number>`count(*)` }).from(teamGroups),
+    db.select({ count: sql<number>`count(*)` }).from(teamMembers),
+    db.select({ count: sql<number>`count(*)` }).from(teamGroupMemberships),
+    db.select({ count: sql<number>`count(*)` }).from(activities),
+    db.select({ count: sql<number>`count(*)` }).from(activities).where(sql`"parentActivityId" IS NULL`),
+    db.select({ count: sql<number>`count(*)` }).from(coordinationInterfaces),
+    db.select({ count: sql<number>`count(*)` }).from(libraryItems),
+    db.select({ count: sql<number>`count(*)` }).from(users),
+    db.select({ count: sql<number>`count(*)` }).from(productionMaterials),
+    db.select({ count: sql<number>`count(*)` }).from(reviewSubmissions),
+    db.select({ count: sql<number>`count(*)` }).from(participantNotifications),
+  ]);
+
+  const result = {
+    success: true,
+    message: "Ambiente piloto preparado com sucesso. Dados transientes de testes foram zerados e a base estrutural canônica foi totalmente restabelecida.",
+    stats: {
+      sections: Number(sectionsCount[0]?.count ?? 0),
+      groups: Number(groupsCount[0]?.count ?? 0),
+      members: Number(membersCount[0]?.count ?? 0),
+      memberships: Number(membershipsCount[0]?.count ?? 0),
+      totalActivities: Number(activitiesCount[0]?.count ?? 0),
+      parentChapters: Number(parentActivitiesCount[0]?.count ?? 0),
+      interfaces: Number(interfacesCount[0]?.count ?? 0),
+      libraryItems: Number(libraryCount[0]?.count ?? 0),
+      users: Number(usersCount[0]?.count ?? 0),
+      materials: Number(materialsCount[0]?.count ?? 0),
+      submissions: Number(submissionsCount[0]?.count ?? 0),
+      notifications: Number(notificationsCount[0]?.count ?? 0),
+    },
+  };
+
+  console.log("[Pilot Reset] Reset & Seed completed successfully:", result.stats);
+  return result;
+}
+
 export async function listSections() {
   const db = await requireDb();
   return db.select().from(studySections).orderBy(asc(studySections.sortOrder));
@@ -1299,6 +1455,9 @@ export async function listActivities() {
         sourceBase: activities.sourceBase,
         startAt: activities.startAt,
         dueAt: activities.dueAt,
+        actualStartAt: activities.actualStartAt,
+        actualEndAt: activities.actualEndAt,
+        nextStep: activities.nextStep,
         editorialDeliveryAt: activities.editorialDeliveryAt,
         bndesDeliveryAt: activities.bndesDeliveryAt,
         documentStatus: activities.documentStatus,
@@ -1343,6 +1502,11 @@ export async function listActivities() {
         isExecutionLead: activityAllocations.isExecutionLead,
         assignedBy: activityAllocations.assignedBy,
         allocationType: activityAllocations.allocationType,
+        approvalStatus: activityAllocations.approvalStatus,
+        requiresGeneralCoordinationApproval: activityAllocations.requiresGeneralCoordinationApproval,
+        approvedBy: activityAllocations.approvedBy,
+        approvedAt: activityAllocations.approvedAt,
+        rejectionReason: activityAllocations.rejectionReason,
         note: activityAllocations.note,
         createdAt: activityAllocations.createdAt,
         memberUserId: teamMembers.userId,
@@ -1350,6 +1514,7 @@ export async function listActivities() {
         memberTitle: teamMembers.title,
         institution: teamMembers.institution,
         groupId: teamMembers.groupId,
+        groupName: teamGroups.name,
         groupRole: teamMembers.groupRole,
         active: teamMembers.active,
       })
@@ -1358,6 +1523,7 @@ export async function listActivities() {
         teamMembers,
         eq(activityAllocations.teamMemberId, teamMembers.id)
       )
+      .leftJoin(teamGroups, eq(teamMembers.groupId, teamGroups.id))
       .orderBy(
         desc(activityAllocations.isExecutionLead),
         asc(teamMembers.name)
@@ -1501,7 +1667,7 @@ export async function listActivities() {
 
 export async function getActivity(id: number) {
   const db = await requireDb();
-  const [rows, leadershipRows, members, userRows, fieldworkRows, reviewChecklist, allInterfaces] = await Promise.all([
+  const [rows, leadershipRows, members, userRows, fieldworkRows, reviewChecklist, allInterfaces, allMaterials] = await Promise.all([
     listActivities(),
     db.select().from(activityLeadershipEvents).where(eq(activityLeadershipEvents.activityId, id)).orderBy(desc(activityLeadershipEvents.createdAt)),
     listTeamMembers(),
@@ -1509,6 +1675,7 @@ export async function getActivity(id: number) {
     listFieldworkActivities(),
     listActivityReviewChecklist(id),
     listCoordinationInterfaces(),
+    listProductionMaterials(),
   ]);
   const activity = rows.find(activity => activity.id === id);
   if (!activity) return undefined;
@@ -1517,6 +1684,10 @@ export async function getActivity(id: number) {
     item.activities.some(a => a.activityId === activity.id) ||
     item.sections.some(s => s.sectionId === activity.sectionId) ||
     (activity.responsibleGroupId && item.groups.some(g => g.groupId === activity.responsibleGroupId))
+  );
+
+  const productionMaterials = allMaterials.filter(
+    item => item.activityId === activity.id || item.sectionId === activity.sectionId
   );
 
   return {
@@ -1533,6 +1704,7 @@ export async function getActivity(id: number) {
         : [],
     relatedFieldwork: fieldworkRows.filter(item => item.relatedActivityId === activity.id),
     relatedInterfaces,
+    productionMaterials,
     reviewChecklist,
   };
 }
@@ -1583,6 +1755,9 @@ export async function listActivityStatusReport() {
       progress: activity.progress,
       startAt: activity.startAt,
       dueAt: activity.dueAt,
+      actualStartAt: activity.actualStartAt,
+      actualEndAt: activity.actualEndAt,
+      nextStep: activity.nextStep,
       coordinator: { id: activity.responsibleId, name: activity.responsibleName },
       executionResponsibles,
       reviewers,
@@ -2331,8 +2506,22 @@ export async function listProductionMaterials() {
   const [revisions, comments, reviewers, submissions, decisions, allUsers] =
     await Promise.all([
     db
-      .select()
+      .select({
+        id: materialRevisions.id,
+        materialId: materialRevisions.materialId,
+        revisionNumber: materialRevisions.revisionNumber,
+        notes: materialRevisions.notes,
+        fileName: materialRevisions.fileName,
+        mimeType: materialRevisions.mimeType,
+        fileSize: materialRevisions.fileSize,
+        storageKey: materialRevisions.storageKey,
+        storageUrl: materialRevisions.storageUrl,
+        uploadedBy: materialRevisions.uploadedBy,
+        uploadedByName: users.name,
+        createdAt: materialRevisions.createdAt,
+      })
       .from(materialRevisions)
+      .leftJoin(users, eq(materialRevisions.uploadedBy, users.id))
       .orderBy(desc(materialRevisions.revisionNumber)),
     db
       .select({
@@ -2451,9 +2640,26 @@ export async function listProductionMaterials() {
       c => c.commentType === "solicitação de ajuste"
     ).length;
 
+    const enrichedRevisions = revisions
+      .filter(item => item.materialId === material.id)
+      .map(rev => {
+        const revSub = materialSubmissions.find(s => s.revisionId === rev.id);
+        const revDecisions = revSub?.decisions ?? [];
+        const revComments = materialCommentsList.filter(c => c.revisionId === rev.id);
+        return {
+          ...rev,
+          revisionLabel: `R${String(rev.revisionNumber).padStart(2, "0")}`,
+          submissionId: revSub?.id ?? null,
+          submissionStatus: revSub?.status ?? (material.reviewStatus === "em elaboração" && rev.revisionNumber === material.currentRevision ? "em elaboração" : null),
+          submittedAt: revSub?.submittedAt ?? null,
+          decisions: revDecisions,
+          commentsCount: revComments.length,
+        };
+      });
+
     return {
       ...material,
-      revisions: revisions.filter(item => item.materialId === material.id),
+      revisions: enrichedRevisions,
       comments: materialCommentsList,
       reviewers: material.activityId
         ? reviewers.filter(item => item.activityId === material.activityId)
@@ -2498,7 +2704,7 @@ export async function syncActivityDocumentStatus(
 
 export async function listCoordinationInterfaces() {
   const db = await requireDb();
-  const [rows, sectionRows, groupRows, activityRows, commentRows, eventRows, evidenceRows, analysisRows] =
+  const [rows, sectionRows, groupRows, activityRows, commentRows, eventRows, evidenceRows, analysisRows, chapterParentActivities] =
     await Promise.all([
     db
       .select({
@@ -2561,9 +2767,14 @@ export async function listCoordinationInterfaces() {
         planCode: activities.planCode,
         title: activities.title,
         role: interfaceActivities.role,
+        responsibleId: teamMembers.id,
+        responsibleName: teamMembers.name,
+        responsibleGroupId: teamMembers.groupId,
+        sectionId: activities.sectionId,
       })
       .from(interfaceActivities)
       .innerJoin(activities, eq(interfaceActivities.activityId, activities.id))
+      .leftJoin(teamMembers, eq(activities.responsibleId, teamMembers.id))
       .orderBy(asc(activities.planSortOrder)),
     db
       .select({
@@ -2619,18 +2830,82 @@ export async function listCoordinationInterfaces() {
       .from(interfaceAiAnalyses)
       .innerJoin(users, eq(interfaceAiAnalyses.requestedBy, users.id))
       .orderBy(desc(interfaceAiAnalyses.createdAt)),
+    db
+      .select({
+        id: activities.id,
+        sectionId: activities.sectionId,
+        sectionCode: studySections.code,
+        title: activities.title,
+        responsibleId: teamMembers.id,
+        responsibleName: teamMembers.name,
+        responsibleGroupId: teamMembers.groupId,
+      })
+      .from(activities)
+      .innerJoin(studySections, eq(activities.sectionId, studySections.id))
+      .innerJoin(teamMembers, eq(activities.responsibleId, teamMembers.id))
+      .where(sql`${activities.parentActivityId} IS NULL`),
   ]);
 
-  return rows.map(item => ({
-    ...item,
-    sections: sectionRows.filter(section => section.interfaceId === item.id),
-    groups: groupRows.filter(group => group.interfaceId === item.id),
-    activities: activityRows.filter(activity => activity.interfaceId === item.id),
-    comments: commentRows.filter(comment => comment.interfaceId === item.id),
-    events: eventRows.filter(event => event.interfaceId === item.id),
-    evidenceFiles: evidenceRows.filter(file => file.interfaceId === item.id),
-    aiAnalyses: analysisRows.filter(analysis => analysis.interfaceId === item.id),
-  }));
+  return rows.map(item => {
+    const itemSections = sectionRows.filter(section => section.interfaceId === item.id);
+    const itemGroups = groupRows.filter(group => group.interfaceId === item.id);
+    const itemActivities = activityRows.filter(activity => activity.interfaceId === item.id);
+    const itemComments = commentRows.filter(comment => comment.interfaceId === item.id);
+    const itemEvents = eventRows.filter(event => event.interfaceId === item.id);
+    const itemEvidenceFiles = evidenceRows.filter(file => file.interfaceId === item.id);
+    const itemAiAnalyses = analysisRows.filter(analysis => analysis.interfaceId === item.id);
+
+    // Compute chapter coordinators for the chapters and activities involved
+    const chapterCoordinatorsMap = new Map<number, {
+      id: number;
+      name: string;
+      groupId: number | null;
+      sectionCode: string;
+      sectionTitle: string;
+      role: string;
+    }>();
+
+    for (const section of itemSections) {
+      const chapterAct = (chapterParentActivities ?? []).find(
+        act => act.sectionId === section.sectionId || act.sectionCode === section.code
+      );
+      if (chapterAct?.responsibleId && chapterAct.responsibleName) {
+        chapterCoordinatorsMap.set(chapterAct.responsibleId, {
+          id: chapterAct.responsibleId,
+          name: chapterAct.responsibleName,
+          groupId: chapterAct.responsibleGroupId ?? null,
+          sectionCode: section.code,
+          sectionTitle: section.title,
+          role: "Coordenador do Capítulo",
+        });
+      }
+    }
+
+    for (const act of itemActivities) {
+      if (act.responsibleId && act.responsibleName && !chapterCoordinatorsMap.has(act.responsibleId)) {
+        chapterCoordinatorsMap.set(act.responsibleId, {
+          id: act.responsibleId,
+          name: act.responsibleName,
+          groupId: act.responsibleGroupId ?? null,
+          sectionCode: act.planCode || "",
+          sectionTitle: act.title,
+          role: "Responsável pelo Item",
+        });
+      }
+    }
+
+    return {
+      ...item,
+      sections: itemSections,
+      groups: itemGroups,
+      activities: itemActivities,
+      comments: itemComments,
+      events: itemEvents,
+      evidenceFiles: itemEvidenceFiles,
+      aiAnalyses: itemAiAnalyses,
+      chapterCoordinators: Array.from(chapterCoordinatorsMap.values()),
+    };
+  });
 }
 
 export async function getCoordinationInterface(id: number) {

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq, inArray, ne, or } from "drizzle-orm";
+import { and, eq, ilike, inArray, ne, or } from "drizzle-orm";
 import { z } from "zod";
 import {
   activityAllocations,
@@ -18,6 +18,7 @@ import {
   scopeMigrationHistory,
   teamMembers,
   tomeGovernanceAssignments,
+  users,
 } from "../../drizzle/schema";
 import { PDF_ANALYTIC_SECTIONS } from "../../shared/pdfAnalyticIndex";
 import {
@@ -32,6 +33,7 @@ import {
   assertCanManageActivityReview,
   canManageActivityAllocations,
   isAdministrator,
+  isGeneralCoordinatorOrAdmin,
 } from "../access";
 import { protectedProcedure, router } from "../_core/trpc";
 import {
@@ -50,27 +52,84 @@ import {
 } from "../db";
 import { createParticipantNotification } from "../notificationService";
 import { sendActivityNotification } from "../notificationEngine";
+import { evaluateActivityReviewWithAI } from "../aiReviewEngine";
 import {
   activityAllocationInputSchema,
   activityInputSchema,
   activityMilestoneSetSchema,
   activityReviewerIdsSchema,
   activityScheduleSchema,
+  quickActivityInfoSchema,
 } from "./schemas";
 import {
   REFERENCE_ASSIGNMENT_GROUP_LABELS,
   referenceCodesForGroup,
   type ReferenceAssignmentGroupCode,
 } from "../../shared/referenceAssignmentMatrix";
+import { KICKOFF_GROUP_REFERENCE } from "../groupReference";
 
-async function getEligibleParticipants(responsibleId: number) {
+async function getThematicGroupMembers(activity: {
+  responsibleGroupId?: number | null;
+  groupId?: number | null;
+  groupName?: string | null;
+  responsibleGroupName?: string | null;
+  allocations?: Array<{ teamMemberId: number }>;
+}) {
   const [members, activityRows] = await Promise.all([listTeamMembers(), listActivities()]);
-  return members
-    .filter(member => member.active)
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeActivityRows = Array.isArray(activityRows) ? activityRows : [];
+  const groupName = activity.groupName || activity.responsibleGroupName;
+  const groupRefNames = groupName ? (KICKOFF_GROUP_REFERENCE[groupName]?.members ?? []) : [];
+
+  return safeMembers
+    .filter(member =>
+      member.active && (
+        (activity.responsibleGroupId && member.groupId === activity.responsibleGroupId) ||
+        (activity.groupId && member.groupId === activity.groupId) ||
+        groupRefNames.includes(member.name) ||
+        activity.allocations?.some(a => a.teamMemberId === member.id)
+      )
+    )
     .map(member => {
-      const currentAllocations = activityRows.flatMap(activity => activity.allocations).filter(allocation => allocation.teamMemberId === member.id);
+      const currentAllocations = safeActivityRows
+        .flatMap(act => act.allocations ?? [])
+        .filter(alloc => alloc.teamMemberId === member.id);
       return {
         ...member,
+        currentAllocatedHours: currentAllocations.reduce((sum, alloc) => sum + alloc.allocatedHours, 0),
+        currentActivityCount: new Set(currentAllocations.map(alloc => alloc.activityId)).size,
+      };
+    });
+}
+
+async function getEligibleParticipants(
+  responsibleId: number,
+  activity?: {
+    responsibleGroupId?: number | null;
+    groupId?: number | null;
+    groupName?: string | null;
+    responsibleGroupName?: string | null;
+    parentResponsibleGroupId?: number | null;
+  } | null
+) {
+  const [members, activityRows] = await Promise.all([listTeamMembers(), listActivities()]);
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeActivityRows = Array.isArray(activityRows) ? activityRows : [];
+  const targetGroupId = activity?.responsibleGroupId ?? activity?.groupId ?? activity?.parentResponsibleGroupId;
+  const targetGroupName = activity?.groupName || activity?.responsibleGroupName;
+  const groupRefMembers = targetGroupName ? (KICKOFF_GROUP_REFERENCE[targetGroupName]?.members ?? []) : [];
+
+  return safeMembers
+    .filter(member => member.active)
+    .map(member => {
+      const currentAllocations = safeActivityRows.flatMap(a => a.allocations ?? []).filter(allocation => allocation.teamMemberId === member.id);
+      const isSameGroup = Boolean(
+        (targetGroupId && member.groupId === targetGroupId) ||
+        (targetGroupName && groupRefMembers.includes(member.name))
+      );
+      return {
+        ...member,
+        isSameGroup,
         currentAllocatedHours: currentAllocations.reduce((sum, allocation) => sum + allocation.allocatedHours, 0),
         currentActivityCount: new Set(currentAllocations.map(allocation => allocation.activityId)).size,
       };
@@ -79,19 +138,24 @@ async function getEligibleParticipants(responsibleId: number) {
 
 async function getEligibleReviewers(responsibleId: number, activityId?: number) {
   const [members, activityRows] = await Promise.all([listTeamMembers(), listActivities()]);
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeActivityRows = Array.isArray(activityRows) ? activityRows : [];
   const executorIds = new Set(
-    activityRows
+    safeActivityRows
       .find(activity => activity.id === activityId)
       ?.allocations?.map(allocation => allocation.teamMemberId) ?? []
   );
-  return members.filter(
+  return safeMembers.filter(
     member =>
       member.active &&
       member.id !== responsibleId &&
       !executorIds.has(member.id)
   ).map(member => {
-    const currentReviewCount = activityRows.flatMap(activity => activity.reviewers ?? []).filter(reviewer => reviewer.teamMemberId === member.id && reviewer.status !== "aprovado").length;
-    return { ...member, currentReviewCount };
+    const currentReviewCount = safeActivityRows.flatMap(activity => activity.reviewers ?? []).filter(reviewer => reviewer.teamMemberId === member.id && reviewer.status !== "aprovado").length;
+    return {
+      ...member,
+      currentReviewCount,
+    };
   });
 }
 
@@ -186,9 +250,24 @@ async function replaceActivityAllocations(
   activityId: number,
   allocations: ActivityAllocationInput[],
   assignedBy: number,
-  leadershipNote?: string
+  leadershipNote?: string,
+  callerIsGeneralCoordinatorOrAdmin = false,
+  activityContext?: {
+    responsibleGroupId?: number | null;
+    groupId?: number | null;
+    groupName?: string | null;
+    responsibleGroupName?: string | null;
+    parentResponsibleGroupId?: number | null;
+  } | null
 ) {
   const db = await requireDb();
+  const members = await listTeamMembers();
+  const memberMap = new Map(members.map(m => [m.id, m]));
+
+  const targetGroupId = activityContext?.responsibleGroupId ?? activityContext?.groupId ?? activityContext?.parentResponsibleGroupId;
+  const targetGroupName = activityContext?.groupName || activityContext?.responsibleGroupName;
+  const groupRefMembers = targetGroupName ? (KICKOFF_GROUP_REFERENCE[targetGroupName]?.members ?? []) : [];
+
   await db
     .delete(activityAllocations)
     .where(
@@ -199,16 +278,47 @@ async function replaceActivityAllocations(
     );
   if (allocations.length) {
     await db.insert(activityAllocations).values(
-      allocations.map(allocation => ({
-        activityId,
-        teamMemberId: allocation.teamMemberId,
-        allocatedHours: allocation.allocatedHours,
-        responsibility: allocation.responsibility.trim(),
-        isExecutionLead: allocation.isExecutionLead,
-        assignedBy,
-        note: allocation.isExecutionLead ? leadershipNote ?? null : null,
-        allocationType: "vigente" as const,
-      }))
+      allocations.map(allocation => {
+        const member = memberMap.get(allocation.teamMemberId);
+        const isSameGroup = Boolean(
+          member && (
+            (targetGroupId && member.groupId === targetGroupId) ||
+            (targetGroupName && groupRefMembers.includes(member.name))
+          )
+        );
+
+        let approvalStatus = "aprovado";
+        let requiresGeneralCoordinationApproval = false;
+        let approvedBy: number | null = null;
+        let approvedAt: number | null = null;
+
+        if (!isSameGroup) {
+          if (callerIsGeneralCoordinatorOrAdmin) {
+            approvalStatus = "aprovado";
+            requiresGeneralCoordinationApproval = false;
+            approvedBy = assignedBy;
+            approvedAt = Date.now();
+          } else {
+            approvalStatus = "pendente_autorizacao_floriano";
+            requiresGeneralCoordinationApproval = true;
+          }
+        }
+
+        return {
+          activityId,
+          teamMemberId: allocation.teamMemberId,
+          allocatedHours: allocation.allocatedHours,
+          responsibility: allocation.responsibility.trim(),
+          isExecutionLead: allocation.isExecutionLead,
+          assignedBy,
+          approvalStatus,
+          requiresGeneralCoordinationApproval,
+          approvedBy,
+          approvedAt,
+          note: allocation.isExecutionLead ? leadershipNote ?? null : null,
+          allocationType: "vigente" as const,
+        };
+      })
     );
   }
 }
@@ -424,255 +534,285 @@ export const activitiesRouter = router({
     return delegatedRows;
   }),
 
-  myWorkloadActions: protectedProcedure.query(async ({ ctx }) => {
-    await ensureSeedData();
-    const [allActivities, member, materials, interfaces] = await Promise.all([
-      listActivities(),
-      getTeamMemberByUserId(ctx.user.id),
-      listProductionMaterials(),
-      listCoordinationInterfaces(),
-    ]);
+  myWorkloadActions: protectedProcedure
+    .input(
+      z
+        .object({
+          viewMode: z.enum(["my_actions", "all_pending"]).optional(),
+        })
+        .optional()
+    )
+    .query(async ({ ctx, input }) => {
+      await ensureSeedData();
+      const viewMode = input?.viewMode ?? "my_actions";
+      const [allActivities, member, materials, interfaces] = await Promise.all([
+        listActivities(),
+        getTeamMemberByUserId(ctx.user.id),
+        listProductionMaterials(),
+        listCoordinationInterfaces(),
+      ]);
 
-    const isAdmin = isAdministrator(ctx.user);
+      const isAdmin = isAdministrator(ctx.user);
+      const isAllPendingMode = isAdmin && viewMode === "all_pending";
 
-    const materialByActivityId = new Map<number, (typeof materials)[number]>();
-    materials.forEach(m => {
-      if (m.activityId) materialByActivityId.set(m.activityId, m);
-    });
+      const materialByActivityId = new Map<number, (typeof materials)[number]>();
+      materials.forEach(m => {
+        if (m.activityId) materialByActivityId.set(m.activityId, m);
+      });
 
-    type WorkloadActionItem = {
-      id: string;
-      activityId: number;
-      materialId: number | null;
-      sectionCode: string;
-      activityTitle: string;
-      dueAt: number;
-      role: "executor" | "revisor" | "coordenador" | "interfaces";
-      actionType:
-        | "minuta_pendente"
-        | "ajustes_a_fazer"
-        | "revisao_pendente"
-        | "validacao_ajustes"
-        | "sem_revisores"
-        | "homologar_capitulo"
-        | "interface_pendente"
-        | "interface_bloqueante";
-      actionTitle: string;
-      actionDescription: string;
-      ctaLabel: string;
-      ctaTarget: "drawer" | "revisao" | "interface";
-      interfaceId?: number;
-      pendingCommentCount?: number;
-    };
+      type WorkloadActionItem = {
+        id: string;
+        activityId: number;
+        materialId: number | null;
+        sectionCode: string;
+        activityTitle: string;
+        dueAt: number;
+        role: "executor" | "revisor" | "coordenador" | "interfaces";
+        actionType:
+          | "minuta_pendente"
+          | "ajustes_a_fazer"
+          | "revisao_pendente"
+          | "validacao_ajustes"
+          | "sem_revisores"
+          | "homologar_capitulo"
+          | "interface_pendente"
+          | "interface_bloqueante";
+        actionTitle: string;
+        actionDescription: string;
+        ctaLabel: string;
+        ctaTarget: "drawer" | "revisao" | "interface";
+        interfaceId?: number;
+        pendingCommentCount?: number;
+      };
 
-    const actions: WorkloadActionItem[] = [];
+      const actions: WorkloadActionItem[] = [];
 
-    for (const activity of allActivities) {
-      if (activity.parentActivityId !== null) continue;
+      for (const activity of allActivities) {
+        if (activity.parentActivityId !== null) continue;
 
-      const material = materialByActivityId.get(activity.id) ?? null;
-      const isExecutor = Boolean(
-        isAdmin ||
-          (member && activity.allocations.some(a => a.teamMemberId === member.id))
-      );
-      const isReviewer = Boolean(
-        isAdmin ||
-          (member && activity.reviewers.some(r => r.teamMemberId === member.id))
-      );
-      const isCoordinator = Boolean(
-        isAdmin ||
-          (member && member.id === activity.responsibleId) ||
-          (member &&
-            member.groupRole === "coordenador" &&
-            (member.id === activity.responsibleId || (material && member.groupId === material.responsibleGroupId)))
-      );
+        const material = materialByActivityId.get(activity.id) ?? null;
 
-      // 1. Ações como Executor
-      if (isExecutor) {
-        if (
-          !material ||
-          activity.documentStatus === "planejada" ||
-          activity.documentStatus === "em elaboração"
-        ) {
-          actions.push({
-            id: `executor_minuta_${activity.id}`,
-            activityId: activity.id,
-            materialId: material?.id ?? null,
-            sectionCode: activity.sectionCode,
-            activityTitle: activity.title,
-            dueAt: activity.dueAt,
-            role: "executor",
-            actionType: "minuta_pendente",
-            actionTitle: "Minuta Técnica Pendente de Carga",
-            actionDescription:
-              "Esta atividade está em fase de elaboração. Carregue o documento técnico e submeta à revisão da seção.",
-            ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial",
-            ctaTarget: material ? "revisao" : "drawer",
-          });
-        } else if (
-          activity.documentStatus === "ajustes solicitados" ||
-          (material &&
-            (material.openCommentCount > 0 ||
-              material.reviewStatus === "em elaboração"))
-        ) {
-          const openComments = material ? material.openCommentCount : 0;
-          actions.push({
-            id: `executor_ajustes_${activity.id}`,
-            activityId: activity.id,
-            materialId: material?.id ?? null,
-            sectionCode: activity.sectionCode,
-            activityTitle: activity.title,
-            dueAt: activity.dueAt,
-            role: "executor",
-            actionType: "ajustes_a_fazer",
-            actionTitle: "Ajustes Solicitados pelos Revisores",
-            actionDescription: `Há ${openComments} apontamento(s) pendente(s) de atendimento. Registre a nota de implementação e envie nova versão.`,
-            ctaLabel: "Implementar Ajustes",
-            ctaTarget: "revisao",
-            pendingCommentCount: openComments,
-          });
-        }
-      }
+        // Responsável pela Elaboração (Coordenador de capítulo ou autor líder designado)
+        const isExecutor = Boolean(
+          isAllPendingMode ||
+            (member &&
+              (member.id === activity.responsibleId ||
+                activity.allocations.some(a => a.teamMemberId === member.id && (a.isExecutionLead || activity.allocations.length === 1)) ||
+                (member.groupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador")))
+        );
 
-      // 2. Ações como Revisor
-      if (isReviewer && !isExecutor) {
-        if (
-          activity.documentStatus === "submetida à revisão da seção" ||
-          activity.documentStatus === "em revisão da seção" ||
-          material?.reviewStatus === "em revisão"
-        ) {
-          if (material && material.implementedCommentCount > 0) {
+        // Revisor Técnico Designado
+        const isReviewer = Boolean(
+          isAllPendingMode ||
+            (member && activity.reviewers.some(r => r.teamMemberId === member.id))
+        );
+
+        // Coordenação / Homologação
+        const isCoordinator = Boolean(
+          isAllPendingMode ||
+            (member && member.id === activity.responsibleId) ||
+            (member && member.groupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador") ||
+            (isAdmin && isAllPendingMode)
+        );
+
+        // 1. FLUXO DE ELABORAÇÃO E CARGA DE MINUTA (Autor / Coordenador do Capítulo)
+        if (isExecutor) {
+          if (
+            !material ||
+            activity.documentStatus === "planejada" ||
+            activity.documentStatus === "em elaboração"
+          ) {
             actions.push({
-              id: `revisor_validacao_${activity.id}`,
-              activityId: activity.id,
-              materialId: material.id,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
-              dueAt: activity.dueAt,
-              role: "revisor",
-              actionType: "validacao_ajustes",
-              actionTitle: "Validar Atendimento de Apontamentos",
-              actionDescription: `O autor implementou ${material.implementedCommentCount} apontamento(s). Valide e resolva para prosseguir com o parecer.`,
-              ctaLabel: "Validar Apontamentos",
-              ctaTarget: "revisao",
-              pendingCommentCount: material.implementedCommentCount,
-            });
-          } else {
-            actions.push({
-              id: `revisor_analise_${activity.id}`,
+              id: `executor_minuta_${activity.id}`,
               activityId: activity.id,
               materialId: material?.id ?? null,
               sectionCode: activity.sectionCode,
               activityTitle: activity.title,
               dueAt: activity.dueAt,
-              role: "revisor",
-              actionType: "revisao_pendente",
-              actionTitle: "Revisão Técnica Atribuída a Você",
+              role: "executor",
+              actionType: "minuta_pendente",
+              actionTitle: "Minuta Técnica Pendente de Envio",
               actionDescription:
-                "Uma versão do documento foi disponibilizada e aguarda sua análise técnica, apontamentos ou parecer.",
-              ctaLabel: "Realizar Análise Técnica",
+                "Esta atividade está em fase de elaboração. Anexe o documento técnico intermediário na Ficha e submeta à revisão da seção.",
+              ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial",
+              ctaTarget: material ? "revisao" : "drawer",
+            });
+          } else if (
+            activity.documentStatus === "ajustes solicitados" ||
+            (material &&
+              (material.openCommentCount > 0 ||
+                material.reviewStatus === "em elaboração"))
+          ) {
+            const openComments = material ? material.openCommentCount : 0;
+            actions.push({
+              id: `executor_ajustes_${activity.id}`,
+              activityId: activity.id,
+              materialId: material?.id ?? null,
+              sectionCode: activity.sectionCode,
+              activityTitle: activity.title,
+              dueAt: activity.dueAt,
+              role: "executor",
+              actionType: "ajustes_a_fazer",
+              actionTitle: "Ajustes Solicitados pelos Revisores",
+              actionDescription: `Há ${openComments} apontamento(s) pendente(s) de atendimento. Anexe a nova versão revisada com a nota de implementação.`,
+              ctaLabel: "Implementar Ajustes",
+              ctaTarget: "revisao",
+              pendingCommentCount: openComments,
+            });
+          }
+        }
+
+        // 2. FLUXO DE REVISÃO TÉCNICA E PARECER (Revisores Independentes Designados)
+        if (isReviewer && (!isExecutor || isAllPendingMode)) {
+          if (
+            activity.documentStatus === "submetida à revisão da seção" ||
+            activity.documentStatus === "em revisão da seção" ||
+            material?.reviewStatus === "em revisão"
+          ) {
+            if (material && material.implementedCommentCount > 0) {
+              actions.push({
+                id: `revisor_validacao_${activity.id}`,
+                activityId: activity.id,
+                materialId: material.id,
+                sectionCode: activity.sectionCode,
+                activityTitle: activity.title,
+                dueAt: activity.dueAt,
+                role: "revisor",
+                actionType: "validacao_ajustes",
+                actionTitle: "Validar Atendimento de Apontamentos",
+                actionDescription: `O autor implementou ${material.implementedCommentCount} apontamento(s). Valide as respostas para emitir o parecer.`,
+                ctaLabel: "Validar Apontamentos",
+                ctaTarget: "revisao",
+                pendingCommentCount: material.implementedCommentCount,
+              });
+            } else {
+              actions.push({
+                id: `revisor_analise_${activity.id}`,
+                activityId: activity.id,
+                materialId: material?.id ?? null,
+                sectionCode: activity.sectionCode,
+                activityTitle: activity.title,
+                dueAt: activity.dueAt,
+                role: "revisor",
+                actionType: "revisao_pendente",
+                actionTitle: "Revisão Técnica Atribuída",
+                actionDescription:
+                  "Uma nova minuta foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.",
+                ctaLabel: "Realizar Análise Técnica",
+                ctaTarget: "revisao",
+              });
+            }
+          }
+        }
+
+        // 3. FLUXO DE HOMOLOGAÇÃO E GOVERNANÇA (Coordenador do Capítulo / Admin)
+        if (isCoordinator) {
+          if (activity.reviewers.length === 0) {
+            actions.push({
+              id: `coord_sem_revisores_${activity.id}`,
+              activityId: activity.id,
+              materialId: material?.id ?? null,
+              sectionCode: activity.sectionCode,
+              activityTitle: activity.title,
+              dueAt: activity.dueAt,
+              role: "coordenador",
+              actionType: "sem_revisores",
+              actionTitle: "Designar Revisores Técnicos",
+              actionDescription:
+                "Este capítulo ainda não possui revisores independentes indicados para a emissão de parecer.",
+              ctaLabel: "Designar Revisores",
+              ctaTarget: "drawer",
+            });
+          } else if (
+            activity.documentStatus === "revisada pela seção" ||
+            material?.reviewStatus === "aprovado"
+          ) {
+            actions.push({
+              id: `coord_homologar_${activity.id}`,
+              activityId: activity.id,
+              materialId: material?.id ?? null,
+              sectionCode: activity.sectionCode,
+              activityTitle: activity.title,
+              dueAt: activity.dueAt,
+              role: "coordenador",
+              actionType: "homologar_capitulo",
+              actionTitle: "Homologar e Consolidar no Capítulo",
+              actionDescription:
+                "A minuta foi aprovada na revisão técnica e está pronta para consolidação editorial no capítulo.",
+              ctaLabel: "Homologar no Capítulo",
               ctaTarget: "revisao",
             });
           }
         }
       }
 
-      // 3. Ações como Coordenador
-      if (isCoordinator) {
-        if (activity.reviewers.length === 0) {
+      // 4. FLUXO DE INTERFACES INTERDISCIPLINARES (Pontos Focais)
+      for (const interf of interfaces) {
+        if (interf.status === "resolvida") continue;
+
+        const isDirectlyResponsible = Boolean(member && interf.responsibleId === member.id);
+        const isGroupInvolved = Boolean(
+          member?.groupId &&
+          interf.groups.some(g => g.groupId === member.groupId && (member.groupRole === "coordenador" || isAllPendingMode))
+        );
+
+        if (isAllPendingMode || isDirectlyResponsible || isGroupInvolved) {
+          const isBlocking = interf.blockingClass === "prioritária" || interf.priority === "crítica" || interf.priority === "alta";
+          const groupsSummary = interf.groups.map(g => g.name).join(" ↔ ") || "Frentes temáticas";
+
           actions.push({
-            id: `coord_sem_revisores_${activity.id}`,
-            activityId: activity.id,
-            materialId: material?.id ?? null,
-            sectionCode: activity.sectionCode,
-            activityTitle: activity.title,
-            dueAt: activity.dueAt,
-            role: "coordenador",
-            actionType: "sem_revisores",
-            actionTitle: "Atribuir Revisores Técnicos",
-            actionDescription:
-              "Esta atividade ainda não possui revisores independentes designados para a análise do documento.",
-            ctaLabel: "Atribuir Revisores",
-            ctaTarget: "drawer",
-          });
-        } else if (
-          activity.documentStatus === "revisada pela seção" ||
-          material?.reviewStatus === "aprovado"
-        ) {
-          actions.push({
-            id: `coord_homologar_${activity.id}`,
-            activityId: activity.id,
-            materialId: material?.id ?? null,
-            sectionCode: activity.sectionCode,
-            activityTitle: activity.title,
-            dueAt: activity.dueAt,
-            role: "coordenador",
-            actionType: "homologar_capitulo",
-            actionTitle: "Homologar e Consolidar no Capítulo",
-            actionDescription:
-              "A seção foi aprovada na revisão técnica e está apta para homologação editorial no capítulo correspondente.",
-            ctaLabel: "Homologar no Capítulo",
-            ctaTarget: "revisao",
+            id: `interface_${interf.id}`,
+            activityId: interf.activities[0]?.activityId ?? 0,
+            materialId: null,
+            sectionCode: interf.sections[0]?.code ?? "INTER",
+            activityTitle: interf.title,
+            dueAt: interf.dueAt ?? (Date.now() + 7 * 86400 * 1000),
+            role: "interfaces",
+            actionType: isBlocking ? "interface_bloqueante" : "interface_pendente",
+            actionTitle: isBlocking
+              ? "Interface Crítica Aguardando Alinhamento"
+              : "Interface Interdisciplinar em Aberto",
+            actionDescription: isBlocking
+              ? `Interface prioritária conectando ${groupsSummary}. Alinhe os insumos técnicos para evitar descompassos metodológicos.`
+              : `Interface técnica em discussão envolvendo seu grupo (${groupsSummary}). Registre notas ou confirme alinhamento.`,
+            ctaLabel: isBlocking ? "Resolver Interface" : "Alinhar Interface",
+            ctaTarget: "interface",
+            interfaceId: interf.id,
           });
         }
       }
-    }
 
-    // 4. Ações de Interfaces de Coordenação Interdisciplinares
-    for (const interf of interfaces) {
-      if (interf.status === "resolvida") continue;
+      // Ordenação estritamente cronológica por prazo de término da atividade no cronograma (dueAt ascendente, nulos ao fim)
+      actions.sort((a, b) => {
+        if (a.dueAt === null || a.dueAt === undefined) return 1;
+        if (b.dueAt === null || b.dueAt === undefined) return -1;
+        return a.dueAt - b.dueAt;
+      });
 
-      const isDirectlyResponsible = Boolean(member && interf.responsibleId === member.id);
-      const isGroupInvolved = Boolean(member?.groupId && interf.groups.some(g => g.groupId === member.groupId));
+      const executorActions = actions.filter(a => a.role === "executor");
+      const reviewerActions = actions.filter(a => a.role === "revisor");
+      const coordinatorActions = actions.filter(a => a.role === "coordenador");
+      const interfaceActions = actions.filter(a => a.role === "interfaces");
 
-      if (isAdmin || isDirectlyResponsible || isGroupInvolved) {
-        const isBlocking = interf.blockingClass === "prioritária" || interf.priority === "crítica" || interf.priority === "alta";
-        const groupsSummary = interf.groups.map(g => g.name).join(" ↔ ") || "Frentes temáticas";
+      const summary = {
+        total: actions.length,
+        executorCount: executorActions.length,
+        reviewerCount: reviewerActions.length,
+        coordinatorCount: coordinatorActions.length,
+        interfaceCount: interfaceActions.length,
+      };
 
-        actions.push({
-          id: `interface_${interf.id}`,
-          activityId: interf.activities[0]?.activityId ?? 0,
-          materialId: null,
-          sectionCode: interf.sections[0]?.code ?? "INTER",
-          activityTitle: interf.title,
-          dueAt: interf.dueAt ?? (Date.now() + 7 * 86400 * 1000),
-          role: "interfaces",
-          actionType: isBlocking ? "interface_bloqueante" : "interface_pendente",
-          actionTitle: isBlocking
-            ? "Interface Bloqueante / Prioritária Aguardando Alinhamento"
-            : "Interface Interdisciplinar em Discussão",
-          actionDescription: isBlocking
-            ? `Interface crítica conectando ${groupsSummary}. Alinhe os insumos técnicos para evitar impedimentos metodológicos.`
-            : `Interface em aberto para o seu grupo (${groupsSummary}). Registre notas de alinhamento ou confirme o acordo.`,
-          ctaLabel: isBlocking ? "Resolver Interface" : "Alinhar Interface",
-          ctaTarget: "interface",
-          interfaceId: interf.id,
-        });
-      }
-    }
-
-    const executorActions = actions.filter(a => a.role === "executor");
-    const reviewerActions = actions.filter(a => a.role === "revisor");
-    const coordinatorActions = actions.filter(a => a.role === "coordenador");
-    const interfaceActions = actions.filter(a => a.role === "interfaces");
-
-    const summary = {
-      total: actions.length,
-      executorCount: executorActions.length,
-      reviewerCount: reviewerActions.length,
-      coordinatorCount: coordinatorActions.length,
-      interfaceCount: interfaceActions.length,
-    };
-
-    return {
-      actions,
-      executorActions,
-      reviewerActions,
-      coordinatorActions,
-      interfaceActions,
-      summary,
-    };
-  }),
+      return {
+        actions,
+        executorActions,
+        reviewerActions,
+        coordinatorActions,
+        interfaceActions,
+        summary,
+        isAdmin,
+        viewMode,
+      };
+    }),
 
   detail: protectedProcedure
     .input(z.object({ id: z.number().int().positive() }))
@@ -686,7 +826,7 @@ export const activitiesRouter = router({
           message: "Atividade não encontrada.",
         });
       }
-      const delegatedMemberIds = activity.allocations.map(
+      const delegatedMemberIds = (activity.allocations ?? []).map(
         allocation => allocation.teamMemberId
       );
       const hasDelegation = Boolean(
@@ -698,38 +838,55 @@ export const activitiesRouter = router({
         member,
         { responsibleId: activity.responsibleId, delegatedMemberIds }
       );
-      const isCoordinator = Boolean(
+      const isChapterCoordinator = Boolean(
         isAdministrator(ctx.user) ||
-        ctx.user.appRole === "coordenador" ||
         (member?.active && (
           member.id === activity.responsibleId ||
-          member.groupRole === "coordenador" ||
-          (activity.responsibleGroupId && member.groupId === activity.responsibleGroupId)
+          (activity.responsibleGroupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador")
         ))
+      );
+      const isReviewer = Boolean(
+        member?.active && activity.reviewers?.some(item => item.teamMemberId === member.id)
       );
       const isExecutor = Boolean(
         member?.active && (
-          activity.allocations.some(item => item.teamMemberId === member.id) ||
-          activity.executionSteps?.some(step => step.allocations.some(a => a.teamMemberId === member.id))
+          activity.allocations?.some(item => item.teamMemberId === member.id) ||
+          activity.executionSteps?.some(step => step.allocations?.some(a => a.teamMemberId === member.id))
         )
       );
+      let parentActivity;
+      if (activity.parentActivityId !== null) {
+        parentActivity = await getActivity(activity.parentActivityId);
+      }
       const canManageAllocations = canManageActivityAllocations(
         ctx.user,
         member,
-        activity.responsibleId
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        parentActivity?.responsibleId,
+        parentActivity?.responsibleGroupId
       );
+      const canManageReview = isChapterCoordinator;
+      const canAuthorizeAllocations = isGeneralCoordinatorOrAdmin(ctx.user, member);
       return {
         ...activity,
         canManageAllocations,
-        isCoordinator,
+        canManageReview,
+        canAuthorizeAllocations,
+        isCoordinator: isChapterCoordinator,
+        isChapterCoordinator,
+        isReviewer,
         isExecutor,
         currentMemberId: member?.id ?? null,
-        eligibleParticipants: canManageAllocations
-          ? await getEligibleParticipants(activity.responsibleId)
-          : [],
-        eligibleReviewers: canManageAllocations
-          ? await getEligibleReviewers(activity.responsibleId, activity.id)
-          : [],
+        thematicMembers: await getThematicGroupMembers(activity),
+        eligibleParticipants: await getEligibleParticipants(activity.responsibleId, {
+          responsibleGroupId: activity.responsibleGroupId,
+          groupId: activity.groupId,
+          groupName: activity.groupName,
+          responsibleGroupName: activity.responsibleGroupName,
+          parentResponsibleGroupId: parentActivity?.responsibleGroupId,
+        }),
+        eligibleReviewers: await getEligibleReviewers(activity.responsibleId, activity.id),
       };
     }),
 
@@ -751,10 +908,17 @@ export const activitiesRouter = router({
         });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
+      let parentActivity;
+      if (activity.parentActivityId !== null) {
+        parentActivity = await getActivity(activity.parentActivityId);
+      }
       assertCanManageActivityAllocations(
         ctx.user,
         member,
-        activity.responsibleId
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        parentActivity?.responsibleId,
+        parentActivity?.responsibleGroupId
       );
       const priorLeadId = (activity.allocations ?? []).find(allocation => allocation.isExecutionLead)?.teamMemberId;
       const nextLeadId = input.allocations.find(allocation => allocation.isExecutionLead)?.teamMemberId;
@@ -766,7 +930,21 @@ export const activitiesRouter = router({
         activity.responsibleId,
         input.allocations
       );
-      await replaceActivityAllocations(input.id, input.allocations, ctx.user.id, leadershipChanged ? `Mudança de liderança: ${input.leadershipChangeJustification!.trim()}` : undefined);
+      const isGeneralCoord = isGeneralCoordinatorOrAdmin(ctx.user, member);
+      await replaceActivityAllocations(
+        input.id,
+        input.allocations,
+        ctx.user.id,
+        leadershipChanged ? `Mudança de liderança: ${input.leadershipChangeJustification!.trim()}` : undefined,
+        isGeneralCoord,
+        {
+          responsibleGroupId: activity.responsibleGroupId,
+          groupId: activity.groupId,
+          groupName: activity.groupName,
+          responsibleGroupName: activity.responsibleGroupName,
+          parentResponsibleGroupId: parentActivity?.responsibleGroupId,
+        }
+      );
       if (leadershipChanged && priorLeadId && nextLeadId) {
         const db = await requireDb();
         await db.insert(activityLeadershipEvents).values({
@@ -777,7 +955,183 @@ export const activitiesRouter = router({
           assignedBy: ctx.user.id,
         });
       }
+
+      // Notificar novos executores e submeter alocações de outros grupos para autorização do Floriano
+      const previousMemberIds = new Set((activity.allocations ?? []).map(a => a.teamMemberId));
+      const newAllocations = input.allocations.filter(a => !previousMemberIds.has(a.teamMemberId));
+      const code = activity.detailCode ?? activity.planCode ?? activity.sectionCode ?? "";
+
+      const members = await listTeamMembers();
+      const memberMap = new Map(members.map(m => [m.id, m]));
+      const targetGroupId = activity.responsibleGroupId ?? activity.groupId ?? parentActivity?.responsibleGroupId;
+      const targetGroupName = activity.groupName || activity.responsibleGroupName;
+      const groupRefMembers = targetGroupName ? (KICKOFF_GROUP_REFERENCE[targetGroupName]?.members ?? []) : [];
+
+      for (const allocation of newAllocations) {
+        const m = memberMap.get(allocation.teamMemberId);
+        const isSameGroup = Boolean(
+          m && (
+            (targetGroupId && m.groupId === targetGroupId) ||
+            (targetGroupName && groupRefMembers.includes(m.name))
+          )
+        );
+
+        if (!isSameGroup && !isGeneralCoord) {
+          // Cross-group: Requer autorização de Floriano
+          const db = await requireDb();
+          const florianoUser = await db
+            .select({ id: users.id })
+            .from(users)
+            .where(or(ilike(users.email, "%floriano%"), eq(users.role, "admin")))
+            .limit(1)
+            .then(r => r[0]);
+
+          await createParticipantNotification({
+            recipientUserId: florianoUser?.id ?? 1,
+            actorUserId: ctx.user.id,
+            activityId: input.id,
+            type: "autorizacao_alocacao_solicitada",
+            title: "Autorização de Alocação Intergrupos",
+            message: `O coordenador solicitou a inclusão de ${m?.name ?? "integrante"} (${m?.groupName ?? "Outro Grupo"}) na atividade "${code ? `${code} — ` : ""}${activity.title}". Depende de sua autorização como Coordenador Geral (Prof. Floriano).`,
+            actionUrl: `/atividades?ficha=${input.id}`,
+          });
+
+          await createParticipantNotification({
+            recipientMemberId: allocation.teamMemberId,
+            actorUserId: ctx.user.id,
+            activityId: input.id,
+            type: "execucao_atribuida",
+            title: "Indicação de Execução (Pendente de Autorização)",
+            message: `Você foi indicado como executor da atividade "${code ? `${code} — ` : ""}${activity.title}" pelo coordenador da seção. Como você pertence a outro grupo temático, a alocação aguarda autorização da Coordenação Geral (Prof. Floriano).`,
+            actionUrl: `/atividades?ficha=${input.id}`,
+          });
+        } else {
+          // Mesmo grupo ou aprovado diretamente pela Coordenação Geral
+          await createParticipantNotification({
+            recipientMemberId: allocation.teamMemberId,
+            actorUserId: ctx.user.id,
+            activityId: input.id,
+            type: "execucao_atribuida",
+            title: "Atribuição de Execução",
+            message: `Você foi associado como executor da atividade "${code ? `${code} — ` : ""}${activity.title}" pelo coordenador da seção. Acesse a atividade para consultar o escopo e os prazos.`,
+            actionUrl: `/atividades?ficha=${input.id}`,
+          });
+        }
+      }
+
       return getActivity(input.id);
+    }),
+
+  decideCrossGroupAllocation: protectedProcedure
+    .input(
+      z.object({
+        allocationId: z.number().int().positive(),
+        decision: z.enum(["aprovar", "rejeitar"]),
+        note: z.string().trim().max(1000).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ensureSeedData();
+      const callerMember = await getTeamMemberByUserId(ctx.user.id);
+      if (!isGeneralCoordinatorOrAdmin(ctx.user, callerMember)) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message:
+            "A autorização de alocação de integrantes de outros grupos é de competência exclusiva do Prof. Floriano (Coordenação Geral) ou administradores.",
+        });
+      }
+
+      const db = await requireDb();
+      const [allocation] = await db
+        .select({
+          id: activityAllocations.id,
+          activityId: activityAllocations.activityId,
+          teamMemberId: activityAllocations.teamMemberId,
+          assignedBy: activityAllocations.assignedBy,
+          approvalStatus: activityAllocations.approvalStatus,
+        })
+        .from(activityAllocations)
+        .where(eq(activityAllocations.id, input.allocationId));
+
+      if (!allocation) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Alocação não encontrada.",
+        });
+      }
+
+      const [activity, member] = await Promise.all([
+        getActivity(allocation.activityId),
+        db
+          .select({ id: teamMembers.id, name: teamMembers.name })
+          .from(teamMembers)
+          .where(eq(teamMembers.id, allocation.teamMemberId))
+          .then(r => r[0]),
+      ]);
+
+      const code = activity?.detailCode ?? activity?.planCode ?? activity?.sectionCode ?? "";
+
+      if (input.decision === "aprovar") {
+        await db
+          .update(activityAllocations)
+          .set({
+            approvalStatus: "aprovado",
+            requiresGeneralCoordinationApproval: false,
+            approvedBy: ctx.user.id,
+            approvedAt: Date.now(),
+            rejectionReason: null,
+            updatedAt: new Date(),
+          })
+          .where(eq(activityAllocations.id, input.allocationId));
+
+        if (member) {
+          await createParticipantNotification({
+            recipientMemberId: member.id,
+            actorUserId: ctx.user.id,
+            activityId: allocation.activityId,
+            type: "execucao_atribuida",
+            title: "Alocação Intergrupos Autorizada",
+            message: `O Prof. Floriano autorizou sua participação como executor na atividade "${code ? `${code} — ` : ""}${activity?.title ?? ""}".`,
+            actionUrl: `/atividades?ficha=${allocation.activityId}`,
+          });
+        }
+
+        if (allocation.assignedBy && allocation.assignedBy !== ctx.user.id) {
+          await createParticipantNotification({
+            recipientUserId: allocation.assignedBy,
+            actorUserId: ctx.user.id,
+            activityId: allocation.activityId,
+            type: "alocacao_aprovada",
+            title: "Alocação Intergrupos Aprovada",
+            message: `O Prof. Floriano autorizou a inclusão de ${member?.name ?? "integrante"} na atividade "${code ? `${code} — ` : ""}${activity?.title ?? ""}".`,
+            actionUrl: `/atividades?ficha=${allocation.activityId}`,
+          });
+        }
+      } else {
+        await db
+          .update(activityAllocations)
+          .set({
+            approvalStatus: "rejeitado",
+            requiresGeneralCoordinationApproval: true,
+            rejectionReason: input.note?.trim() || "Não autorizado pela Coordenação Geral",
+            updatedAt: new Date(),
+          })
+          .where(eq(activityAllocations.id, input.allocationId));
+
+        if (allocation.assignedBy) {
+          await createParticipantNotification({
+            recipientUserId: allocation.assignedBy,
+            actorUserId: ctx.user.id,
+            activityId: allocation.activityId,
+            type: "alocacao_rejeitada",
+            title: "Alocação Intergrupos Recusada",
+            message: `A solicitação de inclusão de ${member?.name ?? "integrante"} na atividade "${code ? `${code} — ` : ""}${activity?.title ?? ""}" não foi autorizada pelo Prof. Floriano.${input.note ? ` Motivo: ${input.note.trim()}` : ""}`,
+            actionUrl: `/atividades?ficha=${allocation.activityId}`,
+          });
+        }
+      }
+
+      return getActivity(allocation.activityId);
     }),
 
   updateReviewers: protectedProcedure
@@ -797,7 +1151,7 @@ export const activitiesRouter = router({
         });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId);
+      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
       await validateReviewers(activity.responsibleId, input.reviewerIds, activity.id);
       await replaceActivityReviewers(input.id, input.reviewerIds, ctx.user.id);
       return getActivity(input.id);
@@ -815,7 +1169,7 @@ export const activitiesRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "O checklist de revisão deve ser criado na atividade-mãe." });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId);
+      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
       return ensureActivityReviewChecklist(activity, ctx.user.id);
     }),
 
@@ -831,7 +1185,7 @@ export const activitiesRouter = router({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Os prazos de revisão são configurados na atividade-mãe." });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId);
+      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
       return applyOfficialReviewChecklistSchedule(activity, ctx.user.id);
     }),
 
@@ -864,7 +1218,7 @@ export const activitiesRouter = router({
         throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId);
+      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
       if (input.responsibleId !== undefined && input.responsibleId !== null) {
         const members = await listTeamMembers();
         if (!members.some(item => item.id === input.responsibleId && item.active)) {
@@ -902,6 +1256,115 @@ export const activitiesRouter = router({
         );
       }
       return listActivityReviewChecklist(current.activityId);
+    }),
+
+  aiReviewEvaluation: protectedProcedure
+    .input(
+      z.object({
+        activityId: z.number().int().positive(),
+        materialId: z.number().int().positive().nullable().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      await ensureSeedData();
+      return evaluateActivityReviewWithAI({
+        activityId: input.activityId,
+        materialId: input.materialId,
+        userId: ctx.user.id,
+      });
+    }),
+
+  applyAIChecklistSuggestions: protectedProcedure
+    .input(
+      z.object({
+        activityId: z.number().int().positive(),
+        items: z.array(
+          z.object({
+            itemKey: z.string(),
+            status: z.enum(["pendente", "em andamento", "concluído", "bloqueado"]),
+            reason: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ensureSeedData();
+      const db = await requireDb();
+      const activity = await getActivity(input.activityId);
+      if (!activity) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
+      }
+      const member = await getTeamMemberByUserId(ctx.user.id);
+      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
+
+      await ensureActivityReviewChecklist(activity, ctx.user.id);
+      const currentChecklist = await db
+        .select()
+        .from(reviewChecklistItems)
+        .where(eq(reviewChecklistItems.activityId, input.activityId));
+
+      const events: Array<typeof reviewChecklistEvents.$inferInsert> = [];
+
+      for (const suggestion of input.items) {
+        const item = currentChecklist.find(i => i.itemKey === suggestion.itemKey);
+        if (item && item.status !== suggestion.status) {
+          await db
+            .update(reviewChecklistItems)
+            .set({
+              status: suggestion.status,
+              completedAt: suggestion.status === "concluído" ? Date.now() : null,
+              completedBy: suggestion.status === "concluído" ? ctx.user.id : null,
+            })
+            .where(eq(reviewChecklistItems.id, item.id));
+
+          events.push({
+            checklistItemId: item.id,
+            activityId: input.activityId,
+            eventType: "status_alterado",
+            summary: `Status atualizado para "${suggestion.status}" com base na Avaliação Técnica de Inteligência Artificial. ${suggestion.reason ? `Justificativa: ${suggestion.reason}` : ""}`,
+            actorId: ctx.user.id,
+          });
+        }
+      }
+
+      if (events.length) {
+        await db.insert(reviewChecklistEvents).values(events);
+      }
+
+      return listActivityReviewChecklist(input.activityId);
+    }),
+
+  generateAIParecerDraft: protectedProcedure
+    .input(
+      z.object({
+        activityId: z.number().int().positive(),
+        materialId: z.number().int().positive().nullable().optional(),
+        decisionType: z.enum(["aprovado", "ajustes solicitados"]).optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      await ensureSeedData();
+      const evaluation = await evaluateActivityReviewWithAI({
+        activityId: input.activityId,
+        materialId: input.materialId,
+        userId: ctx.user.id,
+      });
+
+      if (input.decisionType && input.decisionType !== evaluation.draftParecer.decisionType) {
+        const isAprovado = input.decisionType === "aprovado";
+        return {
+          ...evaluation.draftParecer,
+          decisionType: input.decisionType,
+          title: isAprovado
+            ? `Parecer Favorável — ${evaluation.activityCode} ("${evaluation.activityTitle}")`
+            : `Solicitação de Ajustes Técnicos — ${evaluation.activityCode} ("${evaluation.activityTitle}")`,
+          text: isAprovado
+            ? `Após avaliação técnica da minuta da atividade ${evaluation.activityCode} ("${evaluation.activityTitle}"), constatou-se pleno alinhamento com as diretrizes do Anexo B e metodologia do estudo. Parecer favorável à aprovação da versão técnica.`
+            : `Após avaliação técnica da minuta da atividade ${evaluation.activityCode} ("${evaluation.activityTitle}"), solicita-se a implementação de ajustes complementares para alinhamento metodológico e aprofundamento das séries de dados.`,
+        };
+      }
+
+      return evaluation.draftParecer;
     }),
 
   updateDocumentStatus: protectedProcedure
@@ -1072,6 +1535,48 @@ export const activitiesRouter = router({
         }),
       });
       await db.update(activities).set({ description }).where(eq(activities.id, activity.id));
+      return getActivity(activity.id);
+    }),
+
+  updateQuickInfo: protectedProcedure
+    .input(quickActivityInfoSchema)
+    .mutation(async ({ ctx, input }) => {
+      await ensureSeedData();
+      const activity = await getActivity(input.id);
+      if (!activity) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
+      }
+      const member = await getTeamMemberByUserId(ctx.user.id);
+      assertCanManageActivityAllocations(ctx.user, member, activity.responsibleId);
+
+      const db = await requireDb();
+      const updates: Partial<typeof activities.$inferInsert> = {
+        updatedAt: new Date(),
+      };
+
+      if (input.description !== undefined) {
+        updates.description = input.description.trim();
+      }
+      if (input.status !== undefined) {
+        updates.status = input.status;
+      }
+      if (input.startAt !== undefined) {
+        updates.startAt = input.startAt;
+      }
+      if (input.dueAt !== undefined) {
+        updates.dueAt = input.dueAt;
+      }
+      if (input.actualStartAt !== undefined) {
+        updates.actualStartAt = input.actualStartAt;
+      }
+      if (input.actualEndAt !== undefined) {
+        updates.actualEndAt = input.actualEndAt;
+      }
+      if (input.nextStep !== undefined) {
+        updates.nextStep = input.nextStep ? input.nextStep.trim() : null;
+      }
+
+      await db.update(activities).set(updates).where(eq(activities.id, activity.id));
       return getActivity(activity.id);
     }),
 

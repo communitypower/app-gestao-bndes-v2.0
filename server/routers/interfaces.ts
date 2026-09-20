@@ -159,34 +159,41 @@ export const interfacesRouter = router({
       getTeamMemberByUserId(ctx.user.id),
     ]);
     return items
-      .filter(item =>
-        canViewCoordinationInterface(
+      .filter(item => {
+        const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
+        return canViewCoordinationInterface(
           ctx.user,
           member,
-          item.groups.map(group => group.groupId)
-        )
-      )
-      .map(item => ({
-        ...item,
-        permissions: {
-          canUploadEvidence: canViewCoordinationInterface(
-            ctx.user,
-            member,
-            item.groups.map(group => group.groupId)
-          ),
-          canManage:
-            isAdministrator(ctx.user) ||
-            Boolean(
-              member?.active &&
-                item.groups.some(group => group.groupId === member.groupId)
+          item.groups.map(group => group.groupId),
+          chapterCoordinatorIds,
+          item.responsibleId
+        );
+      })
+      .map(item => {
+        const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
+        const isChapterCoordinator = Boolean(member?.id && chapterCoordinatorIds.includes(member.id));
+        const isResponsible = Boolean(member?.id && member.id === item.responsibleId);
+        const isGroupMember = Boolean(member?.active && item.groups.some(group => group.groupId === member.groupId));
+
+        return {
+          ...item,
+          permissions: {
+            canUploadEvidence: canViewCoordinationInterface(
+              ctx.user,
+              member,
+              item.groups.map(group => group.groupId),
+              chapterCoordinatorIds,
+              item.responsibleId
             ),
-          canResolve:
-            isAdministrator(ctx.user) ||
-            Boolean(
-              member?.active && member.id === item.responsibleId
-            ),
-        },
-      }));
+            canManage:
+              isAdministrator(ctx.user) ||
+              Boolean(member?.active && (isGroupMember || isChapterCoordinator || isResponsible)),
+            canResolve:
+              isAdministrator(ctx.user) ||
+              Boolean(member?.active && (isResponsible || isChapterCoordinator)),
+          },
+        };
+      });
   }),
 
   options: protectedProcedure.query(async ({ ctx }) => {
@@ -225,7 +232,8 @@ export const interfacesRouter = router({
       const item = await getCoordinationInterface(input.interfaceId);
       if (!item) throw new TRPCError({ code: "NOT_FOUND", message: "Interface não encontrada." });
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanViewCoordinationInterface(ctx.user, member, item.groups.map(group => group.groupId));
+      const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
+      assertCanViewCoordinationInterface(ctx.user, member, item.groups.map(group => group.groupId), chapterCoordinatorIds, item.responsibleId);
       if (input.activityId && !item.activities.some(activity => activity.activityId === input.activityId)) {
         throw new TRPCError({ code: "BAD_REQUEST", message: "A atividade selecionada não está vinculada à interface." });
       }
@@ -251,7 +259,8 @@ export const interfacesRouter = router({
       const item = await getCoordinationInterface(input.interfaceId);
       if (!item) throw new TRPCError({ code: "NOT_FOUND", message: "Interface não encontrada." });
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageCoordinationInterface(ctx.user, member, item.groups.map(group => group.groupId));
+      const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
+      assertCanManageCoordinationInterface(ctx.user, member, item.groups.map(group => group.groupId), chapterCoordinatorIds, item.responsibleId);
       const db = await requireDb();
       const files = await db.select().from(interfaceEvidenceFiles).where(eq(interfaceEvidenceFiles.interfaceId, input.interfaceId));
       if (files.length < 2) throw new TRPCError({ code: "BAD_REQUEST", message: "Anexe ao menos dois arquivos para a pré-análise de inconsistências." });
@@ -347,7 +356,8 @@ export const interfacesRouter = router({
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
       const currentGroupIds = current.groups.map(group => group.groupId);
-      assertCanManageCoordinationInterface(ctx.user, member, currentGroupIds);
+      const chapterCoordinatorIds = (current.chapterCoordinators ?? []).map(c => c.id);
+      assertCanManageCoordinationInterface(ctx.user, member, currentGroupIds, chapterCoordinatorIds, current.responsibleId);
       if (
         input.responsibleId !== current.responsibleId &&
         !isAdministrator(ctx.user) &&
@@ -366,7 +376,8 @@ export const interfacesRouter = router({
         assertCanResolveCoordinationInterface(
           ctx.user,
           member,
-          current.responsibleId
+          current.responsibleId,
+          chapterCoordinatorIds
         );
       }
       const responsible = await validateInterfaceSelection(input);
@@ -429,10 +440,13 @@ export const interfacesRouter = router({
         });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
+      const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
       assertCanManageCoordinationInterface(
         ctx.user,
         member,
-        item.groups.map(group => group.groupId)
+        item.groups.map(group => group.groupId),
+        chapterCoordinatorIds,
+        item.responsibleId
       );
       const db = await requireDb();
       await db.insert(interfaceComments).values({
@@ -454,10 +468,13 @@ export const interfacesRouter = router({
         });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
+      const chapterCoordinatorIds = (item.chapterCoordinators ?? []).map(c => c.id);
       assertCanViewCoordinationInterface(
         ctx.user,
         member,
-        item.groups.map(group => group.groupId)
+        item.groups.map(group => group.groupId),
+        chapterCoordinatorIds,
+        item.responsibleId
       );
       return item;
     }),

@@ -85,8 +85,8 @@ describe("assistantRouter — Assistente de IA do Estudo BNDES", () => {
     expect(response.content).toContain("Cassiano Marins de Souza");
     expect(response.content).toContain("G10");
     expect(response.content).toContain("Tomo II.1");
-    expect(response.content).toContain("Tomo II.2");
-    expect(response.content).toContain("Tomo III.3");
+    expect(response.content).toContain("Tomo II.7");
+    expect(response.content).toContain("Tomo II.8");
     expect(response.content).toContain("Atividades Analíticas Atribuídas");
   });
 

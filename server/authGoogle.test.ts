@@ -17,11 +17,30 @@ describe("authGoogle authorization checks", () => {
     }
   });
 
-  it("authorizes the study admin email", async () => {
+  it("authorizes the general coordinator email (Floriano)", async () => {
     const result = await getAuthorizedUserByEmail("floriano@poli.ufrj.br");
     expect(result.authorized).toBe(true);
     if (result.authorized) {
+      expect(result.user.appRole).toBe("coordenador");
+      expect(result.user.role).toBe("user");
+    }
+  });
+
+  it("authorizes the study admin email (Denise Cunha)", async () => {
+    const result = await getAuthorizedUserByEmail("denisecunha@poli.ufrj.br");
+    expect(result.authorized).toBe(true);
+    if (result.authorized) {
       expect(result.user.role).toBe("admin");
+      expect(result.user.appRole).toBe("administrador");
+    }
+  });
+
+  it("authorizes the dedicated system admin email", async () => {
+    const result = await getAuthorizedUserByEmail("admin@estudo.ufrj.br");
+    expect(result.authorized).toBe(true);
+    if (result.authorized) {
+      expect(result.user.role).toBe("admin");
+      expect(result.user.appRole).toBe("administrador");
     }
   });
 

@@ -78,12 +78,12 @@ vi.mock("@/lib/trpc", () => ({
   },
 }));
 
-describe("ParticipantActionCenter - Expand/Collapse and Filtering", () => {
+describe("ParticipantActionCenter - Direct Display, Filtering and Month Distribution", () => {
   afterEach(() => {
     cleanup();
   });
 
-  it("renderiza o painel com título, total de pendências e cartões de ação", () => {
+  it("renderiza o painel com título, total de pendências e todos os cartões de ação diretamente visíveis", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
     expect(screen.getByText("Minhas Ações no Estudo")).toBeInTheDocument();
@@ -93,86 +93,29 @@ describe("ParticipantActionCenter - Expand/Collapse and Filtering", () => {
     expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
   });
 
-  it("permite recolher e expandir o painel inteiro de ações", () => {
+  it("exibe as ações distribuídas por blocos mensais cronológicos", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
-    // Painel começa aberto
-    expect(screen.getByText("Todas (3)")).toBeInTheDocument();
-    expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
-
-    // Clica para recolher o painel
-    const togglePanelBtn = screen.getByRole("button", { name: /Recolher painel/i });
-    fireEvent.click(togglePanelBtn);
-
-    // O conteúdo das ações fica oculto e os filtros somem
-    expect(screen.queryByText("Todas (3)")).not.toBeInTheDocument();
-    expect(screen.queryByText("Construção Naval Mundial")).not.toBeInTheDocument();
-    expect(screen.getByText(/Clique para expandir e ver detalhes/i)).toBeInTheDocument();
-
-    // Clica para expandir novamente
-    const expandPanelBtn = screen.getByRole("button", { name: /Expandir painel/i });
-    fireEvent.click(expandPanelBtn);
-
-    // O conteúdo volta a ser exibido
-    expect(screen.getByText("Todas (3)")).toBeInTheDocument();
-    expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
+    // Deve exibir o cabeçalho do mês M1 (Setembro 2026) e o bloco sem prazo
+    expect(screen.getByText(/Mês 1 — Setembro 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fluxo Contínuo \/ Sem Prazo Fixo/i)).toBeInTheDocument();
   });
 
-  it("permite expandir e recolher individualmente os cartões de ação", () => {
+  it("exibe diretamente os detalhes complementares sem necessidade de cliques de expansão", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
-    // No estado inicial compacto, detalhes como "Material #101" ou "2 apontamentos pendentes" não aparecem
-    expect(screen.queryByText("Material #101")).not.toBeInTheDocument();
-    expect(screen.queryByText(/2 apontamentos pendentes/i)).not.toBeInTheDocument();
-
-    // Clica em 'Mais detalhes' no primeiro card
-    const moreDetailsButtons = screen.getAllByRole("button", { name: /Mais detalhes/i });
-    fireEvent.click(moreDetailsButtons[0]);
-
-    // O card agora exibe os detalhes adicionais
-    expect(screen.getByText("Material #101")).toBeInTheDocument();
-    expect(screen.getByText(/2 apontamentos pendentes/i)).toBeInTheDocument();
-
-    // O botão muda para 'Menos detalhes'
-    const lessDetailsBtn = screen.getByRole("button", { name: /Menos detalhes/i });
-    expect(lessDetailsBtn).toBeInTheDocument();
-
-    // Clica em 'Menos detalhes' para recolher o item
-    fireEvent.click(lessDetailsBtn);
-    expect(screen.queryByText("Material #101")).not.toBeInTheDocument();
-  });
-
-  it("permite expandir todos os itens e recolher todos de uma só vez", () => {
-    render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
-
-    const expandAllBtns = screen.getAllByRole("button", { name: /Expandir todos os itens/i });
-    expect(expandAllBtns.length).toBeGreaterThan(0);
-
-    // Clica para expandir todos os itens
-    fireEvent.click(expandAllBtns[0]);
-
-    // Todos os cards revelam seus detalhes
+    // Detalhes como Material #101, Interface #55 e contadores de comentários estão diretamente visíveis
     expect(screen.getByText("Material #101")).toBeInTheDocument();
     expect(screen.getByText("Interface #55")).toBeInTheDocument();
     expect(screen.getByText(/2 apontamentos pendentes/i)).toBeInTheDocument();
-
-    // O botão do toolbar muda para "Recolher todos os itens"
-    const collapseAllBtns = screen.getAllByRole("button", { name: /Recolher todos os itens/i });
-    expect(collapseAllBtns.length).toBeGreaterThan(0);
-
-    // Clica para recolher todos os itens
-    fireEvent.click(collapseAllBtns[0]);
-
-    // Os detalhes voltam a ficar ocultos
-    expect(screen.queryByText("Material #101")).not.toBeInTheDocument();
-    expect(screen.queryByText("Interface #55")).not.toBeInTheDocument();
+    expect(screen.getByText(/1 apontamento pendente/i)).toBeInTheDocument();
   });
 
   it("filtra as ações por papel do participante", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
     // Filtra por Revisor
-    const revisorFilterBtn = screen.getByRole("button", { name: /Revisor \(1\)/i });
+    const revisorFilterBtn = screen.getByRole("button", { name: /Revisão Técnica/i });
     fireEvent.click(revisorFilterBtn);
 
     expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();
@@ -180,8 +123,36 @@ describe("ParticipantActionCenter - Expand/Collapse and Filtering", () => {
     expect(screen.queryByText("Interface de Combustíveis Marítimos")).not.toBeInTheDocument();
 
     // Volta para Todas
-    const todasFilterBtn = screen.getByRole("button", { name: /Todas \(3\)/i });
+    const todasFilterBtn = screen.getByRole("button", { name: /Todos os Fluxos/i });
     fireEvent.click(todasFilterBtn);
+
+    expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
+    expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();
+    expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
+  });
+
+  it("filtra as ações por mês de término do cronograma", () => {
+    render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
+
+    // Filtra por Mês 1 (Set/26)
+    const m1Btn = screen.getByRole("button", { name: /M1 · Set\/26/i });
+    fireEvent.click(m1Btn);
+
+    expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
+    expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();
+    expect(screen.queryByText("Interface de Combustíveis Marítimos")).not.toBeInTheDocument();
+
+    // Filtra por Sem Prazo
+    const semPrazoBtn = screen.getByRole("button", { name: /Sem Prazo/i });
+    fireEvent.click(semPrazoBtn);
+
+    expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
+    expect(screen.queryByText("Construção Naval Mundial")).not.toBeInTheDocument();
+    expect(screen.queryByText("Estrutura Portuária Nacional")).not.toBeInTheDocument();
+
+    // Volta para Todos os Meses
+    const todosMesesBtn = screen.getByRole("button", { name: /^Todos os Meses/i });
+    fireEvent.click(todosMesesBtn);
 
     expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
     expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();

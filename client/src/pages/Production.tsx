@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "wouter";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../../../server/routers";
 import {
@@ -50,6 +51,7 @@ import {
   FileCheck2,
   FileClock,
   FileEdit,
+  FileText,
   FolderCheck,
   HelpCircle,
   MessageSquare,
@@ -200,13 +202,13 @@ export default function ProductionPage() {
         item.permissions.canReview &&
         (item.reviewStatus === "em revisão" || item.implementedCommentCount > 0);
       const isCoordinatorAction =
-        (access?.isAdmin || item.permissions.canManageReview) &&
+        item.permissions.canManageReview &&
         item.reviewStatus === "aprovado" &&
         item.activityDocumentStatus === "revisada pela seção";
 
       return isAuthorAction || isReviewerAction || isCoordinatorAction;
     }).length;
-  }, [data, access]);
+  }, [data]);
 
   const filtered = useMemo(() => {
     return (data ?? []).filter(item => {
@@ -222,7 +224,7 @@ export default function ProductionPage() {
           item.permissions.canReview &&
           (item.reviewStatus === "em revisão" || item.implementedCommentCount > 0);
         const isCoordinatorAction =
-          (access?.isAdmin || item.permissions.canManageReview) &&
+          item.permissions.canManageReview &&
           item.reviewStatus === "aprovado" &&
           item.activityDocumentStatus === "revisada pela seção";
 
@@ -324,7 +326,7 @@ export default function ProductionPage() {
 
   const downloadRevision = async (revisionId: number) => {
     try {
-      const result = await utils.client.production.accessRevision.query({
+      const result = await utils.production.accessRevision.fetch({
         revisionId,
       });
       window.open(result.url, "_blank", "noopener,noreferrer");
@@ -411,10 +413,11 @@ export default function ProductionPage() {
   };
 
   const decide = async (material: ProductionMaterial) => {
-    if (!material.activeSubmission) return;
     try {
       await registerDecision.mutateAsync({
-        submissionId: material.activeSubmission.id,
+        submissionId: material.activeSubmission?.id ?? null,
+        materialId: material.id,
+        activityId: material.activityId ?? null,
         decision,
         note: decisionNote || null,
       });
@@ -614,8 +617,8 @@ export default function ProductionPage() {
                         {item.title}
                       </h2>
                     </div>
-                    <span className="font-mono text-xl font-semibold text-muted-foreground/50">
-                      v{String(item.currentRevision).padStart(2, "0")}
+                    <span className="font-mono text-xl font-bold text-primary/70">
+                      R0{item.currentRevision}
                     </span>
                   </div>
 
@@ -678,13 +681,26 @@ export default function ProductionPage() {
                     <Button
                       variant="outline"
                       className="rounded-md"
+                      disabled={item.reviewStatus === "em revisão"}
+                      title={
+                        item.reviewStatus === "em revisão"
+                          ? `A versão anterior (R0${item.currentRevision}) ainda está em revisão técnica pelos pares. Aguarde o parecer.`
+                          : "Carregar nova revisão"
+                      }
                       onClick={() => {
                         setRevisionMaterialId(item.id);
                         resetUpload();
                       }}
                     >
-                      <FileClock className="mr-2 h-4 w-4" /> Nova versão
+                      <FileClock className="mr-2 h-4 w-4" /> Nova revisão (R0{item.currentRevision + 1})
                     </Button>
+                  )}
+                  {item.activityId && (
+                    <Link href={`/atividades?ficha=${item.activityId}`}>
+                      <Button variant="outline" className="rounded-md">
+                        <FileText className="mr-1.5 h-4 w-4 text-primary" /> Ficha da Atividade
+                      </Button>
+                    </Link>
                   )}
                   {!item.activityId && access.isAdmin && (
                     <Select
@@ -911,7 +927,7 @@ export default function ProductionPage() {
                 <div className="rounded-md border border-primary/20 bg-primary/5 p-4 text-xs">
                   <div className="flex items-center gap-2 font-semibold text-primary">
                     <HelpCircle className="h-4 w-4" />
-                    <span>Guia de Ação para seu Perfil ({selected.permissions.canDevelop ? "Autor / Executor" : selected.permissions.canReview ? "Revisor Técnico" : "Coordenador / Visualizador"})</span>
+                    <span>Guia de Ação para seu Perfil ({selected.permissions.canDevelop ? "Autor (Coordenador do Grupo)" : selected.permissions.canReview ? "Revisor Técnico" : "Coordenador / Visualizador"})</span>
                   </div>
                   <div className="mt-1.5 text-foreground/80 leading-relaxed">
                     {selected.permissions.canDevelop && (

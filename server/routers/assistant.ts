@@ -586,12 +586,13 @@ function generateDeterministicAnswer(ctx: DeterministicContext): string {
     let answer = `### 👥 Quadro de Integrantes e Grupos de Pesquisa do Estudo BNDES\n\n`;
     answer += `O **Estudo Técnico da Indústria Naval (BNDES · FEP / UFRJ)** reúne mais de 25 pesquisadores e especialistas de diversas universidades e centros de excelência (UFRJ, COPPE, IE, IPT, UFPA, UFPE, UFU, FACAMP, UCL, TPMI-Índia e consultores especializados).\n\n`;
 
-    answer += `#### 🏛️ Coordenação Geral e Administradores do Sistema:\n`;
-    answer += `- **Prof. Floriano Carlos Martins Pires Jr.** — Coordenador Geral do Projeto · Administrador (UFRJ)\n`;
+    answer += `#### 🏛️ Coordenação e Administração do Sistema:\n`;
+    answer += `- **Administrador do Sistema (\`admin@estudo.ufrj.br\`)** — Acesso e Administração Global do Sistema\n`;
     answer += `- **Denise Cunha** — Administradora Executiva do Projeto · Administradora (UFRJ)\n`;
-    answer += `- **Cassiano Marins de Souza** — Coordenador do Grupo G10, Membro do G1 e Substituto Editorial da Coordenação · Administrador (Consultoria/UFRJ)\n`;
-    answer += `- **Prof. Luiz Felipe Assis** — Coordenador do Grupo G4 e Membro do G1 · Administrador (UFRJ)\n`;
-    answer += `- **Marcos Pedreira da Silva** — Técnico de TI / Suporte Técnico · Administrador (UFRJ)\n\n`;
+    answer += `- **Prof. Floriano Carlos Martins Pires Jr.** — Coordenador Geral do Projeto e Coordenador do G1 (UFRJ)\n`;
+    answer += `- **Cassiano Marins de Souza** — Coordenador do Grupo G10, Membro do G1 e Substituto Editorial da Coordenação (Consultoria)\n`;
+    answer += `- **Prof. Luiz Felipe Assis** — Coordenador do Grupo G4 e Membro do G1 (UFRJ)\n`;
+    answer += `- **Marcos Pedreira da Silva** — Técnico de TI / Suporte Técnico (UFRJ)\n\n`;
 
     answer += `#### 🔬 Os 11 Grupos Temáticos de Trabalho (G1 a G11):\n`;
     TEAM_GROUP_SEED.forEach((g, idx) => {

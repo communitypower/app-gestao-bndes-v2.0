@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 const pages = [
   ["Home.tsx", "Visão geral do projeto"],
-  ["Activities.tsx", "Gestão de atividades"],
+  ["Activities.tsx", "Minhas ações"],
   ["Calendar.tsx", "Execução por item"],
   ["Team.tsx", "Estrutura de grupos e responsabilidades"],
   ["Library.tsx", "Biblioteca de referências"],
@@ -52,7 +52,7 @@ describe("nomenclatura institucional das páginas", () => {
       "utf8"
     );
     for (const label of [
-      "Gestão de atividades",
+      "Minhas ações",
       "Cronograma",
       "Equipe e grupos",
       "Biblioteca de referências",

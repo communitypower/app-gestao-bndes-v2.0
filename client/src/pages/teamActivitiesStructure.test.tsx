@@ -112,6 +112,26 @@ const fixtures = vi.hoisted(() => {
   evidenceLinks: [],
   submissions: [],
   activeSubmission: null,
+  productionMaterials: [
+    {
+      id: 101,
+      activityId: 21,
+      title: "Minuta Técnica do Capítulo II.1",
+      description: "Versão preliminar para revisão técnica dos pares.",
+      currentRevision: 1,
+      reviewStatus: "em revisão",
+      revisions: [
+        {
+          id: 1,
+          revisionNumber: 1,
+          fileName: "Minuta_Capitulo_II_1.docx",
+          fileSize: 1048576,
+          storageUrl: "https://example.com/minuta.docx",
+        },
+      ],
+      comments: [],
+    },
+  ],
   reviewChecklist: { items: [], events: [] },
   interfaces: [
     {
@@ -155,6 +175,10 @@ vi.mock("@/components/AdminGate", () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
+vi.mock("@/components/ActivityAccessGate", () => ({
+  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 vi.mock("@/lib/trpc", () => ({
   trpc: {
     useUtils: () => ({
@@ -171,6 +195,7 @@ vi.mock("@/lib/trpc", () => ({
       dashboard: { overview: { invalidate: vi.fn() } },
       administration: { status: { invalidate: vi.fn() } },
       fieldwork: { list: { invalidate: vi.fn() } },
+      production: { list: { invalidate: vi.fn() } },
     }),
     administration: {
       status: {
@@ -183,6 +208,38 @@ vi.mock("@/lib/trpc", () => ({
             users: [],
           },
           isLoading: false,
+        }),
+      },
+    },
+    production: {
+      create: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({ id: 101 }),
+          isPending: false,
+        }),
+      },
+      addRevision: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({ id: 101 }),
+          isPending: false,
+        }),
+      },
+      submitForReview: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({ submissionId: 201 }),
+          isPending: false,
+        }),
+      },
+      addComment: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({ id: 101 }),
+          isPending: false,
+        }),
+      },
+      reviewDecision: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({ id: 1 }),
+          isPending: false,
         }),
       },
     },
@@ -261,6 +318,36 @@ vi.mock("@/lib/trpc", () => ({
       linkToActivity: { useMutation: () => ({ mutateAsync: vi.fn().mockResolvedValue([]), isPending: false }) },
     },
     activities: {
+      myWorkloadActions: {
+        useQuery: () => ({
+          data: {
+            summary: {
+              total: 1,
+              executorCount: 1,
+              reviewerCount: 0,
+              coordinatorCount: 0,
+              interfaceCount: 0,
+            },
+            actions: [
+              {
+                id: "act-21",
+                activityId: fixtures.activity.id,
+                materialId: null,
+                sectionCode: fixtures.activity.sectionCode,
+                activityTitle: fixtures.activity.title,
+                dueAt: fixtures.activity.dueAt,
+                role: "executor" as const,
+                actionType: "em_elaboracao",
+                actionTitle: fixtures.activity.title,
+                actionDescription: fixtures.activity.description,
+                ctaLabel: "Abrir Ficha",
+                ctaTarget: "activity_sheet",
+              },
+            ],
+          },
+          isLoading: false,
+        }),
+      },
       list: {
         useQuery: () => ({ data: [fixtures.activity, fixtures.childActivity], isLoading: false }),
       },
@@ -279,10 +366,13 @@ vi.mock("@/lib/trpc", () => ({
             progress: fixtures.activity.progress,
             startAt: null,
             dueAt: fixtures.activity.dueAt,
+            actualStartAt: null,
+            actualEndAt: null,
+            nextStep: "Consolidar minutas",
             coordinator: { id: fixtures.coordinator.id, name: fixtures.coordinator.name },
-            executionResponsibles: [{ id: fixtures.participant.id, name: fixtures.participant.name, isExecutionLead: true, allocatedHours: 24 }],
+            executionResponsibles: [{ id: fixtures.participant.id, name: fixtures.participant.name, isExecutionLead: true, allocatedHours: 0 }],
             reviewers: [],
-            totalAllocatedHours: 24,
+            totalAllocatedHours: 0,
             checklist: { total: 0, completed: 0, pending: 0, blocked: 0, items: [] },
           }],
         }),
@@ -308,6 +398,12 @@ vi.mock("@/lib/trpc", () => ({
             ? { data: undefined, isLoading: true }
             : { data: fixtures.activity, isLoading: false },
       },
+      updateQuickInfo: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue(fixtures.activity),
+          isPending: false,
+        }),
+      },
       create: {
         useMutation: () => ({
           mutateAsync: vi.fn().mockResolvedValue([]),
@@ -321,6 +417,12 @@ vi.mock("@/lib/trpc", () => ({
         }),
       },
       updateAllocations: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue(fixtures.activity),
+          isPending: false,
+        }),
+      },
+      decideCrossGroupAllocation: {
         useMutation: () => ({
           mutateAsync: vi.fn().mockResolvedValue(fixtures.activity),
           isPending: false,
@@ -366,6 +468,26 @@ vi.mock("@/lib/trpc", () => ({
         useMutation: () => ({
           mutateAsync: vi.fn().mockResolvedValue(fixtures.activity),
           isPending: false,
+        }),
+      },
+      applyAIChecklistSuggestions: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue(fixtures.activity),
+          isPending: false,
+        }),
+      },
+      aiReviewEvaluation: {
+        useQuery: () => ({
+          data: undefined,
+          isLoading: false,
+          refetch: vi.fn(),
+        }),
+      },
+      generateAIParecerDraft: {
+        useQuery: () => ({
+          data: undefined,
+          isLoading: false,
+          refetch: vi.fn(),
         }),
       },
     },
@@ -416,179 +538,86 @@ describe("estrutura hierárquica da equipe", () => {
 });
 
 describe("ficha visível da atividade", () => {
-  it("oferece filtros por responsável e revisor e exportação de status", () => {
+  it("renderiza o painel de minhas ações com itens imediatos", () => {
     render(<ActivitiesPage />);
-    expect(screen.getByRole("combobox", { name: /responsável/i })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: /revisor/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^csv$/i })).toBeEnabled();
-    expect(screen.getByRole("button", { name: /^pdf$/i })).toBeEnabled();
+    expect(screen.getByText("Minhas Ações no Estudo")).toBeInTheDocument();
+    expect(screen.getAllByText(/construção naval mundial/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/abrir ficha/i).length).toBeGreaterThan(0);
   });
 
-  it("oferece atribuição em lote auditável para as seções pendentes de G4 e G10", () => {
+  it("abre a ficha unificada da atividade e exibe dados institucionais, repositório de documentos e checklist", async () => {
     render(<ActivitiesPage />);
-    fireEvent.click(screen.getByRole("button", { name: /atribuir g4\/g10 em lote/i }));
-    expect(screen.getByText("Atribuir executores em lote")).toBeInTheDocument();
-    expect(screen.getAllByText(/g4 — transporte marítimo mundial/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/i\.3\.1 · demanda por transporte marítimo/i)).toBeInTheDocument();
-    expect(screen.getByText(/referência à matriz atividades-grupos\.xlsm/i)).toBeInTheDocument();
+    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+    fireEvent.click(openButtons[0]);
+
+    expect(await screen.findByText("Ficha da Atividade")).toBeInTheDocument();
+    expect(screen.getByText("Prazos, Status e Próximo Passo")).toBeInTheDocument();
+    expect(screen.getByText("Documentos, Textos Intermediários e Minutas")).toBeInTheDocument();
+    expect(screen.getByText("Etapa do Workflow e Checklist de Revisão")).toBeInTheDocument();
+    expect(screen.getByText(/Equipe Temática de Apoio ao Capítulo/i)).toBeInTheDocument();
   });
 
-  it("gera o download CSV do status das atividades", async () => {
-    const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
-    try {
-      render(<ActivitiesPage />);
-      fireEvent.click(screen.getByRole("button", { name: /^csv$/i }));
-      await waitFor(() => expect(URL.createObjectURL).toHaveBeenCalled());
-      expect(click).toHaveBeenCalled();
-    } finally {
-      click.mockRestore();
-    }
-  });
-
-  it("abre a ficha completa por uma ação distinta da edição", async () => {
+  it("permite alternar para edição de informações básicas na Ficha", async () => {
     render(<ActivitiesPage />);
-    expect(
-      screen.getByRole("button", { name: /ver ficha/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", {
-        name: /editar construção naval mundial/i,
-      })
-    ).toBeInTheDocument();
+    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+    fireEvent.click(openButtons[0]);
 
-    fireEvent.click(screen.getByRole("button", { name: /ver ficha/i }));
-    expect(await screen.findByText("Ficha da atividade")).toBeInTheDocument();
-    expect(
-      screen.queryByText(/sistematizar a construção naval mundial, sua produção/i)
-    ).not.toBeInTheDocument();
-    expect(screen.getByText("Descrição da atividade")).toBeInTheDocument();
-    expect(
-      screen.getByText("Análise da trajetória e da estrutura da construção naval mundial.")
-    ).toBeInTheDocument();
-    expect(screen.queryByText("Planejamento funcional")).not.toBeInTheDocument();
-    expect(screen.getByText("Página temática; séries de produção; quadro comparativo internacional.")).toBeInTheDocument();
-    expect(screen.getByText(/dados de produção, frota, estaleiros/i)).toBeInTheDocument();
-    expect(screen.getByText("Cassiano Marins de Souza")).toBeInTheDocument();
-    expect(screen.getAllByText("24h").length).toBeGreaterThan(0);
-    expect(screen.getByText("Liderança de execução")).toBeInTheDocument();
-    expect(
-      screen.getByText("Consolidar dados e preparar a redação técnica da frente.")
-    ).toBeInTheDocument();
-    expect(screen.getByText("Registro histórico")).toBeInTheDocument();
-    expect(screen.getByText("Andre Ricardo Mendonça Pinheiro")).toBeInTheDocument();
-    expect(screen.getByText("Alocação preservada da estrutura anterior.")).toBeInTheDocument();
-    expect(
-      screen.getAllByText("Fronteira entre capacidade e produtividade").length
-    ).toBeGreaterThan(0);
-    expect(
-      screen.getByText(/delimitar indicadores compartilhados/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText("Checklist por seção e capítulo")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /criar checklist de revisão/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /atribuir responsáveis/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /atribuir revisores/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /edição rápida/i })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /edição rápida/i }));
-    expect(screen.getByLabelText("Descrição da atividade")).toHaveValue(
-      "Análise da trajetória e da estrutura da construção naval mundial."
-    );
-    expect(
-      screen.getByRole("button", { name: /editar atividade/i })
-    ).toBeInTheDocument();
+    const editButton = await screen.findByRole("button", { name: /editar informações/i });
+    fireEvent.click(editButton);
+
+    expect(screen.getByLabelText(/descrição operacional/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/próximo passo imediato/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /salvar alterações/i })).toBeInTheDocument();
   });
 
-  it("disponibiliza a reaplicação explícita do cronograma oficial quando o checklist já existe", async () => {
-    fixtures.activity.reviewChecklist.items = [
-      {
-        id: 501,
-        scope: "seção",
-        itemKey: "secao_texto_fontes",
-        title: "Texto, fontes e referências da seção verificados",
-        responsibleId: fixtures.participant.id,
-        responsibleName: fixtures.participant.name,
-        completedByName: null,
-        dueAt: Date.UTC(2026, 8, 10, 12, 0, 0),
-        status: "pendente",
-      },
-    ] as never;
-    try {
-      render(<ActivitiesPage />);
-      fireEvent.click(screen.getByRole("button", { name: /ver ficha/i }));
-      expect(await screen.findByRole("button", { name: /aplicar cronograma oficial/i })).toBeInTheDocument();
-      expect(screen.getByRole("combobox", { name: /responsável por texto, fontes/i })).toBeInTheDocument();
-    } finally {
-      fixtures.activity.reviewChecklist.items = [];
-    }
-  });
-
-  it("impede o vínculo de material quando o rótulo tem menos de três caracteres", async () => {
+  it("permite abrir formulário de anexo de novos documentos pelo coordenador", async () => {
     render(<ActivitiesPage />);
-    fireEvent.click(screen.getByRole("button", { name: /ver ficha/i }));
-    const label = await screen.findByPlaceholderText(/nome do material ou evidência/i);
-    fireEvent.change(label, { target: { value: "x" } });
-    fireEvent.change(screen.getByPlaceholderText("https://..."), { target: { value: "https://example.com/material" } });
-    expect(label).toHaveAttribute("aria-invalid", "true");
-    expect(screen.getByRole("button", { name: /^vincular$/i })).toBeDisabled();
+    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+    fireEvent.click(openButtons[0]);
+
+    const attachBtn = await screen.findByRole("button", { name: /anexar documento \/ versão/i });
+    fireEvent.click(attachBtn);
+
+    expect(screen.getByPlaceholderText(/ex: minuta técnica intermediária/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/arquivo/i)).toBeInTheDocument();
   });
 
-  it("mantém títulos acessíveis enquanto os diálogos assíncronos carregam", async () => {
-    fixtures.detailLoading = true;
+  it("permite apontar revisor técnico clicando no integrante da equipe temática", async () => {
+    render(<ActivitiesPage />);
+    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+    fireEvent.click(openButtons[0]);
+
+    expect(await screen.findByText(/Equipe Temática de Apoio ao Capítulo/i)).toBeInTheDocument();
+    const memberButton = screen.getByRole("button", { name: new RegExp(fixtures.participant.name, "i") });
+    expect(memberButton).toBeInTheDocument();
+    fireEvent.click(memberButton);
+  });
+
+  it("permite registrar parecer de revisão técnica diretamente no card do documento", async () => {
+    render(<ActivitiesPage />);
+    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+    fireEvent.click(openButtons[0]);
+
+    expect(await screen.findByText(/Parecer da Revisão Técnica/i)).toBeInTheDocument();
+    const approveBtn = screen.getByRole("button", { name: /Aprovar Minuta Técnica/i });
+    const adjustBtn = screen.getByRole("button", { name: /Solicitar Ajustes/i });
+    expect(approveBtn).toBeInTheDocument();
+    expect(adjustBtn).toBeInTheDocument();
+    fireEvent.click(approveBtn);
+  });
+
+  it("mantém títulos acessíveis no diálogo da Ficha da Atividade", async () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-    const scenarios = [
-      { button: /ver ficha/i, title: /ficha da atividade/i },
-      { button: /^distribuir$/i, title: /distribuição da execução/i },
-      { button: /revisores/i, title: /alocar revisores/i },
-    ];
 
     try {
-      for (const scenario of scenarios) {
-        const view = render(<ActivitiesPage />);
-        fireEvent.click(screen.getByRole("button", { name: scenario.button }));
-        expect(
-          await screen.findByRole("heading", { name: scenario.title })
-        ).toBeInTheDocument();
-        view.unmount();
-      }
+      render(<ActivitiesPage />);
+      const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
+      fireEvent.click(openButtons[0]);
 
-      expect(
-        consoleError.mock.calls.flat().join(" ")
-      ).not.toContain("requires a `DialogTitle`");
+      expect(await screen.findByRole("heading", { name: /construção naval mundial/i })).toBeInTheDocument();
+      expect(consoleError.mock.calls.flat().join(" ")).not.toContain("requires a `DialogTitle`");
     } finally {
-      fixtures.detailLoading = false;
       consoleError.mockRestore();
     }
-  });
-
-  it("permite expandir e recolher itens individualmente e em lote na gestão de atividades", async () => {
-    render(<ActivitiesPage />);
-
-    // Verifica que os botões de expandir/recolher em lote estão presentes no topo
-    expect(screen.getByRole("button", { name: /expandir todos/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /recolher todos/i })).toBeInTheDocument();
-
-    // Inicialmente os detalhes da etapa filha não estão visíveis
-    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
-    expect(screen.queryByText("Etapas de execução do capítulo")).not.toBeInTheDocument();
-
-    // Clica no botão de expandir o item individual (chevron ou botão de ação)
-    fireEvent.click(screen.getAllByRole("button", { name: /expandir construção naval mundial/i })[0]);
-
-    // Agora os detalhes expandidos e a etapa filha estão visíveis
-    expect(screen.getByText("Trajetória histórica da indústria naval")).toBeInTheDocument();
-    expect(screen.getByText("Etapas de execução do capítulo")).toBeInTheDocument();
-    expect(screen.getAllByText("II.1.1").length).toBeGreaterThan(0);
-
-    // Clica em recolher o item individual
-    fireEvent.click(screen.getAllByRole("button", { name: /recolher construção naval mundial/i })[0]);
-    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
-
-    // Testa ação em lote "Expandir todos"
-    fireEvent.click(screen.getByRole("button", { name: /expandir todos/i }));
-    expect(screen.getByText("Trajetória histórica da indústria naval")).toBeInTheDocument();
-    expect(screen.getByText("Etapas de execução do capítulo")).toBeInTheDocument();
-
-    // Testa ação em lote "Recolher todos"
-    fireEvent.click(screen.getByRole("button", { name: /recolher todos/i }));
-    expect(screen.queryByText("Trajetória histórica da indústria naval")).not.toBeInTheDocument();
   });
 });

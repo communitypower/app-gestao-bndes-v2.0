@@ -20,6 +20,7 @@ import {
   hasCurrentActivityDelegation,
   getTeamMemberByUserId,
   ensureSeedData,
+  resetAndSeedPilotDatabase,
   listNotificationLogs,
   listUsers,
   listUserAccessDirectory,
@@ -330,4 +331,10 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
         .where(eq(projectSettings.id, 1));
       return { enabled: true, taskUid: job.taskUid };
     }),
+
+  resetPilotEnvironment: protectedProcedure.mutation(async ({ ctx }) => {
+    assertAdministrator(ctx.user);
+    const result = await resetAndSeedPilotDatabase();
+    return result;
+  }),
 });

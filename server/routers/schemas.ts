@@ -37,6 +37,17 @@ const uniquePositiveIds = z
     message: "Não repita o mesmo item na seleção.",
   });
 
+export const quickActivityInfoSchema = z.object({
+  id: z.number().int().positive(),
+  description: z.string().trim().min(3).max(10_000).optional(),
+  status: z.enum(ACTIVITY_STATUSES).optional(),
+  startAt: z.number().int().positive().nullable().optional(),
+  dueAt: z.number().int().positive().optional(),
+  actualStartAt: z.number().int().positive().nullable().optional(),
+  actualEndAt: z.number().int().positive().nullable().optional(),
+  nextStep: z.string().trim().max(10_000).nullable().optional(),
+});
+
 export const activityScheduleSchema = z
   .object({
     id: z.number().int().positive(),
@@ -71,9 +82,11 @@ export const activityMilestoneSetSchema = z.object({
 export const activityReviewerIdsSchema = uniquePositiveIds;
 
 export const reviewDecisionSchema = z.object({
-  submissionId: z.number().int().positive(),
+  submissionId: z.number().int().positive().optional().nullable(),
+  materialId: z.number().int().positive().optional().nullable(),
+  activityId: z.number().int().positive().optional().nullable(),
   decision: z.enum(["em revisão", "ajustes solicitados", "aprovado"]),
-  note: z.string().trim().max(10_000).nullable(),
+  note: z.string().trim().max(10_000).nullable().optional(),
 });
 
 export const coordinationInterfaceInputSchema = z.object({

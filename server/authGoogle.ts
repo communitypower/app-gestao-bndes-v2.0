@@ -106,8 +106,13 @@ export async function getAuthorizedUserByEmail(email: string, nameFallback?: str
   if (members[0]) {
     const member = members[0];
     const openId = `google_${member.email!.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-    const role = member.name.includes("Floriano") ? ("admin" as const) : ("user" as const);
-    const appRole = member.groupRole === "coordenador" ? ("coordenador" as const) : ("executor" as const);
+    const isAdmin = member.name === "Denise Cunha";
+    const role = isAdmin ? ("admin" as const) : ("user" as const);
+    const appRole = isAdmin
+      ? ("administrador" as const)
+      : member.groupRole === "coordenador"
+      ? ("coordenador" as const)
+      : ("executor" as const);
     const existing = (await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1))[0];
     let createdUser;
 
@@ -148,8 +153,8 @@ export async function getAuthorizedUserByEmail(email: string, nameFallback?: str
     };
   }
 
-  // 4. E-mail de Administrador Especial
-  if (normalized === "admin@estudo.ufrj.br" || normalized === "cassianomarins@gmail.com") {
+  // 4. E-mail de Administrador Especial / Sistema
+  if (normalized === "admin@estudo.ufrj.br" || normalized === "denisecunha@poli.ufrj.br") {
     const openId = `google_${normalized.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     const existing = (await dbInstance.select().from(users).where(eq(users.openId, openId)).limit(1))[0];
     let createdUser;

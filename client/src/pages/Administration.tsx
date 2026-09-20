@@ -25,14 +25,19 @@ import {
   Copy,
   ExternalLink,
   FileCheck2,
+  Layers,
   Mail,
   MessageCircle,
+  Network,
   Play,
+  RotateCcw,
   Send,
   ShieldCheck,
   Sparkles,
   TriangleAlert,
   UserRoundCheck,
+  UsersRound,
+  BookOpen,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -45,6 +50,7 @@ function AdministrationContent() {
   const setRole = trpc.administration.setUserRole.useMutation();
   const updateTomeAssignment = trpc.governance.updateTomeAssignment.useMutation();
   const sendInvitation = trpc.administration.sendFirstAccessInvitation.useMutation();
+  const resetPilot = trpc.administration.resetPilotEnvironment.useMutation();
 
   const [enabled, setEnabled] = useState(false);
   const [template, setTemplate] = useState("estudo_bndes_alerta_atividade");
@@ -52,6 +58,8 @@ function AdministrationContent() {
   const [tomeDrafts, setTomeDrafts] = useState<Record<string, { coordinatorId: string; substituteId: string; justification: string }>>({});
   
   const [invitationModalOpen, setInvitationModalOpen] = useState(false);
+  const [pilotResetModalOpen, setPilotResetModalOpen] = useState(false);
+  const [pilotResetSuccessData, setPilotResetSuccessData] = useState<any>(null);
   const [copiedText, setCopiedText] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [sentInvitationData, setSentInvitationData] = useState<{
@@ -242,6 +250,64 @@ function AdministrationContent() {
             <div className="flex items-center justify-between rounded-md border bg-muted/25 p-3"><span className="text-sm font-medium">Estado da rotina</span><StatusBadge status={data.settings.scheduleCronTaskUid ? "concluído" : "pendente"} /></div>
             <Button variant="outline" className="w-full" onClick={toggleSchedule} disabled={configureSchedule.isPending}><BellRing className="mr-2 h-4 w-4" />{data.settings.scheduleCronTaskUid ? "Pausar rotina" : "Ativar após publicação"}</Button>
             <Button variant="outline" className="w-full" onClick={async () => { try { const result = await processNow.mutateAsync(); await refetch(); toast.success(`${result.deadlineAlerts} alertas de prazo; ${result.markedDelayed} atrasos.`); } catch (error) { toast.error(error instanceof Error ? error.message : "Falha no processamento."); } }} disabled={processNow.isPending}><Play className="mr-2 h-4 w-4" /> Processar agora</Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Preparação para Rodada Piloto */}
+      <section className="technical-panel overflow-hidden border-primary/30 shadow-xs">
+        <header className="flex flex-col gap-4 border-b bg-primary/5 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="data-label text-primary">Ambiente & Ciclos do Estudo</p>
+            <h2 className="font-display mt-1 text-2xl font-semibold tracking-[-.025em] flex items-center gap-2">
+              <RotateCcw className="h-6 w-6 text-primary" />
+              Preparação para Rodada Piloto
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Zere os dados transientes gerados durante os testes (materiais, submissões, revisões, pareceres e notificações) e recarregue 100% da base estrutural canônica oficial.
+            </p>
+          </div>
+          <Button
+            size="default"
+            variant="default"
+            onClick={() => {
+              setPilotResetSuccessData(null);
+              setPilotResetModalOpen(true);
+            }}
+            className="shrink-0 font-medium"
+          >
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Preparar Nova Rodada Piloto
+          </Button>
+        </header>
+        <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-4 bg-muted/10 text-xs text-muted-foreground">
+          <div className="flex items-start gap-2.5 rounded-lg border bg-background p-3">
+            <Layers className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-foreground">30 Capítulos & 253 Etapas</p>
+              <p className="text-[11px]">Índice analítico e cronograma oficial restaurados.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2.5 rounded-lg border bg-background p-3">
+            <UsersRound className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-foreground">11 Grupos & Equipe</p>
+              <p className="text-[11px]">Integrantes, coordenadores e 36 vínculos da matriz.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2.5 rounded-lg border bg-background p-3">
+            <Network className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-foreground">67 Interfaces Ativas</p>
+              <p className="text-[11px]">Mapeamento interdisciplinar restaurado.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2.5 rounded-lg border bg-background p-3">
+            <BookOpen className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-foreground">328 Itens da Biblioteca</p>
+              <p className="text-[11px]">Acervo documental do Google Drive preservado.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -487,6 +553,108 @@ function AdministrationContent() {
             <Button onClick={() => setInvitationModalOpen(false)}>
               Concluir
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Confirmação e Resultado do Reset Piloto */}
+      <Dialog open={pilotResetModalOpen} onOpenChange={setPilotResetModalOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+              <RotateCcw className="h-5 w-5 text-primary" />
+              {pilotResetSuccessData ? "Ambiente Piloto Pronto!" : "Confirmar Preparação da Rodada Piloto"}
+            </DialogTitle>
+            <DialogDescription>
+              {pilotResetSuccessData
+                ? "A base estrutural canônica foi totalmente restabelecida e os dados transientes de testes foram zerados com sucesso."
+                : "Esta operação reinicia o ambiente para uma rodada piloto limpa com a equipe técnica."}
+            </DialogDescription>
+          </DialogHeader>
+
+          {pilotResetSuccessData ? (
+            <div className="space-y-4 py-2">
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                  <CheckCircle2 className="h-4 w-4" /> Base Canônica 100% Carregada e Verificada
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div>• <strong>{pilotResetSuccessData.stats.parentChapters}</strong> Capítulos canônicos</div>
+                  <div>• <strong>{pilotResetSuccessData.stats.totalActivities}</strong> Atividades / etapas</div>
+                  <div>• <strong>{pilotResetSuccessData.stats.groups}</strong> Grupos temáticos</div>
+                  <div>• <strong>{pilotResetSuccessData.stats.members}</strong> Integrantes da equipe</div>
+                  <div>• <strong>{pilotResetSuccessData.stats.interfaces}</strong> Interfaces ativas</div>
+                  <div>• <strong>{pilotResetSuccessData.stats.libraryItems}</strong> Referências na biblioteca</div>
+                </div>
+              </div>
+              <div className="rounded-lg border bg-muted/20 p-3 text-xs text-muted-foreground">
+                <p>🧹 <strong>Dados de testes zerados:</strong> {pilotResetSuccessData.stats.materials} materiais, {pilotResetSuccessData.stats.submissions} submissões, {pilotResetSuccessData.stats.notifications} notificações.</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4 py-2 text-xs">
+              <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3.5 dark:border-amber-900/50 dark:bg-amber-950/20">
+                <p className="font-semibold text-amber-800 dark:text-amber-300">O que será zerado:</p>
+                <ul className="mt-1 list-disc pl-4 space-y-0.5 text-amber-700 dark:text-amber-400">
+                  <li>Materiais e minutas criados durante testes;</li>
+                  <li>Revisões, comentários, pareceres e submissões temporárias;</li>
+                  <li>Checklists de revisão em andamento e eventos de teste;</li>
+                  <li>Notificações e histórico de alertas gerados em testes.</li>
+                </ul>
+              </div>
+
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-3.5">
+                <p className="font-semibold text-primary">O que será restaurado e mantido (100% Canônico):</p>
+                <ul className="mt-1 list-disc pl-4 space-y-0.5 text-muted-foreground">
+                  <li>30 Capítulos e 253 Etapas com descrições do Anexo B e cronograma oficial;</li>
+                  <li>11 Grupos Temáticos e atribuições de coordenadores;</li>
+                  <li>Todos os participantes e pré-cadastros de acesso;</li>
+                  <li>67 Interfaces interdisciplinares identificadas;</li>
+                  <li>328 Itens da Biblioteca e referências do Google Drive.</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            {pilotResetSuccessData ? (
+              <Button
+                variant="default"
+                onClick={() => {
+                  setPilotResetModalOpen(false);
+                  window.location.reload();
+                }}
+              >
+                Concluir e Atualizar Tela
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setPilotResetModalOpen(false)}
+                  disabled={resetPilot.isPending}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={async () => {
+                    try {
+                      const res = await resetPilot.mutateAsync();
+                      setPilotResetSuccessData(res);
+                      await refetch();
+                      await refetchGovernance();
+                      toast.success(res.message);
+                    } catch (err: any) {
+                      toast.error(err?.message || "Falha ao preparar rodada piloto.");
+                    }
+                  }}
+                  disabled={resetPilot.isPending}
+                >
+                  {resetPilot.isPending ? "Preparando Ambiente..." : "Confirmar e Preparar Piloto"}
+                </Button>
+              </>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -293,7 +293,7 @@ describe("alocação de revisores por atividade", () => {
 });
 
 describe("escopo de visualização e ciclo de revisão", () => {
-  it("permite visualizar ao grupo e ao revisor, mas oculta de integrante externo", async () => {
+  it("permite transparência total de visualização a todos os integrantes autenticados", async () => {
     const groupViewer = await appRouter.createCaller(context(103)).production.list();
     const reviewer = await appRouter.createCaller(context(104)).production.list();
     const outsider = await appRouter.createCaller(context(105)).production.list();
@@ -302,7 +302,8 @@ describe("escopo de visualização e ciclo de revisão", () => {
     expect(groupViewer[0]?.permissions.isGroupViewer).toBe(true);
     expect(groupViewer[0]?.permissions.canReview).toBe(false);
     expect(reviewer[0]?.permissions.canReview).toBe(true);
-    expect(outsider).toEqual([]);
+    expect(outsider).toHaveLength(1);
+    expect(outsider[0]?.permissions.canReview).toBe(false);
   });
 
   it("permite ao coordenador submeter a versão vigente para os revisores apontados", async () => {
@@ -609,7 +610,7 @@ describe("gestão e resolução de interfaces entre grupos", () => {
 });
 
 describe("limitação de carregamento de materiais por usuário", () => {
-  it("expõe apenas as atividades alocadas para o executor e coordenador, e oculta de usuário sem alocação", async () => {
+  it("expõe apenas as atividades com permissão de coordenação ou administração", async () => {
     const coordinatorActivities = await appRouter
       .createCaller(context(101))
       .production.allocatedActivities();
@@ -629,31 +630,28 @@ describe("limitação de carregamento de materiais por usuário", () => {
     expect(coordinatorActivities).toHaveLength(1);
     expect(coordinatorActivities[0]?.allocationRole).toBe("coordenador");
 
-    expect(executorActivities).toHaveLength(1);
-    expect(executorActivities[0]?.allocationRole).toBe("executor");
-
-    expect(reviewerActivities).toHaveLength(1);
-    expect(reviewerActivities[0]?.allocationRole).toBe("revisor");
-
+    expect(executorActivities).toHaveLength(0);
+    expect(reviewerActivities).toHaveLength(0);
     expect(outsiderActivities).toHaveLength(0);
 
     expect(adminActivities).toHaveLength(1);
     expect(adminActivities[0]?.allocationRole).toBe("administrador");
   });
 
-  it("permite ao executor alocado carregar material para sua atividade e bloqueia usuário externo", async () => {
+  it("permite ao coordenador do capítulo carregar material e bloqueia executor ou usuário externo", async () => {
     dbMocks.requireDb.mockResolvedValue(mutationDb(999));
     dbMocks.listProductionMaterials.mockResolvedValue([
-      fixtures.material,
-      { ...fixtures.material, id: 999 },
+      { ...fixtures.material, reviewStatus: "em elaboração" },
+      { ...fixtures.material, id: 999, reviewStatus: "em elaboração" },
     ]);
+    const coordinator = appRouter.createCaller(context(101));
     const executor = appRouter.createCaller(context(106));
     const outsider = appRouter.createCaller(context(105));
 
     await expect(
-      executor.production.create({
+      coordinator.production.create({
         title: "Relatório de execução",
-        description: "Versão elaborada pelo executor",
+        description: "Versão elaborada pelo coordenador",
         activityId: fixtures.activity.id,
         sectionId: fixtures.activity.sectionId,
         notes: "Versão 1",
@@ -665,6 +663,22 @@ describe("limitação de carregamento de materiais por usuário", () => {
         },
       })
     ).resolves.toMatchObject({ id: 999 });
+
+    await expect(
+      executor.production.create({
+        title: "Tentativa de envio por executor",
+        description: "Tentativa de envio",
+        activityId: fixtures.activity.id,
+        sectionId: fixtures.activity.sectionId,
+        notes: null,
+        file: {
+          fileName: "tentativa.pdf",
+          mimeType: "application/pdf",
+          fileSize: 1024,
+          base64: "AQIDBA==",
+        },
+      })
+    ).rejects.toMatchObject({ code: "FORBIDDEN" });
 
     await expect(
       outsider.production.create({

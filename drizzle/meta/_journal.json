@@ -8,6 +8,13 @@
       "when": 1788607014499,
       "tag": "0000_misty_slayback",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789847623278,
+      "tag": "0001_bouncy_zarda",
+      "breakpoints": true
     }
   ]
 }

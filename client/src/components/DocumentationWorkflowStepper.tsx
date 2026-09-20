@@ -16,6 +16,7 @@ export interface WorkflowStageInfo {
   shortLabel: string;
   role: string;
   description: string;
+  criteria?: string[];
 }
 
 export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
@@ -25,6 +26,11 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
     shortLabel: "Minuta",
     role: "Autor / Executor",
     description: "Elaboração da minuta técnica e carga do arquivo no portal.",
+    criteria: [
+      "Minuta carregada no repositório",
+      "Mapeamento de escopo Anexo B",
+      "Séries temporais e dados estruturados",
+    ],
   },
   {
     key: "revisao",
@@ -32,6 +38,11 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
     shortLabel: "Revisão",
     role: "Revisor Técnico",
     description: "Análise técnica detalhada e registro de apontamentos.",
+    criteria: [
+      "Checklist de 5 itens preenchido",
+      "Apontamentos técnicos registrados",
+      "Conformidade metodológica avaliada",
+    ],
   },
   {
     key: "ajustes",
@@ -39,6 +50,11 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
     shortLabel: "Ajustes",
     role: "Autor / Executor",
     description: "Implementação das alterações e documentação das respostas.",
+    criteria: [
+      "Respostas aos apontamentos do revisor",
+      "Nova versão do documento carregada",
+      "Rastreabilidade de revisões garantida",
+    ],
   },
   {
     key: "reavaliacao",
@@ -46,6 +62,11 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
     shortLabel: "Parecer",
     role: "Revisor Técnico",
     description: "Verificação dos apontamentos atendidos e emissão de parecer favorável.",
+    criteria: [
+      "100% dos apontamentos resolvidos",
+      "Parecer técnico estruturado emitido",
+      "Veredito 'Aprovado' ou 'Aprovado com Ressalvas'",
+    ],
   },
   {
     key: "remissao",
@@ -53,6 +74,11 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
     shortLabel: "Remissão",
     role: "Coordenador de Capítulo",
     description: "Consolidação e homologação editorial no capítulo e tomo.",
+    criteria: [
+      "Consolidação no tomo/capítulo",
+      "Homologação pelo Coordenador de Capítulo",
+      "Liberação para documentação final",
+    ],
   },
 ];
 
@@ -105,6 +131,7 @@ interface DocumentationWorkflowStepperProps {
   openCommentCount?: number;
   implementedCommentCount?: number;
   resolvedCommentCount?: number;
+  showCriteria?: boolean;
   onStageClick?: (stage: WorkflowStage) => void;
 }
 
@@ -115,6 +142,7 @@ export function DocumentationWorkflowStepper({
   openCommentCount = 0,
   implementedCommentCount = 0,
   resolvedCommentCount = 0,
+  showCriteria = false,
   onStageClick,
 }: DocumentationWorkflowStepperProps) {
   const stageOrder: Record<WorkflowStage, number> = {
@@ -243,6 +271,22 @@ export function DocumentationWorkflowStepper({
                 <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-2">
                   {stage.description}
                 </p>
+
+                {showCriteria && stage.criteria && stage.criteria.length > 0 && (
+                  <div className="mt-2.5 pt-2 border-t border-border/50 space-y-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      Critérios de Etapa:
+                    </p>
+                    <ul className="space-y-0.5">
+                      {stage.criteria.map((crit, cIdx) => (
+                        <li key={cIdx} className="text-[10px] text-muted-foreground/90 flex items-start gap-1">
+                          <span className={cn("inline-block h-1.5 w-1.5 rounded-full mt-1 shrink-0", isPassed ? "bg-emerald-500" : isCurrent ? "bg-primary" : "bg-muted-foreground/40")} />
+                          <span className="leading-tight">{crit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           );

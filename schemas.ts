@@ -71,9 +71,11 @@ export const activityMilestoneSetSchema = z.object({
 export const activityReviewerIdsSchema = uniquePositiveIds;
 
 export const reviewDecisionSchema = z.object({
-  submissionId: z.number().int().positive(),
+  submissionId: z.number().int().positive().optional().nullable(),
+  materialId: z.number().int().positive().optional().nullable(),
+  activityId: z.number().int().positive().optional().nullable(),
   decision: z.enum(["em revisão", "ajustes solicitados", "aprovado"]),
-  note: z.string().trim().max(10_000).nullable(),
+  note: z.string().trim().max(10_000).nullable().optional(),
 });
 
 export const coordinationInterfaceInputSchema = z.object({
