@@ -1,6 +1,6 @@
 /**
- * Cronograma Oficial Mês 3 — Indústria Naval (Relatório 1)
- * Fonte: Cronograma-Mes-3.xlsm e Atividades-mes-3.docx (Revisão Master 17/09/2026)
+ * Cronograma Oficial do Estudo (Relatório 1)
+ * Fonte: cronograma_R1 (Revisão Master BNDES)
  */
 
 export interface ScheduleSectionItem {
@@ -38,15 +38,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "tome": "Tomo I",
     "chapter": null,
     "startMonth": 1,
-    "endMonth": 2,
+    "endMonth": 4,
     "activeMonths": [
       1,
-      2
+      2,
+      3,
+      4
     ],
     "startDate": "2026-08-21",
-    "dueDate": "2026-10-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787281200000,
-    "dueAt": 1792551599000,
+    "dueAt": 1797821999000,
     "group": "G1"
   },
   {
@@ -55,15 +57,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "tome": "Tomo I",
     "chapter": null,
     "startMonth": 1,
-    "endMonth": 2,
+    "endMonth": 4,
     "activeMonths": [
       1,
-      2
+      2,
+      3,
+      4
     ],
     "startDate": "2026-08-21",
-    "dueDate": "2026-10-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787281200000,
-    "dueAt": 1792551599000,
+    "dueAt": 1797821999000,
     "group": "G1"
   },
   {
@@ -72,15 +76,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "tome": "Tomo I",
     "chapter": null,
     "startMonth": 1,
-    "endMonth": 2,
+    "endMonth": 4,
     "activeMonths": [
       1,
-      2
+      2,
+      3,
+      4
     ],
     "startDate": "2026-08-21",
-    "dueDate": "2026-10-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787281200000,
-    "dueAt": 1792551599000,
+    "dueAt": 1797821999000,
     "group": "G1"
   },
   {
@@ -89,15 +95,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "tome": "Tomo I",
     "chapter": null,
     "startMonth": 1,
-    "endMonth": 2,
+    "endMonth": 4,
     "activeMonths": [
       1,
-      2
+      2,
+      3,
+      4
     ],
     "startDate": "2026-08-21",
-    "dueDate": "2026-10-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787281200000,
-    "dueAt": 1792551599000,
+    "dueAt": 1797821999000,
     "group": "G1"
   },
   {
@@ -349,7 +357,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G4"
   },
@@ -366,7 +374,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G4"
   },
@@ -383,7 +391,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G4"
   },
@@ -547,7 +555,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -709,7 +717,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G7"
   },
@@ -727,7 +735,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G7"
   },
@@ -745,7 +753,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G7 + G1"
   },
@@ -762,7 +770,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G7"
   },
@@ -932,7 +940,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G6"
   },
@@ -950,7 +958,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G6 + G3"
   },
@@ -987,7 +995,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G6"
   },
@@ -1004,7 +1012,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G6"
   },
@@ -1125,7 +1133,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G9"
   },
@@ -1142,7 +1150,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G9"
   },
@@ -1159,7 +1167,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "startDate": "2026-08-21",
     "dueDate": "2026-09-20",
     "startAt": 1787281200000,
-    "dueAt": 1789959599000,
+    "dueAt": 1789948799000,
     "group": "G8"
   },
   {
@@ -1248,7 +1256,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -1282,7 +1290,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -1300,7 +1308,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -1317,7 +1325,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -1334,7 +1342,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -1460,7 +1468,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -1607,7 +1615,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G1 + G3"
   },
@@ -1625,7 +1633,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G1 + G3"
   },
@@ -1643,7 +1651,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G1 + G3"
   },
@@ -1660,7 +1668,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G1 + G3"
   },
@@ -1821,7 +1829,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G1"
   },
@@ -1838,7 +1846,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G1"
   },
@@ -1968,7 +1976,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G1"
   },
@@ -2149,7 +2157,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G11 + G1"
   },
@@ -2166,7 +2174,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G11 + G1"
   },
@@ -2239,7 +2247,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2257,7 +2265,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10 + G11 + G2"
   },
@@ -2275,7 +2283,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G11"
   },
@@ -2293,7 +2301,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G11 + G2"
   },
@@ -2311,7 +2319,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G2"
   },
@@ -2329,7 +2337,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G2"
   },
@@ -2346,7 +2354,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G2"
   },
@@ -2420,7 +2428,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2438,7 +2446,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2455,7 +2463,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2472,7 +2480,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2544,7 +2552,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G10 + G11"
   },
@@ -2561,7 +2569,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G10 + G11"
   },
@@ -2577,7 +2585,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-01-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1800500399000,
     "group": "G10"
   },
@@ -2595,7 +2603,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2613,7 +2621,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2631,7 +2639,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2649,7 +2657,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2666,7 +2674,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2683,7 +2691,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2700,7 +2708,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G8"
   },
@@ -2718,7 +2726,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G8"
   },
@@ -2736,7 +2744,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G8"
   },
@@ -3145,7 +3153,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G3"
   },
@@ -3371,7 +3379,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -3388,7 +3396,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -3405,7 +3413,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -3422,7 +3430,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -3438,7 +3446,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2026-12-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1797821999000,
     "group": "G3"
   },
@@ -3641,7 +3649,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G3 + G1"
   },
@@ -3658,7 +3666,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G3 + G1"
   },
@@ -3675,7 +3683,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "startDate": "2026-08-21",
     "dueDate": "2026-09-20",
     "startAt": 1787281200000,
-    "dueAt": 1789959599000,
+    "dueAt": 1789948799000,
     "group": "G5"
   },
   {
@@ -3738,7 +3746,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-11-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1795229999000,
     "group": "G5"
   },
@@ -3754,7 +3762,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2026-11-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1795229999000,
     "group": "G5"
   },
@@ -3771,7 +3779,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G5"
   },
@@ -3789,7 +3797,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1800500399000,
     "group": "G5 + G1 + G2"
   },
@@ -3806,7 +3814,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G5 + G1 + G2"
   },
@@ -3937,7 +3945,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G2"
   },
@@ -3954,7 +3962,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G2 + G11"
   },
@@ -4079,7 +4087,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G1 + G2 + G3 + G9"
   },
@@ -4096,7 +4104,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1800500399000,
     "group": "G1 + G2 + G3 + G9"
   },
@@ -4113,7 +4121,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4130,7 +4138,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4147,7 +4155,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4164,7 +4172,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4181,7 +4189,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4198,7 +4206,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G8 + G3"
   },
@@ -4215,7 +4223,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G3"
   },
@@ -4233,7 +4241,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G3"
   },
@@ -4251,7 +4259,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G3"
   },
@@ -4269,7 +4277,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G3"
   },
@@ -4286,7 +4294,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1 + G2 + G3"
   },
@@ -4303,7 +4311,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4320,7 +4328,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4337,7 +4345,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4354,7 +4362,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4371,7 +4379,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4388,7 +4396,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4405,7 +4413,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4422,7 +4430,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4439,7 +4447,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4456,7 +4464,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4473,7 +4481,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4490,7 +4498,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4507,7 +4515,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4523,7 +4531,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1800500400000,
+    "startAt": 1800511200000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4539,7 +4547,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1800500400000,
+    "startAt": 1800511200000,
     "dueAt": 1803178799000,
     "group": null
   },
@@ -4555,7 +4563,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     ],
     "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1800500400000,
+    "startAt": 1800511200000,
     "dueAt": 1803178799000,
     "group": null
   }
@@ -4567,7 +4575,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "title": "Introdução",
     "tome": "Tomo I",
     "startMonth": 1,
-    "endMonth": 2,
+    "endMonth": 4,
     "activeMonths": [
       1,
       2,
@@ -4577,7 +4585,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "startDate": "2026-08-21",
     "dueDate": "2026-12-20",
     "startAt": 1787281200000,
-    "dueAt": 1792551599000,
+    "dueAt": 1797821999000,
     "group": "G1",
     "childrenCount": 4
   },
@@ -4892,7 +4900,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2026-10-21",
     "dueDate": "2027-02-20",
-    "startAt": 1792551600000,
+    "startAt": 1792562400000,
     "dueAt": 1803178799000,
     "group": "G8",
     "childrenCount": 9
@@ -4922,7 +4930,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "title": "Políticas de marinha mercante no mundo",
     "tome": "Tomo III",
     "startMonth": 1,
-    "endMonth": 5,
+    "endMonth": 6,
     "activeMonths": [
       1,
       2,
@@ -4934,7 +4942,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "startDate": "2026-08-21",
     "dueDate": "2027-02-20",
     "startAt": 1787281200000,
-    "dueAt": 1800500399000,
+    "dueAt": 1803178799000,
     "group": "G3",
     "childrenCount": 14
   },
@@ -5022,7 +5030,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "title": "Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas",
     "tome": "Tomo III",
     "startMonth": 1,
-    "endMonth": 5,
+    "endMonth": 6,
     "activeMonths": [
       1,
       2,
@@ -5034,7 +5042,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "startDate": "2026-08-21",
     "dueDate": "2027-02-20",
     "startAt": 1787281200000,
-    "dueAt": 1800500399000,
+    "dueAt": 1803178799000,
     "group": "G1",
     "childrenCount": 8
   },
@@ -5050,7 +5058,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1",
     "childrenCount": 6
@@ -5068,7 +5076,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1795230000000,
+    "startAt": 1795240800000,
     "dueAt": 1803178799000,
     "group": "G1",
     "childrenCount": 5
@@ -5085,7 +5093,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": "G1",
     "childrenCount": 6
@@ -5102,7 +5110,7 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1797822000000,
+    "startAt": 1797832800000,
     "dueAt": 1803178799000,
     "group": null,
     "childrenCount": 7
@@ -5118,10 +5126,31 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     ],
     "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1800500400000,
+    "startAt": 1800511200000,
     "dueAt": 1803178799000,
     "group": "G1",
     "childrenCount": 3
+  },
+  "AP": {
+    "code": "AP",
+    "title": "Apresentação",
+    "tome": "Apresentação",
+    "startMonth": 1,
+    "endMonth": 6,
+    "activeMonths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "startDate": "2026-08-21",
+    "dueDate": "2027-02-20",
+    "startAt": 1787281200000,
+    "dueAt": 1803178799000,
+    "group": "G1",
+    "childrenCount": 0
   }
 } as const;
 

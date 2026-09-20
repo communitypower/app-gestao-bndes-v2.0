@@ -27,9 +27,9 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
     }
   });
 
-  it("mapeia os 29 capítulos analíticos do Estudo com janelas temporais válidas", () => {
+  it("mapeia os 30 capítulos do Estudo (incluindo Apresentação) com janelas temporais válidas", () => {
     const chapterKeys = Object.keys(OFFICIAL_SCHEDULE_MES3_CHAPTERS);
-    expect(chapterKeys).toHaveLength(29);
+    expect(chapterKeys).toHaveLength(30);
 
     for (const code of chapterKeys) {
       const chapter = OFFICIAL_SCHEDULE_MES3_CHAPTERS[code];
@@ -51,13 +51,13 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
   });
 
   it("reflete as entregas focais do Mês 2 e Mês 3 (Revisão Master)", () => {
-    // Capítulo I.1 (Introdução): M1 a M2
+    // Capítulo I.1 (Introdução): M1 a M4 conforme cronograma_R1
     const capI1 = getScheduleForChapterCode("I.1");
-    expect(capI1).toMatchObject({ startMonth: 1, endMonth: 2 });
+    expect(capI1).toMatchObject({ startMonth: 1, endMonth: 4 });
 
-    // Item I.1.1 (Objetivos): M1 a M2, Grupo G1
+    // Item I.1.1 (Objetivos): M1 a M4, Grupo G1
     const itemI11 = getScheduleForDetailCode("I.1.1");
-    expect(itemI11).toMatchObject({ startMonth: 1, endMonth: 2, group: "G1" });
+    expect(itemI11).toMatchObject({ startMonth: 1, endMonth: 4, group: "G1" });
 
     // Item I.7.1 (Construção militar no mundo): M1 a M2, Grupo G9
     const itemI71 = getScheduleForDetailCode("I.7.1");
@@ -70,6 +70,18 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
     // Conclusões do Relatório 1 (IV.3): M6 a M6
     const capIV3 = getScheduleForChapterCode("IV.3");
     expect(capIV3).toMatchObject({ startMonth: 6, endMonth: 6 });
+
+    // Apresentação (AP): Término em M6
+    const capAP = getScheduleForChapterCode("AP");
+    expect(capAP).toMatchObject({ endMonth: 6 });
+
+    // Políticas de marinha mercante (III.2): Término em M6
+    const capIII2 = getScheduleForChapterCode("III.2");
+    expect(capIII2).toMatchObject({ endMonth: 6 });
+
+    // Ciclos de expansão e queda (III.7): Término em M6
+    const capIII7 = getScheduleForChapterCode("III.7");
+    expect(capIII7).toMatchObject({ endMonth: 6 });
   });
 
   it("popula o banco de dados com os timestamps de início e fim corretos e agrega capítulos pais", async () => {
