@@ -69,19 +69,32 @@ export default function Home() {
 
     return OFFICIAL_MONTH_MILESTONES.map((milestone, index) => {
       const deliverables = (data?.bySection ?? [])
-        .filter(s => s.dueAt && s.dueAt >= milestone.startAt && s.dueAt <= milestone.dueAt)
-        .map(s => ({
-          id: s.primaryActivityId ?? s.id,
-          planCode: s.code,
-          detailCode: null,
-          sectionCode: s.code,
-          title: s.title,
-          responsibleName: s.responsibleName,
-          status: s.status,
-          progress: s.progress,
-          dueAt: s.dueAt ?? 0,
-          tome: s.tome,
-        }));
+        .flatMap(s => [
+          ...(s.dueAt && s.dueAt >= milestone.startAt && s.dueAt <= milestone.dueAt ? [{
+            id: s.primaryActivityId ?? s.id,
+            planCode: s.code,
+            detailCode: null,
+            sectionCode: s.code,
+            title: s.title,
+            responsibleName: s.responsibleName,
+            status: s.status,
+            progress: s.progress,
+            dueAt: s.dueAt ?? 0,
+            tome: s.tome,
+          }] : []),
+          ...(s.steps ?? []).filter(step => step.dueAt && step.dueAt >= milestone.startAt && step.dueAt <= milestone.dueAt).map(step => ({
+            id: step.id,
+            planCode: null,
+            detailCode: step.detailCode,
+            sectionCode: s.code,
+            title: step.title,
+            responsibleName: step.responsibleName,
+            status: step.status,
+            progress: step.progress,
+            dueAt: step.dueAt ?? 0,
+            tome: s.tome,
+          }))
+        ]);
 
       const dueDateObj = new Date(milestone.dueAt);
       const monthNameShort = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" }).format(dueDateObj).replace(".", "");

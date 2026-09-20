@@ -1102,7 +1102,7 @@ function CalendarContent() {
       period =>
         filtered.filter(
           item =>
-            item.parentActivityId === null && item.dueAt >= period.start && item.dueAt <= period.end
+            item.dueAt >= period.start && item.dueAt <= period.end
         ).length
     );
   }, [periods, filtered]);

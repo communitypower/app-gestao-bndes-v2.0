@@ -2083,8 +2083,8 @@ export async function getDashboardData() {
   );
 
   const months = OFFICIAL_MONTH_MILESTONES.map((milestone, index) => {
-    const deliverables = parentActivities
-      .filter(item => item.dueAt >= milestone.startAt && item.dueAt <= milestone.dueAt)
+    const deliverables = activityRows
+      .filter(item => item.dueAt && item.dueAt >= milestone.startAt && item.dueAt <= milestone.dueAt)
       .map(item => ({
         id: item.id,
         planCode: item.planCode,
@@ -2096,6 +2096,7 @@ export async function getDashboardData() {
         progress: item.progress,
         dueAt: item.dueAt,
         tome: tomeBySectionCode.get(item.sectionCode) ?? "",
+        isChapter: item.parentActivityId === null,
       }))
       .sort((a, b) => a.dueAt - b.dueAt);
 
