@@ -681,6 +681,12 @@ function ActivityDetailDialog({
                     {studyTomeFromCode(data.sectionCode)}
                   </span>
                   <StatusBadge status={data.status} />
+                  {data.dueAt && (
+                    <span className="font-mono text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      Término: {formatDate(data.dueAt)}
+                    </span>
+                  )}
                 </>
               )}
             </div>
@@ -1135,13 +1141,16 @@ function ActivityDetailDialog({
                       </p>
                     </div>
 
-                    <div className="rounded border bg-card p-3">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase">Término Planejado</span>
-                      <p className="mt-1 font-semibold text-foreground">
+                    <div className="rounded border border-primary/30 bg-primary/5 p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-primary uppercase">Término Planejado</span>
+                        <CalendarDays className="h-3.5 w-3.5 text-primary" />
+                      </div>
+                      <p className="mt-1 font-mono text-sm font-bold text-primary">
                         {formatDate(data.dueAt)}
                       </p>
-                      <span className="text-[10px] text-muted-foreground">
-                        (Interna: 15 / BNDES: 30)
+                      <span className="text-[10px] text-muted-foreground font-medium">
+                        (Interna: Dia 15 / BNDES: Dia 30)
                       </span>
                     </div>
 

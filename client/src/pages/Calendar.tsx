@@ -31,6 +31,7 @@ import { dueTone, formatDate } from "@/lib/format";
 import { groupDisplayName } from "../../../shared/groupDisplay";
 import { STUDY_TOMES, STUDY_TOME_TITLES, studyTomeFromCode, type StudyTome } from "@shared/domain";
 import { PDF_ANALYTIC_SECTIONS } from "@shared/pdfAnalyticIndex";
+import { OFFICIAL_MONTH_MILESTONES } from "@shared/officialScheduleMes3";
 import {
   CalendarClock,
   AlertTriangle,
@@ -91,8 +92,18 @@ function periodLabel(period: TimelinePeriod) {
   return `${formatter.format(new Date(period.start))} — ${formatter.format(new Date(period.end))}`;
 }
 
-/** Divide a linha do tempo em janelas mensais contínuas a partir do início do intervalo exibido. */
+/** Divide a linha do tempo em janelas mensais contínuas alinhadas aos marcos oficiais M1..M7. */
 function timelinePeriods(rangeStart: number, rangeEnd: number): TimelinePeriod[] {
+  // Se estiver no escopo completo do projeto, usar exatamente os 7 marcos oficiais M1..M7
+  const officialStart = OFFICIAL_MONTH_MILESTONES[0].startAt;
+  const officialEnd = OFFICIAL_MONTH_MILESTONES[OFFICIAL_MONTH_MILESTONES.length - 1].dueAt;
+  if (Math.abs(rangeStart - officialStart) < 3 * DAY && Math.abs(rangeEnd - officialEnd) < 3 * DAY) {
+    return OFFICIAL_MONTH_MILESTONES.map(m => ({
+      start: m.startAt,
+      end: m.dueAt,
+    }));
+  }
+
   const periods: TimelinePeriod[] = [];
   let periodStart = rangeStart;
 
@@ -196,9 +207,20 @@ function TimelineRow({
           <span className="truncate">{item.title}</span>
           <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
         </a>
-        <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground">
-          {item.groupName ? groupDisplayName(item.groupName) : "Grupo não informado"} · {item.responsibleName}
-        </p>
+        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+          <span className="font-mono font-bold text-[10px] text-primary bg-primary/10 px-1.5 py-0.2 rounded">
+            Término: {formatDate(item.dueAt)}
+          </span>
+          {item.startAt && (
+            <span className="font-mono text-[10px] text-muted-foreground">
+              (Início: {formatDate(item.startAt)})
+            </span>
+          )}
+          <span>·</span>
+          <span className="truncate">{item.groupName ? groupDisplayName(item.groupName) : "Grupo não informado"}</span>
+          <span>·</span>
+          <span>{item.responsibleName}</span>
+        </div>
       </div>
 
       {/* Coluna 3: Estado & Barra de Progresso */}
@@ -280,11 +302,11 @@ function TimelineRow({
           );
         })}
 
-        {milestone ? (
-          <span className="absolute bottom-0.5 left-3 text-[9px] text-muted-foreground/80">
-            início a definir · término {formatDate(item.dueAt)}
-          </span>
-        ) : null}
+        <span className="absolute bottom-0.5 left-3 text-[9px] text-muted-foreground/90 font-mono font-medium">
+          {item.startAt
+            ? `${formatDate(item.startAt)} — ${formatDate(item.dueAt)}`
+            : `início a definir · término ${formatDate(item.dueAt)}`}
+        </span>
 
         {overdue || hasOverlap || hasNearDue ? (
           <span className="absolute bottom-0.5 right-3 flex items-center gap-1 text-[9px] font-medium text-muted-foreground">
@@ -830,10 +852,10 @@ function CalendarContent() {
 
   const projectStart = overview?.settings.projectStartAt
     ? new Date(overview.settings.projectStartAt).getTime()
-    : Date.UTC(2026, 7, 1);
+    : OFFICIAL_MONTH_MILESTONES[0].startAt;
   const projectEnd = overview?.settings.projectEndAt
     ? new Date(overview.settings.projectEndAt).getTime()
-    : Date.UTC(2027, 1, 1);
+    : OFFICIAL_MONTH_MILESTONES[OFFICIAL_MONTH_MILESTONES.length - 1].dueAt;
   const rangeStart = startFilter ? timestampAtNoon(startFilter) : projectStart;
   const rangeEnd = endFilter ? timestampAtNoon(endFilter) : projectEnd;
   const safeRangeEnd = Math.max(rangeStart + DAY, rangeEnd);
@@ -1206,7 +1228,7 @@ function CalendarContent() {
         eyebrow="03 — Cronograma"
         title="Execução por item"
         description="Acompanhamento temporal por seções, capítulos e entregáveis mensais do estudo."
-        index="M1–M6"
+        index="M1–M7"
         action={
           <div className="flex flex-wrap items-center gap-1.5 shrink-0">
             {/* Alternar Expandir / Compactar Listas */}
@@ -1589,6 +1611,11 @@ function CalendarContent() {
                                   <h3 className="font-semibold text-xs text-foreground truncate">
                                     {chapter.sectionTitle}
                                   </h3>
+                                  {(chapter.parentItem?.dueAt || chapter.items[0]?.dueAt) && (
+                                    <span className="font-mono text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded shrink-0 hidden sm:inline">
+                                      Término: {formatDate(chapter.parentItem?.dueAt ?? chapter.items[0]?.dueAt)}
+                                    </span>
+                                  )}
                                 </div>
 
                                 {chapter.groupName && (

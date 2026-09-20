@@ -9,6 +9,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { trpc } from "@/lib/trpc";
 import { formatDate, initials } from "@/lib/format";
 import { groupDisplayName } from "@shared/groupDisplay";
+import { OFFICIAL_MONTH_MILESTONES } from "@shared/officialScheduleMes3";
 import {
   BookOpen,
   Calendar,
@@ -64,15 +65,11 @@ export default function Home() {
   const [expandedMembers, setExpandedMembers] = useState<Record<number, boolean>>({});
 
   const months = useMemo(() => {
-    if (!data?.settings) return [];
-    if (data.months && data.months.length > 0) return data.months;
+    if (data?.months && data.months.length > 0) return data.months;
 
-    const start = new Date(data.settings.projectStartAt);
-    return Array.from({ length: 6 }, (_, index) => {
-      const monthStart = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + index, 1));
-      const monthEnd = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + index + 1, 0, 23, 59, 59));
-      const deliverables = (data.bySection ?? [])
-        .filter(s => s.dueAt && s.dueAt >= monthStart.getTime() && s.dueAt <= monthEnd.getTime())
+    return OFFICIAL_MONTH_MILESTONES.map((milestone, index) => {
+      const deliverables = (data?.bySection ?? [])
+        .filter(s => s.dueAt && s.dueAt >= milestone.startAt && s.dueAt <= milestone.dueAt)
         .map(s => ({
           id: s.primaryActivityId ?? s.id,
           planCode: s.code,
@@ -86,13 +83,17 @@ export default function Home() {
           tome: s.tome,
         }));
 
+      const dueDateObj = new Date(milestone.dueAt);
+      const monthNameShort = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" }).format(dueDateObj).replace(".", "");
+      const monthNameFull = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(dueDateObj);
+
       return {
         monthIndex: index,
-        monthNum: index + 1,
-        label: new Intl.DateTimeFormat("pt-BR", { month: "short" }).format(monthStart).replace(".", ""),
-        monthLabelFull: new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(monthStart),
-        start: monthStart.getTime(),
-        end: monthEnd.getTime(),
+        monthNum: milestone.month,
+        label: monthNameShort,
+        monthLabelFull: `${milestone.label} — Término em ${milestone.dueDate.slice(8, 10)}/${milestone.dueDate.slice(5, 7)}/${milestone.dueDate.slice(0, 4)} (${monthNameFull})`,
+        start: milestone.startAt,
+        end: milestone.dueAt,
         deliverables,
         count: deliverables.length,
       };
@@ -412,9 +413,9 @@ export default function Home() {
         {/* ========================================================================= */}
         {viewMode === "atividades" && (
           <div className="space-y-0">
-            {/* Grade de Cabeçalho dos 6 Meses com HoverCard de Entregáveis Previstos */}
+            {/* Grade de Cabeçalho dos 7 Meses (M1 a M7) com HoverCard de Entregáveis Previstos */}
             <div className="border-b bg-card">
-              <div className="grid grid-cols-1 divide-y md:grid-cols-[minmax(340px,1.3fr)_repeat(6,minmax(85px,1fr))] md:divide-x md:divide-y-0 paper-rule">
+              <div className="grid grid-cols-1 divide-y md:grid-cols-[minmax(340px,1.3fr)_repeat(7,minmax(80px,1fr))] md:divide-x md:divide-y-0 paper-rule">
                 <div className="hidden md:flex items-center justify-between px-4 py-3 bg-muted/15">
                   <span className="data-label text-muted-foreground">Hierarquia Editorial (Tomo → Capítulo → Etapas)</span>
                   <span className="font-mono text-[11px] text-muted-foreground">
@@ -422,7 +423,7 @@ export default function Home() {
                   </span>
                 </div>
 
-                {/* 6 Colunas dos Meses (M1 a M6) com HoverCard interativo */}
+                {/* 7 Colunas dos Meses (M1 a M7) com HoverCard interativo */}
                 {months.map(month => {
                   const monthDeliverables = month.deliverables ?? [];
                   const count = monthDeliverables.length;
@@ -592,7 +593,7 @@ export default function Home() {
                             return (
                               <div key={chapter.id} className="group bg-card transition-colors hover:bg-muted/10">
                                 {/* Nível 2: Linha do Capítulo */}
-                                <div className="grid grid-cols-1 md:grid-cols-[minmax(340px,1.3fr)_repeat(6,minmax(85px,1fr))] md:items-center">
+                                <div className="grid grid-cols-1 md:grid-cols-[minmax(340px,1.3fr)_repeat(7,minmax(80px,1fr))] md:items-center">
                                   {/* Info e Ações do Capítulo */}
                                   <div className="flex items-start gap-2.5 p-3.5 pl-6 md:p-3.5 md:pl-8">
                                     {steps.length > 0 ? (
@@ -622,6 +623,12 @@ export default function Home() {
                                     <div className="min-w-0 flex-1">
                                       <div className="flex flex-wrap items-center gap-2">
                                         <StatusBadge status={chapter.status} />
+                                        {chapter.dueAt && (
+                                          <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
+                                            <Calendar className="h-3 w-3" />
+                                            Término: {formatDate(chapter.dueAt)}
+                                          </span>
+                                        )}
                                         {openInterfaces > 0 && (
                                           <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
                                             <GitMerge className="h-3 w-3" />
@@ -669,7 +676,7 @@ export default function Home() {
                                     </div>
                                   </div>
 
-                                  {/* Barras de Meses Ativos (M1 a M6) alinhadas com o cabeçalho */}
+                                  {/* Barras de Meses Ativos (M1 a M7) alinhadas com o cabeçalho */}
                                   {months.map((month, mIdx) => {
                                     const isActive = chapter.activeMonths ? chapter.activeMonths[mIdx] : true;
                                     const isDeliverableMonth =
@@ -693,7 +700,7 @@ export default function Home() {
                                             />
                                             {isDeliverableMonth && (
                                               <div
-                                                title="Mês de entrega final deste capítulo"
+                                                title={`Mês de entrega final deste capítulo (${formatDate(chapter.dueAt)})`}
                                                 className="absolute right-0 top-1/2 -translate-y-1/2 h-3.5 w-1.5 rounded-full bg-primary ring-2 ring-background shadow-xs"
                                               />
                                             )}
@@ -735,7 +742,9 @@ export default function Home() {
                                                   <span>· {step.allocations.length} alocados</span>
                                                 )}
                                                 {step.dueAt && (
-                                                  <span>· Término: {formatDate(step.dueAt)}</span>
+                                                  <span className="font-mono font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
+                                                    Término: {formatDate(step.dueAt)}
+                                                  </span>
                                                 )}
                                               </div>
                                             </div>

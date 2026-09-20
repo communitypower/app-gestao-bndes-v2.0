@@ -70,6 +70,7 @@ import {
 import {
   getScheduleForDetailCode,
   getScheduleForChapterCode,
+  OFFICIAL_MONTH_MILESTONES,
 } from "../shared/officialScheduleMes3";
 import { totalAllocatedHours } from "../shared/teamStructure";
 import { ENV } from './_core/env';
@@ -2081,12 +2082,9 @@ export async function getDashboardData() {
     PDF_ANALYTIC_SECTIONS.map(section => [section.code, section.tome])
   );
 
-  const projectStart = new Date(settings.projectStartAt);
-  const months = Array.from({ length: 6 }, (_, index) => {
-    const monthStart = new Date(Date.UTC(projectStart.getUTCFullYear(), projectStart.getUTCMonth() + index, 1, 0, 0, 0));
-    const monthEnd = new Date(Date.UTC(projectStart.getUTCFullYear(), projectStart.getUTCMonth() + index + 1, 0, 23, 59, 59, 999));
+  const months = OFFICIAL_MONTH_MILESTONES.map((milestone, index) => {
     const deliverables = parentActivities
-      .filter(item => item.dueAt >= monthStart.getTime() && item.dueAt <= monthEnd.getTime())
+      .filter(item => item.dueAt >= milestone.startAt && item.dueAt <= milestone.dueAt)
       .map(item => ({
         id: item.id,
         planCode: item.planCode,
@@ -2101,13 +2099,17 @@ export async function getDashboardData() {
       }))
       .sort((a, b) => a.dueAt - b.dueAt);
 
+    const dueDateObj = new Date(milestone.dueAt);
+    const monthNameShort = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" }).format(dueDateObj).replace(".", "");
+    const monthNameFull = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(dueDateObj);
+
     return {
       monthIndex: index,
-      monthNum: index + 1,
-      label: new Intl.DateTimeFormat("pt-BR", { month: "short" }).format(monthStart).replace(".", ""),
-      monthLabelFull: new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(monthStart),
-      start: monthStart.getTime(),
-      end: monthEnd.getTime(),
+      monthNum: milestone.month,
+      label: monthNameShort,
+      monthLabelFull: `${milestone.label} — Término em ${milestone.dueDate.slice(8, 10)}/${milestone.dueDate.slice(5, 7)}/${milestone.dueDate.slice(0, 4)} (${monthNameFull})`,
+      start: milestone.startAt,
+      end: milestone.dueAt,
       deliverables,
       count: deliverables.length,
     };
