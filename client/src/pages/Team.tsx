@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -25,24 +26,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
 import { formatDate, initials } from "@/lib/format";
 import { groupDisplayName } from "@shared/groupDisplay";
 import { TEAM_SEED, type TeamGroupRole, type AppRole } from "@shared/domain";
+import {
+  parseSpreadsheetMatrix,
+  DEFAULT_SPREADSHEET_CSV_TEMPLATE,
+  type ParsedSpreadsheetResult,
+} from "@shared/matrixParser";
 import { Badge } from "@/components/ui/badge";
 import {
   Briefcase,
   Building2,
   BookMarked,
+  CheckCircle2,
   ChevronDown,
   Crown,
+  FileSpreadsheet,
+  FileText,
+  Layers,
   Mail,
   MessageCircle,
   Pencil,
   Plus,
+  RotateCcw,
   Search,
+  ShieldAlert,
   ShieldCheck,
   Sparkles,
+  Upload,
   UserRound,
   UsersRound,
 } from "lucide-react";
@@ -118,10 +132,28 @@ function TeamContent() {
   const utils = trpc.useUtils();
   const create = trpc.team.create.useMutation();
   const update = trpc.team.update.useMutation();
+  const importSpreadsheet = trpc.team.importSpreadsheetMatrix.useMutation();
+
   const [search, setSearch] = useState("");
   const [openGroupIds, setOpenGroupIds] = useState<number[]>([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<MemberForm>(emptyMember);
+
+  // Estado do Modal de Carga de Planilha
+  const [openSpreadsheetDialog, setOpenSpreadsheetDialog] = useState(false);
+  const [spreadsheetCsv, setSpreadsheetCsv] = useState(DEFAULT_SPREADSHEET_CSV_TEMPLATE);
+  const [syncActivitiesWithSpreadsheet, setSyncActivitiesWithSpreadsheet] = useState(true);
+
+  const canManage = Boolean(access?.isAdmin || access?.isGeneralCoordinator || access?.canManageTeam);
+
+  const parsedPreview: ParsedSpreadsheetResult | null = useMemo(() => {
+    try {
+      if (!spreadsheetCsv.trim()) return null;
+      return parseSpreadsheetMatrix(spreadsheetCsv);
+    } catch {
+      return null;
+    }
+  }, [spreadsheetCsv]);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -219,6 +251,45 @@ function TeamContent() {
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+      const text = evt.target?.result;
+      if (typeof text === "string") {
+        setSpreadsheetCsv(text);
+        toast.info(`Arquivo "${file.name}" carregado. Revise o preview antes de confirmar.`);
+      }
+    };
+    reader.readAsText(file, "UTF-8");
+  };
+
+  const handleApplySpreadsheet = async () => {
+    if (!spreadsheetCsv.trim()) {
+      toast.error("O conteúdo da planilha está vazio.");
+      return;
+    }
+    try {
+      const res = await importSpreadsheet.mutateAsync({
+        csvContent: spreadsheetCsv,
+        syncActivities: syncActivitiesWithSpreadsheet,
+      });
+      await Promise.all([
+        utils.team.hierarchy.invalidate(),
+        utils.team.list.invalidate(),
+        utils.activities.list.invalidate(),
+        utils.administration.status.invalidate(),
+      ]);
+      toast.success(
+        `Revisão aplicada! ${res.groupsCount} grupos processados, ${res.totalMembersCount} participantes (${res.addedMembersCount} novos, ${res.updatedMembersCount} atualizados).`
+      );
+      setOpenSpreadsheetDialog(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao processar planilha.");
+    }
+  };
+
   const isEditingCoordinator =
     Boolean(form.id) && form.groupRole === "coordenador";
 
@@ -229,14 +300,22 @@ function TeamContent() {
         title="Estrutura de grupos e responsabilidades"
         description="Matriz funcional G1–G11 do Plano de Trabalho, com vínculos ativos, referências de composição e frentes atribuídas."
         index="04 — Equipe"
-        action={access?.isAdmin ? (
-          <Button
-            onClick={openCreate}
-            className="rounded-md"
-          >
-            <Plus className="mr-2 h-4 w-4" /> Incluir integrante
-          </Button>
-        ) : undefined}
+        action={
+          canManage ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setOpenSpreadsheetDialog(true)}
+                className="rounded-md border-primary/30 text-primary hover:bg-primary/5"
+              >
+                <FileSpreadsheet className="mr-2 h-4 w-4" /> Carregar revisão da planilha
+              </Button>
+              <Button onClick={openCreate} className="rounded-md">
+                <Plus className="mr-2 h-4 w-4" /> Incluir integrante
+              </Button>
+            </div>
+          ) : undefined
+        }
       />
 
       <section className="grid gap-4 sm:grid-cols-3">
@@ -245,32 +324,39 @@ function TeamContent() {
         <Metric label="Integrantes ativos" value={activeMembers} note="Coordenadores e participantes" accent />
       </section>
 
-      {/* Seção Executiva de Coordenação Geral e Administradores */}
+      {/* Seção Executiva de Coordenação Geral, Administrativa e Técnica */}
       <section className="technical-panel overflow-hidden border-t-[3px] border-t-purple-600 dark:border-t-purple-400">
         <header className="border-b bg-purple-50/50 dark:bg-purple-950/20 p-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <p className="data-label flex items-center gap-1.5 font-semibold text-purple-700 dark:text-purple-300">
-                <Crown className="h-4 w-4" /> Governança e Administração do Sistema
+                <Crown className="h-4 w-4" /> Governança e Coordenação do Estudo BNDES
               </p>
               <h2 className="font-display mt-1 text-2xl font-semibold tracking-[-.025em]">
-                Coordenação Geral, Administração Executiva e Suporte Técnico
+                Coordenação Geral, Administrativa, Técnica e Gestão
               </h2>
               <p className="mt-1 text-xs text-muted-foreground">
-                Membros com perfil de Administrador responsáveis pela coordenação geral, gestão executiva, governança editorial e suporte de TI.
+                Estrutura diretiva do projeto responsável pela liderança metodológica, gestão institucional, validação técnica e governança editorial.
               </p>
             </div>
-            <Badge variant="outline" className="border-purple-300 bg-purple-100/60 font-mono text-xs text-purple-800 dark:border-purple-800 dark:bg-purple-950/60 dark:text-purple-300">
-              5 Administradores Ativos
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="border-purple-300 bg-purple-100/60 font-mono text-xs text-purple-800 dark:border-purple-800 dark:bg-purple-950/60 dark:text-purple-300">
+                Coordenação Geral & Administrativa
+              </Badge>
+              {canManage && (
+                <Badge variant="secondary" className="gap-1 text-[11px] font-medium">
+                  <ShieldCheck className="h-3 w-3 text-emerald-600" /> Acesso de Gestão Ativo
+                </Badge>
+              )}
+            </div>
           </div>
         </header>
 
         <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Floriano Carlos Martins Pires Jr. */}
-          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+          {/* Floriano Carlos Martins Pires Jr. - Coordenação Geral */}
+          <div className="space-y-2.5 rounded-lg border border-purple-200/80 bg-card p-4 shadow-sm">
             <div className="flex items-start gap-3">
-              <Avatar className="h-10 w-10 border border-purple-200">
+              <Avatar className="h-10 w-10 border border-purple-300">
                 <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
                   FP
                 </AvatarFallback>
@@ -280,8 +366,11 @@ function TeamContent() {
                   Prof. Floriano Carlos Martins Pires Jr.
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
-                    Administrador
+                  <Badge variant="outline" className="h-4 border-purple-300 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
+                    Coordenação Geral
+                  </Badge>
+                  <Badge variant="outline" className="h-4 border-amber-300 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
                   </Badge>
                 </div>
                 <p className="mt-1.5 text-xs font-medium text-foreground">
@@ -297,7 +386,7 @@ function TeamContent() {
             </div>
           </div>
 
-          {/* Denise Cunha */}
+          {/* Denise Cunha - Coordenação Administrativa */}
           <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
             <div className="flex items-start gap-3">
               <Avatar className="h-10 w-10 border border-purple-200">
@@ -311,14 +400,14 @@ function TeamContent() {
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
                   <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
-                    Administrador
+                    Coordenação Administrativa
                   </Badge>
                 </div>
                 <p className="mt-1.5 text-xs font-medium text-foreground">
                   Administradora Executiva do Projeto (UFRJ)
                 </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  Gestão Administrativa e Executiva do Estudo
+                  Gestão Administrativa, Executiva e Financeira do Estudo
                 </p>
                 <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
                   <Mail className="h-3 w-3 shrink-0" /> denisecunha@poli.ufrj.br
@@ -327,37 +416,7 @@ function TeamContent() {
             </div>
           </div>
 
-          {/* Cassiano Marins de Souza */}
-          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <Avatar className="h-10 w-10 border border-purple-200">
-                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
-                  CS
-                </AvatarFallback>
-              </Avatar>
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-sm font-semibold leading-5">
-                  Cassiano Marins de Souza
-                </h3>
-                <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
-                    Administrador
-                  </Badge>
-                </div>
-                <p className="mt-1.5 text-xs font-medium text-foreground">
-                  Substituto Editorial da Coordenação do Projeto
-                </p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  Coord. G10 (Construção Naval Mundial) · Membro G1
-                </p>
-                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
-                  <Mail className="h-3 w-3 shrink-0" /> cassianomarins@gmail.com
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Prof. Luiz Felipe Assis */}
+          {/* Prof. Luiz Felipe Assis - Coord. Administrativa & Técnica */}
           <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
             <div className="flex items-start gap-3">
               <Avatar className="h-10 w-10 border border-purple-200">
@@ -370,8 +429,11 @@ function TeamContent() {
                   Prof. Luiz Felipe Assis
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
-                    Administrador
+                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700">
+                    Coordenação Administrativa
+                  </Badge>
+                  <Badge variant="outline" className="h-4 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
                   </Badge>
                 </div>
                 <p className="mt-1.5 text-xs font-medium text-foreground">
@@ -387,31 +449,91 @@ function TeamContent() {
             </div>
           </div>
 
-          {/* Marcos Pedreira da Silva */}
+          {/* Cassiano Marins de Souza - Coordenação Técnica */}
           <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
             <div className="flex items-start gap-3">
-              <Avatar className="h-10 w-10 border border-purple-200">
-                <AvatarFallback className="bg-purple-100 text-xs font-semibold text-purple-800">
-                  MP
+              <Avatar className="h-10 w-10 border border-amber-200">
+                <AvatarFallback className="bg-amber-100 text-xs font-semibold text-amber-800">
+                  CS
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-sm font-semibold leading-5">
-                  Marcos Pedreira da Silva
+                  Cassiano Marins de Souza
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" className="h-4 border-purple-200 bg-purple-50 px-1.5 py-0 text-[10px] font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300">
-                    Administrador
+                  <Badge variant="outline" className="h-4 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
                   </Badge>
                 </div>
                 <p className="mt-1.5 text-xs font-medium text-foreground">
-                  Técnico de TI / Suporte Técnico (UFRJ)
+                  Substituto Editorial da Coordenação do Projeto
                 </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">
-                  Suporte Técnico, Infraestrutura e TI da Plataforma
+                  Coord. G10 (Construção Naval Mundial) · Membro G1
                 </p>
                 <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
-                  <Mail className="h-3 w-3 shrink-0" /> marcos.pedreira@ufrj.br
+                  <Mail className="h-3 w-3 shrink-0" /> cassianomarins@gmail.com
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Carlos Frederico Leão Rocha - Coordenação Técnica */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-amber-200">
+                <AvatarFallback className="bg-amber-100 text-xs font-semibold text-amber-800">
+                  CR
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Prof. Carlos Frederico Leão Rocha
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Coordenador do Grupo G2 e Membro do G1 (IE-UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coord. G2 (Política Industrial) · Membro G1
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> carlos.rocha@ie.ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Segen Farid Estefen - Coordenação Técnica */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-amber-200">
+                <AvatarFallback className="bg-amber-100 text-xs font-semibold text-amber-800">
+                  SE
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Prof. Segen Farid Estefen
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Membro da Coordenação Técnica e do Grupo G1 (UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coordenação Técnica e Metodológica do Estudo
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> segen@oceanica.ufrj.br
                 </p>
               </div>
             </div>
@@ -458,7 +580,7 @@ function TeamContent() {
                 <h2 className="font-display mt-1 text-2xl font-semibold tracking-[-.025em]">
                   <span title={group.name}>{groupDisplayName(group.name)}</span>
                 </h2>
-                <p className="mt-1 text-xs text-muted-foreground">Composição confirmada na reunião de kick-off</p>
+                <p className="mt-1 text-xs text-muted-foreground">Composição confirmada e revisada na matriz funcional</p>
               </div>
               <p className="flex items-center justify-end gap-2 text-sm text-muted-foreground">
                 <Building2 className="h-4 w-4" /> {group.institution}
@@ -510,7 +632,7 @@ function TeamContent() {
                           : "Alertas não autorizados"}
                       </p>
                     </div>
-                    {access?.isAdmin && <Button
+                    {canManage && <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => openEdit(group.coordinator!)}
@@ -521,7 +643,7 @@ function TeamContent() {
                   </div>
                 ) : (
                   <p className="mt-6 text-sm text-muted-foreground">
-                    A reunião de kick-off identifica os participantes; a coordenação operacional deste grupo permanece a definir.
+                    A coordenação operacional deste grupo permanece a definir.
                   </p>
                 )}
               </section>
@@ -583,13 +705,13 @@ function TeamContent() {
                   </div>
                 ) : (
                   <p className="py-8 text-sm text-muted-foreground">
-                    Nenhum participante indicado para este grupo na reunião de kick-off.
+                    Nenhum participante indicado para este grupo.
                   </p>
                 )}
               </section>
               <section className="rounded-md border border-border bg-muted/20 p-4 lg:col-span-2">
                 <p className="data-label text-muted-foreground">Regra de gestão</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">A composição temática do kick-off orienta a participação nos grupos. O vínculo primário, os papéis de executor, revisor e as responsabilidades de cada seção continuam registrados e auditados nas fichas de atividade.</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">A matriz de grupos orienta a distribuição temática do estudo. O Prof. Floriano (Coordenação Geral) e Administradores podem atualizar as alocações e carregar revisões da planilha sempre que necessário.</p>
               </section>
             </div>
             <section className="border-t bg-muted/15 px-5 py-4">
@@ -634,6 +756,142 @@ function TeamContent() {
         )})}
       </div>
 
+      {/* Diálogo de Carga / Revisão da Planilha Matriz */}
+      <Dialog open={openSpreadsheetDialog} onOpenChange={setOpenSpreadsheetDialog}>
+        <DialogContent className="max-h-[92vh] overflow-y-auto bg-card sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="font-display flex items-center gap-2 text-2xl font-semibold tracking-[-.03em]">
+              <FileSpreadsheet className="h-6 w-6 text-primary" /> Carregar Revisão da Planilha (Atividades e Grupos)
+            </DialogTitle>
+            <DialogDescription>
+              Cole o conteúdo CSV ou selecione um arquivo de revisão com a matriz de grupos (G1–G11), participantes e coordenações. O Prof. Floriano e Administradores possuem credenciais para processar a sincronização.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-4 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/20 p-3">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="file-upload" className="cursor-pointer">
+                  <Button variant="outline" size="sm" asChild>
+                    <span>
+                      <Upload className="mr-1.5 h-4 w-4" /> Selecionar arquivo (.csv / .txt)
+                    </span>
+                  </Button>
+                </Label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept=".csv,.txt,.xlsx,.xlsm"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSpreadsheetCsv(DEFAULT_SPREADSHEET_CSV_TEMPLATE)}
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="mr-1.5 h-3.5 w-3.5" /> Restaurar modelo canônico
+              </Button>
+            </div>
+
+            <div>
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Conteúdo da Planilha (Formato CSV com Grupos G1–G11 e Coordenações)
+              </Label>
+              <Textarea
+                className="mt-2 font-mono text-xs leading-relaxed"
+                rows={10}
+                value={spreadsheetCsv}
+                onChange={e => setSpreadsheetCsv(e.target.value)}
+                placeholder="Cole o CSV da planilha aqui..."
+              />
+            </div>
+
+            {/* Painel de Pré-visualização do Parser */}
+            {parsedPreview ? (
+              <div className="rounded-md border border-primary/20 bg-primary/5 p-4">
+                <p className="data-label flex items-center gap-1.5 font-semibold text-primary">
+                  <CheckCircle2 className="h-4 w-4" /> Pré-visualização da Estrutura Identificada
+                </p>
+                <div className="mt-2.5 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded bg-background p-2.5 shadow-sm">
+                    <p className="text-[11px] font-medium text-muted-foreground">Grupos Detectados</p>
+                    <p className="font-mono text-lg font-bold text-foreground">
+                      {parsedPreview.groups.length} / 11
+                    </p>
+                  </div>
+                  <div className="rounded bg-background p-2.5 shadow-sm">
+                    <p className="text-[11px] font-medium text-muted-foreground">Participantes Totais</p>
+                    <p className="font-mono text-lg font-bold text-foreground">
+                      {parsedPreview.allMemberNames.length}
+                    </p>
+                  </div>
+                  <div className="rounded bg-background p-2.5 shadow-sm">
+                    <p className="text-[11px] font-medium text-muted-foreground">Coordenação Geral</p>
+                    <p className="truncate text-xs font-semibold text-foreground">
+                      {parsedPreview.governance.geral.join(", ") || "Prof. Floriano"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-3 max-h-48 overflow-y-auto rounded border bg-background p-2.5">
+                  <p className="text-[11px] font-semibold text-muted-foreground mb-1.5">Resumo dos Grupos & Coordenadores:</p>
+                  <div className="space-y-1.5 text-xs">
+                    {parsedPreview.groups.map(g => (
+                      <div key={g.groupCode} className="flex items-start justify-between gap-2 border-b pb-1 last:border-0">
+                        <span className="font-semibold text-primary">{g.fullName}:</span>
+                        <span className="text-right text-muted-foreground">
+                          Coord: <strong className="text-foreground">{g.coordinatorName ?? "A definir"}</strong> ({g.members.length} membros)
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+                <p className="flex items-center gap-1.5 font-semibold">
+                  <ShieldAlert className="h-4 w-4" /> Formato não reconhecido
+                </p>
+                <p className="mt-1">Verifique se as linhas contêm as marcações G1, G2, etc., e os nomes dos integrantes.</p>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between rounded-md border p-3">
+              <div>
+                <Label className="text-xs font-semibold">Sincronizar Atividades Canônicas</Label>
+                <p className="text-[11px] text-muted-foreground">
+                  Reatribui a responsabilidade das atividades canônicas aos coordenadores designados.
+                </p>
+              </div>
+              <Switch
+                checked={syncActivitiesWithSpreadsheet}
+                onCheckedChange={setSyncActivitiesWithSpreadsheet}
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="mt-4 gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setOpenSpreadsheetDialog(false)}
+              disabled={importSpreadsheet.isPending}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleApplySpreadsheet}
+              disabled={importSpreadsheet.isPending || !parsedPreview || parsedPreview.groups.length === 0}
+            >
+              {importSpreadsheet.isPending ? "Processando e Atualizando…" : "Confirmar e Aplicar Revisão"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Diálogo de Cadastro / Edição Manual de Integrante */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[92vh] overflow-y-auto bg-card sm:max-w-xl">
           <DialogHeader>
@@ -818,7 +1076,7 @@ function TeamContent() {
 
 export default function TeamPage() {
   return (
-    <AdminGate>
+    <AdminGate allowGeneralCoordinator>
       <TeamContent />
     </AdminGate>
   );

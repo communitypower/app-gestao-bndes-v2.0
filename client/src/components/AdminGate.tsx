@@ -4,10 +4,20 @@ import { PageLoading } from "./EditorialUI";
 import { LockKeyhole } from "lucide-react";
 import { Link } from "wouter";
 
-export default function AdminGate({ children }: { children: ReactNode }) {
+export default function AdminGate({
+  children,
+  allowGeneralCoordinator = false,
+}: {
+  children: ReactNode;
+  allowGeneralCoordinator?: boolean;
+}) {
   const { data, isLoading } = trpc.administration.status.useQuery();
   if (isLoading || !data) return <PageLoading />;
-  if (!data.isAdmin) {
+  const hasAccess = Boolean(
+    data.isAdmin ||
+      (allowGeneralCoordinator && (data.isGeneralCoordinator || data.canManageTeam))
+  );
+  if (!hasAccess) {
     return (
       <div className="editorial-enter flex min-h-[70vh] items-center justify-center">
         <div className="max-w-xl border-y paper-rule py-12 text-center">

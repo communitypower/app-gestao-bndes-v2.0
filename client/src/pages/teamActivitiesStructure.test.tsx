@@ -305,6 +305,21 @@ vi.mock("@/lib/trpc", () => ({
           isPending: false,
         }),
       },
+      importSpreadsheetMatrix: {
+        useMutation: () => ({
+          mutateAsync: vi.fn().mockResolvedValue({
+            success: true,
+            groupsCount: 11,
+            totalMembersCount: 33,
+            addedMembersCount: 0,
+            updatedMembersCount: 33,
+            allocationsUpdated: 0,
+            governance: { geral: [], administrativa: [], tecnica: [] },
+            groups: [],
+          }),
+          isPending: false,
+        }),
+      },
     },
     dashboard: {
       sections: {

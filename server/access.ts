@@ -31,6 +31,18 @@ export function assertAdministrator(user: User) {
   }
 }
 
+export function assertGeneralCoordinatorOrAdmin(
+  user: User,
+  member?: { name?: string | null } | null
+) {
+  if (!isGeneralCoordinatorOrAdmin(user, member)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Esta ação é restrita à Coordenação Geral (Prof. Floriano) ou Administradores.",
+    });
+  }
+}
+
 export function isActiveCoordinator(
   member: ActivityAccessMember | null | undefined
 ) {

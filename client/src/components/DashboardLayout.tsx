@@ -53,7 +53,7 @@ const menuItems = [
   { icon: ChartNoAxesCombined, label: "KPIs documentais", path: "/kpis", admin: true, coordinator: true },
   { icon: ClipboardList, label: "Minhas ações", path: "/atividades", admin: false },
   { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: true, coordinator: true },
-  { icon: Users, label: "Equipe e grupos", path: "/equipe", admin: true },
+  { icon: Users, label: "Equipe e grupos", path: "/equipe", admin: true, teamManager: true },
   { icon: BookOpen, label: "Biblioteca de referências", path: "/biblioteca", admin: false },
   { icon: FilePenLine, label: "Produção e revisão", path: "/producao", admin: false },
   { icon: GitMerge, label: "Interfaces entre seções", path: "/interfaces", admin: true, interfaces: true },
@@ -158,6 +158,7 @@ function DashboardLayoutContent({
   const visibleItems = menuItems.filter(
     item =>
       !item.admin ||
+      (item.teamManager && (adminStatus?.isAdmin || adminStatus?.isGeneralCoordinator || adminStatus?.canManageTeam)) ||
       (item.interfaces && adminStatus?.canAccessInterfaces) ||
       adminStatus?.isAdmin ||
       (item.coordinator && adminStatus?.canAccessActivities)

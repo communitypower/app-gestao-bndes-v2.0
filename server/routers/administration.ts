@@ -9,6 +9,7 @@ import {
   assertAdministrator,
   isActiveCoordinator,
   isAdministrator,
+  isGeneralCoordinatorOrAdmin,
 } from "../access";
 import { protectedProcedure, router } from "../_core/trpc";
 import {
@@ -204,6 +205,8 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
     await ensureSeedData();
     const isAdmin = isAdministrator(ctx.user);
     const teamMember = await getTeamMemberByUserId(ctx.user.id);
+    const isGeneralCoordinator = isGeneralCoordinatorOrAdmin(ctx.user, teamMember);
+    const canManageTeam = isAdmin || isGeneralCoordinator;
     const isCoordinator = ctx.user.appRole === "coordenador" || isActiveCoordinator(teamMember);
     const isLinkedTeamMember = Boolean(teamMember?.active);
     const isExecutionDelegate = Boolean(
@@ -213,6 +216,8 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
     return {
       isAdmin,
       isCoordinator,
+      isGeneralCoordinator,
+      canManageTeam,
       isExecutionDelegate,
       isLinkedTeamMember,
       canAccessActivities: isAdmin || isLinkedTeamMember,

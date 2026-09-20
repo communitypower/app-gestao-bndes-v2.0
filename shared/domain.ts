@@ -133,6 +133,7 @@ export const TEAM_SEED: ReadonlyArray<{
   { name: "Carolina Gonçalves dos Santos", title: "Consultor", institution: "Consultoria", email: "carolina.santos@consultoria.com", appRole: "executor" },
   { name: "João Candido Gonçalves da Silva", title: "Consultor", institution: "Consultoria", email: "joao.candido@consultoria.com", appRole: "executor" },
   { name: "Sergio Lamarca Leite", title: "Consultor", institution: "Consultoria", email: "sergio.lamarca@consultoria.com", appRole: "executor" },
+  { name: "Isaias Quaresma Masetti", title: "Consultor", institution: "Consultoria", email: "isaias.masetti@consultoria.com", appRole: "executor" },
   { name: "S. Navaneetha Krishnan", title: "Professor", institution: "Institute TPMI - India", email: "krishnan@tpmi-india.org", appRole: "executor" },
   { name: "Jeom-Kee Paik", title: "Professor", institution: "UCL", email: "j.paik@ucl.ac.uk", appRole: "executor" },
 ];
@@ -148,7 +149,7 @@ export const TEAM_GROUP_SEED = [
   { name: "G8 — Descarbonização", institution: "UFRJ", coordinatorName: "Jean David Job Emmanuel Marie Caprace", memberNames: ["Luiz Antônio Vaz Pinto", "Crístofer Hood Marques"] },
   { name: "G9 — Construção Militar", institution: "UFRJ", coordinatorName: "Andre Ricardo Mendonça Pinheiro", memberNames: [] },
   { name: "G10 — Construção Naval Mundial e Análise Econômica", institution: "Interinstitucional", coordinatorName: "Cassiano Marins de Souza", memberNames: ["Floriano Carlos Martins Pires Jr."] },
-  { name: "G11 — Construção Naval no Brasil", institution: "UFRJ / UFPE", coordinatorName: "Marta Cecilia Tapia Reyes", memberNames: ["Marcos Pereira", "João Candido Gonçalves da Silva", "Sergio Lamarca Leite"] },
+  { name: "G11 — Construção Naval no Brasil", institution: "UFRJ / UFPE", coordinatorName: "Marta Cecilia Tapia Reyes", memberNames: ["Marcos Pereira", "João Candido Gonçalves da Silva", "Sergio Lamarca Leite", "Isaias Quaresma Masetti"] },
 ] as const;
 
 export const GROUP_MEMBERSHIPS_SEED = [
@@ -209,6 +210,7 @@ export const GROUP_MEMBERSHIPS_SEED = [
   { groupName: "G11 — Construção Naval no Brasil", memberName: "Marcos Pereira" },
   { groupName: "G11 — Construção Naval no Brasil", memberName: "João Candido Gonçalves da Silva" },
   { groupName: "G11 — Construção Naval no Brasil", memberName: "Sergio Lamarca Leite" },
+  { groupName: "G11 — Construção Naval no Brasil", memberName: "Isaias Quaresma Masetti" },
 ] as const;
 
 export const ACTIVE_TEAM_MEMBER_NAMES = TEAM_GROUP_SEED.flatMap(group => [
