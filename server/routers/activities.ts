@@ -882,9 +882,7 @@ export const activitiesRouter = router({
         thematicMembers: await getThematicGroupMembers(activity),
         eligibleParticipants: await getEligibleParticipants(activity.responsibleId, {
           responsibleGroupId: activity.responsibleGroupId,
-          groupId: activity.groupId,
           groupName: activity.groupName,
-          responsibleGroupName: activity.responsibleGroupName,
           parentResponsibleGroupId: parentActivity?.responsibleGroupId,
         }),
         eligibleReviewers: await getEligibleReviewers(activity.responsibleId, activity.id),
@@ -940,9 +938,7 @@ export const activitiesRouter = router({
         isGeneralCoord,
         {
           responsibleGroupId: activity.responsibleGroupId,
-          groupId: activity.groupId,
           groupName: activity.groupName,
-          responsibleGroupName: activity.responsibleGroupName,
           parentResponsibleGroupId: parentActivity?.responsibleGroupId,
         }
       );
@@ -964,8 +960,8 @@ export const activitiesRouter = router({
 
       const members = await listTeamMembers();
       const memberMap = new Map(members.map(m => [m.id, m]));
-      const targetGroupId = activity.responsibleGroupId ?? activity.groupId ?? parentActivity?.responsibleGroupId;
-      const targetGroupName = activity.groupName || activity.responsibleGroupName;
+      const targetGroupId = activity.responsibleGroupId ?? parentActivity?.responsibleGroupId;
+      const targetGroupName = activity.groupName;
       const groupRefMembers = targetGroupName ? (KICKOFF_GROUP_REFERENCE[targetGroupName]?.members ?? []) : [];
 
       for (const allocation of newAllocations) {

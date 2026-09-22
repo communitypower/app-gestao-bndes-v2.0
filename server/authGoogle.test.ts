@@ -9,7 +9,7 @@ describe("authGoogle authorization checks", () => {
   });
 
   it("authorizes a known team coordinator email", async () => {
-    const result = await getAuthorizedUserByEmail("carlos.rocha@ie.ufrj.br");
+    const result = await getAuthorizedUserByEmail("fred@ie.ufrj.br");
     expect(result.authorized).toBe(true);
     if (result.authorized) {
       expect(result.user.name).toContain("Carlos Frederico");
@@ -18,7 +18,7 @@ describe("authGoogle authorization checks", () => {
   });
 
   it("authorizes the general coordinator email (Floriano)", async () => {
-    const result = await getAuthorizedUserByEmail("floriano@poli.ufrj.br");
+    const result = await getAuthorizedUserByEmail("floriano@oceanica.ufrj.br");
     expect(result.authorized).toBe(true);
     if (result.authorized) {
       expect(result.user.appRole).toBe("coordenador");

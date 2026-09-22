@@ -40,6 +40,7 @@ import {
   Users,
   Bot,
   Sparkles,
+  KeyRound,
 } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
 import { AiAssistantDrawer } from "./AiAssistantDrawer";
@@ -47,6 +48,16 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { toast } from "sonner";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: false },
@@ -154,6 +165,48 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  const changePasswordMutation = trpc.auth.changePassword.useMutation({
+    onSuccess: () => {
+      setIsChangingPassword(false);
+      setIsPasswordModalOpen(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      toast.success("Sua senha pessoal foi atualizada com sucesso!");
+    },
+    onError: err => {
+      setIsChangingPassword(false);
+      toast.error(err.message || "Erro ao atualizar senha.");
+    },
+  });
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentPassword.trim()) {
+      toast.warning("Informe sua senha atual ou a chave de acesso da equipe.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.warning("A nova senha deve ter no mínimo 6 caracteres.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.warning("A confirmação de senha não confere.");
+      return;
+    }
+    setIsChangingPassword(true);
+    changePasswordMutation.mutate({
+      currentPassword: currentPassword.trim(),
+      newPassword: newPassword.trim(),
+    });
+  };
+
   const sidebarRef = useRef<HTMLDivElement>(null);
   const visibleItems = menuItems.filter(
     item =>
@@ -289,6 +342,14 @@ function DashboardLayoutContent({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="cursor-pointer"
+                >
+                  <KeyRound className="mr-2 h-4 w-4 text-primary" />
+                  <span>Alterar Senha Pessoal</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
                   onClick={() => {
                     window.location.href = "/login";
                   }}
@@ -358,6 +419,76 @@ function DashboardLayoutContent({
         <main className="page-grid flex-1 overflow-x-hidden px-4 py-6 sm:px-6 md:px-8 md:py-8 xl:px-10 xl:py-10"><div className="mx-auto w-full max-w-[1560px]">{children}</div></main>
       </SidebarInset>
       <AiAssistantDrawer isOpen={isAssistantDrawerOpen} onOpenChange={setIsAssistantDrawerOpen} />
+
+      {/* Modal de Alteração de Senha Pessoal */}
+      <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <form onSubmit={handleChangePassword}>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-lg">
+                <KeyRound className="h-5 w-5 text-primary" /> Alterar Senha Pessoal
+              </DialogTitle>
+              <DialogDescription className="text-xs">
+                Defina uma senha pessoal segura para acessar sua conta sem precisar da chave compartilhada.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3 py-4">
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-foreground">
+                  Senha Atual ou Chave da Equipe
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Senha atual ou BNDES2026#Naval"
+                  value={currentPassword}
+                  onChange={e => setCurrentPassword(e.target.value)}
+                  disabled={isChangingPassword}
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-foreground">
+                  Nova Senha (mínimo 6 caracteres)
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Nova senha pessoal"
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  disabled={isChangingPassword}
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-foreground">
+                  Confirmar Nova Senha
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Repita a nova senha"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  disabled={isChangingPassword}
+                  required
+                />
+              </div>
+            </div>
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsPasswordModalOpen(false)}
+                disabled={isChangingPassword}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={isChangingPassword}>
+                {isChangingPassword ? "Salvando..." : "Salvar Nova Senha"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

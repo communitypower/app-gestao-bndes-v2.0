@@ -1778,7 +1778,7 @@ export async function reconcileActivityParentSchedule(activityId: number) {
       .map(c => c.dueAt)
       .filter((d): d is number => d !== null && d !== undefined);
 
-    const updates: { startAt?: number | null; dueAt?: number | null } = {};
+    const updates: { startAt?: number | null; dueAt?: number } = {};
     if (childStartAts.length > 0) {
       updates.startAt = Math.min(...childStartAts);
     }

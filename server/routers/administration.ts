@@ -139,7 +139,9 @@ export const administrationRouter = router({
         const recipientRole = u.appRole;
         const groupInfo = member?.groupName ? groupDisplayName(member.groupName) : "Coordenação Geral / Transversal";
         const institutionInfo = member?.institution || "UFRJ";
-        const origin = ctx.req.headers.origin || "http://localhost:3000";
+        const host = ctx.req.get("host");
+        const proto = ctx.req.headers["x-forwarded-proto"] || ctx.req.protocol || "https";
+        const origin = ctx.req.headers.origin || (host ? `${proto}://${host}` : "http://localhost:3000");
         const loginUrl = `${origin}/login?email=${encodeURIComponent(u.email)}`;
 
         const subject = `[Estudo BNDES — Indústria Naval] Instruções de Primeiro Acesso e Confirmação de Registro`;
