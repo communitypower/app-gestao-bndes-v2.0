@@ -1181,9 +1181,9 @@ export async function resetAndSeedPilotDatabase(explicitDb?: Awaited<ReturnType<
 
   // 1. Delete all transient review, material, comment and notification data in reverse dependency order
   await db.delete(materialComments);
-  await db.delete(materialRevisions);
   await db.delete(reviewDecisions);
   await db.delete(reviewSubmissions);
+  await db.delete(materialRevisions);
   await db.delete(productionMaterials);
   await db.delete(activityReviewers);
   await db.delete(reviewChecklistEvents);
@@ -1203,6 +1203,22 @@ export async function resetAndSeedPilotDatabase(explicitDb?: Awaited<ReturnType<
   await db.delete(userAccessEvents);
   await db.delete(activityEvidenceLinks);
   await db.delete(activityLeadershipEvents);
+  await db.delete(activityMilestones);
+  await db.delete(activityAllocations);
+
+  // 1.1. Clean local storage uploaded test documents
+  try {
+    const prodStorage = path.resolve(process.cwd(), ".storage", "production");
+    if (fs.existsSync(prodStorage)) {
+      await fs.promises.rm(prodStorage, { recursive: true, force: true });
+    }
+    const interfaceStorage = path.resolve(process.cwd(), ".storage", "interfaces");
+    if (fs.existsSync(interfaceStorage)) {
+      await fs.promises.rm(interfaceStorage, { recursive: true, force: true });
+    }
+  } catch (storageErr) {
+    console.warn("[P1 Package Reset] Warning on storage cleanup:", storageErr);
+  }
 
   // 2. Reset workflow and execution status across all activities
   await db.update(activities).set({
@@ -1211,11 +1227,14 @@ export async function resetAndSeedPilotDatabase(explicitDb?: Awaited<ReturnType<
     actualStartAt: null,
     actualEndAt: null,
     nextStep: null,
+    progress: 0,
   });
 
   // 3. Reset coordination interfaces status
   await db.update(coordinationInterfaces).set({
     status: "identificada",
+    resolution: null,
+    resolvedAt: null,
   });
 
   // 4. Ensure 100% canonical structural seed is loaded and synced
