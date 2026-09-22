@@ -36,6 +36,7 @@ import {
   Sparkles,
   TriangleAlert,
   UserRoundCheck,
+  Users,
   UsersRound,
   BookOpen,
 } from "lucide-react";
@@ -62,6 +63,7 @@ function AdministrationContent() {
   const [pilotResetSuccessData, setPilotResetSuccessData] = useState<any>(null);
   const [copiedText, setCopiedText] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCC, setCopiedCC] = useState(false);
   const [sentInvitationData, setSentInvitationData] = useState<{
     count: number;
     invitations: Array<{
@@ -74,6 +76,11 @@ function AdministrationContent() {
       subject: string;
       messageBody: string;
       loginUrl: string;
+      ccEmails?: string[];
+      ccRecipients?: Array<{ name: string; email: string; role?: string; groupName?: string }>;
+      ccFormatted?: string;
+      ccString?: string;
+      mailtoUrl?: string;
       sentAt: Date;
     }>;
     latestInvitation: {
@@ -86,6 +93,11 @@ function AdministrationContent() {
       subject: string;
       messageBody: string;
       loginUrl: string;
+      ccEmails?: string[];
+      ccRecipients?: Array<{ name: string; email: string; role?: string; groupName?: string }>;
+      ccFormatted?: string;
+      ccString?: string;
+      mailtoUrl?: string;
       sentAt: Date;
     } | null;
   } | null>(null);
@@ -140,16 +152,20 @@ function AdministrationContent() {
     }
   };
 
-  const copyToClipboard = (text: string, type: "text" | "link") => {
+  const copyToClipboard = (text: string, type: "text" | "link" | "cc") => {
     navigator.clipboard.writeText(text);
     if (type === "text") {
       setCopiedText(true);
       setTimeout(() => setCopiedText(false), 2000);
-      toast.success("Texto das instruções copiado para a área de transferência!");
-    } else {
+      toast.success("Texto da mensagem copiado para a área de transferência!");
+    } else if (type === "link") {
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
-      toast.success("Link de primeiro acesso copiado!");
+      toast.success("Link de acesso copiado!");
+    } else if (type === "cc") {
+      setCopiedCC(true);
+      setTimeout(() => setCopiedCC(false), 2000);
+      toast.success("E-mails em cópia (CC) copiados!");
     }
   };
 
@@ -489,6 +505,22 @@ function AdministrationContent() {
                   </span>
                   &gt;
                 </p>
+                {sentInvitationData.latestInvitation.ccRecipients && sentInvitationData.latestInvitation.ccRecipients.length > 0 && (
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 pt-0.5">
+                    <strong className="shrink-0 text-foreground">Com Cópia (CC do Grupo):</strong>
+                    <div className="flex flex-wrap gap-1">
+                      {sentInvitationData.latestInvitation.ccRecipients.map(cc => (
+                        <span
+                          key={cc.email}
+                          className="inline-flex items-center rounded border bg-background px-1.5 py-0.5 text-[11px] font-mono text-foreground"
+                          title={`${cc.name} (${cc.email})`}
+                        >
+                          {cc.name} &lt;{cc.email}&gt;
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <p>
                   <strong>Perfil:</strong> {sentInvitationData.latestInvitation.appRole.toUpperCase()} ·{" "}
                   <strong>Grupo:</strong> {sentInvitationData.latestInvitation.groupName}
@@ -524,8 +556,29 @@ function AdministrationContent() {
                   ) : (
                     <Copy className="mr-1.5 h-3.5 w-3.5" />
                   )}
-                  {copiedText ? "Texto Copiado!" : "Copiar Texto da Mensagem"}
+                  {copiedText ? "Texto Copiado!" : "Copiar Rascunho"}
                 </Button>
+
+                {sentInvitationData.latestInvitation.ccString && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                      copyToClipboard(
+                        sentInvitationData.latestInvitation!.ccString!,
+                        "cc"
+                      )
+                    }
+                    className="text-xs"
+                  >
+                    {copiedCC ? (
+                      <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-600" />
+                    ) : (
+                      <Users className="mr-1.5 h-3.5 w-3.5" />
+                    )}
+                    {copiedCC ? "CC Copiado!" : "Copiar E-mails CC"}
+                  </Button>
+                )}
 
                 <Button
                   size="sm"
@@ -545,6 +598,24 @@ function AdministrationContent() {
                   )}
                   {copiedLink ? "Link Copiado!" : "Copiar Link de Acesso"}
                 </Button>
+
+                {sentInvitationData.latestInvitation.mailtoUrl && (
+                  <Button
+                    size="sm"
+                    variant="default"
+                    asChild
+                    className="text-xs ml-auto"
+                  >
+                    <a
+                      href={sentInvitationData.latestInvitation.mailtoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Mail className="mr-1.5 h-3.5 w-3.5" />
+                      Abrir no E-mail (com CC)
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           )}

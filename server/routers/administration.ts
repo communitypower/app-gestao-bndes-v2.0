@@ -2,8 +2,8 @@ import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { parse as parseCookie } from "cookie";
 import { COOKIE_NAME } from "@shared/const";
-import { projectSettings, teamGroups, teamMembers, userAccessEvents, users } from "../../drizzle/schema";
-import { APP_ROLES, type AppRole } from "../../shared/domain";
+import { projectSettings, teamGroups, teamMembers, teamGroupMemberships, userAccessEvents, users } from "../../drizzle/schema";
+import { APP_ROLES, TEAM_GROUP_SEED, GROUP_MEMBERSHIPS_SEED, TEAM_SEED, type AppRole } from "../../shared/domain";
 import { groupDisplayName } from "../../shared/groupDisplay";
 import {
   assertAdministrator,
@@ -114,31 +114,212 @@ export const administrationRouter = router({
         throw new Error("Nenhum participante com e-mail válido localizado para envio de convite.");
       }
 
-      const memberRows = await db
-        .select({
-          id: teamMembers.id,
-          name: teamMembers.name,
-          email: teamMembers.email,
-          institution: teamMembers.institution,
-          groupRole: teamMembers.groupRole,
-          groupId: teamMembers.groupId,
-          groupName: teamGroups.name,
-        })
-        .from(teamMembers)
-        .leftJoin(teamGroups, eq(teamMembers.groupId, teamGroups.id));
+      const [memberRows, membershipsRows, allGroups] = await Promise.all([
+        db
+          .select({
+            id: teamMembers.id,
+            userId: teamMembers.userId,
+            name: teamMembers.name,
+            email: teamMembers.email,
+            institution: teamMembers.institution,
+            groupRole: teamMembers.groupRole,
+            groupId: teamMembers.groupId,
+            groupName: teamGroups.name,
+            active: teamMembers.active,
+          })
+          .from(teamMembers)
+          .leftJoin(teamGroups, eq(teamMembers.groupId, teamGroups.id)),
+        db
+          .select({
+            groupId: teamGroupMemberships.groupId,
+            teamMemberId: teamGroupMemberships.teamMemberId,
+            groupName: teamGroups.name,
+          })
+          .from(teamGroupMemberships)
+          .leftJoin(teamGroups, eq(teamGroupMemberships.groupId, teamGroups.id)),
+        db
+          .select({
+            id: teamGroups.id,
+            name: teamGroups.name,
+          })
+          .from(teamGroups),
+      ]);
 
-      const membersByEmail = new Map(memberRows.filter(r => Boolean(r.email)).map(r => [r.email!.toLowerCase(), r]));
-      const membersByName = new Map(memberRows.filter(r => Boolean(r.name)).map(r => [r.name!.toLowerCase(), r]));
+      const emailByMemberName = new Map<string, string>();
+      for (const m of memberRows) {
+        if (m.name && m.email) {
+          emailByMemberName.set(m.name.trim().toLowerCase(), m.email.trim());
+        }
+      }
+      for (const s of TEAM_SEED) {
+        if (s.name && s.email && !emailByMemberName.has(s.name.trim().toLowerCase())) {
+          emailByMemberName.set(s.name.trim().toLowerCase(), s.email.trim());
+        }
+      }
+      for (const u of targetUsers) {
+        if (u.name && u.email && !emailByMemberName.has(u.name.trim().toLowerCase())) {
+          emailByMemberName.set(u.name.trim().toLowerCase(), u.email.trim());
+        }
+      }
 
       const sentInvitations = [];
 
       for (const u of targetUsers) {
         if (!u.email) continue;
-        const member = membersByEmail.get(u.email.toLowerCase()) || (u.name ? membersByName.get(u.name.toLowerCase()) : null);
-        const recipientName = u.name || "Pesquisador(a)";
+        const userEmailNorm = u.email.trim().toLowerCase();
+        const userNameNorm = (u.name || "").trim().toLowerCase();
+
+        const member = memberRows.find(
+          r =>
+            (r.userId && r.userId === u.id) ||
+            (r.email && r.email.trim().toLowerCase() === userEmailNorm) ||
+            (r.name && r.name.trim().toLowerCase() === userNameNorm)
+        );
+
+        const recipientName = u.name || member?.name || "Pesquisador(a)";
         const recipientRole = u.appRole;
-        const groupInfo = member?.groupName ? groupDisplayName(member.groupName) : "Coordenação Geral / Transversal";
         const institutionInfo = member?.institution || "UFRJ";
+
+        // Collect all associated group IDs and names
+        const associatedGroupIds = new Set<number>();
+        const associatedGroupNames = new Set<string>();
+
+        if (member?.groupId) {
+          associatedGroupIds.add(member.groupId);
+          if (member.groupName) associatedGroupNames.add(member.groupName);
+        }
+
+        if (member) {
+          for (const ms of membershipsRows) {
+            if (ms.teamMemberId === member.id && ms.groupId) {
+              associatedGroupIds.add(ms.groupId);
+              if (ms.groupName) associatedGroupNames.add(ms.groupName);
+            }
+          }
+        }
+
+        for (const gSeed of TEAM_GROUP_SEED) {
+          const isCoord =
+            gSeed.coordinatorName.trim().toLowerCase() === userNameNorm ||
+            (member?.name && gSeed.coordinatorName.trim().toLowerCase() === member.name.trim().toLowerCase());
+          const isMem = gSeed.memberNames.some(
+            n =>
+              n.trim().toLowerCase() === userNameNorm ||
+              (member?.name && n.trim().toLowerCase() === member.name.trim().toLowerCase())
+          );
+          if (isCoord || isMem) {
+            associatedGroupNames.add(gSeed.name);
+            const dbGroup = allGroups.find(g => g.name === gSeed.name);
+            if (dbGroup) associatedGroupIds.add(dbGroup.id);
+          }
+        }
+
+        for (const gm of GROUP_MEMBERSHIPS_SEED) {
+          if (
+            gm.memberName.trim().toLowerCase() === userNameNorm ||
+            (member?.name && gm.memberName.trim().toLowerCase() === member.name.trim().toLowerCase())
+          ) {
+            associatedGroupNames.add(gm.groupName);
+            const dbGroup = allGroups.find(g => g.name === gm.groupName);
+            if (dbGroup) associatedGroupIds.add(dbGroup.id);
+          }
+        }
+
+        const groupInfo =
+          associatedGroupNames.size > 0
+            ? Array.from(associatedGroupNames)
+                .map(g => groupDisplayName(g))
+                .join(" / ")
+            : member?.groupName
+            ? groupDisplayName(member.groupName)
+            : "Coordenação Geral / Transversal";
+
+        // Collect all co-members of these group(s) to include in CC
+        const ccMap = new Map<string, { name: string; email: string; role?: string; groupName?: string }>();
+
+        // 1. Co-members from DB memberRows
+        for (const m of memberRows) {
+          if (m.groupId && associatedGroupIds.has(m.groupId) && m.email) {
+            const emailNorm = m.email.trim().toLowerCase();
+            if (emailNorm !== userEmailNorm && !ccMap.has(emailNorm)) {
+              ccMap.set(emailNorm, {
+                name: m.name || m.email,
+                email: m.email.trim(),
+                role: m.groupRole,
+                groupName: m.groupName || undefined,
+              });
+            }
+          }
+        }
+
+        // 2. Co-members from DB membershipsRows
+        for (const ms of membershipsRows) {
+          if (ms.groupId && associatedGroupIds.has(ms.groupId)) {
+            const mem = memberRows.find(m => m.id === ms.teamMemberId);
+            if (mem && mem.email) {
+              const emailNorm = mem.email.trim().toLowerCase();
+              if (emailNorm !== userEmailNorm && !ccMap.has(emailNorm)) {
+                ccMap.set(emailNorm, {
+                  name: mem.name || mem.email,
+                  email: mem.email.trim(),
+                  role: mem.groupRole,
+                  groupName: ms.groupName || mem.groupName || undefined,
+                });
+              }
+            }
+          }
+        }
+
+        // 3. Co-members from domain seeds
+        for (const gName of Array.from(associatedGroupNames)) {
+          const gSeed = TEAM_GROUP_SEED.find(g => g.name === gName);
+          if (gSeed) {
+            const coordEmail = emailByMemberName.get(gSeed.coordinatorName.trim().toLowerCase());
+            if (coordEmail && coordEmail.toLowerCase() !== userEmailNorm && !ccMap.has(coordEmail.toLowerCase())) {
+              ccMap.set(coordEmail.toLowerCase(), {
+                name: gSeed.coordinatorName,
+                email: coordEmail,
+                role: "coordenador",
+                groupName: gSeed.name,
+              });
+            }
+            for (const memName of gSeed.memberNames) {
+              const memEmail = emailByMemberName.get(memName.trim().toLowerCase());
+              if (memEmail && memEmail.toLowerCase() !== userEmailNorm && !ccMap.has(memEmail.toLowerCase())) {
+                ccMap.set(memEmail.toLowerCase(), {
+                  name: memName,
+                  email: memEmail,
+                  role: "participante",
+                  groupName: gSeed.name,
+                });
+              }
+            }
+          }
+
+          const groupMems = GROUP_MEMBERSHIPS_SEED.filter(gm => gm.groupName === gName);
+          for (const gm of groupMems) {
+            const memEmail = emailByMemberName.get(gm.memberName.trim().toLowerCase());
+            if (memEmail && memEmail.toLowerCase() !== userEmailNorm && !ccMap.has(memEmail.toLowerCase())) {
+              ccMap.set(memEmail.toLowerCase(), {
+                name: gm.memberName,
+                email: memEmail,
+                role: "participante",
+                groupName: gm.groupName,
+              });
+            }
+          }
+        }
+
+        const ccRecipients = Array.from(ccMap.values()).sort((a, b) => {
+          if (a.role === "coordenador" && b.role !== "coordenador") return -1;
+          if (a.role !== "coordenador" && b.role === "coordenador") return 1;
+          return a.name.localeCompare(b.name, "pt-BR");
+        });
+
+        const ccEmails = ccRecipients.map(r => r.email);
+        const ccString = ccEmails.join(", ");
+        const ccFormatted = ccRecipients.map(r => `${r.name} <${r.email}>`).join(", ");
+
         const host = ctx.req.get("host");
         const proto = ctx.req.headers["x-forwarded-proto"] || ctx.req.protocol || "https";
         const origin = ctx.req.headers.origin || (host ? `${proto}://${host}` : "http://localhost:3000");
@@ -152,7 +333,7 @@ Você foi cadastrado(a) no Portal de Gestão do Estudo Estratégico BNDES — In
 Dados do seu perfil:
 • Perfil de Acesso: ${recipientRole.toUpperCase()}
 • Grupo Temático: ${groupInfo}
-• Instituição: ${institutionInfo}
+• Instituição: ${institutionInfo}${ccRecipients.length > 0 ? `\n• Integrantes do Grupo em Cópia (CC): ${ccFormatted}` : ""}
 
 Instruções para o seu Primeiro Acesso:
 1. Acesse o portal pelo link institucional direto:
@@ -167,6 +348,8 @@ Em caso de dúvidas técnicas ou alinhamento de escopo, responda a este comunica
 Atenciosamente,
 Coordenação Geral do Estudo BNDES / UFRJ`;
 
+        const mailtoUrl = `mailto:${encodeURIComponent(u.email)}?${ccEmails.length > 0 ? `cc=${encodeURIComponent(ccString)}&` : ""}subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messageBody)}`;
+
         try {
           await db.insert(userAccessEvents).values({
             userId: u.id,
@@ -175,7 +358,7 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
             eventType: "convite_enviado",
             previousAppRole: u.appRole,
             nextAppRole: u.appRole,
-            note: `Instruções de primeiro acesso enviadas para ${u.email}`,
+            note: `Instruções de primeiro acesso enviadas para ${u.email}${ccEmails.length > 0 ? ` (CC: ${ccEmails.length} integrantes)` : ""}`,
           });
         } catch (eventErr) {
           console.warn("[UserAccessEvents] Warning inserting event:", eventErr);
@@ -191,6 +374,11 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
           subject,
           messageBody,
           loginUrl,
+          ccEmails,
+          ccRecipients,
+          ccFormatted,
+          ccString,
+          mailtoUrl,
           sentAt: new Date(),
         });
       }
