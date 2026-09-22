@@ -1,6 +1,6 @@
 /**
  * Cronograma Oficial do Estudo (Relatório 1)
- * Fonte: Cronograma_r1_200926 (Revisão Master BNDES - M1 a M7 com vencimento todo dia 20)
+ * Fonte: Cronograma_r1_200926 (Revisão Master BNDES - M1 a M7 com vencimento todo dia 20 e início escalonado)
  */
 
 export interface MonthMilestone {
@@ -402,17 +402,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Carteira de encomendas, renovação da frota e perspectivas de demanda por novas embarcações",
     "tome": "Tomo I",
     "chapter": "I.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -420,17 +418,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Fatores econômicos, geopolíticos e ambientais que condicionam a expansão, renovação e transformação tecnológica das frotas",
     "tome": "Tomo I",
     "chapter": "I.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -438,17 +434,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Perspectivas do transporte marítimo mundial e implicações para a marinha mercante e a indústria naval brasileiras",
     "tome": "Tomo I",
     "chapter": "I.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -560,17 +554,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Custos diferenciais da bandeira brasileira",
     "tome": "Tomo I",
     "chapter": "I.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -596,17 +589,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários de demanda para construção, reparo, conversão e modernização de navios e embarcações de apoio",
     "tome": "Tomo I",
     "chapter": "I.4",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -665,17 +656,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Infraestrutura e condições de navegabilidade",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -683,17 +673,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Fluxos e estrutura das operações",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -701,17 +690,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Empresas e frotas",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -719,17 +707,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Transporte multimodal",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -737,17 +724,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Navegação fluvial de percurso internacional",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -755,18 +741,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Transporte de passageiros na Região Amazônica",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -774,18 +758,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Transporte hidroviário urbano",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -793,18 +775,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Navegação interior e desenvolvimento regional",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -812,18 +792,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários de demanda para construção de embarcações fluviais",
     "tome": "Tomo I",
     "chapter": "I.5",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -975,18 +952,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários de demanda de E&P no Brasil: construção, fabricação e integração de módulos e descomissionamento",
     "tome": "Tomo I",
     "chapter": "I.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -994,18 +969,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Mercado brasileiro de navios aliviadores e embarcações de apoio offshore",
     "tome": "Tomo I",
     "chapter": "I.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1013,18 +986,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "O setor de geração eólica offshore no Brasil: evolução, perspectivas e regulamentação",
     "tome": "Tomo I",
     "chapter": "I.6",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -1032,18 +1004,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Tipos de instalações e embarcações para energia eólica offshore: aspectos tecnológicos e operacionais",
     "tome": "Tomo I",
     "chapter": "I.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1051,18 +1021,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários de demanda por navios aliviadores, embarcações de apoio especializadas e instalações de geração eólica offshore no Brasil",
     "tome": "Tomo I",
     "chapter": "I.6",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -1118,16 +1085,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Programas navais em curso e previstos",
     "tome": "Tomo I",
     "chapter": "I.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 3,
     "activeMonths": [
-      1,
       2,
       3
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-11-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1795219199000
   },
   {
@@ -1135,17 +1101,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Programas de offset, clusters navais e estratégias de inovação",
     "tome": "Tomo I",
     "chapter": "I.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1153,17 +1118,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Participação da indústria local e processos de transferência de tecnologia",
     "tome": "Tomo I",
     "chapter": "I.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1171,17 +1135,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Gargalos econômicos, produtivos e tecnológicos",
     "tome": "Tomo I",
     "chapter": "I.7",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -1189,17 +1151,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Oportunidades para inserção nas cadeias globais",
     "tome": "Tomo I",
     "chapter": "I.7",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -1222,17 +1182,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estratégias de descarbonização nos principais países e regiões",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1240,17 +1199,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Respostas de armadores, operadores, portos e fornecedores de energia à descarbonização",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1258,17 +1216,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Combustíveis marítimos alternativos: características, disponibilidade, custos e perspectivas",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1276,17 +1233,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Tecnologias de eficiência energética e redução de emissões: casco, propulsão, sistemas de controle e digitalização",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1294,18 +1250,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Maturidade tecnológica, custos e perspectivas de adoção das tecnologias de descarbonização",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1313,16 +1267,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Frota mundial: adoção de combustíveis alternativos e tecnologias de eficiência energética por segmento, país e perfil de empresa",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 3,
     "activeMonths": [
-      1,
       2,
       3
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-11-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1795219199000
   },
   {
@@ -1330,18 +1283,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Impactos da descarbonização sobre os mercados, renovação da frota e demanda por novas embarcações e retrofitting",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -1349,18 +1299,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Frota brasileira: estratégias de descarbonização dos armadores",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1368,18 +1316,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Potencial competitivo do Brasil na produção e utilização de combustíveis marítimos renováveis",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -1387,18 +1332,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Infraestrutura de abastecimento, bunkering, portos e corredores verdes",
     "tome": "Tomo I",
     "chapter": "I.8",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -1474,17 +1416,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Protecionismo e fatores de competitividade",
     "tome": "Tomo II",
     "chapter": "II.1",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1492,17 +1433,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estrutura e integração da cadeia produtiva",
     "tome": "Tomo II",
     "chapter": "II.1",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1510,18 +1450,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Transformações ambientais, tecnológicas e geopolíticas e tendências da construção naval mundial",
     "tome": "Tomo II",
     "chapter": "II.1",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1617,17 +1555,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Países europeus selecionados",
     "tome": "Tomo II",
     "chapter": "II.2",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1635,17 +1572,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Índia",
     "tome": "Tomo II",
     "chapter": "II.2",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1653,18 +1589,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Vietnã",
     "tome": "Tomo II",
     "chapter": "II.2",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1672,18 +1606,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Indonésia",
     "tome": "Tomo II",
     "chapter": "II.2",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1691,18 +1623,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Outros produtores emergentes",
     "tome": "Tomo II",
     "chapter": "II.2",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -1812,17 +1742,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Evolução da estrutura industrial: empresas, capacidade produtiva, distribuição geográfica e cadeia de fornecedores",
     "tome": "Tomo II",
     "chapter": "II.3",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1830,17 +1759,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Evolução da qualificação tecnológica e dos recursos humanos",
     "tome": "Tomo II",
     "chapter": "II.3",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -1848,17 +1776,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Contratos, produção realizada, preços, prazos e desempenho",
     "tome": "Tomo II",
     "chapter": "II.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -1866,17 +1792,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Fatores econômicos, empresariais, tecnológicos, regulatórios e institucionais associados aos ciclos de expansão e retração",
     "tome": "Tomo II",
     "chapter": "II.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -1900,18 +1824,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estaleiros de construção de embarcações fluviais",
     "tome": "Tomo II",
     "chapter": "II.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -1919,18 +1842,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estaleiros e instalações para construção de unidades offshore, fabricação e integração de módulos",
     "tome": "Tomo II",
     "chapter": "II.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -1938,18 +1860,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estaleiros de construção naval militar",
     "tome": "Tomo II",
     "chapter": "II.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -1957,18 +1878,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cadeia produtiva, por tipo de produto e região",
     "tome": "Tomo II",
     "chapter": "II.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -1976,18 +1896,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Economias e deseconomias de localização e os polos navais",
     "tome": "Tomo II",
     "chapter": "II.4",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -2082,17 +2001,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Regulamentação brasileira do desmantelamento e reciclagem de navios e plataformas",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2100,17 +2018,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Demanda brasileira por reparo, docagem e retrofitting de embarcações",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2118,17 +2035,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Demanda brasileira por reparo, conversão e descomissionamento de unidades offshore",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2136,17 +2052,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Empresas, instalações e capacidade nacional para reparo, conversão, desmantelamento e descomissionamento",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2154,18 +2069,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Competição internacional e competitividade das atividades no Brasil",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2173,18 +2085,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Desafios e oportunidades para reparo, retrofitting, desmantelamento e descomissionamento no Brasil",
     "tome": "Tomo II",
     "chapter": "II.5",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2244,18 +2153,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Evolução do conteúdo nacional e da cadeia de fornecedores nas diferentes fases da indústria naval brasileira",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2263,18 +2170,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estrutura atual da cadeia de fornecedores da indústria naval brasileira",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2282,18 +2187,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cadeia de fornecedores por segmento: construção de navios, embarcações fluviais, offshore e construção naval militar",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2301,18 +2204,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Distribuição regional e capacidade dos fornecedores nacionais",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2320,18 +2221,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Conteúdo nacional, dependências externas e lacunas produtivas e tecnológicas",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2339,18 +2238,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Relações entre estaleiros e fornecedores e formas de organização da cadeia de suprimentos",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2358,19 +2255,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Desafios e oportunidades para a estaleiros brasileiros",
     "tome": "Tomo II",
     "chapter": "II.6",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -2414,17 +2307,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Força de trabalho empregada nos estaleiros: perfil e qualificação",
     "tome": "Tomo II",
     "chapter": "II.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2432,18 +2324,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Capacidade de pesquisa, desenvolvimento e inovação em empresas, universidades e centros de pesquisa",
     "tome": "Tomo II",
     "chapter": "II.7",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2451,18 +2341,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Relações entre universidades, centros de pesquisa, empresas e a base produtiva da indústria naval",
     "tome": "Tomo II",
     "chapter": "II.7",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2470,18 +2358,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Disponibilidade de recursos humanos para a indústria naval nos níveis operacional, técnico, de engenharia e gerencial",
     "tome": "Tomo II",
     "chapter": "II.7",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2489,18 +2374,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Sistemas de formação e qualificação profissional nos níveis básico, técnico e superior",
     "tome": "Tomo II",
     "chapter": "II.7",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2524,17 +2406,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Padrões tecnológicos, produtividade e desempenho das principais classes de estaleiros mundiais",
     "tome": "Tomo II",
     "chapter": "II.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2542,18 +2423,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Padrões tecnológicos, produtividade e desempenho dos estaleiros brasileiros nos últimos períodos de operação contínua, na situação atual e potencial",
     "tome": "Tomo II",
     "chapter": "II.8",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -2561,18 +2441,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Benchmarking dos estaleiros brasileiros em relação às classes internacionais relevantes",
     "tome": "Tomo II",
     "chapter": "II.8",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2580,18 +2458,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Potencialidades, limitações e gargalos de produtividade e competitividade dos estaleiros brasileiros",
     "tome": "Tomo II",
     "chapter": "II.8",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2599,18 +2474,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Possibilidades de inserção competitiva e metas de produtividade e desempenho por classe de estaleiro",
     "tome": "Tomo II",
     "chapter": "II.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1800489599000
   },
   {
@@ -2618,18 +2489,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Impactos da descarbonização sobre o projeto, a construção e o retrofitting de navios",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2637,18 +2506,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Competências requeridas para projeto e construção de navios capazes ou preparados para novos combustíveis",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2656,18 +2523,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Competências requeridas para desenvolvimento e aplicação de tecnologias de eficiência energética, captura de carbono e correlatas",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2675,18 +2540,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Requisitos tecnológicos e produtivos para retrofitting de navios",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -2694,18 +2557,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Capacidades e deficiências dos estaleiros brasileiros para atendimento às novas demandas tecnológicas",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2713,18 +2573,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Capacidades e oportunidades para empresas brasileiras de engenharia e fornecedores de equipamentos e sistemas",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2732,18 +2589,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Descarbonização dos processos de construção naval",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -2751,19 +2605,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Oportunidades de inserção competitiva da indústria naval brasileira nos mercados associados à descarbonização",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000
   },
   {
@@ -2771,19 +2622,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Principais desafios tecnológicos e produtivos",
     "tome": "Tomo II",
     "chapter": "II.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000
   },
   {
@@ -2893,17 +2741,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Relevância dos instrumentos horizontais para a indústria naval: Nova Indústria Brasil (NIB) e outras políticas",
     "tome": "Tomo III",
     "chapter": "III.1",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -2911,18 +2758,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Políticas públicas e mecanismos de fomento à descarbonização marítima e sua aplicabilidade ao Brasil",
     "tome": "Tomo III",
     "chapter": "III.1",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -3164,18 +3010,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Outros casos relevantes",
     "tome": "Tomo III",
     "chapter": "III.2",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3381,17 +3224,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Vietnã",
     "tome": "Tomo III",
     "chapter": "III.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -3399,17 +3240,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Indonésia",
     "tome": "Tomo III",
     "chapter": "III.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -3417,17 +3256,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Turquia e Europa Oriental",
     "tome": "Tomo III",
     "chapter": "III.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -3435,17 +3272,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Outros casos relevantes",
     "tome": "Tomo III",
     "chapter": "III.3",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 4,
     "activeMonths": [
-      1,
-      2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1797811199000
   },
   {
@@ -3629,18 +3464,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Resultados das políticas brasileiras de marinha mercante e construção naval",
     "tome": "Tomo III",
     "chapter": "III.4",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3648,18 +3480,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Mudanças recentes e principais questões em debate no Brasil",
     "tome": "Tomo III",
     "chapter": "III.4",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3682,15 +3511,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Histórico e relevância do FMM para a indústria marítima brasileira",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 2,
     "activeMonths": [
-      1,
       2
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-10-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1792540799000
   },
   {
@@ -3698,15 +3526,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Evolução da regulamentação do AFRMM e do FMM",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 2,
     "activeMonths": [
-      1,
       2
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-10-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1792540799000
   },
   {
@@ -3714,15 +3541,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Arrecadação, distribuição e aplicação do AFRMM",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 2,
     "activeMonths": [
-      1,
       2
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-10-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1792540799000
   },
   {
@@ -3730,16 +3556,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Eficiência do sistema: projetos financiados, obras concluídas e prazos",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 3,
     "activeMonths": [
-      1,
-      2,
       3
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-11-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1795219199000
   },
   {
@@ -3747,16 +3571,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Eficácia do sistema: consolidação das empresas e evolução da competitividade",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 3,
     "activeMonths": [
-      1,
-      2,
       3
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2026-11-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1795219199000
   },
   {
@@ -3764,18 +3586,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Efeitos do financiamento e da utilização das contas vinculadas sobre o custo efetivo de capital: análise e simulações",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3783,18 +3602,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Alocação de custos e benefícios: efeitos distributivos intersetoriais e inter-regionais",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1800489599000
   },
   {
@@ -3802,18 +3619,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Justificativa econômica e estratégica do modelo atual por segmento da navegação",
     "tome": "Tomo III",
     "chapter": "III.5",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3857,18 +3671,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Evolução das indústrias siderúrgica e de materiais e equipamentos navais no Brasil",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -3876,18 +3689,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estrutura atual da oferta de produtos siderúrgicos para a indústria naval brasileira: empresas, capacidade, tecnologia e dependência de importações",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -3895,18 +3707,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Estrutura atual da indústria brasileira de materiais e equipamentos navais: setores, empresas, capacidade, tecnologia e dependência de importações",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -3914,18 +3725,17 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Políticas industriais e de conteúdo local e evolução dos índices de nacionalização no Brasil",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 5,
     "activeMonths": [
-      1,
       2,
       3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1800489599000
   },
   {
@@ -3933,18 +3743,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários prospectivos, oportunidades e desafios para o desenvolvimento da siderurgia e da indústria de materiais e equipamentos navais",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -3952,18 +3759,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Importância do desenvolvimento da cadeia nacional de suprimentos para a competitividade da indústria naval brasileira",
     "tome": "Tomo III",
     "chapter": "III.6",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -4022,17 +3826,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "O ciclo das décadas de 2000 e 2010 no Brasil: objetivos, instrumentos e resultados",
     "tome": "Tomo III",
     "chapter": "III.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -4040,17 +3843,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Fatores determinantes da retração da indústria naval brasileira após o ciclo de expansão dos anos 2000",
     "tome": "Tomo III",
     "chapter": "III.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -4058,17 +3860,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Brasil e China: análise comparada das trajetórias da indústria naval a partir dos anos 2000",
     "tome": "Tomo III",
     "chapter": "III.7",
-    "startMonth": 1,
+    "startMonth": 2,
     "endMonth": 4,
     "activeMonths": [
-      1,
       2,
       3,
       4
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-09-21",
     "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
+    "startAt": 1789948800000,
     "dueAt": 1797811199000
   },
   {
@@ -4076,18 +3877,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Análise comparativa dos ciclos brasileiros: continuidade e coordenação institucional, demanda, financiamento, escala de produção, produtividade, aprendizado tecnológico e inserção internacional",
     "tome": "Tomo III",
     "chapter": "III.7",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -4095,18 +3893,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Problemas sistêmicos e lições para uma nova política de desenvolvimento da indústria naval brasileira",
     "tome": "Tomo III",
     "chapter": "III.7",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 5,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1800489599000
   },
   {
@@ -4114,19 +3909,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Transformações geopolíticas e seus impactos sobre o comércio, o transporte marítimo e a indústria naval",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4134,19 +3925,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Segurança econômica e reorganização das cadeias globais de produção e suprimento",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4154,19 +3941,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Descarbonização e novas exigências ambientais: impactos sobre a demanda e a estrutura da indústria naval",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4174,19 +3957,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Reconfiguração da indústria naval mundial: relocalização de capacidades produtivas, políticas de reindustrialização e novos países produtores",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4194,19 +3973,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Segurança e defesa e seus impactos sobre a indústria naval",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4214,19 +3989,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Riscos e oportunidades decorrentes das transformações geopolíticas e ambientais para a indústria naval brasileira",
     "tome": "Tomo III",
     "chapter": "III.8",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4234,19 +4005,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Condições econômicas para o desenvolvimento da indústria marítima brasileira: demanda, ambiente macroeconômico, custo de capital, restrições fiscais, taxa de câmbio e ambiente de investimento",
     "tome": "Tomo III",
     "chapter": "III.9",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4254,19 +4021,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Organização institucional dos órgãos do Estado com atribuições sobre a indústria marítima",
     "tome": "Tomo III",
     "chapter": "III.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000
   },
   {
@@ -4274,19 +4038,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Coordenação entre órgãos e políticas e continuidade da orientação programática",
     "tome": "Tomo III",
     "chapter": "III.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000
   },
   {
@@ -4294,19 +4055,16 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Capacitação técnica, autonomia decisória e continuidade institucional dos órgãos e agências",
     "tome": "Tomo III",
     "chapter": "III.9",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000
   },
   {
@@ -4314,19 +4072,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Riscos políticos, econômicos, institucionais e regulatórios para a reestruturação da indústria naval",
     "tome": "Tomo III",
     "chapter": "III.9",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4334,19 +4088,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Relações entre volume e estabilidade da demanda, capacidade dos estaleiros, produtividade, custos, prazos, qualidade e condições de financiamento",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4354,19 +4104,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Compatibilidade entre a demanda potencial e a capacidade de atendimento da indústria naval brasileira nos diferentes segmentos",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4374,19 +4120,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Potencialidades, limitações e gargalos da indústria naval brasileira",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4394,19 +4136,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Potencialidades, limitações e gargalos dos segmentos de reparo, conversão e descomissionamento",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4414,19 +4152,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Impactos da descarbonização e das transformações tecnológicas e geopolíticas sobre a demanda, requisitos tecnológicos e oportunidades para a indústria naval brasileira",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4434,19 +4168,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Fatores críticos e incertezas para a construção dos cenários para a indústria naval brasileira",
     "tome": "Tomo IV",
     "chapter": "IV.1",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4454,19 +4184,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Premissas, hipóteses, horizontes temporais e principais incertezas",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4474,19 +4200,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Consolidação das projeções de demanda para transporte marítimo, navegação interior, óleo e gás offshore, energias oceânicas, defesa, reparo e descomissionamento",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4494,19 +4216,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Cenários alternativos de volume e composição da demanda por segmento",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4514,19 +4232,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Capacidade da indústria naval brasileira para atendimento da demanda nos diferentes cenários",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4534,19 +4248,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Simulação das condições necessárias para que a demanda seja atendida pela indústria nacional",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4554,19 +4264,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Possibilidades e desafios para a inserção competitiva no mercado internacional",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4574,19 +4280,15 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Requisitos de infraestrutura, tecnologia e recursos humanos para os diferentes cenários",
     "tome": "Tomo IV",
     "chapter": "IV.2",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000
   },
   {
@@ -4594,19 +4296,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Principais conclusões do diagnóstico integrado e dos cenários",
     "tome": "Tomo IV",
     "chapter": "IV.3",
-    "startMonth": 1,
+    "startMonth": 6,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
-      5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1800489600000,
     "dueAt": 1803167999000
   },
   {
@@ -4614,19 +4311,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Incertezas, hipóteses e lacunas de informação que condicionam as conclusões",
     "tome": "Tomo IV",
     "chapter": "IV.3",
-    "startMonth": 1,
+    "startMonth": 6,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
-      5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1800489600000,
     "dueAt": 1803167999000
   },
   {
@@ -4634,19 +4326,14 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "title": "Questões para a identificação dos segmentos estratégicos e a formulação das políticas",
     "tome": "Tomo IV",
     "chapter": "IV.3",
-    "startMonth": 1,
+    "startMonth": 6,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
-      5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1800489600000,
     "dueAt": 1803167999000
   }
 ] as const;
@@ -4656,19 +4343,15 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "AP",
     "title": "Apresentação",
     "tome": "Apresentação",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000,
     "childrenCount": 0
   },
@@ -4976,19 +4659,17 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "II.9",
     "title": "Descarbonização: oportunidades e desafios para a indústria naval",
     "tome": "Tomo II",
-    "startMonth": 1,
+    "startMonth": 3,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
       3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-10-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1792540800000,
     "dueAt": 1803167999000,
     "childrenCount": 9
   },
@@ -5016,18 +4697,19 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "title": "Políticas de marinha mercante no mundo",
     "tome": "Tomo III",
     "startMonth": 1,
-    "endMonth": 5,
+    "endMonth": 6,
     "activeMonths": [
       1,
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
     "startDate": "2026-08-20",
-    "dueDate": "2027-01-20",
+    "dueDate": "2027-02-20",
     "startAt": 1787184000000,
-    "dueAt": 1800489599000,
+    "dueAt": 1803167999000,
     "childrenCount": 14
   },
   "III.3": {
@@ -5110,25 +4792,6 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "title": "Ciclos de expansão e queda da indústria naval brasileira: diagnóstico de sucessos e falhas",
     "tome": "Tomo III",
     "startMonth": 1,
-    "endMonth": 5,
-    "activeMonths": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "startDate": "2026-08-20",
-    "dueDate": "2027-01-20",
-    "startAt": 1787184000000,
-    "dueAt": 1800489599000,
-    "childrenCount": 8
-  },
-  "III.8": {
-    "code": "III.8",
-    "title": "Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval brasileira",
-    "tome": "Tomo III",
-    "startMonth": 1,
     "endMonth": 6,
     "activeMonths": [
       1,
@@ -5141,6 +4804,22 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "startDate": "2026-08-20",
     "dueDate": "2027-02-20",
     "startAt": 1787184000000,
+    "dueAt": 1803167999000,
+    "childrenCount": 8
+  },
+  "III.8": {
+    "code": "III.8",
+    "title": "Fatores geopolíticos e ambientais críticos para a reestruturação da indústria naval brasileira",
+    "tome": "Tomo III",
+    "startMonth": 5,
+    "endMonth": 6,
+    "activeMonths": [
+      5,
+      6
+    ],
+    "startDate": "2026-12-21",
+    "dueDate": "2027-02-20",
+    "startAt": 1797811200000,
     "dueAt": 1803167999000,
     "childrenCount": 6
   },
@@ -5148,19 +4827,16 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "III.9",
     "title": "Ambiente econômico e institucional da indústria marítima brasileira",
     "tome": "Tomo III",
-    "startMonth": 1,
+    "startMonth": 4,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
       4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-11-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1795219200000,
     "dueAt": 1803167999000,
     "childrenCount": 5
   },
@@ -5168,19 +4844,15 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "IV.1",
     "title": "Diagnóstico integrado da indústria naval brasileira",
     "tome": "Tomo IV",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000,
     "childrenCount": 6
   },
@@ -5188,19 +4860,15 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "IV.2",
     "title": "Cenários para a indústria naval brasileira",
     "tome": "Tomo IV",
-    "startMonth": 1,
+    "startMonth": 5,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
       5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2026-12-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1797811200000,
     "dueAt": 1803167999000,
     "childrenCount": 7
   },
@@ -5208,19 +4876,14 @@ export const OFFICIAL_SCHEDULE_MES3_CHAPTERS: Record<string, ScheduleChapterItem
     "code": "IV.3",
     "title": "Conclusões do Relatório 1",
     "tome": "Tomo IV",
-    "startMonth": 1,
+    "startMonth": 6,
     "endMonth": 6,
     "activeMonths": [
-      1,
-      2,
-      3,
-      4,
-      5,
       6
     ],
-    "startDate": "2026-08-20",
+    "startDate": "2027-01-21",
     "dueDate": "2027-02-20",
-    "startAt": 1787184000000,
+    "startAt": 1800489600000,
     "dueAt": 1803167999000,
     "childrenCount": 3
   }

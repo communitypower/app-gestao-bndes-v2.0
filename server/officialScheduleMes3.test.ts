@@ -67,21 +67,21 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
     const itemI81 = getScheduleForDetailCode("I.8.1");
     expect(itemI81).toMatchObject({ startMonth: 1, endMonth: 1 });
 
-    // Conclusões do Relatório 1 (IV.3): M1 a M6 (Término em M6)
+    // Conclusões do Relatório 1 (IV.3): Início M6 e Término em M6
     const capIV3 = getScheduleForChapterCode("IV.3");
-    expect(capIV3).toMatchObject({ startMonth: 1, endMonth: 6 });
+    expect(capIV3).toMatchObject({ startMonth: 6, endMonth: 6 });
 
-    // Apresentação (AP): Término em M6
+    // Apresentação (AP): Início M5 e Término em M6
     const capAP = getScheduleForChapterCode("AP");
-    expect(capAP).toMatchObject({ endMonth: 6 });
+    expect(capAP).toMatchObject({ startMonth: 5, endMonth: 6 });
 
-    // Políticas de marinha mercante (III.2): Término em M5
+    // Políticas de marinha mercante (III.2): Término em M6
     const capIII2 = getScheduleForChapterCode("III.2");
-    expect(capIII2).toMatchObject({ endMonth: 5 });
+    expect(capIII2).toMatchObject({ endMonth: 6 });
 
-    // Ciclos de expansão e queda (III.7): Término em M5
+    // Ciclos de expansão e queda (III.7): Término em M6
     const capIII7 = getScheduleForChapterCode("III.7");
-    expect(capIII7).toMatchObject({ endMonth: 5 });
+    expect(capIII7).toMatchObject({ endMonth: 6 });
   });
 
   it("popula o banco de dados com os timestamps de início e fim corretos e agrega capítulos pais", async () => {
