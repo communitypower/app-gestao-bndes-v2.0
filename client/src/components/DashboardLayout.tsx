@@ -41,6 +41,7 @@ import {
   Bot,
   Sparkles,
   KeyRound,
+  ChevronDown,
 } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
 import { AiAssistantDrawer } from "./AiAssistantDrawer";
@@ -413,7 +414,76 @@ function DashboardLayoutContent({
                 <span className="hidden md:inline font-medium">Manual da Equipe</span>
               </Button>
             </Link>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsPasswordModalOpen(true)}
+              className="h-8 gap-1.5 px-2.5 text-xs border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 hover:text-primary font-medium"
+              title="Alterar minha senha pessoal de acesso"
+            >
+              <KeyRound className="h-3.5 w-3.5" />
+              <span>Alterar Senha</span>
+            </Button>
+
             <NotificationBell />
+
+            {/* Menu do Usuário no Cabeçalho Superior */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="flex items-center gap-2 rounded-full border border-border/80 bg-background/80 py-1 pl-1 pr-2.5 text-left hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  title="Menu do Usuário / Conta"
+                >
+                  <Avatar className="h-7 w-7 border border-border">
+                    <AvatarFallback className="text-xs font-semibold bg-primary/10 text-primary">
+                      {user?.name?.charAt(0).toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="hidden sm:inline-block max-w-[120px] md:max-w-[160px] truncate text-xs font-medium text-foreground">
+                    {user?.name?.split(" ")[0] || "Usuário"}
+                  </span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-60">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-semibold leading-none">{user?.name || "Usuário"}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{user?.email || "Sessão Ativa"}</p>
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-primary pt-1">
+                      Perfil: {user?.appRole === "administrador" || adminStatus?.isAdmin ? "Administrador" : user?.appRole === "coordenador" || adminStatus?.isCoordinator ? "Coordenador" : "Executor"}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="cursor-pointer font-medium text-primary hover:text-primary focus:text-primary"
+                >
+                  <KeyRound className="mr-2 h-4 w-4 text-primary" />
+                  <span>Alterar Senha Pessoal</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    window.location.href = "/login";
+                  }}
+                  className="cursor-pointer"
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  <span>Trocar Perfil / Usuário</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={logout}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair da Sessão</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
         <main className="page-grid flex-1 overflow-x-hidden px-4 py-6 sm:px-6 md:px-8 md:py-8 xl:px-10 xl:py-10"><div className="mx-auto w-full max-w-[1560px]">{children}</div></main>
