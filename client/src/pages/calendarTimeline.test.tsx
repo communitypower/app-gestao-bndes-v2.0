@@ -108,7 +108,7 @@ describe("cronograma de itens", () => {
   it("exibe visão compacta por padrão, abre diálogo de entregáveis do mês, expande itens e abre definição de período", async () => {
     const linkClick = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
     render(<CalendarPage />);
-    expect(screen.getByText("Execução por item")).toBeInTheDocument();
+    expect(screen.getByText("Cronograma integrado do estudo")).toBeInTheDocument();
     expect(screen.getByLabelText(/M1:.*ago.*set/i)).toBeInTheDocument();
     expect(screen.getByText("1 entregável")).toBeInTheDocument();
 

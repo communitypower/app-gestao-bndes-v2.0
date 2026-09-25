@@ -41,7 +41,6 @@ export function ReferenceBulkExecutorDialog({
   const utils = trpc.useUtils();
   const [groupCode, setGroupCode] = useState<"G4" | "G10">("G4");
   const [teamMemberId, setTeamMemberId] = useState("");
-  const [allocatedHours, setAllocatedHours] = useState("8");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [confirmed, setConfirmed] = useState(false);
   const { data, isLoading } = trpc.activities.bulkAssignmentTargets.useQuery(
@@ -63,14 +62,13 @@ export function ReferenceBulkExecutorDialog({
   };
 
   const save = async () => {
-    const hours = Number(allocatedHours);
-    if (!teamMemberId || !selectedIds.length || !Number.isFinite(hours) || hours <= 0 || !confirmed) return;
+    if (!teamMemberId || !selectedIds.length || !confirmed) return;
     try {
       const result = await bulkAssign.mutateAsync({
         groupCode,
         teamMemberId: Number(teamMemberId),
         activityIds: selectedIds,
-        allocatedHours: hours,
+        allocatedHours: 1,
       });
       await Promise.all([
         utils.activities.list.invalidate(),
@@ -95,7 +93,7 @@ export function ReferenceBulkExecutorDialog({
             Atribuir executores em lote
           </DialogTitle>
           <DialogDescription>
-            Selecione seções ainda sem executor nos grupos G4 ou G10. A designação registra horas previstas, liderança de execução e referência à matriz Atividades-Grupos.xlsm.
+            Selecione seções ainda sem executor nos grupos G4 ou G10 para designar a liderança de execução conforme a matriz Atividades-Grupos.xlsm.
           </DialogDescription>
         </DialogHeader>
 
@@ -111,7 +109,7 @@ export function ReferenceBulkExecutorDialog({
             </Select>
           </div>
           <div>
-            <Label htmlFor="bulk-executor">Executor</Label>
+            <Label htmlFor="bulk-executor">Executor responsável</Label>
             <Select value={teamMemberId} onValueChange={setTeamMemberId}>
               <SelectTrigger id="bulk-executor" className="mt-2"><SelectValue placeholder="Selecionar integrante ativo" /></SelectTrigger>
               <SelectContent>
@@ -119,11 +117,7 @@ export function ReferenceBulkExecutorDialog({
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="bulk-hours">Horas previstas por seção</Label>
-            <Input id="bulk-hours" className="mt-2" type="number" min="0.5" step="0.5" value={allocatedHours} onChange={event => setAllocatedHours(event.target.value)} />
-          </div>
-          <p className="self-end text-xs leading-5 text-muted-foreground">A atribuição não substitui executores já vigentes e só alcança as seções pendentes da matriz de referência.</p>
+          <p className="sm:col-span-2 text-xs leading-5 text-muted-foreground">A atribuição vincula o executor selecionado às seções marcadas abaixo.</p>
         </div>
 
         {isLoading ? <p className="py-10 text-center text-sm text-muted-foreground">Carregando seções pendentes…</p> : (
@@ -141,11 +135,11 @@ export function ReferenceBulkExecutorDialog({
 
         <label className="mt-5 flex cursor-pointer items-start gap-3 border-y paper-rule py-4 text-sm">
           <Checkbox checked={confirmed} onCheckedChange={value => setConfirmed(value === true)} className="mt-0.5 rounded-none" />
-          <span>Confirmo a atribuição de {selectedIds.length} seção(ões) com {allocatedHours || "0"} hora(s) previstas por seção e referência ao grupo {groupCode}.</span>
+          <span>Confirmo a atribuição de {selectedIds.length} seção(ões) ao integrante selecionado no grupo {groupCode}.</span>
         </label>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-          <Button onClick={() => void save()} disabled={bulkAssign.isPending || !confirmed || !selectedIds.length || !teamMemberId || Number(allocatedHours) <= 0}>{bulkAssign.isPending ? "Atribuindo…" : `Atribuir ${selectedIds.length} executor(es)`}</Button>
+          <Button onClick={() => void save()} disabled={bulkAssign.isPending || !confirmed || !selectedIds.length || !teamMemberId}>{bulkAssign.isPending ? "Atribuindo…" : `Atribuir ${selectedIds.length} executor(es)`}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

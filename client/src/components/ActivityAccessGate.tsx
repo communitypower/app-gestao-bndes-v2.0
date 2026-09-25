@@ -24,12 +24,18 @@ export default function ActivityAccessGate({
             Esta área exige vínculo ativo com a equipe do estudo. As ações de
             alteração permanecem condicionadas à responsabilidade designada.
           </p>
-          <div className="mt-8 flex justify-center gap-5 text-xs font-semibold uppercase tracking-[.12em]">
-            <Link href="/biblioteca" className="border-b border-primary pb-1 text-primary">
-              Biblioteca
+          <div className="mt-8 flex flex-wrap justify-center gap-5 text-xs font-semibold uppercase tracking-[.12em]">
+            <Link href="/" className="border-b border-primary pb-1 text-primary">
+              Visão Geral
+            </Link>
+            <Link href="/calendario" className="border-b border-primary pb-1 text-primary">
+              Cronograma
             </Link>
             <Link href="/producao" className="border-b border-primary pb-1 text-primary">
-              Produção
+              Controle de Documentos
+            </Link>
+            <Link href="/biblioteca" className="border-b border-primary pb-1 text-primary">
+              Biblioteca
             </Link>
           </div>
         </div>

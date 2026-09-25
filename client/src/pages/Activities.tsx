@@ -190,8 +190,7 @@ function ActivityDetailDialog({
     }>
   >([]);
   const [newAllocMemberId, setNewAllocMemberId] = useState("");
-  const [newAllocHours, setNewAllocHours] = useState("20");
-  const [newAllocResponsibility, setNewAllocResponsibility] = useState("Elaboração técnica e condução da etapa");
+    const [newAllocResponsibility, setNewAllocResponsibility] = useState("Elaboração técnica e condução da etapa");
   const [newAllocIsLead, setNewAllocIsLead] = useState(false);
   const [leadershipChangeJustification, setLeadershipChangeJustification] = useState("");
 
@@ -250,8 +249,7 @@ function ActivityDetailDialog({
     }));
     setCurrentAllocationsDraft(existing);
     setNewAllocMemberId("");
-    setNewAllocHours("20");
-    setNewAllocResponsibility("Elaboração técnica e condução da etapa");
+        setNewAllocResponsibility("Elaboração técnica e condução da etapa");
     setNewAllocIsLead(existing.length === 0);
     setLeadershipChangeJustification("");
     setAllocModalOpen(true);
@@ -264,7 +262,7 @@ function ActivityDetailDialog({
       return;
     }
     const memberId = Number(newAllocMemberId);
-    const hours = Math.max(1, Number(newAllocHours) || 1);
+    const hours = 1;
     const memberObj =
       (data?.thematicMembers ?? []).find((m: any) => m.id === memberId) ||
       (data?.eligibleParticipants ?? []).find((m: any) => m.id === memberId);
@@ -288,8 +286,7 @@ function ActivityDetailDialog({
 
     setCurrentAllocationsDraft(updated);
     setNewAllocMemberId("");
-    setNewAllocHours("20");
-    setNewAllocResponsibility("Elaboração técnica e condução da etapa");
+        setNewAllocResponsibility("Elaboração técnica e condução da etapa");
     setNewAllocIsLead(false);
   };
 
@@ -2100,10 +2097,10 @@ function ActivityDetailDialog({
                   <div className="rounded-lg border border-border/70 bg-muted/20 p-3.5 space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                        Status da Execução
+                        Equipe de Execução
                       </span>
-                      <span className="font-mono text-[11px] font-semibold text-primary">
-                        {data.totalAllocatedHours || 0}h alocadas
+                      <span className="text-[11px] font-semibold text-primary">
+                        {data.allocations?.length || 0} integrante(s)
                       </span>
                     </div>
 
@@ -2129,9 +2126,7 @@ function ActivityDetailDialog({
                                 {alloc.responsibility}
                               </p>
                             </div>
-                            <span className="font-mono text-[11px] font-semibold text-foreground shrink-0">
-                              {alloc.allocatedHours}h
-                            </span>
+                            
                           </div>
                         ))}
                       </div>
@@ -2180,7 +2175,7 @@ function ActivityDetailDialog({
                                 {stepLead ? (
                                   <span className="font-medium text-foreground flex items-center gap-1">
                                     <UserRoundCheck className="h-3 w-3 text-primary" />
-                                    Executor: <strong>{stepLead.memberName}</strong> ({stepLead.allocatedHours}h)
+                                    Executor: <strong>{stepLead.memberName}</strong>
                                   </span>
                                 ) : (
                                   <span className="text-amber-600 dark:text-amber-400 font-medium">
@@ -2557,7 +2552,7 @@ function ActivityDetailDialog({
                   Regra de Governança e Atribuição:
                 </span>
                 <p className="text-muted-foreground text-[11px] leading-relaxed">
-                  A atribuição de execução de determinada seção é de responsabilidade do <strong>coordenador da seção correspondente</strong>. Associe integrantes para conduzir a elaboração técnica da atividade, definindo horas alocadas, escopo específico e liderança de execução.
+                  A atribuição de execução de determinada seção é de responsabilidade do <strong>coordenador da seção correspondente</strong>. Associe integrantes para conduzir a elaboração técnica da atividade, definindo escopo específico e liderança de execução.
                 </p>
               </div>
 
@@ -2568,7 +2563,7 @@ function ActivityDetailDialog({
                     Executores Associados ({currentAllocationsDraft.length})
                   </Label>
                   <span className="font-mono text-[11px] font-semibold text-primary">
-                    Total: {currentAllocationsDraft.reduce((sum, a) => sum + a.allocatedHours, 0)}h
+                    {currentAllocationsDraft.length} integrante(s)
                   </span>
                 </div>
 
@@ -2602,9 +2597,7 @@ function ActivityDetailDialog({
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="font-mono font-bold text-xs text-foreground bg-muted px-2 py-0.5 rounded">
-                            {alloc.allocatedHours}h
-                          </span>
+                          
                           <Button
                             type="button"
                             variant="ghost"
@@ -2633,8 +2626,7 @@ function ActivityDetailDialog({
                   Associar ou Atualizar Integrante na Equipe de Execução
                 </span>
 
-                <div className="grid gap-2.5 sm:grid-cols-2">
-                  <div>
+                <div>
                     <Label className="text-xs font-semibold">Integrante da Equipe *</Label>
                     <Select
                       value={newAllocMemberId}
@@ -2665,20 +2657,6 @@ function ActivityDetailDialog({
                       </SelectContent>
                     </Select>
                   </div>
-
-                  <div>
-                    <Label className="text-xs font-semibold">Horas Estimadas Alocadas (h) *</Label>
-                    <Input
-                      type="number"
-                      min={1}
-                      max={10000}
-                      value={newAllocHours}
-                      onChange={e => setNewAllocHours(e.target.value)}
-                      placeholder="Ex: 20"
-                      className="mt-1 h-8 bg-background text-xs"
-                    />
-                  </div>
-                </div>
 
                 <div>
                   <Label className="text-xs font-semibold">Atribuição / Responsabilidade Específica *</Label>
@@ -2796,7 +2774,8 @@ function ActivitiesContent() {
       <PageHeader
         eyebrow="Painel Pessoal e Produtividade"
         title="Minhas ações"
-        description="Acompanhamento centralizado das suas obrigações imediatas, revisão de minutas e acesso direto às fichas dos capítulos."
+        description="Acompanhamento centralizado das suas obrigações imediatas, envio de minutas, atendimento de revisões e acesso direto às fichas dos capítulos."
+        index="02 — Minhas ações"
       />
 
       {/* Central de Ações e Pendências do Participante */}

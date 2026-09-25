@@ -519,8 +519,8 @@ function ScheduleDialog({
                   <SelectItem value="nenhum">Manter atribuição pendente</SelectItem>
                   {item.eligibleParticipants.map(member => (
                     <SelectItem key={member.id} value={String(member.id)}>
-                      {member.name} · {member.currentAllocatedHours}h / {member.currentActivityCount}{" "}
-                      atividades
+                      {member.name} · {member.currentActivityCount}{" "}
+                      atividade(s)
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -1231,10 +1231,10 @@ function CalendarContent() {
     <div className="space-y-3">
       {/* Cabeçalho Formal e Ações */}
       <PageHeader
-        eyebrow="03 — Cronograma"
-        title="Execução por item"
-        description="Acompanhamento temporal por seções, capítulos e entregáveis mensais conforme o Cronograma Oficial do Estudo (Cronograma_r1_200926)."
-        index="M1–M7"
+        eyebrow="Planejamento e Prazos"
+        title="Cronograma integrado do estudo"
+        description="Acompanhamento temporal e marcos de entrega escalonados (ondas M1 a M6) conforme o Cronograma Oficial do Estudo."
+        index="03 — Cronograma"
         action={
           <div className="flex flex-wrap items-center gap-1.5 shrink-0">
             {/* Alternar Expandir / Compactar Listas */}

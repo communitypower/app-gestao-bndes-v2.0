@@ -61,19 +61,16 @@ import {
 import { toast } from "sonner";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Visão geral", path: "/", admin: false },
-  { icon: ChartNoAxesCombined, label: "KPIs documentais", path: "/kpis", admin: true, coordinator: true },
-  { icon: ClipboardList, label: "Minhas ações", path: "/atividades", admin: false },
-  { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: true, coordinator: true },
-  { icon: Users, label: "Equipe e grupos", path: "/equipe", admin: true, teamManager: true },
-  { icon: BookOpen, label: "Biblioteca de referências", path: "/biblioteca", admin: false },
-  { icon: FilePenLine, label: "Produção e revisão", path: "/producao", admin: false },
-  { icon: GitMerge, label: "Interfaces entre seções", path: "/interfaces", admin: true, interfaces: true },
-  { icon: MapPinned, label: "Campo e divulgação", path: "/campo-divulgacao", admin: false },
-  { icon: Bot, label: "Assistente de IA", path: "/assistente", admin: false },
-  { icon: HelpCircle, label: "Manual da equipe", path: "/manual", admin: false },
-  { icon: Settings, label: "Administração", path: "/administracao", admin: true },
-  { icon: Users, label: "Usuários e permissões", path: "/usuarios-permissoes", admin: true },
+  { icon: LayoutDashboard, label: "Visão Geral", path: "/", admin: false, category: "principal" },
+  { icon: ClipboardList, label: "Minhas Ações", path: "/atividades", admin: false, category: "principal" },
+  { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: false, category: "principal" },
+  { icon: FilePenLine, label: "Controle de Documentos", path: "/producao", admin: false, category: "principal" },
+  { icon: BookOpen, label: "Biblioteca de Referências", path: "/biblioteca", admin: false, category: "apoio" },
+  { icon: Users, label: "Equipe e Grupos", path: "/equipe", admin: false, category: "apoio" },
+  { icon: HelpCircle, label: "Manual do Estudo", path: "/manual", admin: false, category: "apoio" },
+  { icon: Bot, label: "Assistente IA", path: "/assistente", admin: false, category: "apoio" },
+  { icon: Settings, label: "Administração", path: "/administracao", admin: true, category: "gestao" },
+  { icon: Users, label: "Acessos e Permissões", path: "/usuarios-permissoes", admin: true, category: "gestao" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -212,10 +209,7 @@ function DashboardLayoutContent({
   const visibleItems = menuItems.filter(
     item =>
       !item.admin ||
-      (item.teamManager && (adminStatus?.isAdmin || adminStatus?.isGeneralCoordinator || adminStatus?.canManageTeam)) ||
-      (item.interfaces && adminStatus?.canAccessInterfaces) ||
-      adminStatus?.isAdmin ||
-      (item.coordinator && adminStatus?.canAccessActivities)
+      Boolean(adminStatus?.isAdmin || adminStatus?.isGeneralCoordinator)
   );
   const activeMenuItem = visibleItems.find(item => item.path === location);
   const isMobile = useIsMobile();
@@ -282,30 +276,95 @@ function DashboardLayoutContent({
             </div>
           </SidebarHeader>
 
-          <SidebarContent className="gap-0">
-            <div className="px-4 pb-2 pt-7 group-data-[collapsible=icon]:hidden">
-              <p className="editorial-kicker text-sidebar-foreground/40">Módulos</p>
+          <SidebarContent className="gap-3 py-3">
+            {/* Seção Principal */}
+            <div>
+              <div className="px-4 pb-1 pt-2 group-data-[collapsible=icon]:hidden">
+                <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Principal</p>
+              </div>
+              <SidebarMenu className="px-2 py-0.5">
+                {visibleItems
+                  .filter(item => item.category === "principal")
+                  .map(item => {
+                    const isActive = location === item.path;
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <SidebarMenuButton
+                          isActive={isActive}
+                          onClick={() => setLocation(item.path)}
+                          tooltip={item.label}
+                          className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
+                        >
+                          <item.icon
+                            className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
+                          />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
             </div>
-            <SidebarMenu className="px-2 py-1">
-              {visibleItems.map(item => {
-                const isActive = location === item.path;
-                return (
-                  <SidebarMenuItem key={item.path}>
-                    <SidebarMenuButton
-                      isActive={isActive}
-                      onClick={() => setLocation(item.path)}
-                      tooltip={item.label}
-                      className="h-10 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/72 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
-                    >
-                      <item.icon
-                        className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
-                      />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+
+            {/* Seção Apoio e Acervo */}
+            <div>
+              <div className="px-4 pb-1 pt-1 group-data-[collapsible=icon]:hidden">
+                <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Apoio & Acervo</p>
+              </div>
+              <SidebarMenu className="px-2 py-0.5">
+                {visibleItems
+                  .filter(item => item.category === "apoio")
+                  .map(item => {
+                    const isActive = location === item.path;
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <SidebarMenuButton
+                          isActive={isActive}
+                          onClick={() => setLocation(item.path)}
+                          tooltip={item.label}
+                          className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
+                        >
+                          <item.icon
+                            className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
+                          />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
+            </div>
+
+            {/* Seção Gestão (se houver itens visíveis) */}
+            {visibleItems.some(item => item.category === "gestao") && (
+              <div>
+                <div className="px-4 pb-1 pt-1 group-data-[collapsible=icon]:hidden">
+                  <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Gestão</p>
+                </div>
+                <SidebarMenu className="px-2 py-0.5">
+                  {visibleItems
+                    .filter(item => item.category === "gestao")
+                    .map(item => {
+                      const isActive = location === item.path;
+                      return (
+                        <SidebarMenuItem key={item.path}>
+                          <SidebarMenuButton
+                            isActive={isActive}
+                            onClick={() => setLocation(item.path)}
+                            tooltip={item.label}
+                            className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
+                          >
+                            <item.icon
+                              className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
+                            />
+                            <span>{item.label}</span>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
+                </SidebarMenu>
+              </div>
+            )}
           </SidebarContent>
 
           <SidebarFooter className="border-t border-sidebar-border p-3">

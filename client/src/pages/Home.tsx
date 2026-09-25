@@ -11,6 +11,8 @@ import { formatDate, initials } from "@/lib/format";
 import { groupDisplayName } from "@shared/groupDisplay";
 import { OFFICIAL_MONTH_MILESTONES } from "@shared/officialScheduleMes3";
 import {
+  ClipboardList,
+  CalendarDays,
   BookOpen,
   Calendar,
   CheckCircle2,
@@ -253,6 +255,57 @@ export default function Home() {
           </div>
         }
       />
+
+      {/* Ações Rápidas de Navegação */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Link href="/atividades" className="group block rounded-lg border border-border/80 bg-card p-4 transition-all hover:border-primary hover:shadow-sm">
+          <div className="flex items-center gap-2.5 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <ClipboardList className="h-4 w-4" />
+            </div>
+            <h4 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">Minhas Ações</h4>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            Consulte suas atividades e capítulos sob sua coordenação ou execução, prazos e entregas pendentes.
+          </p>
+          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary">
+            <span>Acessar minhas ações</span>
+            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </div>
+        </Link>
+
+        <Link href="/calendario" className="group block rounded-lg border border-border/80 bg-card p-4 transition-all hover:border-primary hover:shadow-sm">
+          <div className="flex items-center gap-2.5 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <CalendarDays className="h-4 w-4" />
+            </div>
+            <h4 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">Cronograma</h4>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            Acompanhe as ondas escalonadas (M1 a M6), marcos de término e a distribuição temporal dos capítulos.
+          </p>
+          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary">
+            <span>Ver cronograma completo</span>
+            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </div>
+        </Link>
+
+        <Link href="/producao" className="group block rounded-lg border border-border/80 bg-card p-4 transition-all hover:border-primary hover:shadow-sm">
+          <div className="flex items-center gap-2.5 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <FilePenLine className="h-4 w-4" />
+            </div>
+            <h4 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">Controle de Documentos</h4>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            Ciclo editorial: envio de minutas, pareceres de revisão técnica por pares, ajustes e incorporação final.
+          </p>
+          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary">
+            <span>Acessar controle de documentos</span>
+            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </div>
+        </Link>
+      </div>
 
       {/* Métricas Consolidadas de Alto Nível */}
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
@@ -939,12 +992,7 @@ export default function Home() {
                                       {activities.length} {activities.length === 1 ? "atividade alocada" : "atividades alocadas"} {isMemberOpen ? "▲" : "▼"}
                                     </button>
                                   )}
-                                  {member.totalAllocatedHours > 0 && (
-                                    <span className="font-mono text-xs text-muted-foreground">
-                                      {member.totalAllocatedHours}h alocadas
-                                    </span>
-                                  )}
-                                </div>
+                                  </div>
                               </div>
 
                               {/* Nível 3: Atividades Alocadas ao Integrante (quando expandido) */}
@@ -977,9 +1025,6 @@ export default function Home() {
                                               <span className="font-medium text-foreground">
                                                 Papel: {act.roleInActivity}
                                               </span>
-                                              {act.allocatedHours > 0 && (
-                                                <span>· {act.allocatedHours}h alocadas</span>
-                                              )}
                                               {act.responsibility && (
                                                 <span>· {act.responsibility}</span>
                                               )}

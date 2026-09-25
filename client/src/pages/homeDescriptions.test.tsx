@@ -246,7 +246,6 @@ describe("painel de visão geral reformulado e integrado com visões por ativida
     // Verifica presença do grupo
     expect(screen.getByText("G10 · CN mundial")).toBeInTheDocument();
     expect(screen.getByText("Floriano Carlos Martins Pires Jr.")).toBeInTheDocument();
-    expect(screen.getByText("Coordenador(a)")).toBeInTheDocument();
-    expect(screen.getByText("80h alocadas")).toBeInTheDocument();
+    expect(screen.getByText(/atividade.*alocada/i)).toBeInTheDocument();
   });
 });

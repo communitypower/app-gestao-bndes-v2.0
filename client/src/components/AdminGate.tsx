@@ -26,8 +26,8 @@ export default function AdminGate({
           <h1 className="mt-3 text-2xl font-bold tracking-tight text-foreground">Área do administrador</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {data.canAccessActivities
-              ? "Como coordenador vinculado, você também pode consultar suas atividades e preencher as horas do grupo."
-              : "Seu perfil de colaborador tem acesso à biblioteca de referências e à área de produção."}
+              ? "Como coordenador vinculado, você pode consultar suas atividades e gerenciar as entregas da equipe."
+              : "Seu perfil de colaborador tem acesso à biblioteca de referências e ao controle de documentos."}
           </p>
           <div className="mt-8 flex justify-center gap-5 text-xs font-semibold uppercase tracking-[.12em]">
             {data.canAccessActivities && (

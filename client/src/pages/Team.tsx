@@ -299,7 +299,7 @@ function TeamContent() {
         eyebrow="Organização da equipe"
         title="Estrutura de grupos e responsabilidades"
         description="Matriz funcional G1–G11 do Plano de Trabalho, com vínculos ativos, referências de composição e frentes atribuídas."
-        index="04 — Equipe"
+        index="06 — Equipe"
         action={
           canManage ? (
             <div className="flex flex-wrap items-center gap-2">
@@ -1020,7 +1020,7 @@ function TeamContent() {
               </Select>
               <p className="mt-2 text-xs text-muted-foreground">
                 O coordenador precisa deste vínculo para consultar suas
-                atividades e preencher as horas do grupo.
+                atividades e coordenar as entregas do grupo.
               </p>
             </div>
             <div className="sm:col-span-2">

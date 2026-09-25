@@ -454,9 +454,9 @@ export default function ProductionPage() {
     <div className="space-y-7">
       <PageHeader
         eyebrow="Elaboração e Revisão Editorial"
-        title="Produção e revisão de materiais"
-        description="Fluxo integrado de elaboração, envio de minutas, apontamentos de revisão técnica, atendimento de ajustes e homologação de capítulos."
-        index="06 — Produção"
+        title="Controle de Documentos e Revisões"
+        description="Ciclo editorial de documentação técnica do estudo: Elaboração da Minuta → Revisão Técnica por Pares → Atendimento de Comentários → Versionamento/Rastreamento → Revisão Editorial e Incorporação Final no Relatório."
+        index="04 — Controle de Documentos"
         action={
           access.canAccessActivities ? (
             <Button
