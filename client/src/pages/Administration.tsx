@@ -277,10 +277,10 @@ function AdministrationContent() {
             <p className="data-label text-primary">Ambiente & Ciclos do Estudo</p>
             <h2 className="font-display mt-1 text-2xl font-semibold tracking-[-.025em] flex items-center gap-2">
               <RotateCcw className="h-6 w-6 text-primary" />
-              Preparação para Rodada Piloto
+              Pacote P1 de Implementação — Limpeza e Ativação
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Zere os dados transientes gerados durante os testes (materiais, submissões, revisões, pareceres e notificações) e recarregue 100% da base estrutural canônica oficial.
+              Executa a limpeza de minutas, revisões e fluxos de teste, preservando 100% da base canônica oficial (30 capítulos, 280 etapas, 11 grupos temáticos, 67 interfaces e 328 itens da biblioteca).
             </p>
           </div>
           <Button
@@ -293,7 +293,7 @@ function AdministrationContent() {
             className="shrink-0 font-medium"
           >
             <RotateCcw className="mr-2 h-4 w-4" />
-            Preparar Nova Rodada Piloto
+            Limpar e Implementar P1
           </Button>
         </header>
         <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-4 bg-muted/10 text-xs text-muted-foreground">
@@ -634,12 +634,12 @@ function AdministrationContent() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl font-bold">
               <RotateCcw className="h-5 w-5 text-primary" />
-              {pilotResetSuccessData ? "Ambiente Piloto Pronto!" : "Confirmar Preparação da Rodada Piloto"}
+              {pilotResetSuccessData ? "Pacote P1 Implementado com Sucesso!" : "Confirmar Limpeza e Implementação do Pacote P1"}
             </DialogTitle>
             <DialogDescription>
               {pilotResetSuccessData
-                ? "A base estrutural canônica foi totalmente restabelecida e os dados transientes de testes foram zerados com sucesso."
-                : "Esta operação reinicia o ambiente para uma rodada piloto limpa com a equipe técnica."}
+                ? "A base estrutural canônica oficial foi 100% restabelecida e os dados transientes de testes foram zerados com sucesso."
+                : "Esta operação limpa todos os documentos, revisões e fluxos em aberto, ativando a base limpa do Pacote P1 para a equipe técnica."}
             </DialogDescription>
           </DialogHeader>
 
@@ -647,7 +647,7 @@ function AdministrationContent() {
             <div className="space-y-4 py-2">
               <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/20">
                 <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                  <CheckCircle2 className="h-4 w-4" /> Base Canônica 100% Carregada e Verificada
+                  <CheckCircle2 className="h-4 w-4" /> Base Canônica 100% Carregada e Verificada (P1)
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                   <div>• <strong>{pilotResetSuccessData.stats.parentChapters}</strong> Capítulos canônicos</div>
@@ -659,7 +659,7 @@ function AdministrationContent() {
                 </div>
               </div>
               <div className="rounded-lg border bg-muted/20 p-3 text-xs text-muted-foreground">
-                <p>🧹 <strong>Dados de testes zerados:</strong> {pilotResetSuccessData.stats.materials} materiais, {pilotResetSuccessData.stats.submissions} submissões, {pilotResetSuccessData.stats.notifications} notificações.</p>
+                <p>🧹 <strong>Documentos e fluxos zerados:</strong> {pilotResetSuccessData.stats.materials} materiais, {pilotResetSuccessData.stats.submissions} submissões, {pilotResetSuccessData.stats.notifications} notificações.</p>
               </div>
             </div>
           ) : (
@@ -677,7 +677,7 @@ function AdministrationContent() {
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-3.5">
                 <p className="font-semibold text-primary">O que será restaurado e mantido (100% Canônico):</p>
                 <ul className="mt-1 list-disc pl-4 space-y-0.5 text-muted-foreground">
-                  <li>30 Capítulos e 253 Etapas com descrições do Anexo B e cronograma oficial;</li>
+                  <li>30 Capítulos e 280 Etapas com descrições oficiais do Anexo B e cronograma;</li>
                   <li>11 Grupos Temáticos e atribuições de coordenadores;</li>
                   <li>Todos os participantes e pré-cadastros de acesso;</li>
                   <li>67 Interfaces interdisciplinares identificadas;</li>
@@ -717,12 +717,12 @@ function AdministrationContent() {
                       await refetchGovernance();
                       toast.success(res.message);
                     } catch (err: any) {
-                      toast.error(err?.message || "Falha ao preparar rodada piloto.");
+                      toast.error(err?.message || "Falha ao preparar pacote P1.");
                     }
                   }}
                   disabled={resetPilot.isPending}
                 >
-                  {resetPilot.isPending ? "Preparando Ambiente..." : "Confirmar e Preparar Piloto"}
+                  {resetPilot.isPending ? "Implementando Pacote P1..." : "Confirmar e Implementar P1"}
                 </Button>
               </>
             )}
