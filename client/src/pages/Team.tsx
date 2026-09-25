@@ -711,7 +711,7 @@ function TeamContent() {
               </section>
               <section className="rounded-md border border-border bg-muted/20 p-4 lg:col-span-2">
                 <p className="data-label text-muted-foreground">Regra de gestão</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">A matriz de grupos orienta a distribuição temática do estudo. O Prof. Floriano (Coordenação Geral) e Administradores podem atualizar as alocações e carregar revisões da planilha sempre que necessário.</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">A matriz de grupos orienta a distribuição temática do estudo. O Prof. Floriano (Coordenação Geral) e Administradores podem atualizar as atribuições de equipe e carregar revisões da planilha sempre que necessário.</p>
               </section>
             </div>
             <section className="border-t bg-muted/15 px-5 py-4">

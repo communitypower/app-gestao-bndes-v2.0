@@ -743,32 +743,32 @@ export default function ProductionPage() {
             <DialogDescription>
               {access?.isAdmin
                 ? "Como administrador, você pode carregar materiais para qualquer atividade ou seção do projeto."
-                : "Carregamento restrito às seções e atividades alocadas ao seu perfil (coordenação, execução ou revisão)."}
+                : "Carregamento restrito às seções e atividades atribuídas ao seu perfil (coordenação, execução ou revisão)."}
             </DialogDescription>
           </DialogHeader>
 
           {!allocatedActivities || allocatedActivities.length === 0 ? (
             <div className="mt-4 rounded-md border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-200">
-              <p className="font-semibold">Nenhuma atividade ou seção alocada</p>
+              <p className="font-semibold">Nenhuma atividade ou seção atribuída</p>
               <p className="mt-1 text-xs opacity-90 leading-relaxed">
-                Seu usuário não possui atividades atribuídas como coordenador, executor ou revisor para carregar material. Se precisar de alocação nesta frente, solicite à coordenação do estudo.
+                Seu usuário não possui atividades atribuídas como coordenador, executor ou revisor para carregar material. Se precisar de inclusão nesta frente, solicite à coordenação do estudo.
               </p>
             </div>
           ) : (
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <div className="flex items-center justify-between">
-                  <Label>Atividade / Seção alocada</Label>
+                  <Label>Atividade / Seção de trabalho</Label>
                   <span className="text-[11px] text-muted-foreground">
                     {allocatedActivities.length}{" "}
                     {allocatedActivities.length === 1
-                      ? "item alocado"
-                      : "itens alocados"}
+                      ? "item atribuído"
+                      : "itens atribuídos"}
                   </span>
                 </div>
                 <Select value={activityId} onValueChange={setActivityId}>
                   <SelectTrigger className="mt-2 w-full">
-                    <SelectValue placeholder="Selecione a atividade alocada" />
+                    <SelectValue placeholder="Selecione a atividade ou seção" />
                   </SelectTrigger>
                   <SelectContent className="max-h-72">
                     {allocatedActivities.map(activity => (

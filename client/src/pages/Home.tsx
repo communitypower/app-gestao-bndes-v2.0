@@ -805,7 +805,7 @@ export default function Home() {
                                                   <span>Líder: {step.responsibleName}</span>
                                                 )}
                                                 {step.allocations && step.allocations.length > 0 && (
-                                                  <span>· {step.allocations.length} alocados</span>
+                                                  <span>· {step.allocations.length} {step.allocations.length === 1 ? "executor" : "executores"}</span>
                                                 )}
                                                 {step.dueAt && (
                                                   <span className="font-mono font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
@@ -930,7 +930,7 @@ export default function Home() {
                                         }))
                                       }
                                       className="mt-0.5 sm:mt-0 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
-                                      title={isMemberOpen ? "Recolher atividades alocadas" : `Expandir ${activities.length} atividades alocadas`}
+                                      title={isMemberOpen ? "Recolher atividades atribuídas" : `Expandir ${activities.length} atividades atribuídas`}
                                     >
                                       {isMemberOpen ? (
                                         <ChevronDown className="h-3.5 w-3.5" />
@@ -989,13 +989,13 @@ export default function Home() {
                                       }
                                       className="font-mono text-xs font-medium text-primary hover:underline bg-primary/5 px-2 py-1 rounded"
                                     >
-                                      {activities.length} {activities.length === 1 ? "atividade alocada" : "atividades alocadas"} {isMemberOpen ? "▲" : "▼"}
+                                      {activities.length} {activities.length === 1 ? "atividade atribuída" : "atividades atribuídas"} {isMemberOpen ? "▲" : "▼"}
                                     </button>
                                   )}
                                   </div>
                               </div>
 
-                              {/* Nível 3: Atividades Alocadas ao Integrante (quando expandido) */}
+                              {/* Nível 3: Atividades Atribuídas ao Integrante (quando expandido) */}
                               {isMemberOpen && activities.length > 0 && (
                                 <div className="border-t bg-muted/15 pl-10 sm:pl-16 pr-4 py-2.5 space-y-2">
                                   <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground pt-1">

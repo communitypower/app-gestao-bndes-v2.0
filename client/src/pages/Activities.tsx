@@ -351,8 +351,8 @@ function ActivityDetailDialog({
       ]);
       toast.success(
         decision === "aprovar"
-          ? `✅ Alocação de ${memberName || "integrante"} autorizada com sucesso pela Coordenação Geral (Prof. Floriano).`
-          : `⚠️ Alocação de ${memberName || "integrante"} recusada.`
+          ? `✅ Atribuição de ${memberName || "integrante"} autorizada com sucesso pela Coordenação Geral (Prof. Floriano).`
+          : `⚠️ Atribuição de ${memberName || "integrante"} recusada.`
       );
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Erro ao processar decisão de autorização.");

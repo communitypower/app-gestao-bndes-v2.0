@@ -4,10 +4,10 @@ import { describe, expect, it } from "vitest";
 const pages = [
   ["Home.tsx", "Visão geral do projeto"],
   ["Activities.tsx", "Minhas ações"],
-  ["Calendar.tsx", "Execução por item"],
+  ["Calendar.tsx", "Cronograma integrado do estudo"],
   ["Team.tsx", "Estrutura de grupos e responsabilidades"],
   ["Library.tsx", "Biblioteca de referências"],
-  ["Production.tsx", "Produção e revisão de materiais"],
+  ["Production.tsx", "Controle de Documentos e Revisões"],
   ["Interfaces.tsx", "Gestão de interfaces entre seções"],
   ["Fieldwork.tsx", "Atividades de campo e divulgação"],
   ["Assistant.tsx", "Assistente técnico de inteligência artificial"],
@@ -52,13 +52,14 @@ describe("nomenclatura institucional das páginas", () => {
       "utf8"
     );
     for (const label of [
-      "Minhas ações",
+      "Visão Geral",
+      "Minhas Ações",
       "Cronograma",
-      "Equipe e grupos",
-      "Biblioteca de referências",
-      "Produção e revisão",
-      "Interfaces entre seções",
-      "Campo e divulgação",
+      "Controle de Documentos",
+      "Biblioteca de Referências",
+      "Equipe e Grupos",
+      "Manual do Estudo",
+      "Assistente IA",
       "Administração",
     ]) {
       expect(source).toContain(`label: "${label}"`);
