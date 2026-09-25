@@ -684,7 +684,7 @@ function ActivityDetailDialog({
 
   return (
     <Dialog open={activityId !== null} onOpenChange={open => onOpenChange(open)}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto bg-card sm:max-w-4xl p-6 sm:p-8">
+      <DialogContent className="max-h-[92vh] overflow-y-auto bg-card w-[96vw] max-w-5xl xl:max-w-6xl p-6 sm:p-8">
         {/* 1. Cabeçalho Executivo e Identificação */}
         <DialogHeader className="border-b paper-rule pb-5 text-left">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -722,7 +722,7 @@ function ActivityDetailDialog({
             )}
           </div>
 
-          <DialogTitle className="font-display mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <DialogTitle className="font-display mt-3 text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground break-words leading-snug sm:leading-tight">
             {data ? data.title : "Ficha da Atividade"}
           </DialogTitle>
 
@@ -1875,7 +1875,7 @@ function ActivityDetailDialog({
                         {aiEvaluation.stageCriteria?.map((crit: any) => (
                           <div key={crit.id} className="rounded-md border border-border/80 bg-background/80 p-2.5 space-y-1 text-[11px]">
                             <div className="flex items-center justify-between gap-1">
-                              <span className="font-semibold text-foreground truncate">{crit.name}</span>
+                              <span className="font-semibold text-foreground break-words">{crit.name}</span>
                               <Badge
                                 variant="outline"
                                 className={`text-[9px] shrink-0 font-bold ${
@@ -2113,7 +2113,7 @@ function ActivityDetailDialog({
                           >
                             <div className="min-w-0">
                               <div className="flex items-center gap-1.5">
-                                <span className="font-semibold text-foreground text-xs truncate">
+                                <span className="font-semibold text-foreground text-xs break-words">
                                   {alloc.memberName || `Integrante ${alloc.teamMemberId}`}
                                 </span>
                                 {alloc.isExecutionLead && (
@@ -2122,7 +2122,7 @@ function ActivityDetailDialog({
                                   </Badge>
                                 )}
                               </div>
-                              <p className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
+                              <p className="text-[10px] text-muted-foreground leading-normal mt-0.5 break-words">
                                 {alloc.responsibility}
                               </p>
                             </div>
@@ -2163,10 +2163,10 @@ function ActivityDetailDialog({
                           >
                             <div className="min-w-0 space-y-0.5">
                               <div className="flex items-center gap-2">
-                                <span className="font-mono font-bold text-xs text-primary">
+                                <span className="font-mono font-bold text-xs text-primary shrink-0">
                                   {step.detailCode || step.planCode || step.sectionCode}
                                 </span>
-                                <span className="font-medium text-foreground text-xs truncate">
+                                <span className="font-medium text-foreground text-xs break-words">
                                   {step.title}
                                 </span>
                                 <StatusBadge status={step.status} />
@@ -2262,10 +2262,10 @@ function ActivityDetailDialog({
                               >
                                 <div className="min-w-0 pr-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="font-semibold text-foreground truncate">{mem.name}</span>
+                                    <span className="font-semibold text-foreground break-words">{mem.name}</span>
                                     <span className="text-[10px] text-muted-foreground shrink-0">({mem.institution})</span>
                                   </div>
-                                  <span className="text-[10px] text-muted-foreground block mt-0.5">{mem.title}</span>
+                                  <span className="text-[10px] text-muted-foreground block mt-0.5 break-words">{mem.title}</span>
                                 </div>
                                 <Badge variant="outline" className="border-amber-500/50 bg-amber-500/10 text-amber-900 dark:text-amber-200 text-[10px] shrink-0 font-medium">
                                   👑 Autor / Coordenação
@@ -2297,10 +2297,10 @@ function ActivityDetailDialog({
                             >
                               <div className="min-w-0 pr-2">
                                 <div className="flex items-center gap-1.5">
-                                  <span className="font-semibold text-foreground truncate">{mem.name}</span>
+                                  <span className="font-semibold text-foreground break-words">{mem.name}</span>
                                   <span className="text-[10px] text-muted-foreground shrink-0">({mem.institution})</span>
                                 </div>
-                                <span className="text-[10px] text-muted-foreground block mt-0.5">{mem.title}</span>
+                                <span className="text-[10px] text-muted-foreground block mt-0.5 break-words">{mem.title}</span>
                               </div>
 
                               <div className="shrink-0 flex items-center gap-1.5">
@@ -2334,10 +2334,10 @@ function ActivityDetailDialog({
                               >
                                 <div className="min-w-0 pr-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="font-semibold text-foreground truncate">{rev.name}</span>
+                                    <span className="font-semibold text-foreground break-words">{rev.name}</span>
                                     <span className="text-[10px] text-muted-foreground shrink-0">({rev.institution})</span>
                                   </div>
-                                  <span className="text-[10px] text-muted-foreground block mt-0.5">{rev.title}</span>
+                                  <span className="text-[10px] text-muted-foreground block mt-0.5 break-words">{rev.title}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <Badge variant="default" className="bg-primary text-primary-foreground text-[10px] font-semibold">
@@ -2411,9 +2411,9 @@ function ActivityDetailDialog({
                 <div className="divide-y divide-teal-500/20 rounded border border-teal-500/20 bg-background/70">
                   {data.relatedInterfaces.map((iface: any) => (
                     <div key={iface.id} className="p-2.5 flex items-center justify-between gap-2">
-                      <div>
-                        <span className="font-semibold text-foreground">{iface.title}</span>
-                        <p className="text-[11px] text-muted-foreground line-clamp-1">{iface.description}</p>
+                      <div className="min-w-0">
+                        <span className="font-semibold text-foreground break-words block">{iface.title}</span>
+                        <p className="text-[11px] text-muted-foreground leading-normal mt-0.5 break-words">{iface.description}</p>
                       </div>
                       <Badge variant="outline" className="text-[10px] shrink-0">
                         {iface.status}
@@ -2539,7 +2539,7 @@ function ActivityDetailDialog({
                   <DialogTitle className="text-base font-bold text-foreground">
                     Atribuição e Gestão de Executores
                   </DialogTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                  <p className="text-xs text-muted-foreground mt-0.5 break-words">
                     {allocTargetTitle}
                   </p>
                 </div>

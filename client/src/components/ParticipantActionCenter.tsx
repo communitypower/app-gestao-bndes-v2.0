@@ -601,7 +601,7 @@ export function ParticipantActionCenter({
 
         <div className="h-4 w-px bg-border/60 hidden md:block" />
 
-        {/* 3. Filtros Rápidos por Papel / Fluxo */}
+        {/* 3. Filtros Rápidos por Papel / Fluxo (Ordem: Elaboração, Homologação, Revisão, Interface, Todos) */}
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5 mr-0.5">
             <Filter className="h-3.5 w-3.5 text-muted-foreground" />
@@ -609,28 +609,26 @@ export function ParticipantActionCenter({
           </span>
           <button
             type="button"
-            onClick={() => setSelectedRole("todos")}
+            onClick={() => setSelectedRole("executor")}
             className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-              selectedRole === "todos"
-                ? "bg-primary text-primary-foreground shadow-xs"
+              selectedRole === "executor"
+                ? "bg-emerald-600 text-white shadow-xs"
                 : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
-            Todos os Fluxos ({summary.total})
+            📝 Elaboração ({summary.executorCount})
           </button>
-          {summary.executorCount > 0 && (
-            <button
-              type="button"
-              onClick={() => setSelectedRole("executor")}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-                selectedRole === "executor"
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              📝 Elaboração ({summary.executorCount})
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setSelectedRole("coordenador")}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+              selectedRole === "coordenador"
+                ? "bg-sky-600 text-white shadow-xs"
+                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            🏛️ Homologação ({summary.coordinatorCount})
+          </button>
           {summary.reviewerCount > 0 && (
             <button
               type="button"
@@ -642,19 +640,6 @@ export function ParticipantActionCenter({
               }`}
             >
               🔍 Revisão Técnica ({summary.reviewerCount})
-            </button>
-          )}
-          {summary.coordinatorCount > 0 && (
-            <button
-              type="button"
-              onClick={() => setSelectedRole("coordenador")}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-                selectedRole === "coordenador"
-                  ? "bg-sky-600 text-white shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              🏛️ Homologação ({summary.coordinatorCount})
             </button>
           )}
           {summary.interfaceCount && summary.interfaceCount > 0 ? (
@@ -670,6 +655,17 @@ export function ParticipantActionCenter({
               🔗 Interfaces ({summary.interfaceCount})
             </button>
           ) : null}
+          <button
+            type="button"
+            onClick={() => setSelectedRole("todos")}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
+              selectedRole === "todos"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Todos os Fluxos ({summary.total})
+          </button>
         </div>
       </div>
 
@@ -733,9 +729,9 @@ export function ParticipantActionCenter({
                   return (
                     <div
                       key={action.id}
-                      className="group relative flex flex-col justify-between rounded-lg border border-border/70 bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs"
+                      className="group relative flex flex-col justify-between rounded-lg border border-border/70 bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs h-full"
                     >
-                      <div>
+                      <div className="flex-1">
                         {/* Top bar do card: Badges de Papel, Urgência e Código */}
                         <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2.5">
                           <div className="flex flex-wrap items-center gap-1.5">
@@ -765,11 +761,11 @@ export function ParticipantActionCenter({
 
                         {/* Conteúdo textual do card */}
                         <div className="space-y-1.5">
-                          <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
+                          <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug break-words">
                             {action.activityTitle}
                           </h4>
 
-                          <p className="text-[11px] text-muted-foreground leading-relaxed pt-0.5">
+                          <p className="text-[11px] text-muted-foreground leading-relaxed pt-0.5 break-words">
                             {action.actionDescription}
                           </p>
 
@@ -778,7 +774,7 @@ export function ParticipantActionCenter({
                             {action.actionTitle && action.actionTitle !== action.activityTitle && (
                               <div className="flex items-start gap-1.5 text-foreground text-[11px]">
                                 <span className="font-semibold text-muted-foreground shrink-0">Ação:</span>
-                                <span className="font-medium">{action.actionTitle}</span>
+                                <span className="font-medium break-words">{action.actionTitle}</span>
                               </div>
                             )}
 
@@ -810,21 +806,26 @@ export function ParticipantActionCenter({
                         </div>
                       </div>
 
-                      {/* Rodapé do card: Prazo e Botão de Ação Direta */}
-                      <div className="mt-3.5 pt-3 border-t border-border/40 flex items-center justify-between gap-2">
-                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground shrink-0 font-mono">
-                          <Calendar className="h-3 w-3" />
-                          Cronograma: {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
-                        </span>
+                      {/* Rodapé do card: Prazo e Botão de Ação Direta com alinhamento perfeito */}
+                      <div className="mt-3.5 pt-3 border-t border-border/40 space-y-2">
+                        <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+                          <span className="inline-flex items-center gap-1">
+                            <Calendar className="h-3 w-3 shrink-0" />
+                            Cronograma: {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
+                          </span>
+                          {action.sectionCode && (
+                            <span className="font-semibold text-foreground/70">{action.sectionCode}</span>
+                          )}
+                        </div>
 
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleCtaClick(action)}
-                          className="h-7 text-xs font-medium px-2.5 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors group-hover:border-primary/50 shrink-0"
+                          className="w-full h-8 text-xs font-semibold px-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors group-hover:border-primary/60 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                         >
-                          {action.ctaLabel}
-                          <ArrowRight className="ml-1 h-3 w-3" />
+                          <span>{action.ctaLabel}</span>
+                          <ArrowRight className="h-3.5 w-3.5 shrink-0" />
                         </Button>
                       </div>
                     </div>

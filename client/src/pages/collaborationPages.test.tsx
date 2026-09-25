@@ -229,9 +229,9 @@ describe("interface da administração do WhatsApp", () => {
     fireEvent.click(screen.getByRole("button", { name: /processar agora/i }));
     await waitFor(() => expect(mocks.processAlertsNow).toHaveBeenCalledTimes(1));
 
-    expect(screen.getByText("Preparação para Rodada Piloto")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /preparar nova rodada piloto/i }));
-    expect(await screen.findByText("Confirmar Preparação da Rodada Piloto")).toBeInTheDocument();
+    expect(screen.getByText("Pacote P1 de Implementação — Limpeza e Ativação")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /limpar e implementar p1/i }));
+    expect(await screen.findByText("Confirmar Limpeza e Implementação do Pacote P1")).toBeInTheDocument();
   });
 
   it("mostra o bloqueio e os destinos permitidos ao colaborador", () => {
