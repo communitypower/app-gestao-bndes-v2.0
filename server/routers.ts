@@ -21,6 +21,7 @@ import { hashPassword, verifyPassword, verifyProjectMasterKey } from "./authPass
 import { getAuthorizedUserByEmail } from "./authGoogle";
 import { notificationsRouter } from "./routers/notifications";
 import { assistantRouter } from "./routers/assistant";
+import { navalRouter } from "./routers/naval";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -245,6 +246,7 @@ export const appRouter = router({
   governance: governanceRouter,
   notifications: notificationsRouter,
   assistant: assistantRouter,
+  naval: navalRouter,
 });
 
 export type AppRouter = typeof appRouter;
