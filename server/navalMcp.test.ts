@@ -2,7 +2,7 @@ import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { z } from "zod";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { ENV } from "./_core/env";
 import { resetNavalMcpClient } from "./_core/mcpClient";
@@ -62,6 +62,18 @@ function buildMcpServer() {
   server.registerTool("ferramenta_restrita", { description: "Não liberada" }, async () => ({
     content: [{ type: "text", text: "segredo" }],
   }));
+  // Mesmo formato do bndes-naval-mcp corrigido: template com listagem do catálogo.
+  server.registerResource(
+    "bndes-doc",
+    new ResourceTemplate("bndes://docs/{doc_id}", {
+      list: async () => ({ resources: [{ uri: "bndes://docs/coppe-v1", name: "coppe-v1", mimeType: "text/markdown" }] }),
+    }),
+    {},
+    async (uri, { doc_id }) =>
+      doc_id === "coppe-v1"
+        ? { contents: [{ uri: uri.href, mimeType: "text/markdown", text: "# Volume 1\n\nCurva de aprendizado." }] }
+        : { contents: [{ uri: uri.href, mimeType: "text/plain", text: `Documento "${doc_id}" não encontrado.` }] }
+  );
   server.registerResource(
     "frota",
     "naval://frota",
@@ -159,6 +171,13 @@ describe("naval router — integração com bndes-naval-mcp", () => {
 
   it("converte erro da ferramenta em erro tRPC com a mensagem do servidor", async () => {
     await expect(caller.generateCitation({ doc_id: "coppe-v1" })).rejects.toThrow(/catálogo indisponível/);
+  });
+
+  it("lista e lê documentos do corpus", async () => {
+    expect(await caller.listDocuments()).toEqual([{ docId: "coppe-v1", name: "coppe-v1" }]);
+    expect(await caller.readDocument({ docId: "coppe-v1" })).toMatchObject({ found: true, text: expect.stringContaining("Curva") });
+    expect(await caller.readDocument({ docId: "outro" })).toMatchObject({ found: false });
+    await expect(caller.readDocument({ docId: "../segredo" })).rejects.toThrow();
   });
 
   it("lista e lê recursos", async () => {

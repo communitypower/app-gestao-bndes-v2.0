@@ -10,6 +10,7 @@ import {
   readNavalMcpResource,
 } from "../_core/mcpClient";
 import {
+  NAVAL_DOC_URI_PREFIX,
   NAVAL_SOURCE_FILTERS,
   type NavalCitationResult,
   type NavalCrossReferenceResult,
@@ -108,6 +109,25 @@ export const navalRouter = router({
       })
     )
     .mutation(({ input }) => callTyped<NavalCitationResult>("generate_citation", input)),
+
+  /** Documentos do corpus disponíveis como resources bndes://docs/{doc_id}. */
+  listDocuments: protectedProcedure.query(() =>
+    run(async () =>
+      (await listNavalMcpResources())
+        .filter(resource => resource.uri.startsWith(NAVAL_DOC_URI_PREFIX))
+        .map(resource => ({ docId: resource.uri.slice(NAVAL_DOC_URI_PREFIX.length), name: resource.name }))
+    )
+  ),
+
+  readDocument: protectedProcedure
+    .input(z.object({ docId: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/) }))
+    .query(({ input }) =>
+      run(async () => {
+        const [content] = await readNavalMcpResource(`${NAVAL_DOC_URI_PREFIX}${input.docId}`);
+        const found = content?.mimeType === "text/markdown" && content.text !== null;
+        return { docId: input.docId, found, text: content?.text ?? "" };
+      })
+    ),
 
   listResources: protectedProcedure.query(() => run(() => listNavalMcpResources())),
 

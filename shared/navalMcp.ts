@@ -17,6 +17,8 @@ export type NavalSourceFilter = (typeof NAVAL_SOURCE_FILTERS)[number]["value"];
 
 export const NAVAL_SHIPYARDS = ["EAS", "VARD", "EISA", "WilsonSons", "Oceana"] as const;
 
+export const NAVAL_DOC_URI_PREFIX = "bndes://docs/";
+
 export const NAVAL_DOCUMENTS = [
   { id: "coppe-v1", label: "COPPE/UFRJ — Volume 1" },
   { id: "coppe-v2", label: "COPPE/UFRJ — Volume 2" },

@@ -25,7 +25,7 @@ import {
   type NavalEvidenceChunk,
   type NavalSourceFilter,
 } from "@shared/navalMcp";
-import { Anchor, BookMarked, Copy, Factory, RefreshCw, Scale, Search, Settings2, Ship } from "lucide-react";
+import { Anchor, BookMarked, Copy, Download, Factory, FileText, RefreshCw, Scale, Search, Settings2, Ship } from "lucide-react";
 import { toast } from "sonner";
 
 const selectClass = "h-9 w-full rounded-md border bg-background px-2 text-sm";
@@ -547,6 +547,116 @@ function CitationPanel() {
   );
 }
 
+// ─── Documentos do corpus ────────────────────────────────────────────────────
+
+const DOCUMENT_LABELS: Record<string, string> = Object.fromEntries(NAVAL_DOCUMENTS.map(doc => [doc.id, doc.label]));
+const MAX_MATCHES = 50;
+
+function DocumentsPanel() {
+  const documentsQuery = trpc.naval.listDocuments.useQuery();
+  const [docId, setDocId] = useState<string | null>(null);
+  const [term, setTerm] = useState("");
+  const documents = documentsQuery.data ?? [];
+  const activeDocId = docId ?? documents[0]?.docId ?? null;
+  const documentQuery = trpc.naval.readDocument.useQuery(
+    { docId: activeDocId ?? "" },
+    { enabled: Boolean(activeDocId), staleTime: 30 * 60_000 }
+  );
+  const text = documentQuery.data?.found ? documentQuery.data.text : "";
+
+  const matches = useMemo(() => {
+    const needle = term.trim().toLowerCase();
+    if (needle.length < 3 || !text) return null;
+    const found: string[] = [];
+    let total = 0;
+    for (const paragraph of text.split(/\n\s*\n/)) {
+      if (paragraph.toLowerCase().includes(needle)) {
+        total += 1;
+        if (found.length < MAX_MATCHES) found.push(paragraph.trim());
+      }
+    }
+    return { found, total };
+  }, [term, text]);
+
+  const download = () => {
+    if (!activeDocId || !text) return;
+    const url = URL.createObjectURL(new Blob([text], { type: "text/markdown;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${activeDocId}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (documentsQuery.isLoading) return <PageLoading />;
+  if (documentsQuery.error) return <p className="text-sm text-destructive">{documentsQuery.error.message}</p>;
+  if (!documents.length) {
+    return <Note>O servidor não disponibiliza documentos do corpus para leitura.</Note>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-end gap-3">
+        <Field label="Documento" htmlFor="doc-select">
+          <select
+            id="doc-select"
+            className={`${selectClass} min-w-64`}
+            value={activeDocId ?? ""}
+            onChange={event => {
+              setDocId(event.target.value);
+              setTerm("");
+            }}
+          >
+            {documents.map(doc => (
+              <option key={doc.docId} value={doc.docId}>
+                {DOCUMENT_LABELS[doc.docId] ?? doc.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <div className="min-w-64 flex-1">
+          <Field label="Procurar no documento" htmlFor="doc-term">
+            <Input
+              id="doc-term"
+              placeholder="Mínimo de 3 caracteres"
+              value={term}
+              onChange={event => setTerm(event.target.value)}
+            />
+          </Field>
+        </div>
+        <Button type="button" variant="outline" onClick={download} disabled={!text}>
+          <Download className="mr-2 h-4 w-4" />
+          Baixar .md
+        </Button>
+      </div>
+
+      {documentQuery.isLoading ? <PageLoading /> : null}
+      {documentQuery.error ? <p className="text-sm text-destructive">{documentQuery.error.message}</p> : null}
+      {documentQuery.data && !documentQuery.data.found ? (
+        <Note tone="warning">{documentQuery.data.text || "Documento não encontrado no servidor."}</Note>
+      ) : null}
+
+      {matches ? (
+        <section className="space-y-2">
+          <p className="text-xs text-muted-foreground">
+            {matches.total} parágrafo(s) com “{term.trim()}”
+            {matches.total > MAX_MATCHES ? ` — exibindo os ${MAX_MATCHES} primeiros` : ""}
+          </p>
+          {matches.found.map((paragraph, index) => (
+            <p key={index} className="whitespace-pre-line rounded-md border p-3 text-sm leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+        </section>
+      ) : text ? (
+        <pre className="max-h-[70vh] overflow-auto whitespace-pre-wrap rounded-md border bg-muted/30 p-4 text-xs leading-relaxed">
+          {text}
+        </pre>
+      ) : null}
+    </div>
+  );
+}
+
 // ─── Página ──────────────────────────────────────────────────────────────────
 
 export default function NavalDataPage() {
@@ -618,6 +728,10 @@ export default function NavalDataPage() {
               <BookMarked className="mr-2 h-4 w-4" />
               Citação ABNT
             </TabsTrigger>
+            <TabsTrigger value="documents">
+              <FileText className="mr-2 h-4 w-4" />
+              Documentos
+            </TabsTrigger>
             <TabsTrigger value="advanced">
               <Settings2 className="mr-2 h-4 w-4" />
               Avançado
@@ -634,6 +748,9 @@ export default function NavalDataPage() {
           </TabsContent>
           <TabsContent value="citation" className="mt-4">
             <CitationPanel />
+          </TabsContent>
+          <TabsContent value="documents" className="mt-4">
+            <DocumentsPanel />
           </TabsContent>
           <TabsContent value="advanced" className="mt-4 space-y-8">
             <section className="space-y-3">
