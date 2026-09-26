@@ -27,6 +27,38 @@ function buildMcpServer() {
       ],
     })
   );
+  // Mesmo formato do bndes-naval-mcp real: JSON indentado em um bloco de texto.
+  const json = (value: unknown) => ({ content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] });
+  server.registerTool(
+    "search_corpus",
+    { inputSchema: { query: z.string(), top_k: z.number(), min_similarity: z.number(), filter_source: z.string() } },
+    async ({ query, top_k, filter_source }) =>
+      json({
+        query,
+        results: [
+          {
+            source: "Benchmarking COPPE",
+            abbrev: "COPPE/UFRJ, 2007",
+            year: 2007,
+            page: "p. 47",
+            similarity: 0.83,
+            excerpt: `trecho sobre ${query}`,
+            isAnonymized: false,
+          },
+        ],
+        metadata: { totalFound: 1, filterApplied: filter_source, minSimilarity: 0.7, note: `top_k=${top_k}` },
+      })
+  );
+  server.registerTool(
+    "get_shipyard_profile",
+    { inputSchema: { sigla: z.string(), include_benchmarks: z.boolean(), include_projects: z.boolean() } },
+    async ({ sigla, include_projects }) =>
+      json({ found: true, sigla, name: "Estaleiro Atlântico Sul", projects: include_projects ? [{ name: "Suezmax" }] : [] })
+  );
+  server.registerTool("generate_citation", { inputSchema: { doc_id: z.string() } }, async () => ({
+    isError: true,
+    content: [{ type: "text", text: "catálogo indisponível" }],
+  }));
   server.registerTool("ferramenta_restrita", { description: "Não liberada" }, async () => ({
     content: [{ type: "text", text: "segredo" }],
   }));
@@ -70,7 +102,7 @@ beforeAll(async () => {
 
   ENV.bndesNavalMcpUrl = `http://127.0.0.1:${port}/mcp`;
   ENV.bndesNavalMcpToken = TOKEN;
-  ENV.bndesNavalMcpAllowedTools = "listar_estaleiros";
+  ENV.bndesNavalMcpAllowedTools = "listar_estaleiros,search_corpus,get_shipyard_profile,generate_citation";
   resetNavalMcpClient();
 });
 
@@ -90,7 +122,12 @@ describe("naval router — integração com bndes-naval-mcp", () => {
 
   it("lista apenas as ferramentas liberadas", async () => {
     const tools = await caller.listTools();
-    expect(tools.map(tool => tool.name)).toEqual(["listar_estaleiros"]);
+    expect(tools.map(tool => tool.name)).toEqual([
+      "listar_estaleiros",
+      "search_corpus",
+      "get_shipyard_profile",
+      "generate_citation",
+    ]);
     expect(tools[0].inputSchema).toMatchObject({ properties: { uf: { type: "string" } } });
   });
 
@@ -102,6 +139,26 @@ describe("naval router — integração com bndes-naval-mcp", () => {
 
   it("bloqueia ferramenta fora da lista liberada", async () => {
     await expect(caller.callTool({ name: "ferramenta_restrita", args: {} })).rejects.toThrow(/não liberada/);
+  });
+
+  it("searchCorpus aplica padrões e devolve o resultado tipado", async () => {
+    const result = await caller.searchCorpus({ query: "curva de aprendizado" });
+    expect(result.results[0]).toMatchObject({ abbrev: "COPPE/UFRJ, 2007", page: "p. 47" });
+    expect(result.metadata).toMatchObject({ filterApplied: "all", note: "top_k=5" });
+  });
+
+  it("shipyardProfile repassa as opções ao servidor", async () => {
+    const profile = await caller.shipyardProfile({ sigla: "EAS", include_projects: false });
+    expect(profile).toMatchObject({ found: true, sigla: "EAS", projects: [] });
+  });
+
+  it("valida a entrada antes de chamar o servidor", async () => {
+    await expect(caller.searchCorpus({ query: "ab" })).rejects.toThrow();
+    await expect(caller.crossReference({ claim: "curta" })).rejects.toThrow();
+  });
+
+  it("converte erro da ferramenta em erro tRPC com a mensagem do servidor", async () => {
+    await expect(caller.generateCitation({ doc_id: "coppe-v1" })).rejects.toThrow(/catálogo indisponível/);
   });
 
   it("lista e lê recursos", async () => {
