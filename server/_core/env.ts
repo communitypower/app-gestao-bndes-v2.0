@@ -11,4 +11,7 @@ export const ENV = {
   geminiApiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || "",
   googleDriveClientId: process.env.GOOGLE_DRIVE_CLIENT_ID ?? "",
   googleDriveClientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET ?? "",
+  bndesNavalMcpUrl: process.env.BNDES_NAVAL_MCP_URL ?? "",
+  bndesNavalMcpToken: process.env.BNDES_NAVAL_MCP_TOKEN ?? "",
+  bndesNavalMcpAllowedTools: process.env.BNDES_NAVAL_MCP_ALLOWED_TOOLS ?? "",
 };

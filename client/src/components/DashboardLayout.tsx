@@ -42,6 +42,7 @@ import {
   Sparkles,
   KeyRound,
   ChevronDown,
+  Ship,
 } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
 import { AiAssistantDrawer } from "./AiAssistantDrawer";
@@ -69,6 +70,7 @@ const menuItems = [
   { icon: Users, label: "Equipe e Grupos", path: "/equipe", admin: false, category: "apoio" },
   { icon: HelpCircle, label: "Manual do Estudo", path: "/manual", admin: false, category: "apoio" },
   { icon: Bot, label: "Assistente IA", path: "/assistente", admin: false, category: "apoio" },
+  { icon: Ship, label: "Dados Navais", path: "/dados-navais", admin: false, category: "apoio" },
   { icon: Settings, label: "Administração", path: "/administracao", admin: true, category: "gestao" },
   { icon: Users, label: "Acessos e Permissões", path: "/usuarios-permissoes", admin: true, category: "gestao" },
 ];
