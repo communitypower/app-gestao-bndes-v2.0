@@ -83,18 +83,21 @@ describe("ParticipantActionCenter - Direct Display, Filtering and Month Distribu
     cleanup();
   });
 
-  it("renderiza o painel com título, total de pendências e todos os cartões de ação diretamente visíveis", () => {
+  it("renderiza o painel com título, total de pendências e as caixas de ação separadas", () => {
     render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
 
     expect(screen.getByText("Minhas Ações no Estudo")).toBeInTheDocument();
     expect(screen.getByText("3 pendentes")).toBeInTheDocument();
+    expect(screen.getByText("Ajustes Solicitados pela Coordenação")).toBeInTheDocument();
+    expect(screen.getByText("Em Análise & Pareceres Técnicos")).toBeInTheDocument();
+    expect(screen.getByText("Interfaces Interdisciplinares")).toBeInTheDocument();
     expect(screen.getByText("Construção Naval Mundial")).toBeInTheDocument();
     expect(screen.getByText("Estrutura Portuária Nacional")).toBeInTheDocument();
     expect(screen.getByText("Interface de Combustíveis Marítimos")).toBeInTheDocument();
   });
 
-  it("exibe as ações distribuídas por blocos mensais cronológicos", () => {
-    render(<ParticipantActionCenter onSelectActivity={vi.fn()} />);
+  it("exibe as ações distribuídas por blocos mensais cronológicos ao alternar para o modo cronológico", () => {
+    render(<ParticipantActionCenter onSelectActivity={vi.fn()} defaultLayout="cronologico" />);
 
     // Deve exibir o cabeçalho do mês M1 (Setembro 2026) e o bloco sem prazo
     expect(screen.getByText(/Mês 1 — Setembro 2026/i)).toBeInTheDocument();

@@ -137,6 +137,7 @@ const dbMocks = vi.hoisted(() => ({
     fixtures.reviewerMember,
     fixtures.authorMember,
   ]),
+  listTeamGroups: vi.fn().mockResolvedValue([]),
   listParticipantNotifications: vi.fn().mockResolvedValue([
     {
       id: 1,

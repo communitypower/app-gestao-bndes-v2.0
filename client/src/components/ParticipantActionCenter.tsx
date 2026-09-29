@@ -15,9 +15,12 @@ import {
   FileText,
   Filter,
   GitMerge,
+  HelpCircle,
   Layers,
+  LayoutGrid,
   MessageSquare,
   Sparkles,
+  User,
   UserCheck,
   Users,
   X,
@@ -27,6 +30,13 @@ import { Badge } from "./ui/badge";
 import { Skeleton } from "./ui/skeleton";
 import { Checkbox } from "./ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export interface ParticipantAction {
   id: string;
@@ -43,14 +53,20 @@ export interface ParticipantAction {
   ctaTarget: string;
   interfaceId?: number;
   pendingCommentCount?: number;
+  responsibleName?: string | null;
+  responsibleGroupName?: string | null;
+  tome?: string | null;
+  statusCategory?: string;
 }
 
 export interface ParticipantActionCenterProps {
   onSelectActivity: (activityId: number) => void;
   onAssignReviewers?: (activityId: number) => void;
+  defaultLayout?: LayoutMode;
 }
 
 type RoleFilter = "todos" | "executor" | "revisor" | "coordenador" | "interfaces";
+type LayoutMode = "caixas" | "cronologico";
 
 export interface MonthGroupInfo {
   key: string;
@@ -75,7 +91,7 @@ export function getMonthInfo(dueAt: number | null): MonthGroupInfo {
 
   const date = new Date(dueAt);
   const year = date.getUTCFullYear();
-  const month = date.getUTCMonth(); // 0-indexed: 0 = Jan, 8 = Set
+  const month = date.getUTCMonth();
 
   const monthName = new Intl.DateTimeFormat("pt-BR", { month: "long", timeZone: "UTC" }).format(date);
   const capitalizedMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
@@ -175,18 +191,33 @@ function formatDeadlineDisplay(dueAt: number | null) {
 export function ParticipantActionCenter({
   onSelectActivity,
   onAssignReviewers,
+  defaultLayout = "caixas",
 }: ParticipantActionCenterProps) {
   const [selectedRole, setSelectedRole] = useState<RoleFilter>("todos");
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"my_actions" | "all_pending">("my_actions");
+  const [selectedMemberId, setSelectedMemberId] = useState<string>("todos");
+  const [selectedGroupId, setSelectedGroupId] = useState<string>("todos");
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>(defaultLayout);
   const [isMonthPopoverOpen, setIsMonthPopoverOpen] = useState(false);
 
+  const queryInput = useMemo(() => {
+    return {
+      viewMode,
+      memberId: selectedMemberId !== "todos" ? Number(selectedMemberId) : undefined,
+      groupId: selectedGroupId !== "todos" ? Number(selectedGroupId) : undefined,
+    };
+  }, [viewMode, selectedMemberId, selectedGroupId]);
+
   const queryResult = trpc.activities?.myWorkloadActions?.useQuery
-    ? trpc.activities.myWorkloadActions.useQuery({ viewMode }, { refetchInterval: 30_000 })
+    ? trpc.activities.myWorkloadActions.useQuery(queryInput, { refetchInterval: 30_000 })
     : { data: undefined, isLoading: false };
   const { data, isLoading } = queryResult;
 
   const allActions: ParticipantAction[] = (data?.actions as any) ?? [];
+  const availableMembers = (data?.availableMembers as any) ?? [];
+  const availableGroups = (data?.availableGroups as any) ?? [];
+  const currentMember = (data?.currentMember as any) ?? null;
 
   // 1. Agrupamento de Meses disponíveis na base de dados
   const availableMonths = useMemo(() => {
@@ -239,7 +270,96 @@ export function ParticipantActionCenter({
     });
   }, [allActions, selectedRole, selectedMonths]);
 
-  // 3. Estrutura cronológica em blocos mensais para renderização
+  // 3. Caixas de Trabalho Categorizadas (Elaboração, Ajustes, Em Análise, Homologação, Interfaces)
+  const actionBoxes = useMemo(() => {
+    const isAjustes = (a: ParticipantAction) =>
+      a.actionType === "ajustes_a_fazer" || a.actionType === "ajustes_solicitados";
+    const isInterfaces = (a: ParticipantAction) =>
+      a.role === "interfaces" || a.actionType.startsWith("interface");
+    const isRevisao = (a: ParticipantAction) =>
+      !isAjustes(a) && !isInterfaces(a) &&
+      (a.actionType === "revisao_pendente" || a.actionType === "validacao_ajustes" || a.role === "revisor");
+    const isHomologacao = (a: ParticipantAction) =>
+      !isAjustes(a) && !isInterfaces(a) && !isRevisao(a) &&
+      (a.actionType === "homologar_capitulo" || a.actionType === "sem_revisores");
+    const isElaboracao = (a: ParticipantAction) =>
+      !isAjustes(a) && !isInterfaces(a) && !isRevisao(a) && !isHomologacao(a);
+
+    const elaboracao = filteredActions.filter(isElaboracao);
+    const ajustes = filteredActions.filter(isAjustes);
+    const revisao = filteredActions.filter(isRevisao);
+    const homologacao = filteredActions.filter(isHomologacao);
+    const interfaces = filteredActions.filter(isInterfaces);
+
+    return [
+      {
+        id: "box_elaboracao",
+        title: "Minutas Iniciais a Elaborar / Subir",
+        icon: FileEdit,
+        badgeColor: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500/30",
+        headerBg: "bg-emerald-500/5",
+        count: elaboracao.length,
+        actions: elaboracao,
+        emptyText: "Nenhuma minuta inicial pendente de elaboração ou envio.",
+        description: "Atividades em fase de redação que necessitam do envio da versão inicial R01.",
+      },
+      {
+        id: "box_ajustes",
+        title: "Ajustes Solicitados pela Coordenação",
+        icon: AlertCircle,
+        badgeColor: "bg-rose-600 text-white",
+        borderColor: "border-rose-500/30",
+        headerBg: "bg-rose-500/5",
+        count: ajustes.length,
+        actions: ajustes,
+        emptyText: "Nenhum apontamento pendente de ajuste.",
+        description: "Seções com comentários formais e solicitação de alterações devolvidas pela Coordenação Geral.",
+      },
+      {
+        id: "box_revisao",
+        title: "Em Análise & Pareceres Técnicos",
+        icon: UserCheck,
+        badgeColor: "bg-amber-600 text-white",
+        borderColor: "border-amber-500/30",
+        headerBg: "bg-amber-500/5",
+        count: revisao.length,
+        actions: revisao,
+        emptyText: "Nenhuma minuta aguardando parecer técnico no momento.",
+        description: "Minutas entregues que aguardam validação de apontamentos ou emissão de parecer editorial.",
+      },
+      {
+        id: "box_homologacao",
+        title: "Homologação & Consolidação no Capítulo",
+        icon: Users,
+        badgeColor: "bg-sky-600 text-white",
+        borderColor: "border-sky-500/30",
+        headerBg: "bg-sky-500/5",
+        count: homologacao.length,
+        actions: homologacao,
+        emptyText: "Nenhuma seção aguardando homologação ou consolidação.",
+        description: "Seções aprovadas na revisão editorial prontas para consolidação definitiva no capítulo do Tomo.",
+      },
+      ...(interfaces.length > 0 || selectedRole === "interfaces"
+        ? [
+            {
+              id: "box_interfaces",
+              title: "Interfaces Interdisciplinares",
+              icon: GitMerge,
+              badgeColor: "bg-teal-600 text-white",
+              borderColor: "border-teal-500/30",
+              headerBg: "bg-teal-500/5",
+              count: interfaces.length,
+              actions: interfaces,
+              emptyText: "Nenhuma interface interdisciplinar aberta.",
+              description: "Mapeamento de insumos metodológicos e trocas interdisciplinares entre frentes de pesquisa.",
+            },
+          ]
+        : []),
+    ];
+  }, [filteredActions, selectedRole]);
+
+  // 4. Estrutura cronológica em blocos mensais para renderização
   const chronologicalMonthGroups = useMemo(() => {
     const groupsMap = new Map<string, { info: MonthGroupInfo; actions: ParticipantAction[] }>();
 
@@ -251,7 +371,6 @@ export function ParticipantActionCenter({
       groupsMap.get(info.key)!.actions.push(action);
     }
 
-    // Ordenar ações dentro de cada mês por dueAt ascendente
     const result = Array.from(groupsMap.values()).map(group => {
       const sortedActions = [...group.actions].sort((a, b) => {
         if (a.dueAt === null || a.dueAt === undefined) return 1;
@@ -264,7 +383,6 @@ export function ParticipantActionCenter({
       };
     });
 
-    // Ordenar blocos mensais cronologicamente
     return result.sort((a, b) => a.info.sortTime - b.info.sortTime);
   }, [filteredActions]);
 
@@ -362,6 +480,7 @@ export function ParticipantActionCenter({
           </Badge>
         );
       case "ajustes_solicitados":
+      case "ajustes_a_fazer":
         return (
           <Badge variant="destructive" className="text-[10px] font-medium h-5 px-1.5">
             Ajustes Necessários
@@ -412,9 +531,126 @@ export function ParticipantActionCenter({
     onSelectActivity(action.activityId);
   };
 
+  const renderActionCard = (action: ParticipantAction) => {
+    const deadline = formatDeadlineDisplay(action.dueAt);
+    const monthInfo = getMonthInfo(action.dueAt);
+
+    return (
+      <div
+        key={action.id}
+        className="group relative flex flex-col justify-between rounded-lg border border-border/70 bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs h-full"
+      >
+        <div className="flex-1">
+          {/* Top bar do card: Badges de Papel, Urgência e Código */}
+          <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2.5">
+            <div className="flex flex-wrap items-center gap-1.5">
+              {getRoleBadge(action.role)}
+              {getUrgencyBadge(action.actionType)}
+            </div>
+            <div className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground">
+              {action.sectionCode && (
+                <span className="font-semibold text-foreground/90">{action.sectionCode}</span>
+              )}
+              <span className="text-[10px] text-muted-foreground/80">#{action.activityId}</span>
+            </div>
+          </div>
+
+          {/* Indicador Cronológico do Card */}
+          <div className="mb-2">
+            <div
+              className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] ${deadline.badgeClass}`}
+            >
+              <Clock className="h-3 w-3 shrink-0" />
+              <span>
+                {monthInfo.monthTag ? `[${monthInfo.monthTag}] ` : ""}
+                {deadline.text}
+              </span>
+            </div>
+          </div>
+
+          {/* Conteúdo textual do card */}
+          <div className="space-y-1.5">
+            <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug break-words">
+              {action.activityTitle}
+            </h4>
+
+            <p className="text-[11px] text-muted-foreground leading-relaxed pt-0.5 break-words">
+              {action.actionDescription}
+            </p>
+
+            {/* Informações complementares diretas */}
+            <div className="mt-2.5 rounded-md border border-border/50 bg-muted/30 p-2 space-y-1 text-[11px]">
+              {action.actionTitle && action.actionTitle !== action.activityTitle && (
+                <div className="flex items-start gap-1.5 text-foreground text-[11px]">
+                  <span className="font-semibold text-muted-foreground shrink-0">Ação:</span>
+                  <span className="font-medium break-words">{action.actionTitle}</span>
+                </div>
+              )}
+
+              {action.responsibleGroupName && (
+                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <span className="font-medium text-foreground/80">{action.responsibleGroupName}</span>
+                  {action.responsibleName && <span>· {action.responsibleName}</span>}
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-muted-foreground text-[10px] font-mono pt-0.5">
+                <span>Item #{action.activityId}</span>
+                {action.materialId && (
+                  <span className="inline-flex items-center gap-1 text-sky-700 dark:text-sky-300">
+                    <FileText className="h-3 w-3" />
+                    Material #{action.materialId}
+                  </span>
+                )}
+                {action.interfaceId && (
+                  <span className="inline-flex items-center gap-1 text-teal-700 dark:text-teal-300">
+                    <GitMerge className="h-3 w-3" />
+                    Interface #{action.interfaceId}
+                  </span>
+                )}
+              </div>
+
+              {typeof action.pendingCommentCount === "number" && action.pendingCommentCount > 0 && (
+                <div className="pt-0.5">
+                  <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-300">
+                    <MessageSquare className="h-3 w-3" />
+                    {action.pendingCommentCount} apontamento{action.pendingCommentCount !== 1 ? "s" : ""} pendente{action.pendingCommentCount !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Rodapé do card: Prazo e Botão de Ação Direta com alinhamento perfeito */}
+        <div className="mt-3.5 pt-3 border-t border-border/40 space-y-2">
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+            <span className="inline-flex items-center gap-1">
+              <Calendar className="h-3 w-3 shrink-0" />
+              Cronograma: {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
+            </span>
+            {action.sectionCode && (
+              <span className="font-semibold text-foreground/70">{action.sectionCode}</span>
+            )}
+          </div>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleCtaClick(action)}
+            className="w-full h-8 text-xs font-semibold px-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors group-hover:border-primary/60 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+          >
+            <span>{action.ctaLabel}</span>
+            <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="rounded-xl border border-border/70 bg-gradient-to-br from-card via-card to-muted/20 p-4 sm:p-5 shadow-xs transition-all space-y-4">
-      {/* 1. Header com título e seletor de visão (Governança/Pessoal) */}
+      {/* 1. Header com título, seletor de layout e seletores de usuário/governança */}
       <div className="flex flex-col gap-3 pb-3 border-b border-border/50">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
@@ -433,38 +669,117 @@ export function ParticipantActionCenter({
             </div>
           </div>
 
-          {isAdmin && (
+          {/* Controles de visualização: Caixas vs Cronológico e Modo Admin */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Toggle de Modo: Caixas de Ação vs Cronológico */}
             <div className="flex items-center gap-1 rounded-md border border-border/80 bg-background/80 p-0.5 text-[11px]">
               <button
                 type="button"
-                onClick={() => setViewMode("my_actions")}
-                className={`rounded px-2 py-0.5 font-medium transition-all ${
-                  viewMode === "my_actions"
+                onClick={() => setLayoutMode("caixas")}
+                className={`rounded px-2 py-0.5 font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                  layoutMode === "caixas"
                     ? "bg-primary text-primary-foreground shadow-xs"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Minhas Ações
+                <LayoutGrid className="h-3 w-3" /> Caixas de Pendências
               </button>
               <button
                 type="button"
-                onClick={() => setViewMode("all_pending")}
-                className={`rounded px-2 py-0.5 font-medium transition-all ${
-                  viewMode === "all_pending"
+                onClick={() => setLayoutMode("cronologico")}
+                className={`rounded px-2 py-0.5 font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                  layoutMode === "cronologico"
                     ? "bg-primary text-primary-foreground shadow-xs"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Visão Geral da Equipe (Admin)
+                <Clock className="h-3 w-3" /> Cronograma Mensal
               </button>
             </div>
-          )}
+
+            {isAdmin && (
+              <div className="flex items-center gap-1 rounded-md border border-border/80 bg-background/80 p-0.5 text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setViewMode("my_actions");
+                    setSelectedMemberId("todos");
+                  }}
+                  className={`rounded px-2 py-0.5 font-medium transition-all cursor-pointer ${
+                    viewMode === "my_actions" && selectedMemberId === "todos"
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Minhas Ações
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("all_pending")}
+                  className={`rounded px-2 py-0.5 font-medium transition-all cursor-pointer ${
+                    viewMode === "all_pending"
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Todas da Equipe (Admin)
+                </button>
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Linha com filtros por Usuário / Grupo Temático para a Coordenação */}
+        {(isAdmin || (availableMembers.length > 0 && viewMode === "all_pending")) && (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {availableMembers.length > 1 && (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1">
+                  <User className="h-3 w-3" /> Usuário:
+                </span>
+                <Select value={selectedMemberId} onValueChange={setSelectedMemberId}>
+                  <SelectTrigger className="h-7 w-52 bg-background text-xs">
+                    <SelectValue placeholder="Filtrar por Usuário / Coordenador" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-72">
+                    <SelectItem value="todos">Todos os Usuários</SelectItem>
+                    {availableMembers.map((m: any) => (
+                      <SelectItem key={m.id} value={String(m.id)}>
+                        {m.name} {m.groupName ? `(${m.groupName.split(" - ")[0]})` : ""}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {availableGroups.length > 1 && (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1">
+                  <Users className="h-3 w-3" /> Grupo:
+                </span>
+                <Select value={selectedGroupId} onValueChange={setSelectedGroupId}>
+                  <SelectTrigger className="h-7 w-48 bg-background text-xs">
+                    <SelectValue placeholder="Filtrar por Grupo" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-72">
+                    <SelectItem value="todos">Todos os Grupos (G1-G11)</SelectItem>
+                    {availableGroups.map((g: any) => (
+                      <SelectItem key={g.id} value={String(g.id)}>
+                        {g.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+        )}
 
         <p className="text-xs text-muted-foreground">
           {viewMode === "all_pending"
-            ? "Visão de governança: Todas as pendências e entregas organizadas pelo cronograma mensal do Estudo BNDES."
-            : "Suas pendências organizadas por mês de término no cronograma oficial. Execute as ações na sequência temporal estabelecida."}
+            ? "Visão de governança: Todas as pendências e entregas organizadas em caixas de ação e pelo cronograma mensal."
+            : "Suas pendências organizadas em caixas de trabalho para identificação imediata das obrigações a executar."}
         </p>
       </div>
 
@@ -601,7 +916,7 @@ export function ParticipantActionCenter({
 
         <div className="h-4 w-px bg-border/60 hidden md:block" />
 
-        {/* 3. Filtros Rápidos por Papel / Fluxo (Ordem: Elaboração, Homologação, Revisão, Interface, Todos) */}
+        {/* 3. Filtros Rápidos por Papel / Fluxo */}
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider flex items-center gap-1.5 mr-0.5">
             <Filter className="h-3.5 w-3.5 text-muted-foreground" />
@@ -669,8 +984,8 @@ export function ParticipantActionCenter({
         </div>
       </div>
 
-      {/* 4. Distribuição Cronológica de Ações em Blocos Mensais */}
-      {chronologicalMonthGroups.length === 0 ? (
+      {/* 4. Renderização do Conteúdo: Modo Caixas vs Modo Cronológico */}
+      {filteredActions.length === 0 ? (
         <div className="py-8 text-center rounded-lg border border-dashed border-border/70 bg-card/50">
           <div className="mx-auto mb-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
             <CheckCircle2 className="h-5 w-5" />
@@ -679,9 +994,9 @@ export function ParticipantActionCenter({
             Tudo em dia para estes filtros!
           </h3>
           <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
-            Não há pendências de elaboração, revisão técnica ou homologação para o mês e perfil selecionados.
+            Não há pendências de elaboração, revisão técnica ou homologação para o perfil e filtros selecionados.
           </p>
-          {(selectedRole !== "todos" || selectedMonths.length > 0) && (
+          {(selectedRole !== "todos" || selectedMonths.length > 0 || selectedMemberId !== "todos" || selectedGroupId !== "todos") && (
             <div className="mt-3">
               <Button
                 variant="outline"
@@ -689,6 +1004,8 @@ export function ParticipantActionCenter({
                 onClick={() => {
                   setSelectedRole("todos");
                   setSelectedMonths([]);
+                  setSelectedMemberId("todos");
+                  setSelectedGroupId("todos");
                 }}
                 className="h-7 text-xs"
               >
@@ -697,7 +1014,58 @@ export function ParticipantActionCenter({
             </div>
           )}
         </div>
+      ) : layoutMode === "caixas" ? (
+        /* VISUALIZAÇÃO EM CAIXAS DE PENDÊNCIAS SEPARADAS */
+        <div className="space-y-6 pt-2">
+          {actionBoxes
+            .filter(box => box.count > 0 || selectedRole !== "todos")
+            .map(box => {
+              const BoxIcon = box.icon;
+              return (
+                <div
+                  key={box.id}
+                  className={`rounded-lg border ${box.borderColor} bg-card overflow-hidden transition-all shadow-2xs`}
+                >
+                  {/* Cabeçalho da Caixa de Pendências */}
+                  <div className={`flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 ${box.headerBg} border-b ${box.borderColor}`}>
+                    <div className="flex items-center gap-2">
+                      <div className={`flex h-6 w-6 items-center justify-center rounded-md ${box.badgeColor} font-bold text-xs`}>
+                        <BoxIcon className="h-3.5 w-3.5" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-foreground tracking-tight">
+                            {box.title}
+                          </h3>
+                          <Badge className={`${box.badgeColor} font-mono text-[10px] px-1.5 py-0`}>
+                            {box.count}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground hidden sm:block">
+                      {box.description}
+                    </p>
+                  </div>
+
+                  {/* Conteúdo da Caixa: Cards ou Mensagem Vazia */}
+                  <div className="p-4">
+                    {box.actions.length === 0 ? (
+                      <p className="text-xs text-muted-foreground italic py-2">
+                        {box.emptyText}
+                      </p>
+                    ) : (
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        {box.actions.map(action => renderActionCard(action))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       ) : (
+        /* VISUALIZAÇÃO CRONOLÓGICA POR MÊS */
         <div className="space-y-6 pt-1">
           {chronologicalMonthGroups.map(group => (
             <div key={group.info.key} className="space-y-3">
@@ -723,114 +1091,7 @@ export function ParticipantActionCenter({
 
               {/* Grid de Cards de Ação do Mês */}
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {group.actions.map((action: ParticipantAction) => {
-                  const deadline = formatDeadlineDisplay(action.dueAt);
-
-                  return (
-                    <div
-                      key={action.id}
-                      className="group relative flex flex-col justify-between rounded-lg border border-border/70 bg-card p-4 transition-all hover:border-primary/50 hover:shadow-xs h-full"
-                    >
-                      <div className="flex-1">
-                        {/* Top bar do card: Badges de Papel, Urgência e Código */}
-                        <div className="flex flex-wrap items-center justify-between gap-1.5 mb-2.5">
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            {getRoleBadge(action.role)}
-                            {getUrgencyBadge(action.actionType)}
-                          </div>
-                          <div className="flex items-center gap-1 text-[11px] font-mono text-muted-foreground">
-                            {action.sectionCode && (
-                              <span className="font-semibold text-foreground/90">{action.sectionCode}</span>
-                            )}
-                            <span className="text-[10px] text-muted-foreground/80">#{action.activityId}</span>
-                          </div>
-                        </div>
-
-                        {/* Indicador Cronológico do Card */}
-                        <div className="mb-2">
-                          <div
-                            className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] ${deadline.badgeClass}`}
-                          >
-                            <Clock className="h-3 w-3 shrink-0" />
-                            <span>
-                              {group.info.monthTag ? `[${group.info.monthTag}] ` : ""}
-                              {deadline.text}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Conteúdo textual do card */}
-                        <div className="space-y-1.5">
-                          <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug break-words">
-                            {action.activityTitle}
-                          </h4>
-
-                          <p className="text-[11px] text-muted-foreground leading-relaxed pt-0.5 break-words">
-                            {action.actionDescription}
-                          </p>
-
-                          {/* Informações complementares diretas */}
-                          <div className="mt-2.5 rounded-md border border-border/50 bg-muted/30 p-2 space-y-1 text-[11px]">
-                            {action.actionTitle && action.actionTitle !== action.activityTitle && (
-                              <div className="flex items-start gap-1.5 text-foreground text-[11px]">
-                                <span className="font-semibold text-muted-foreground shrink-0">Ação:</span>
-                                <span className="font-medium break-words">{action.actionTitle}</span>
-                              </div>
-                            )}
-
-                            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-muted-foreground text-[10px] font-mono pt-0.5">
-                              <span>Item #{action.activityId}</span>
-                              {action.materialId && (
-                                <span className="inline-flex items-center gap-1 text-sky-700 dark:text-sky-300">
-                                  <FileText className="h-3 w-3" />
-                                  Material #{action.materialId}
-                                </span>
-                              )}
-                              {action.interfaceId && (
-                                <span className="inline-flex items-center gap-1 text-teal-700 dark:text-teal-300">
-                                  <GitMerge className="h-3 w-3" />
-                                  Interface #{action.interfaceId}
-                                </span>
-                              )}
-                            </div>
-
-                            {typeof action.pendingCommentCount === "number" && action.pendingCommentCount > 0 && (
-                              <div className="pt-0.5">
-                                <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-300">
-                                  <MessageSquare className="h-3 w-3" />
-                                  {action.pendingCommentCount} apontamento{action.pendingCommentCount !== 1 ? "s" : ""} pendente{action.pendingCommentCount !== 1 ? "s" : ""}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Rodapé do card: Prazo e Botão de Ação Direta com alinhamento perfeito */}
-                      <div className="mt-3.5 pt-3 border-t border-border/40 space-y-2">
-                        <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
-                          <span className="inline-flex items-center gap-1">
-                            <Calendar className="h-3 w-3 shrink-0" />
-                            Cronograma: {deadline.formattedDate !== "—" ? deadline.formattedDate : "Sem data"}
-                          </span>
-                          {action.sectionCode && (
-                            <span className="font-semibold text-foreground/70">{action.sectionCode}</span>
-                          )}
-                        </div>
-
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCtaClick(action)}
-                          className="w-full h-8 text-xs font-semibold px-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors group-hover:border-primary/60 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                        >
-                          <span>{action.ctaLabel}</span>
-                          <ArrowRight className="h-3.5 w-3.5 shrink-0" />
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
+                {group.actions.map((action: ParticipantAction) => renderActionCard(action))}
               </div>
             </div>
           ))}

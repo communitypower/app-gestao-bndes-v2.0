@@ -46,6 +46,7 @@ import {
   listActivityStatusReport,
   listActivities,
   listCoordinationInterfaces,
+  listTeamGroups,
   listTeamMembers,
   listProductionMaterials,
   reconcileActivityParentSchedule,
@@ -540,24 +541,34 @@ export const activitiesRouter = router({
       z
         .object({
           viewMode: z.enum(["my_actions", "all_pending"]).optional(),
+          memberId: z.number().optional(),
+          groupId: z.number().optional(),
         })
         .optional()
     )
     .query(async ({ ctx, input }) => {
       await ensureSeedData();
       const viewMode = input?.viewMode ?? "my_actions";
-      const [allActivities, member, materials, interfaces] = await Promise.all([
+      const [allActivities, currentMember, allMembers, allGroups, materials, interfaces] = await Promise.all([
         listActivities(),
         getTeamMemberByUserId(ctx.user.id),
+        listTeamMembers(),
+        listTeamGroups(),
         listProductionMaterials(),
         listCoordinationInterfaces(),
       ]);
 
       const isAdmin = isAdministrator(ctx.user);
-      const isAllPendingMode = isAdmin && viewMode === "all_pending";
+      const isGeneralCoord = isAdmin || Boolean(currentMember?.groupName?.includes("G1")) || currentMember?.groupRole === "coordenador";
+
+      const member = (input?.memberId && (isAdmin || isGeneralCoord))
+        ? allMembers.find((m: any) => m.id === input.memberId) ?? currentMember
+        : currentMember;
+
+      const isAllPendingMode = (isAdmin || isGeneralCoord) && viewMode === "all_pending" && !input?.memberId;
 
       const materialByActivityId = new Map<number, (typeof materials)[number]>();
-      materials.forEach(m => {
+      materials.forEach((m: any) => {
         if (m.activityId) materialByActivityId.set(m.activityId, m);
       });
 
@@ -584,28 +595,42 @@ export const activitiesRouter = router({
         ctaTarget: "drawer" | "revisao" | "interface";
         interfaceId?: number;
         pendingCommentCount?: number;
+        responsibleName?: string | null;
+        responsibleGroupName?: string | null;
+        tome?: string | null;
+        statusCategory?: "elaboracao" | "ajustes" | "em_revisao" | "homologacao" | "interfaces";
       };
 
       const actions: WorkloadActionItem[] = [];
 
       for (const activity of allActivities) {
         if (activity.parentActivityId !== null) continue;
+        if (input?.groupId && activity.responsibleGroupId !== input.groupId) continue;
 
         const material = materialByActivityId.get(activity.id) ?? null;
+        const groupName = allGroups.find((g: any) => g.id === activity.responsibleGroupId)?.name || null;
+        const responsibleName = allMembers.find((m: any) => m.id === activity.responsibleId)?.name || null;
+        const tome = activity.sectionCode?.startsWith("I.")
+          ? "Tomo I"
+          : activity.sectionCode?.startsWith("II.")
+          ? "Tomo II"
+          : activity.sectionCode?.startsWith("III.")
+          ? "Tomo III"
+          : null;
 
         // Responsável pela Elaboração (Coordenador de capítulo ou autor líder designado)
         const isExecutor = Boolean(
           isAllPendingMode ||
             (member &&
               (member.id === activity.responsibleId ||
-                activity.allocations.some(a => a.teamMemberId === member.id && (a.isExecutionLead || activity.allocations.length === 1)) ||
+                activity.allocations.some((a: any) => a.teamMemberId === member.id && (a.isExecutionLead || activity.allocations.length === 1)) ||
                 (member.groupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador")))
         );
 
         // Revisor Técnico Designado
         const isReviewer = Boolean(
           isAllPendingMode ||
-            (member && activity.reviewers.some(r => r.teamMemberId === member.id))
+            (member && activity.reviewers.some((r: any) => r.teamMemberId === member.id))
         );
 
         // Coordenação / Homologação
@@ -637,6 +662,10 @@ export const activitiesRouter = router({
                 "Esta atividade está em fase de elaboração. Anexe o documento técnico intermediário na Ficha e submeta à revisão da seção.",
               ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial",
               ctaTarget: material ? "revisao" : "drawer",
+              responsibleName,
+              responsibleGroupName: groupName,
+              tome,
+              statusCategory: "elaboracao",
             });
           } else if (
             activity.documentStatus === "ajustes solicitados" ||
@@ -659,6 +688,10 @@ export const activitiesRouter = router({
               ctaLabel: "Implementar Ajustes",
               ctaTarget: "revisao",
               pendingCommentCount: openComments,
+              responsibleName,
+              responsibleGroupName: groupName,
+              tome,
+              statusCategory: "ajustes",
             });
           }
         }
@@ -685,6 +718,10 @@ export const activitiesRouter = router({
                 ctaLabel: "Validar Apontamentos",
                 ctaTarget: "revisao",
                 pendingCommentCount: material.implementedCommentCount,
+                responsibleName,
+                responsibleGroupName: groupName,
+                tome,
+                statusCategory: "em_revisao",
               });
             } else {
               actions.push({
@@ -701,6 +738,10 @@ export const activitiesRouter = router({
                   "Uma nova minuta foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.",
                 ctaLabel: "Realizar Análise Técnica",
                 ctaTarget: "revisao",
+                responsibleName,
+                responsibleGroupName: groupName,
+                tome,
+                statusCategory: "em_revisao",
               });
             }
           }
@@ -723,6 +764,10 @@ export const activitiesRouter = router({
                 "Este capítulo ainda não possui revisores independentes indicados para a emissão de parecer.",
               ctaLabel: "Designar Revisores",
               ctaTarget: "drawer",
+              responsibleName,
+              responsibleGroupName: groupName,
+              tome,
+              statusCategory: "homologacao",
             });
           } else if (
             activity.documentStatus === "revisada pela seção" ||
@@ -742,6 +787,10 @@ export const activitiesRouter = router({
                 "A minuta foi aprovada na revisão técnica e está pronta para consolidação editorial no capítulo.",
               ctaLabel: "Homologar no Capítulo",
               ctaTarget: "revisao",
+              responsibleName,
+              responsibleGroupName: groupName,
+              tome,
+              statusCategory: "homologacao",
             });
           }
         }
@@ -754,12 +803,12 @@ export const activitiesRouter = router({
         const isDirectlyResponsible = Boolean(member && interf.responsibleId === member.id);
         const isGroupInvolved = Boolean(
           member?.groupId &&
-          interf.groups.some(g => g.groupId === member.groupId && (member.groupRole === "coordenador" || isAllPendingMode))
+          interf.groups.some((g: any) => g.groupId === member.groupId && (member.groupRole === "coordenador" || isAllPendingMode))
         );
 
         if (isAllPendingMode || isDirectlyResponsible || isGroupInvolved) {
           const isBlocking = interf.blockingClass === "prioritária" || interf.priority === "crítica" || interf.priority === "alta";
-          const groupsSummary = interf.groups.map(g => g.name).join(" ↔ ") || "Frentes temáticas";
+          const groupsSummary = interf.groups.map((g: any) => g.name).join(" ↔ ") || "Frentes temáticas";
 
           actions.push({
             id: `interface_${interf.id}`,
@@ -779,6 +828,10 @@ export const activitiesRouter = router({
             ctaLabel: isBlocking ? "Resolver Interface" : "Alinhar Interface",
             ctaTarget: "interface",
             interfaceId: interf.id,
+            responsibleName: interf.responsibleName ?? null,
+            responsibleGroupName: groupsSummary,
+            tome: null,
+            statusCategory: "interfaces",
           });
         }
       }
@@ -795,13 +848,41 @@ export const activitiesRouter = router({
       const coordinatorActions = actions.filter(a => a.role === "coordenador");
       const interfaceActions = actions.filter(a => a.role === "interfaces");
 
+      const boxes = {
+        elaboracao: actions.filter(a => a.actionType === "minuta_pendente"),
+        ajustes: actions.filter(a => a.actionType === "ajustes_a_fazer"),
+        emRevisao: actions.filter(a => a.actionType === "revisao_pendente" || a.actionType === "validacao_ajustes"),
+        homologacao: actions.filter(a => a.actionType === "homologar_capitulo" || a.actionType === "sem_revisores"),
+        interfaces: actions.filter(a => a.role === "interfaces"),
+      };
+
       const summary = {
         total: actions.length,
         executorCount: executorActions.length,
         reviewerCount: reviewerActions.length,
         coordinatorCount: coordinatorActions.length,
         interfaceCount: interfaceActions.length,
+        boxCounts: {
+          elaboracao: boxes.elaboracao.length,
+          ajustes: boxes.ajustes.length,
+          emRevisao: boxes.emRevisao.length,
+          homologacao: boxes.homologacao.length,
+          interfaces: boxes.interfaces.length,
+        },
       };
+
+      const availableMembers = allMembers.map((m: any) => ({
+        id: m.id,
+        name: m.name,
+        groupId: m.groupId,
+        groupName: m.groupName,
+        groupRole: m.groupRole,
+      }));
+
+      const availableGroups = allGroups.map((g: any) => ({
+        id: g.id,
+        name: g.name,
+      }));
 
       return {
         actions,
@@ -809,7 +890,17 @@ export const activitiesRouter = router({
         reviewerActions,
         coordinatorActions,
         interfaceActions,
+        boxes,
         summary,
+        availableMembers,
+        availableGroups,
+        currentMember: member ? {
+          id: member.id,
+          name: member.name,
+          groupId: member.groupId,
+          groupName: member.groupName,
+          groupRole: member.groupRole,
+        } : null,
         isAdmin,
         viewMode,
       };

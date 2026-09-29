@@ -153,7 +153,7 @@ export function ActivityDetailDialog({
   // Match corresponding production material
   const currentMaterial = useMemo(() => {
     if (!activityId || !materials) return null;
-    return materials.find(m => m.activityId === activityId) ?? null;
+    return materials.find((m: any) => m.activityId === activityId) ?? null;
   }, [activityId, materials]);
 
   // Compute official Wave
@@ -629,7 +629,7 @@ export function ActivityDetailDialog({
                     </div>
 
                     <div className="space-y-2">
-                      {currentMaterial.revisions.map((rev, index) => (
+                      {currentMaterial.revisions.map((rev: any, index: number) => (
                         <div
                           key={rev.id}
                           className="rounded-md border p-3 flex flex-wrap items-center justify-between gap-3 bg-card hover:bg-muted/20 transition-colors"
@@ -713,7 +713,7 @@ export function ActivityDetailDialog({
                     )}
 
                     <div className="space-y-2">
-                      {currentMaterial.submissions?.map(sub => (
+                      {currentMaterial.submissions?.map((sub: any) => (
                         <div key={sub.id} className="rounded border bg-muted/15 p-3 text-xs space-y-1.5">
                           <div className="flex items-center justify-between">
                             <span className="font-semibold text-foreground">
@@ -721,7 +721,7 @@ export function ActivityDetailDialog({
                             </span>
                             <StatusBadge status={sub.status} />
                           </div>
-                          {sub.decisions?.map(d => (
+                          {sub.decisions?.map((d: any) => (
                             <div key={d.id} className="border-t pt-1.5 mt-1.5 text-muted-foreground">
                               <p className="font-medium text-foreground">
                                 Decisão: <span className="uppercase">{d.decision}</span> · Por: {d.reviewerName} ({formatDate(d.decidedAt)})
@@ -806,7 +806,7 @@ export function ActivityDetailDialog({
                       <Layers className="h-3.5 w-3.5 text-primary" /> Etapas do Cronograma ({data.executionSteps.length})
                     </h4>
                     <div className="divide-y rounded-md border bg-card text-xs">
-                      {data.executionSteps.map(step => (
+                      {data.executionSteps.map((step: any) => (
                         <div key={step.id} className="p-2.5 flex items-center justify-between gap-3">
                           <div className="min-w-0">
                             <span className="text-foreground font-medium">{step.title}</span>

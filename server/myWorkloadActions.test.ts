@@ -120,6 +120,7 @@ const dbMocks = vi.hoisted(() => ({
   listProductionMaterials: vi.fn().mockResolvedValue([]),
   listCoordinationInterfaces: vi.fn().mockResolvedValue([]),
   listTeamMembers: vi.fn().mockResolvedValue([]),
+  listTeamGroups: vi.fn().mockResolvedValue([]),
   requireDb: vi.fn(),
 }));
 

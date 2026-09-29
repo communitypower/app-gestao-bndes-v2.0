@@ -16,6 +16,7 @@ import {
   type WorkflowStage,
 } from "@/components/DocumentationWorkflowStepper";
 import { ActivityDetailDialog } from "@/components/ActivityDetailDialog";
+import { ParticipantActionCenter } from "@/components/ParticipantActionCenter";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -480,8 +481,22 @@ export default function ProductionPage() {
         }
       />
 
+      {/* Central de Caixas de Ações e Pendências do Participante */}
+      <ParticipantActionCenter
+        onSelectActivity={id => setSelectedActivityId(id)}
+      />
+
       {/* Workflow Tabs & Filter Controls */}
-      <div className="space-y-3">
+      <div className="space-y-3 pt-2">
+        <div className="flex items-center justify-between pb-1 border-b">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-bold text-foreground tracking-tight">
+              Inventário Geral de Seções e Capítulos
+            </h3>
+            <span className="text-xs text-muted-foreground">({data.length} cadastradas)</span>
+          </div>
+        </div>
+
         <div className="flex flex-wrap items-center gap-2 border-b pb-2">
           {isGeneralCoord ? (
             <>
