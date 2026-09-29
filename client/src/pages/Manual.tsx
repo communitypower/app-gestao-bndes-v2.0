@@ -1,29 +1,45 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import {
-  BookOpen,
-  ClipboardList,
-  FileCheck2,
-  Bell,
-  Users,
-  GitMerge,
   ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
-  Clock,
-  Download,
-  Copy,
+  BookOpen,
+  Calendar,
   Check,
-  HelpCircle,
+  CheckCircle2,
+  ChevronRight,
+  ClipboardList,
+  Copy,
+  Download,
+  Eye,
+  FileCheck,
+  FileCheck2,
+  FileEdit,
+  FileStack,
   FileText,
-  Workflow,
+  FileUp,
+  FolderSync,
+  HelpCircle,
+  History,
+  Layers,
+  LayoutDashboard,
+  Lock,
+  MessageSquare,
+  Milestone,
+  Pencil,
+  RotateCcw,
+  Send,
+  ShieldCheck,
   Sparkles,
-  Search,
+  UserCheck,
+  Users,
+  Workflow,
+  Bell,
+  CheckSquare,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -37,7 +53,7 @@ export default function ManualPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleCopySummary = () => {
-    const text = `Manual de Procedimentos — Estudo BNDES Indústria Naval\n\n1. Central de Ações (/atividades): Consulte diariamente suas pendências como Autor, Revisor ou Coordenação.\n2. Notificações: Verifique o sino no cabeçalho para alertas de revisões atribuídas e pareceres emitidos.\n3. Atualização de Etapas: Executores e coordenadores podem atualizar status e percentual concluído na Ficha da Atividade.\n4. Revisão Independente: Coordenadores designam revisores independentes; revisores avaliam pelo checklist em /producao.\n5. Interfaces: Registre demandas e insumos interdisciplinares em /interfaces.`;
+    const text = `Manual de Procedimentos — Estudo BNDES Indústria Naval\n\n1. Central de Ações (/atividades): Consulte diariamente suas pendências em caixas organizadas pelo fluxo de 6 passos.\n2. Passo 1 (Autor): Redação e upload da minuta inicial (R01).\n3. Passo 2 (Prof. Floriano): Indicação do revisor técnico independente.\n4. Passo 3 (Revisor): Análise crítica e registro de apontamentos formais.\n5. Passo 4 (Autor): Implementação dos comentários e envio de nova versão (R02+).\n6. Passo 5 (Revisor): Validação do atendimento e parecer de aprovação técnica.\n7. Passo 6 (Coord. Geral): Homologação definitiva do capítulo no Tomo oficial.`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -66,7 +82,7 @@ export default function ManualPage() {
             </h1>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">
               Orientações operacionais passo a passo para pesquisadores autores, revisores técnicos independentes
-              e coordenadores de frentes do Estudo Técnico da Indústria Naval Brasileira.
+              e Coordenação Geral do Estudo Técnico da Indústria Naval Brasileira.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2.5 pt-2 md:pt-0">
@@ -89,11 +105,11 @@ export default function ManualPage() {
           </div>
           <div className="space-y-0.5">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Equipe Ativa</p>
-            <p className="text-xl font-bold text-foreground">8 Grupos Temáticos</p>
+            <p className="text-xl font-bold text-foreground">11 Grupos Temáticos</p>
           </div>
           <div className="space-y-0.5">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Governança</p>
-            <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">Revisão por Pares</p>
+            <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">Fluxo Linear 6 Passos</p>
           </div>
           <div className="space-y-0.5">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Alertas Ativos</p>
@@ -104,26 +120,22 @@ export default function ManualPage() {
 
       {/* Main Tabs Navigation */}
       <Tabs defaultValue="papeis" className="space-y-6">
-        <TabsList className="grid h-auto w-full grid-cols-2 gap-1.5 bg-muted/60 p-1 sm:grid-cols-3 lg:grid-cols-6 rounded-lg">
+        <TabsList className="grid h-auto w-full grid-cols-2 gap-1.5 bg-muted/60 p-1 sm:grid-cols-3 lg:grid-cols-5 rounded-lg">
           <TabsTrigger value="papeis" className="gap-2 py-2 text-xs font-medium">
             <Users className="h-3.5 w-3.5 text-primary" />
             Por Papel
           </TabsTrigger>
           <TabsTrigger value="acoes" className="gap-2 py-2 text-xs font-medium">
             <Bell className="h-3.5 w-3.5 text-amber-500" />
-            Ações & Alertas
+            Caixas de Ação
           </TabsTrigger>
           <TabsTrigger value="fluxo" className="gap-2 py-2 text-xs font-medium">
             <Workflow className="h-3.5 w-3.5 text-indigo-500" />
-            Fluxo Editorial
+            Fluxo de 6 Passos
           </TabsTrigger>
           <TabsTrigger value="visao-geral" className="gap-2 py-2 text-xs font-medium">
             <ClipboardList className="h-3.5 w-3.5 text-sky-500" />
             Módulos do Sistema
-          </TabsTrigger>
-          <TabsTrigger value="interfaces" className="gap-2 py-2 text-xs font-medium">
-            <GitMerge className="h-3.5 w-3.5 text-teal-500" />
-            Interfaces & Acervo
           </TabsTrigger>
           <TabsTrigger value="faq" className="gap-2 py-2 text-xs font-medium">
             <HelpCircle className="h-3.5 w-3.5 text-rose-500" />
@@ -134,180 +146,99 @@ export default function ManualPage() {
         {/* TAB 1: PROCEDIMENTOS POR PAPEL */}
         <TabsContent value="papeis" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-3">
-            {/* Card Coordenador */}
-            <Card className="border-t-4 border-t-primary shadow-sm flex flex-col justify-between">
+            {/* Card Autor / Grupo */}
+            <Card className="border-t-4 border-t-emerald-600 shadow-sm flex flex-col justify-between">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-primary/30 text-primary font-mono text-[11px]">
-                    Liderança Técnica
+                  <Badge className="bg-emerald-600/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30">
+                    Passos 1 e 4
                   </Badge>
-                  <Users className="h-5 w-5 text-primary" />
+                  <FileEdit className="h-5 w-5 text-emerald-600" />
                 </div>
-                <CardTitle className="text-xl">Coordenador de Grupo (Autor no Sistema)</CardTitle>
-                <CardDescription>
-                  Autor formal e responsável perante o sistema pela integridade e entregas dos capítulos da sua frente.
+                <CardTitle className="text-base pt-2">Autor / Grupo Temático</CardTitle>
+                <CardDescription className="text-xs">
+                  Pesquisador ou grupo responsável pela redação e produção técnica do capítulo.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 text-xs leading-relaxed text-muted-foreground flex-1">
-                <div className="space-y-2 rounded-md bg-muted/40 p-3 border border-border/50">
-                  <p className="font-semibold text-foreground">Principais Tarefas:</p>
-                  <ul className="list-inside list-disc space-y-1.5 text-foreground/80">
-                    <li>Atuar como autor formal do capítulo no sistema, submetendo minutas e versões.</li>
-                    <li>Gerir internamente no grupo a distribuição de redação e tarefas com os pesquisadores.</li>
-                    <li>Mapear e pactuar interfaces interdisciplinares com outros grupos temáticos.</li>
-                    <li>Designar revisores técnicos independentes para cada seção.</li>
-                    <li>Atender aos apontamentos de revisão e homologar o capítulo para o tomo.</li>
+              <CardContent className="space-y-4 text-xs">
+                <div className="space-y-2">
+                  <p className="font-semibold text-foreground text-[11px] uppercase tracking-wider">Principais Obrigações:</p>
+                  <ul className="list-disc list-inside space-y-1.5 text-muted-foreground leading-relaxed">
+                    <li>Redigir o texto técnico conforme os requisitos do Anexo B.</li>
+                    <li>Fazer o upload da minuta inicial (R01) no sistema.</li>
+                    <li>Aguardar apontamentos do revisor técnico designado pelo Prof. Floriano.</li>
+                    <li>Implementar os comentários recebidos e enviar nova versão (R02...) com notas explicativas.</li>
                   </ul>
                 </div>
-                <div className="rounded-md border border-amber-500/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-800 dark:text-amber-300">
-                  <strong>Regra de Governança:</strong> O coordenador representa o grupo como autor formal no sistema, enquanto a organização interna de tarefas é conduzida autonomamente pelo próprio grupo.
+                <div className="rounded-md bg-emerald-500/5 p-2.5 border border-emerald-500/20 text-[11px] text-muted-foreground">
+                  <strong className="text-emerald-700 dark:text-emerald-300">Dica:</strong> Acompanhe suas pendências de redação na caixa <em>"1. Minutas Iniciais"</em> e de correções na caixa <em>"4. Implementação de Ajustes"</em>.
                 </div>
               </CardContent>
-              <div className="p-6 pt-0">
-                <Link href="/atividades">
-                  <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                    Abrir Gestão de Atividades <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
             </Card>
 
-            {/* Card Autor / Executor */}
-            <Card className="border-t-4 border-t-indigo-500 shadow-sm flex flex-col justify-between">
+            {/* Card Prof. Floriano (Coordenação Geral) */}
+            <Card className="border-t-4 border-t-amber-600 shadow-sm flex flex-col justify-between">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-indigo-500/30 text-indigo-500 font-mono text-[11px]">
-                    Pesquisa & Redação
+                  <Badge className="bg-amber-600/10 text-amber-700 dark:text-amber-300 border-amber-500/30">
+                    Passos 2 e 6
                   </Badge>
-                  <FileText className="h-5 w-5 text-indigo-500" />
+                  <Users className="h-5 w-5 text-amber-600" />
                 </div>
-                <CardTitle className="text-xl">Pesquisador / Integrante do Grupo</CardTitle>
-                <CardDescription>
-                  Pesquisador participante encarregado da elaboração interna do texto e análises empíricas.
+                <CardTitle className="text-base pt-2">Prof. Floriano (Coord. Geral)</CardTitle>
+                <CardDescription className="text-xs">
+                  Única autoridade para apontamento de revisores e homologação final nos Tomos.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 text-xs leading-relaxed text-muted-foreground flex-1">
-                <div className="space-y-2 rounded-md bg-muted/40 p-3 border border-border/50">
-                  <p className="font-semibold text-foreground">Principais Tarefas:</p>
-                  <ul className="list-inside list-disc space-y-1.5 text-foreground/80">
-                    <li>Colaborar com o coordenador do grupo na elaboração dos textos e bases de dados.</li>
-                    <li>Consultar o acervo bibliográfico e interfaces na plataforma.</li>
-                    <li>Subsidiar a preparação das minutas e o atendimento aos pareceres dos revisores.</li>
+              <CardContent className="space-y-4 text-xs">
+                <div className="space-y-2">
+                  <p className="font-semibold text-foreground text-[11px] uppercase tracking-wider">Principais Obrigações:</p>
+                  <ul className="list-disc list-inside space-y-1.5 text-muted-foreground leading-relaxed">
+                    <li>Indicar com exclusividade o revisor técnico independente para cada seção entregue.</li>
+                    <li>Supervisionar prazos e fluxo de atendimento entre autores e revisores.</li>
+                    <li>Receber as seções aprovadas na revisão editorial.</li>
+                    <li>Homologar oficialmente o capítulo e consolidar no Tomo do Estudo BNDES.</li>
                   </ul>
                 </div>
-                <div className="rounded-md border border-indigo-500/20 bg-indigo-500/5 p-2.5 text-[11px] text-indigo-800 dark:text-indigo-300">
-                  <strong>Gestão Interna:</strong> A divisão operacional de tópicos e redação é definida diretamente entre o coordenador e os membros do grupo.
+                <div className="rounded-md bg-amber-500/5 p-2.5 border border-amber-500/20 text-[11px] text-muted-foreground">
+                  <strong className="text-amber-700 dark:text-amber-300">Exclusividade:</strong> Apenas o Prof. Floriano pode indicar revisores no sistema, garantindo total independência na revisão por pares.
                 </div>
               </CardContent>
-              <div className="p-6 pt-0">
-                <Link href="/producao">
-                  <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                    Abrir Estação de Produção <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
             </Card>
 
             {/* Card Revisor Técnico */}
-            <Card className="border-t-4 border-t-emerald-500 shadow-sm flex flex-col justify-between">
+            <Card className="border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-mono text-[11px]">
-                    Validação por Pares
+                  <Badge className="bg-blue-600/10 text-blue-700 dark:text-blue-300 border-blue-500/30">
+                    Passos 3 e 5
                   </Badge>
-                  <FileCheck2 className="h-5 w-5 text-emerald-500" />
+                  <UserCheck className="h-5 w-5 text-blue-600" />
                 </div>
-                <CardTitle className="text-xl">Revisor Técnico</CardTitle>
-                <CardDescription>
-                  Especialista independente responsável pela avaliação da qualidade.
+                <CardTitle className="text-base pt-2">Revisor Técnico Designado</CardTitle>
+                <CardDescription className="text-xs">
+                  Especialista independente apontado pelo Prof. Floriano para validação técnica.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 text-xs leading-relaxed text-muted-foreground flex-1">
-                <div className="space-y-2 rounded-md bg-muted/40 p-3 border border-border/50">
-                  <p className="font-semibold text-foreground">Principais Tarefas:</p>
-                  <ul className="list-inside list-disc space-y-1.5 text-foreground/80">
-                    <li>Acessar minutas sob avaliação via notificação ou Central de Ações.</li>
-                    <li>Preencher o checklist de qualidade, consistência e interfaces interdisciplinares.</li>
-                    <li>Registrar apontamentos específicos (página, dado, conceito).</li>
-                    <li>Emitir parecer formal: Aprovado, Ajustes Solicitados ou Bloqueado.</li>
+              <CardContent className="space-y-4 text-xs">
+                <div className="space-y-2">
+                  <p className="font-semibold text-foreground text-[11px] uppercase tracking-wider">Principais Obrigações:</p>
+                  <ul className="list-disc list-inside space-y-1.5 text-muted-foreground leading-relaxed">
+                    <li>Acessar a minuta submetida e realizar leitura crítica e conceitual minuciosa.</li>
+                    <li>Registrar formalmente os apontamentos e solicitações de ajuste na ficha.</li>
+                    <li>Reavaliar a nova versão entregue pelo autor para checar o atendimento.</li>
+                    <li>Emitir o parecer formal de aprovação técnica para liberar a homologação.</li>
                   </ul>
                 </div>
-                <div className="rounded-md border border-emerald-500/20 bg-emerald-500/5 p-2.5 text-[11px] text-emerald-800 dark:text-emerald-300">
-                  <strong>Critério:</strong> Avaliar aderência ao Anexo B, robustez das fontes estatísticas, coerência com as interfaces pactuadas e clareza da redação.
+                <div className="rounded-md bg-blue-500/5 p-2.5 border border-blue-500/20 text-[11px] text-muted-foreground">
+                  <strong className="text-blue-700 dark:text-blue-300">Critério:</strong> Avaliar aderência ao Anexo B, consistência das fontes estatísticas e clareza da redação antes de aprovar.
                 </div>
               </CardContent>
-              <div className="p-6 pt-0">
-                <Link href="/atividades">
-                  <Button variant="outline" size="sm" className="w-full gap-2 text-xs">
-                    Ver Ações de Revisor <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
             </Card>
           </div>
-
-          {/* Detailed Step-by-Step Walkthrough */}
-          <Card className="border border-border/70">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <ShieldCheck className="h-5 w-5 text-primary" />
-                Ciclo de Trabalho Completo de um Capítulo
-              </CardTitle>
-              <CardDescription>
-                Linha do tempo operacional integrada: do planejamento e pactuação de interfaces até a homologação final.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-4">
-                <div className="relative rounded-lg border border-border/60 bg-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-primary">01. Planejamento & Interfaces</span>
-                    <Badge variant="outline" className="text-[10px]">Coordenação</Badge>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground">Atribuição, Escopo & Interfaces</p>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    O coordenador confere o Anexo B, designa revisores e mapeia interfaces interdisciplinares em <code>/interfaces</code> ou na Ficha da Atividade.
-                  </p>
-                </div>
-
-                <div className="relative rounded-lg border border-border/60 bg-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-indigo-500">02. Execução & Alinhamento</span>
-                    <Badge variant="outline" className="text-[10px]">Autor</Badge>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground">Redação, Dados & Minuta</p>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    O autor consulta insumos de interfaces acordadas, redige o texto, atualiza o percentual concluído e submete na Estação de Revisão.
-                  </p>
-                </div>
-
-                <div className="relative rounded-lg border border-border/60 bg-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-emerald-500">03. Avaliação Independente</span>
-                    <Badge variant="outline" className="text-[10px]">Revisor</Badge>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground">Checklist & Consistência</p>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    O revisor avalia rigor metodológico, fontes e aderência aos dados compartilhados entre frentes, emitindo parecer conclusivo.
-                  </p>
-                </div>
-
-                <div className="relative rounded-lg border border-border/60 bg-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-teal-600">04. Homologação & Entrega</span>
-                    <Badge variant="outline" className="text-[10px]">Coord. Geral</Badge>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground">Consolidação & BNDES</p>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    Aprovada e harmonizada com todas as interfaces, a seção é consolidada no Tomo e enviada institucionalmente ao BNDES.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
-        {/* TAB 2: CENTRAL DE AÇÕES & NOTIFICAÇÕES */}
+        {/* TAB 2: CAIXAS DE AÇÃO */}
         <TabsContent value="acoes" className="space-y-6">
           <Card className="border border-border/70">
             <CardHeader>
@@ -318,149 +249,128 @@ export default function ManualPage() {
                     Central de Ações do Participante (`ParticipantActionCenter`)
                   </CardTitle>
                   <CardDescription>
-                    Painel inteligente no topo da página de Atividades que consolida todas as suas pendências operacionais em 4 abas.
+                    Organização das pendências de trabalho do usuário em 6 caixas operacionais distintas e claras.
                   </CardDescription>
                 </div>
-                <Link href="/atividades">
-                  <Button size="sm" variant="outline" className="gap-1.5 text-xs">
-                    Ver Minha Central de Ações <ArrowRight className="h-3.5 w-3.5" />
+                <Link href="/">
+                  <Button size="sm" className="gap-1.5 text-xs">
+                    Ir para Minhas Ações <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
                 </Link>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="rounded-lg border border-border/60 bg-card/60 p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-primary font-semibold text-xs">
-                    <FileText className="h-4 w-4" /> Aba "Como Autor"
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Exibe minutas que precisam ser redigidas e apontamentos de revisores que foram devolvidos para você com solicitação de ajustes.
-                  </p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Ao entrar no sistema, o painel <strong>"Minhas Ações no Estudo"</strong> identifica automaticamente o seu perfil e separa as obrigações a executar nas seguintes caixas:
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-emerald-600 text-white text-[10px]">Caixa 1</Badge>
+                  <p className="font-semibold text-foreground text-xs">Minutas Iniciais a Elaborar / Subir</p>
+                  <p className="text-[11px] text-muted-foreground">Atividades em fase de redação que necessitam do envio da versão inicial R01 pelo autor.</p>
                 </div>
 
-                <div className="rounded-lg border border-border/60 bg-card/60 p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-xs">
-                    <FileCheck2 className="h-4 w-4" /> Aba "Como Revisor"
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Lista seções que foram atribuídas a você para revisão técnica e minutas que os autores acabaram de submeter para seu parecer.
-                  </p>
+                <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-amber-600 text-white text-[10px]">Caixa 2</Badge>
+                  <p className="font-semibold text-foreground text-xs">Indicação de Revisores Pendente</p>
+                  <p className="text-[11px] text-muted-foreground">Exclusiva do Prof. Floriano para apontar o revisor técnico independente da seção.</p>
                 </div>
 
-                <div className="rounded-lg border border-border/60 bg-card/60 p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold text-xs">
-                    <Users className="h-4 w-4" /> Aba "Como Coordenação"
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Sinaliza seções do seu grupo que ainda estão sem revisores técnicos independentes designados ou prontas para consolidação.
-                  </p>
+                <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-blue-600 text-white text-[10px]">Caixa 3</Badge>
+                  <p className="font-semibold text-foreground text-xs">Revisão Técnica & Comentários</p>
+                  <p className="text-[11px] text-muted-foreground">Minutas submetidas aguardando primeira análise crítica e apontamentos do revisor.</p>
                 </div>
 
-                <div className="rounded-lg border border-teal-500/30 bg-teal-500/5 p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold text-xs">
-                    <GitMerge className="h-4 w-4" /> Aba "Interfaces"
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Destaca interfaces prioritárias e em discussão envolvendo seu grupo de trabalho, com botão de atalho para negociação e pactuação em <code>/interfaces</code>.
-                  </p>
+                <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-rose-600 text-white text-[10px]">Caixa 4</Badge>
+                  <p className="font-semibold text-foreground text-xs">Implementação de Ajustes pelo Autor</p>
+                  <p className="text-[11px] text-muted-foreground">Capítulos devolvidos com comentários para atendimento e envio de nova versão (R02+).</p>
                 </div>
-              </div>
 
-              <div className="rounded-lg border border-border/70 bg-muted/30 p-4 space-y-3">
-                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Como funcionam as notificações em tempo real (Sino Superior)
-                </h4>
-                <div className="grid gap-3 sm:grid-cols-2 text-xs text-muted-foreground leading-relaxed">
-                  <div className="flex items-start gap-2.5">
-                    <div className="rounded bg-primary/10 p-1 text-primary shrink-0">🔔</div>
-                    <div>
-                      <strong className="text-foreground">Revisão Atribuída:</strong> Notifica o pesquisador no exato momento em que o coordenador o designa como revisor.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <div className="rounded bg-primary/10 p-1 text-primary shrink-0">📄</div>
-                    <div>
-                      <strong className="text-foreground">Versão Submetida:</strong> Avisa aos revisores que o autor enviou uma nova minuta para análise.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <div className="rounded bg-primary/10 p-1 text-primary shrink-0">✏️</div>
-                    <div>
-                      <strong className="text-foreground">Ajustes Solicitados:</strong> Alerta o autor que o revisor finalizou a análise e registrou apontamentos.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <div className="rounded bg-primary/10 p-1 text-primary shrink-0">✅</div>
-                    <div>
-                      <strong className="text-foreground">Ajustes Implementados:</strong> Informa ao revisor que o autor concluiu as alterações pedidas.
-                    </div>
-                  </div>
+                <div className="rounded-lg border border-purple-500/30 bg-purple-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-purple-600 text-white text-[10px]">Caixa 5</Badge>
+                  <p className="font-semibold text-foreground text-xs">Validação & Aprovação Técnica</p>
+                  <p className="text-[11px] text-muted-foreground">Retorno ao revisor para checar as alterações e emitir parecer formal de aprovação.</p>
+                </div>
+
+                <div className="rounded-lg border border-sky-500/30 bg-sky-500/5 p-3.5 space-y-1.5">
+                  <Badge className="bg-sky-600 text-white text-[10px]">Caixa 6</Badge>
+                  <p className="font-semibold text-foreground text-xs">Homologação no Tomo Oficial</p>
+                  <p className="text-[11px] text-muted-foreground">Coordenação Geral homologa o capítulo aprovado e consolida a entrega final do Tomo.</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* TAB 3: FLUXO EDITORIAL E DOCUMENTAL */}
+        {/* TAB 3: FLUXO DE 6 PASSOS */}
         <TabsContent value="fluxo" className="space-y-6">
           <Card className="border border-border/70">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
                 <Workflow className="h-5 w-5 text-indigo-500" />
-                Ciclo de Vida Documental e Decisões de Governança
+                Fluxo Sequencial de Gestão Documental (6 Passos)
               </CardTitle>
               <CardDescription>
-                Cada capítulo e seção transita por estados documentais formais rastreados no banco de dados.
+                Ciclo completo de vida de um capítulo: da redação inicial até a homologação final no Tomo oficial.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-muted text-[10px]">1. Não Iniciada</Badge>
-                  <p className="text-xs font-semibold text-foreground">Planejamento Preliminar</p>
-                  <p className="text-[11px] text-muted-foreground">Levantamento de fontes e organização da estrutura inicial de tópicos.</p>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
+                <div className="rounded-lg border border-emerald-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-emerald-600">Passo 1</span>
+                  <p className="text-xs font-semibold text-foreground">Elaboração & Upload R01</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Autor redige o capítulo e sobe a minuta inicial (R01) no sistema.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Autor / Grupo</Badge>
                 </div>
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30 text-[10px]">2. Em Elaboração</Badge>
-                  <p className="text-xs font-semibold text-foreground">Redação da Minuta</p>
-                  <p className="text-[11px] text-muted-foreground">Autores redigem o texto e tabulam os dados quantitativos.</p>
-                </div>
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 text-[10px]">3. Em Revisão Técnica</Badge>
-                  <p className="text-xs font-semibold text-foreground">Avaliação por Pares</p>
-                  <p className="text-[11px] text-muted-foreground">Revisores independentes conferem metodologia, dados e clareza textual.</p>
-                </div>
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30 text-[10px]">4. Em Ajustes</Badge>
-                  <p className="text-xs font-semibold text-foreground">Atendimento a Pareceres</p>
-                  <p className="text-[11px] text-muted-foreground">Autores incorporam sugestões e esclarecem dúvidas apontadas.</p>
-                </div>
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px]">5. Aprovada</Badge>
-                  <p className="text-xs font-semibold text-foreground">Validação Concluída</p>
-                  <p className="text-[11px] text-muted-foreground">Revisores emitem parecer favorável formal e liberam o texto.</p>
-                </div>
-                <div className="rounded-lg border border-border/60 p-4 space-y-1.5 bg-card">
-                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 text-[10px]">6. Entregue BNDES</Badge>
-                  <p className="text-xs font-semibold text-foreground">Homologação Oficial</p>
-                  <p className="text-[11px] text-muted-foreground">Capítulo consolidado e submetido formalmente ao cliente.</p>
-                </div>
-              </div>
 
-              <div className="border-t border-border/60 pt-4 space-y-3">
-                <h4 className="text-sm font-semibold text-foreground">Prazos Editoriais vs. Prazos Contratuais</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Para garantir que o relatório chegue ao BNDES com qualidade e tempo hábil para consolidação, cada atividade possui dois marcos temporais:
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 text-xs">
-                  <div className="rounded-md bg-muted/40 p-3 border border-border/50">
-                    <strong className="text-foreground">Entrega Editorial Interna:</strong> Data limite para os autores submeterem a versão preliminar para revisão independente e ajustes.
-                  </div>
-                  <div className="rounded-md bg-muted/40 p-3 border border-border/50">
-                    <strong className="text-foreground">Entrega Contratual ao BNDES:</strong> Data de fechamento oficial do Tomo e remessa institucional ao banco.
-                  </div>
+                <div className="rounded-lg border border-amber-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-amber-600">Passo 2</span>
+                  <p className="text-xs font-semibold text-foreground">Indicação de Revisor</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Prof. Floriano designa o revisor técnico independente para a seção.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Prof. Floriano</Badge>
+                </div>
+
+                <div className="rounded-lg border border-blue-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-blue-600">Passo 3</span>
+                  <p className="text-xs font-semibold text-foreground">Revisão Técnica</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Revisor analisa o documento e faz os comentários formais na ficha.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Revisor Técnico</Badge>
+                </div>
+
+                <div className="rounded-lg border border-rose-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-rose-600">Passo 4</span>
+                  <p className="text-xs font-semibold text-foreground">Ajustes & Nova Versão</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Autor implementa correções e anexa nova versão (R02+) com nota de atendimento.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Autor / Grupo</Badge>
+                </div>
+
+                <div className="rounded-lg border border-purple-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-purple-600">Passo 5</span>
+                  <p className="text-xs font-semibold text-foreground">Aprovação Técnica</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Revisor confere atendimento e emite parecer formal de aprovação.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Revisor Técnico</Badge>
+                </div>
+
+                <div className="rounded-lg border border-sky-500/40 bg-card p-3.5 space-y-2">
+                  <span className="font-mono text-xs font-bold text-sky-600">Passo 6</span>
+                  <p className="text-xs font-semibold text-foreground">Homologação no Tomo</p>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Coordenação Geral homologa o capítulo e consolida a entrega institucional.
+                  </p>
+                  <Badge variant="outline" className="text-[10px]">Coord. Geral</Badge>
                 </div>
               </div>
             </CardContent>
@@ -469,170 +379,62 @@ export default function ManualPage() {
 
         {/* TAB 4: MÓDULOS DO SISTEMA */}
         <TabsContent value="visao-geral" className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Card className="hover:border-primary/50 transition-colors">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="border border-border/70">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <ClipboardList className="h-4 w-4 text-primary" />
-                  Gestão de Atividades (`/atividades`)
-                </CardTitle>
+                <FileText className="h-5 w-5 text-primary" />
+                <CardTitle className="text-sm pt-2">Documentos & Ações (`/`)</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Lista oficial dos 30 capítulos analíticos com seus tópicos de detalhamento, coordenadores responsáveis, prazos e barra de progresso ponderada.</p>
-                <Link href="/atividades" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Acessar atividades <ArrowRight className="h-3 w-3" />
+              <CardContent className="text-xs text-muted-foreground space-y-2">
+                <p>Central de trabalho do estudo. Acompanhe suas obrigações, faça upload de minutas, responda comentários e acesse as fichas detalhadas dos capítulos.</p>
+                <Link href="/" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
+                  Acessar Documentos <ArrowRight className="h-3 w-3" />
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="hover:border-primary/50 transition-colors">
+            <Card className="border border-border/70">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <FileCheck2 className="h-4 w-4 text-emerald-500" />
-                  Produção e Revisão (`/producao`)
-                </CardTitle>
+                <Calendar className="h-5 w-5 text-amber-500" />
+                <CardTitle className="text-sm pt-2">Cronograma de Entregas (`/cronograma`)</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Estação de trabalho editorial para controle de minutas, checklist técnico, apontamentos específicos e homologação de versões.</p>
-                <Link href="/producao" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Acessar produção <ArrowRight className="h-3 w-3" />
+              <CardContent className="text-xs text-muted-foreground space-y-2">
+                <p>Linha do tempo oficial com distribuição mensal de entregáveis, marcos intermediários e exportação em PDF e imagem.</p>
+                <Link href="/cronograma" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
+                  Acessar Cronograma <ArrowRight className="h-3 w-3" />
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="hover:border-primary/50 transition-colors">
+            <Card className="border border-border/70">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-amber-500" />
-                  Cronograma & Tomos (`/calendario`)
-                </CardTitle>
+                <ShieldCheck className="h-5 w-5 text-sky-500" />
+                <CardTitle className="text-sm pt-2">Homologação dos Capítulos (`/homologacao`)</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Visão temporal e linha do tempo dos 4 Tomos do Estudo, com filtros por mês, identificação de gargalos e entregas contratuais.</p>
-                <Link href="/calendario" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Ver cronograma <ArrowRight className="h-3 w-3" />
+              <CardContent className="text-xs text-muted-foreground space-y-2">
+                <p>Módulo de consolidação e controle de qualidade para a Coordenação Geral homologar capítulos aprovados.</p>
+                <Link href="/homologacao" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
+                  Acessar Homologação <ArrowRight className="h-3 w-3" />
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="hover:border-primary/50 transition-colors">
+            <Card className="border border-border/70">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <GitMerge className="h-4 w-4 text-teal-500" />
-                  Interfaces entre Frentes (`/interfaces`)
-                </CardTitle>
+                <Users className="h-5 w-5 text-emerald-500" />
+                <CardTitle className="text-sm pt-2">Administração (`/administracao`)</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Mapeamento de trocas interdisciplinares, demandas de insumos e dependências críticas entre grupos temáticos.</p>
-                <Link href="/interfaces" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Ver interfaces <ArrowRight className="h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:border-primary/50 transition-colors">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-indigo-500" />
-                  Biblioteca de Referências (`/biblioteca`)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Acervo consolidado com mais de 300 publicações, artigos acadêmicos, anuários e relatórios setoriais associados aos capítulos.</p>
-                <Link href="/biblioteca" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Consultar acervo <ArrowRight className="h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:border-primary/50 transition-colors">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Users className="h-4 w-4 text-rose-500" />
-                  Equipe e Grupos (`/equipe`)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-xs text-muted-foreground">
-                <p>Matriz de responsabilidades, pesquisadores participantes, instituições parceiras, cargas horárias e frentes de atuação.</p>
-                <Link href="/equipe" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
-                  Ver equipe <ArrowRight className="h-3 w-3" />
+              <CardContent className="text-xs text-muted-foreground space-y-2">
+                <p>Gestão de acessos, integrantes dos 11 grupos temáticos, auditoria de eventos e configurações institucionais.</p>
+                <Link href="/administracao" className="inline-flex items-center gap-1 text-primary font-medium hover:underline pt-1">
+                  Acessar Administração <ArrowRight className="h-3 w-3" />
                 </Link>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* TAB 5: INTERFACES & ACERVO */}
-        <TabsContent value="interfaces" className="space-y-6">
-          <Card className="border border-border/70">
-            <CardHeader>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <GitMerge className="h-5 w-5 text-teal-500" />
-                    Interfaces de Coordenação Interdisciplinares no Fluxo do Estudo
-                  </CardTitle>
-                  <CardDescription>
-                    Mecanismo central de governança para convergência analítica, troca de insumos empíricos e eliminação de sobreposições entre frentes.
-                  </CardDescription>
-                </div>
-                <Link href="/interfaces">
-                  <Button size="sm" variant="outline" className="gap-1.5 text-xs">
-                    Abrir Matriz de Interfaces <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6 text-xs leading-relaxed text-muted-foreground">
-              {/* 4-Step Lifecycle of an Interface */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-foreground">Ciclo de Vida de uma Interface (4 Fases)</h4>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <div className="rounded-lg border border-border/60 bg-card p-3.5 space-y-1.5">
-                    <Badge variant="outline" className="bg-sky-500/10 text-sky-600 border-sky-500/30 text-[10px]">1. Identificação</Badge>
-                    <p className="font-semibold text-foreground text-xs">Mapeamento da Demanda</p>
-                    <p className="text-[11px] text-muted-foreground">Um grupo identifica que precisa de insumo de outro (ex: projeção de frota de apoio offshore para calcular demanda de estaleiros).</p>
-                  </div>
-                  <div className="rounded-lg border border-border/60 bg-card p-3.5 space-y-1.5">
-                    <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-amber-500/30 text-[10px]">2. Alinhamento</Badge>
-                    <p className="font-semibold text-foreground text-xs">Classificação e Escopo</p>
-                    <p className="text-[11px] text-muted-foreground">Define-se se a interface é <em>Prioritária</em> (bloqueante para a redação) ou <em>Não prioritária</em>, pactuando granularidade e prazo.</p>
-                  </div>
-                  <div className="rounded-lg border border-border/60 bg-card p-3.5 space-y-1.5">
-                    <Badge variant="outline" className="bg-indigo-500/10 text-indigo-600 border-indigo-500/30 text-[10px]">3. Negociação</Badge>
-                    <p className="font-semibold text-foreground text-xs">Compartilhamento de Insumos</p>
-                    <p className="text-[11px] text-muted-foreground">Os grupos trocam bases de dados preliminares, premissas metodológicas e notas técnicas em <code>/interfaces</code>.</p>
-                  </div>
-                  <div className="rounded-lg border border-border/60 bg-card p-3.5 space-y-1.5">
-                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30 text-[10px]">4. Acordo / Resolvida</Badge>
-                    <p className="font-semibold text-foreground text-xs">Pactuação e Encerramento</p>
-                    <p className="text-[11px] text-muted-foreground">Ambas as frentes validam que o insumo foi incorporado harmonicamente aos respectivos capítulos, marcando a interface como resolvida.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Where interfaces appear in daily workflow */}
-              <div className="rounded-lg border border-teal-500/30 bg-teal-500/5 p-4 space-y-3">
-                <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <GitMerge className="h-4 w-4 text-teal-600" />
-                  Onde as interfaces aparecem na sua rotina diária?
-                </h4>
-                <div className="grid gap-3 sm:grid-cols-2 text-xs text-muted-foreground">
-                  <div className="rounded-md bg-card/80 p-3 border border-border/50 space-y-1">
-                    <strong className="text-foreground">1. Na Ficha da Atividade (`/atividades`):</strong>
-                    <p>Ao abrir a Ficha de qualquer capítulo, o card <strong>"Interfaces de Coordenação Interdisciplinares"</strong> exibe as interfaces vinculadas, nível de criticidade (Prioritária/Não prioritária), grupos contrapartes e atalho direto para pactuação.</p>
-                  </div>
-                  <div className="rounded-md bg-card/80 p-3 border border-border/50 space-y-1">
-                    <strong className="text-foreground">2. Na Central de Ações (`ParticipantActionCenter`):</strong>
-                    <p>A aba <strong>"Interfaces"</strong> destaca pendências não resolvidas envolvendo o seu grupo de pesquisa, com crachás de urgência ("Bloqueante" ou "Alinhamento") e contagem no resumo diário.</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 6: PERGUNTAS FREQUENTES (FAQ) */}
+        {/* TAB 5: FAQ & DÚVIDAS */}
         <TabsContent value="faq" className="space-y-6">
           <Card className="border border-border/70">
             <CardHeader>
@@ -641,79 +443,44 @@ export default function ManualPage() {
                 Perguntas Frequentes (FAQ)
               </CardTitle>
               <CardDescription>
-                Respostas diretas para as dúvidas mais comuns na rotina dos participantes.
+                Respostas diretas para as principais dúvidas operacionais da equipe de pesquisa.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Onde vejo o que preciso fazer hoje na plataforma?
+                  <AccordionTrigger className="text-xs font-semibold text-foreground">
+                    Quem pode indicar os revisores técnicos independentes de cada seção?
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Acesse <strong>Gestão de Atividades (`/atividades`)</strong>. O primeiro bloco no topo da página é a <strong>Central de Ações do Participante</strong>. Ela analisa seu login e filtra tudo o que está pendente para você: minutas que você precisa redigir (aba <em>Como Autor</em>), pareceres técnicos que você precisa emitir (aba <em>Como Revisor</em>), revisores que faltam designar (aba <em>Como Coordenação</em>) e pendências interdisciplinares (aba <em>Interfaces</em>).
+                    A indicação de revisores técnicos é de competência exclusiva do <strong>Prof. Floriano (Coordenação Geral)</strong>. Assim que a minuta inicial R01 é submetida pelo autor, o Prof. Floriano recebe a notificação e seleciona o revisor independente qualificado para a avaliação.
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-2">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Sou pesquisador executor. Como atualizo o progresso e o status da minha etapa?
+                  <AccordionTrigger className="text-xs font-semibold text-foreground">
+                    Como o autor sabe quais ajustes precisa implementar?
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Abra a Ficha da Atividade do seu capítulo em <code>/atividades</code>. Na lista de etapas de execução, localize a etapa sob sua responsabilidade e clique no botão <strong>"Atualizar etapa"</strong>. Você poderá ajustar o percentual de avanço (0% a 100%), o status operacional e inserir notas de acompanhamento.
+                    Quando o revisor técnico conclui a análise, os apontamentos aparecem diretamente no card da seção na caixa <strong>"4. Implementação de Ajustes pelo Autor"</strong>. O autor pode abrir a ficha, visualizar cada comentário, anexar a versão revisada (R02...) e registrar as respostas de atendimento.
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Onde encontro o texto oficial que descreve o que deve constar no meu capítulo?
+                  <AccordionTrigger className="text-xs font-semibold text-foreground">
+                    O que acontece após o revisor técnico aprovar a minuta?
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    A descrição oficial do escopo contratual (Anexo B) está visível em dois locais:
-                    <ol className="list-decimal list-inside mt-2 space-y-1">
-                      <li>Nos cards da lista de atividades em <code>/atividades</code>, logo abaixo do título do capítulo.</li>
-                      <li>Na <strong>Ficha da Atividade (modal de detalhes)</strong>, no quadro destacado com a etiqueta <strong>"Escopo e descrição oficial do capítulo — Anexo B"</strong>.</li>
-                    </ol>
+                    Com o parecer de aprovação emitido pelo revisor técnico no Passo 5, a seção é transferida para a caixa <strong>"6. Homologação & Consolidação no Tomo"</strong> da Coordenação Geral, que procede à homologação definitiva e consolidação no Tomo oficial do Estudo BNDES.
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-4">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Como sei se meu capítulo possui interfaces ou dependências com outros grupos?
+                  <AccordionTrigger className="text-xs font-semibold text-foreground">
+                    Como acompanho os prazos das minhas entregas?
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Você pode checar as interfaces de duas formas:
-                    <ol className="list-decimal list-inside mt-2 space-y-1.5">
-                      <li><strong>Na Ficha da Atividade:</strong> Na parte inferior do modal de detalhes do capítulo, o bloco <strong>"Interfaces de Coordenação Interdisciplinares"</strong> exibe todas as conexões mapeadas, identificando o grupo parceiro, se a interface é <em>Prioritária</em> e um link direto para negociação.</li>
-                      <li><strong>Na Central de Ações:</strong> No topo de <code>/atividades</code>, clique na aba <strong>"Interfaces"</strong> para visualizar todas as trocas pendentes envolvendo seu grupo.</li>
-                    </ol>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-5">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Minha minuta está salva no Google Drive ou no OneDrive. Posso submeter apenas o link?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Sim. Na Estação de Revisão (ou na Ficha da Atividade), você pode informar o link compartilhável do Google Drive, OneDrive, Teams ou Dropbox, além de anexar arquivos PDF/Word se desejar. Certifique-se de que as permissões de acesso do link permitam leitura pelos revisores e pela coordenação.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-6">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    Quem pode alterar as datas de entrega e os coordenadores responsáveis?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Para assegurar a integridade do cronograma mestre acordado com o BNDES, a alteração de coordenadores responsáveis e datas de entrega contratual é reservada aos <strong>Coordenadores de Capítulo/Grupo e Administradores</strong>. Os executores podem atualizar datas operacionais e progresso de suas respectivas etapas.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-7">
-                  <AccordionTrigger className="text-sm font-semibold text-foreground">
-                    O que fazer se eu identificar que outro grupo está pesquisando o mesmo tema?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
-                    Acesse o módulo <strong>Interfaces entre Seções (`/interfaces`)</strong> e registre uma nova interface indicando o capítulo correlato e o grupo parceiro. Isso notificará os coordenadores das duas frentes para harmonizarem os insumos e pactuarem o escopo, evitando retrabalho.
+                    Você pode acompanhar pelo filtro de meses no topo da Central de Ações ou acessar o módulo <strong>Cronograma de Entregas (`/cronograma`)</strong> para visualizar a linha do tempo completa do estudo dividida pelos meses de execução (M1 a M12).
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

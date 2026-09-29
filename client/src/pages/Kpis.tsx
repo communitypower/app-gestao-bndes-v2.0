@@ -3,7 +3,7 @@ import { PageHeader, PageLoading, SectionMark } from "@/components/EditorialUI";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
-import { BarChart3, ChevronRight, FileCheck2, FileStack, GitMerge, Layers3 } from "lucide-react";
+import { BarChart3, ChevronRight, FileCheck2, FileStack, Layers3 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Link } from "wouter";
 
@@ -73,7 +73,7 @@ export default function KpisPage() {
               <KpiSummary label="Documentos acompanhados" value={data.totalDocuments} detail="Capítulos e seções da estrutura canônica ativa." icon={FileStack} />
               <KpiSummary label="Capítulos" value={data.chapters} detail="Unidades de consolidação editorial do estudo." icon={Layers3} />
               <KpiSummary label="Seções de trabalho" value={data.sections} detail="Unidades de execução, revisão e submissão." icon={BarChart3} />
-              <KpiSummary label="Interfaces prioritárias" value={data.priorityInterfaceBlockers} detail="Pendências que bloqueiam consolidações e aprovações." icon={GitMerge} accent={data.priorityInterfaceBlockers > 0 ? "text-destructive" : "text-primary"} />
+              <KpiSummary label="Documentos concluídos" value={data.concluded} detail="Capítulos e seções aprovados para documentação final." icon={FileCheck2} accent="text-primary" />
             </section>
 
             <section className="grid gap-7 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,.85fr)]">
@@ -107,10 +107,10 @@ export default function KpisPage() {
                 <h2 className="font-display mt-3 text-3xl font-medium tracking-[-.04em]">Como usar os KPIs</h2>
                 <div className="mt-7 space-y-5">
                   {[
-                    ["1", "Execução", "As seções saem de Planejada para Em elaboração quando o executor inicia o trabalho."],
-                    ["2", "Revisão", "A submissão e o parecer do revisor deslocam o documento pela revisão da seção."],
-                    ["3", "Consolidação", "O coordenador do capítulo consolida somente após checklist concluído e interfaces prioritárias resolvidas."],
-                    ["4", "Aprovação", "Tomos e projeto registram as decisões finais até a documentação oficial."],
+                    ["1", "Elaboração", "O autor redige e submete a minuta inicial no sistema (R01)."],
+                    ["2", "Indicação", "O Prof. Floriano (Coordenação Geral) indica o revisor técnico independente."],
+                    ["3", "Revisão e Ajustes", "O revisor registra comentários e o autor implementa as adequações solicitadas."],
+                    ["4", "Homologação", "O revisor aprova e a Coordenação Geral homologa o capítulo no Tomo oficial."],
                   ].map(([number, title, description]) => (
                     <div key={number} className="grid grid-cols-[28px_1fr] gap-3 border-t border-border pt-4 first:border-t-0 first:pt-0">
                       <span className="font-display text-2xl text-[#B68738]">{number}</span>

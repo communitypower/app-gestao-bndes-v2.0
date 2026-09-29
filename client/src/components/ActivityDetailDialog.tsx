@@ -164,9 +164,16 @@ export function ActivityDetailDialog({
 
   // Match corresponding production material
   const currentMaterial = useMemo(() => {
-    if (!activityId || !materials) return null;
-    return materials.find((m: any) => m.activityId === activityId) ?? null;
-  }, [activityId, materials]);
+    if (!activityId) return null;
+    if (materials && materials.length > 0) {
+      const found = materials.find((m: any) => m.activityId === activityId);
+      if (found) return found;
+    }
+    if (data?.productionMaterials && data.productionMaterials.length > 0) {
+      return data.productionMaterials[0];
+    }
+    return null;
+  }, [activityId, materials, data?.productionMaterials]);
 
   // Compute current workflow stage (6 sequential steps)
   const currentStage: WorkflowStage = useMemo(() => {

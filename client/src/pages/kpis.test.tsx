@@ -62,8 +62,8 @@ describe("dashboard de KPIs documentais", () => {
     expect(screen.getByRole("heading", { name: "Indicadores do fluxo documental" })).toBeInTheDocument();
     expect(screen.getByText("Documentos acompanhados")).toBeInTheDocument();
     expect(screen.getByText("281")).toBeInTheDocument();
-    expect(screen.getByText("Interfaces prioritárias")).toBeInTheDocument();
-    expect(screen.getAllByText("5").length).toBeGreaterThan(0);
+    expect(screen.getByText("Documentos concluídos")).toBeInTheDocument();
+    expect(screen.getAllByText("4").length).toBeGreaterThan(0);
     expect(screen.getByText("Planejada")).toBeInTheDocument();
     expect(screen.getByText("Aprovada para documentação final")).toBeInTheDocument();
     expect(screen.getByText("Capítulos e seções em cada etapa")).toBeInTheDocument();

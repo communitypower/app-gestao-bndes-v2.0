@@ -25,7 +25,6 @@ import {
   ExternalLink,
   FilePenLine,
   Filter,
-  GitMerge,
   Layers,
   Layers3,
   Search,
@@ -40,7 +39,6 @@ import {
 export default function Home() {
   const { data, isLoading } = trpc.dashboard.overview.useQuery();
   const { data: governance, isLoading: governanceLoading } = trpc.governance.overview.useQuery();
-  const { data: interfaces, isLoading: interfacesLoading } = trpc.interfaces.list.useQuery();
 
   // Modo de visualização principal: "atividades" (Estrutura Editorial) ou "recursos" (Equipe / Grupos)
   const [viewMode, setViewMode] = useState<"atividades" | "recursos">("atividades");
@@ -114,12 +112,6 @@ export default function Home() {
       };
     });
   }, [data]);
-
-  const blockedInterfaces = useMemo(() => {
-    return (interfaces ?? []).filter(item => {
-      return item.status !== "resolvida" && item.blockingClass === "prioritária";
-    });
-  }, [interfaces]);
 
   // Seções/Capítulos agrupados por Tomo para a Visão por Atividades
   const tomesWithChapters = useMemo(() => {
@@ -231,7 +223,7 @@ export default function Home() {
     setExpandedMembers(next);
   };
 
-  if (isLoading || governanceLoading || interfacesLoading || !data || !interfaces || !governance) {
+  if (isLoading || governanceLoading || !data || !governance) {
     return <PageLoading />;
   }
 
@@ -331,13 +323,9 @@ export default function Home() {
           note={data.counts.delayed === 0 ? "Nenhum atraso crítico registrado" : "Requer atenção da coordenação"}
         />
         <Metric
-          label="Interfaces ativas"
-          value={interfaces.filter(item => item.status !== "resolvida").length}
-          note={
-            blockedInterfaces.length > 0
-              ? `${blockedInterfaces.length} bloqueio${blockedInterfaces.length > 1 ? "s" : ""} prioritário${blockedInterfaces.length > 1 ? "s" : ""}`
-              : "Sem bloqueios críticos no momento"
-          }
+          label="Materiais & Minutas"
+          value={data.materialCount}
+          note="Documentos e minutas em elaboração / revisão"
         />
       </section>
 
@@ -649,12 +637,6 @@ export default function Home() {
                             const isChapterOpen = expandedChapters[chapter.id] === true;
                             const targetActivityId = chapter.primaryActivityId ?? chapter.id;
                             const steps = chapter.steps ?? [];
-                            const sectionInterfaces = interfaces.filter(
-                              item =>
-                                item.status !== "resolvida" &&
-                                item.sections.some(link => link.sectionId === chapter.id)
-                            );
-                            const openInterfaces = sectionInterfaces.length;
 
                             return (
                               <div key={chapter.id} className="group bg-card transition-colors hover:bg-muted/10">
@@ -693,12 +675,6 @@ export default function Home() {
                                           <span className="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
                                             <Calendar className="h-3 w-3" />
                                             Cronograma: Término em {formatDate(chapter.dueAt)}
-                                          </span>
-                                        )}
-                                        {openInterfaces > 0 && (
-                                          <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
-                                            <GitMerge className="h-3 w-3" />
-                                            {openInterfaces} interface{openInterfaces > 1 ? "s" : ""}
                                           </span>
                                         )}
                                       </div>
@@ -1093,19 +1069,13 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-4 p-4">
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-              blockedInterfaces.length ? "bg-red-500/10 text-[#B5482D]" : "bg-primary/10 text-primary"
-            }`}
-          >
-            <GitMerge className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <CheckCircle2 className="h-5 w-5" />
           </div>
           <div>
-            <p className="data-label">Interfaces críticas</p>
+            <p className="data-label">Progresso consolidado</p>
             <p className="mt-1 text-sm font-medium text-foreground">
-              {blockedInterfaces.length
-                ? `${blockedInterfaces.length} bloqueio${blockedInterfaces.length === 1 ? "" : "s"} prioritário${blockedInterfaces.length === 1 ? "" : "s"}`
-                : `${interfaces.filter(item => item.status !== "resolvida").length} pontos abertos`}
+              {data.overallProgress}% concluído no cronograma
             </p>
           </div>
         </div>

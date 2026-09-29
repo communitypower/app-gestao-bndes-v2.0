@@ -108,10 +108,16 @@ const fixtures = vi.hoisted(() => {
     },
   ],
   historicalAllocatedHours: 10,
-  reviewers: [],
+  reviewers: [] as any[],
   evidenceLinks: [],
   submissions: [],
   activeSubmission: null,
+  isGeneralCoordinator: true,
+  canAssignReviewers: true,
+  canHomologate: true,
+  isCoordinator: true,
+  isReviewer: true,
+  isExecutor: true,
   productionMaterials: [
     {
       id: 101,
@@ -133,22 +139,7 @@ const fixtures = vi.hoisted(() => {
     },
   ],
   reviewChecklist: { items: [], events: [] },
-  interfaces: [
-    {
-      id: 91,
-      title: "Fronteira entre capacidade e produtividade",
-      priority: "alta" as const,
-      status: "em discussão" as const,
-      interfaceType: "escopo sobreposto" as const,
-      responsibleName: "Floriano Carlos Martins Pires Jr.",
-      groups: [{ name: "Núcleo" }, { name: "IE-UFRJ" }],
-      events: [
-        {
-          summary: "Delimitar indicadores compartilhados antes da consolidação.",
-        },
-      ],
-    },
-  ],
+  interfaces: [],
   eligibleParticipants: [participant],
   eligibleReviewers: [participant],
   };
@@ -202,7 +193,8 @@ vi.mock("@/lib/trpc", () => ({
         useQuery: () => ({
           data: {
             isAdmin: true,
-            isCoordinator: false,
+            isGeneralCoordinator: true,
+            isCoordinator: true,
             canAccessActivities: true,
             activityMembership: null,
             users: [],
@@ -531,7 +523,11 @@ beforeAll(() => {
   Object.defineProperty(URL, "revokeObjectURL", { writable: true, value: vi.fn() });
 });
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  fixtures.activity.productionMaterials[0].reviewStatus = "em revisão";
+  fixtures.activity.reviewers = [];
+});
 
 describe("estrutura hierárquica da equipe", () => {
   it("exibe grupos inicialmente recolhidos e revela o coordenador e participantes ao expandir", () => {
@@ -560,65 +556,61 @@ describe("ficha visível da atividade", () => {
     expect(screen.getAllByText(/abrir ficha/i).length).toBeGreaterThan(0);
   });
 
-  it("abre a ficha unificada da atividade e exibe dados institucionais, repositório de documentos e checklist", async () => {
+  it("abre a ficha unificada da atividade e exibe o stepper de 6 passos e o repositório de documentos", async () => {
     render(<ActivitiesPage />);
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
     expect(await screen.findByText("Ficha da Atividade")).toBeInTheDocument();
-    expect(screen.getByText("Prazos, Status e Próximo Passo")).toBeInTheDocument();
-    expect(screen.getByText("Documentos, Textos Intermediários e Minutas")).toBeInTheDocument();
-    expect(screen.getByText("Etapa do Workflow e Checklist de Revisão")).toBeInTheDocument();
-    expect(screen.getByText(/Equipe Temática de Apoio ao Capítulo/i)).toBeInTheDocument();
+    expect(screen.getByText("Minuta Inicial")).toBeInTheDocument();
+    expect(screen.getByText("Indicação de Revisor")).toBeInTheDocument();
+    expect(screen.getByText(/Minuta_Capitulo_II_1\.docx/i)).toBeInTheDocument();
   });
 
-  it("permite alternar para edição de informações básicas na Ficha", async () => {
+  it("permite abrir o painel de indicação de revisor independente pelo Prof. Floriano no Passo 2", async () => {
     render(<ActivitiesPage />);
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
-    const editButton = await screen.findByRole("button", { name: /editar informações/i });
-    fireEvent.click(editButton);
+    expect(await screen.findByText(/Passo 2: Indicação de Revisor Técnico Independente/i)).toBeInTheDocument();
+    const selectReviewerBtn = screen.getByRole("button", { name: /selecionar revisor/i });
+    expect(selectReviewerBtn).toBeInTheDocument();
+    fireEvent.click(selectReviewerBtn);
 
-    expect(screen.getByLabelText(/descrição operacional/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/próximo passo imediato/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /salvar alterações/i })).toBeInTheDocument();
+    expect(screen.getByText(/Selecione o Revisor Independente \(Prof\. Floriano\)/i)).toBeInTheDocument();
   });
 
-  it("permite abrir formulário de anexo de novos documentos pelo coordenador", async () => {
+  it("permite abrir formulário para envio de nova versão da minuta técnica quando solicitado", async () => {
+    fixtures.activity.productionMaterials[0].reviewStatus = "ajustes solicitados";
     render(<ActivitiesPage />);
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
-    const attachBtn = await screen.findByRole("button", { name: /anexar documento \/ versão/i });
-    fireEvent.click(attachBtn);
+    const newRevisionBtn = await screen.findByRole("button", { name: /subir nova versão/i });
+    expect(newRevisionBtn).toBeInTheDocument();
+    fireEvent.click(newRevisionBtn);
 
-    expect(screen.getByPlaceholderText(/ex: minuta técnica intermediária/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/arquivo/i)).toBeInTheDocument();
+    expect(screen.getByText(/Envio de Nova Revisão/i)).toBeInTheDocument();
+    expect(screen.getByText(/arquivo revisado/i)).toBeInTheDocument();
+    fixtures.activity.productionMaterials[0].reviewStatus = "em revisão";
   });
 
-  it("permite apontar revisor técnico clicando no integrante da equipe temática", async () => {
+  it("permite emitir comentários e parecer de revisão técnica diretamente na Ficha", async () => {
+    fixtures.activity.productionMaterials[0].reviewStatus = "em revisão";
+    fixtures.activity.reviewers = [
+      { id: 50, teamMemberId: fixtures.participant.id, memberName: fixtures.participant.name, institution: "Consultoria", status: "indicado" },
+    ];
     render(<ActivitiesPage />);
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
-    expect(await screen.findByText(/Equipe Temática de Apoio ao Capítulo/i)).toBeInTheDocument();
-    const memberButton = screen.getByRole("button", { name: new RegExp(fixtures.participant.name, "i") });
-    expect(memberButton).toBeInTheDocument();
-    fireEvent.click(memberButton);
-  });
+    const parecerBtn = await screen.findByRole("button", { name: /emitir comentários \/ parecer/i });
+    expect(parecerBtn).toBeInTheDocument();
+    fireEvent.click(parecerBtn);
 
-  it("permite registrar parecer de revisão técnica diretamente no card do documento", async () => {
-    render(<ActivitiesPage />);
-    const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
-    fireEvent.click(openButtons[0]);
-
-    expect(await screen.findByText(/Parecer da Revisão Técnica/i)).toBeInTheDocument();
-    const approveBtn = screen.getByRole("button", { name: /Aprovar Minuta Técnica/i });
-    const adjustBtn = screen.getByRole("button", { name: /Solicitar Ajustes/i });
-    expect(approveBtn).toBeInTheDocument();
-    expect(adjustBtn).toBeInTheDocument();
-    fireEvent.click(approveBtn);
+    expect(screen.getByText(/Parecer de Revisão/i)).toBeInTheDocument();
+    expect(screen.getByText(/decisão editorial/i)).toBeInTheDocument();
+    expect(screen.getByText(/justificativa e apontamentos/i)).toBeInTheDocument();
   });
 
   it("mantém títulos acessíveis no diálogo da Ficha da Atividade", async () => {
