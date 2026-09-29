@@ -1217,8 +1217,8 @@ function CalendarContent() {
       {/* Cabeçalho Formal e Ações */}
       <PageHeader
         eyebrow="Planejamento e Prazos"
-        title="Cronograma integrado do estudo"
-        description="Acompanhamento temporal e marcos de entrega escalonados (ondas M1 a M6) conforme o Cronograma Oficial do Estudo."
+        title="Cronograma de Entregas dos Documentos"
+        description="Acompanhamento temporal e marcos de entrega de minutas e revisões (ondas M1 a M6) dos capítulos e seções do estudo."
         index="03 — Cronograma"
         action={
           <div className="flex flex-wrap items-center gap-1.5 shrink-0">

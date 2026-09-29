@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 const pages = [
   ["Production.tsx", "Controle de Documentos & Minhas Ações"],
-  ["Calendar.tsx", "Cronograma integrado do estudo"],
+  ["Calendar.tsx", "Cronograma de Entregas dos Documentos"],
   ["Homologacao.tsx", "Homologação dos Capítulos"],
   ["Administration.tsx", "Administração da plataforma"],
 ] as const;

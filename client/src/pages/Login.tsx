@@ -170,10 +170,10 @@ export default function LoginPage() {
             </span>
           </div>
           <h1 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Portal de Gestão do Estudo
+            Portal de Gestão de Documentos do Estudo
           </h1>
           <p className="text-xs text-muted-foreground md:text-sm">
-            Acesso restrito e exclusivo aos pesquisadores e membros autorizados da equipe.
+            Acesso restrito e exclusivo aos coordenadores, pesquisadores e membros autorizados da equipe.
           </p>
         </header>
 

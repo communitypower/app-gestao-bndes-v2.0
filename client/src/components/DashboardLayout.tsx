@@ -110,8 +110,8 @@ export default function DashboardLayout({
         <div className="flex items-center p-8 md:p-14 lg:p-16">
           <div className="technical-panel w-full max-w-lg border-t-4 border-t-primary p-7 md:p-9">
             <p className="editorial-kicker text-primary">Acesso reservado</p>
-            <h2 className="font-display mt-4 text-4xl font-semibold tracking-[-.035em]">Plataforma de gestão do estudo</h2>
-            <p className="mt-4 text-sm leading-6 text-muted-foreground">Acesso ao cronograma, às atividades, às referências e às revisões.</p>
+            <h2 className="font-display mt-4 text-4xl font-semibold tracking-[-.035em]">Plataforma de gestão de documentos do estudo</h2>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">Acesso ao controle documental, envio de minutas, revisões e cronograma de entregas.</p>
           <Button
             onClick={() => startLogin()}
             size="lg"
@@ -262,7 +262,7 @@ function DashboardLayoutContent({
               {!isCollapsed ? (
                 <div className="min-w-0 pt-0.5">
                   <span className="editorial-kicker block text-sidebar-primary">BNDES · FEP</span>
-                  <span className="mt-2 block text-sm font-semibold leading-none text-sidebar-foreground">Estudo da Indústria Naval</span>
+                  <span className="mt-2 block text-sm font-semibold leading-none text-sidebar-foreground">Gestão de Documentos</span>
                 </div>
               ) : null}
             </div>
