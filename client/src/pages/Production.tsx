@@ -15,6 +15,7 @@ import {
   WORKFLOW_STAGES,
   type WorkflowStage,
 } from "@/components/DocumentationWorkflowStepper";
+import { ActivityDetailDialog } from "@/components/ActivityDetailDialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -146,6 +147,7 @@ export default function ProductionPage() {
   const registerDecision = trpc.production.reviewDecision.useMutation();
   const consolidateInChapter = trpc.production.consolidateInChapter.useMutation();
 
+  const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [revisionMaterialId, setRevisionMaterialId] = useState<number | null>(null);
   const [detailMaterialId, setDetailMaterialId] = useState<number | null>(null);
@@ -716,11 +718,13 @@ export default function ProductionPage() {
                     </Button>
                   )}
                   {item.activityId && (
-                    <Link href={`/atividades?ficha=${item.activityId}`}>
-                      <Button variant="outline" className="rounded-md">
-                        <FileText className="mr-1.5 h-4 w-4 text-primary" /> Ficha da Atividade
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="outline"
+                      className="rounded-md cursor-pointer"
+                      onClick={() => setSelectedActivityId(item.activityId)}
+                    >
+                      <FileText className="mr-1.5 h-4 w-4 text-primary" /> Ficha da Atividade
+                    </Button>
                   )}
                   {!item.activityId && access.isAdmin && (
                     <Select
@@ -1451,6 +1455,13 @@ export default function ProductionPage() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Ficha da Atividade Unificada com Fluxo Documental */}
+      <ActivityDetailDialog
+        activityId={selectedActivityId}
+        onOpenChange={open => !open && setSelectedActivityId(null)}
+        isAdmin={Boolean(access?.isAdmin)}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   SectionMark,
   StatusBadge,
 } from "@/components/EditorialUI";
+import { ActivityDetailDialog } from "@/components/ActivityDetailDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +43,7 @@ import {
   ExternalLink,
   Eye,
   FileDown,
+  FileText,
   Filter,
   Flag,
   ImageDown,
@@ -821,6 +823,9 @@ function MonthDeliverablesDialog({
 function CalendarContent() {
   const { data, isLoading } = trpc.activities.list.useQuery();
   const { data: overview } = trpc.dashboard.overview.useQuery();
+  const { data: access } = trpc.administration?.status?.useQuery
+    ? trpc.administration.status.useQuery()
+    : ({ data: null } as any);
   const [tome, setTome] = useState("todos");
   const [group, setGroup] = useState("todos");
   const [functionalResponsible, setFunctionalResponsible] = useState("todos");
@@ -829,8 +834,16 @@ function CalendarContent() {
   const [startFilter, setStartFilter] = useState("");
   const [endFilter, setEndFilter] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedDetailId, setSelectedDetailId] = useState<number | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);
   const [exporting, setExporting] = useState<"image" | "pdf" | null>(null);
+
+  // Pre-selecionar automaticamente o grupo do coordenador/pesquisador conectado
+  useEffect(() => {
+    if (access?.teamMembership?.groupName && !access.isAdmin && !access.isGeneralCoordinator) {
+      setGroup(access.teamMembership.groupName);
+    }
+  }, [access?.teamMembership?.groupName, access?.isAdmin, access?.isGeneralCoordinator]);
 
   // Month dialog state
   const [selectedMonthIndex, setSelectedMonthIndex] = useState<number | null>(null);
@@ -1773,18 +1786,30 @@ function CalendarContent() {
                                     </div>
                                   </div>
 
-                                  <div className="mt-2.5 flex items-center justify-between gap-2">
+                                  <div className="mt-2.5 flex items-center justify-between gap-1.5">
                                     <Badge variant="outline" className="text-[10px]">
                                       {item.status}
                                     </Badge>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-7 text-xs rounded-md"
-                                      onClick={() => setSelectedId(item.id)}
-                                    >
-                                      <CalendarClock className="mr-1 h-3 w-3" /> Período
-                                    </Button>
+                                    <div className="flex items-center gap-1">
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs rounded-md cursor-pointer"
+                                        onClick={() => setSelectedDetailId(item.id)}
+                                        title="Abrir Ficha da Atividade e Fluxo Documental"
+                                      >
+                                        <FileText className="mr-1 h-3 w-3 text-primary" /> Ficha da Atividade
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-7 text-xs rounded-md cursor-pointer text-muted-foreground"
+                                        onClick={() => setSelectedId(item.id)}
+                                        title="Definir período e marcos"
+                                      >
+                                        <CalendarClock className="mr-1 h-3 w-3" /> Período
+                                      </Button>
+                                    </div>
                                   </div>
                                 </article>
                               ))}
@@ -1815,12 +1840,19 @@ function CalendarContent() {
         onOpenChange={open => !open && setSelectedMonthIndex(null)}
         onSelectActivity={id => {
           setSelectedMonthIndex(null);
-          setSelectedId(id);
+          setSelectedDetailId(id);
         }}
       />
 
       {/* Diálogo de Edição de Período e Marcos */}
       <ScheduleDialog activityId={selectedId} onOpenChange={open => !open && setSelectedId(null)} />
+
+      {/* Ficha da Atividade Unificada com Fluxo Documental */}
+      <ActivityDetailDialog
+        activityId={selectedDetailId}
+        onOpenChange={open => !open && setSelectedDetailId(null)}
+        isAdmin={Boolean(access?.isAdmin)}
+      />
     </div>
   );
 }
