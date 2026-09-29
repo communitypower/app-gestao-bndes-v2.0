@@ -1,13 +1,14 @@
 import React from "react";
-import { CheckCircle2, CircleDot, Clock, FileEdit, FileCheck2, Send, AlertCircle, ArrowRight } from "lucide-react";
+import { CheckCircle2, CircleDot, Clock, FileEdit, FileCheck2, Send, AlertCircle, ArrowRight, UserCheck, ShieldCheck, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type WorkflowStage =
   | "minuta"
-  | "revisao"
-  | "ajustes"
-  | "reavaliacao"
-  | "remissao"
+  | "indicacao_revisor"
+  | "revisao_apontamentos"
+  | "implementacao_ajustes"
+  | "aprovacao_revisor"
+  | "homologacao_geral"
   | "concluido";
 
 export interface WorkflowStageInfo {
@@ -23,61 +24,67 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   {
     key: "minuta",
     label: "1. Minuta Inicial",
-    shortLabel: "Minuta",
-    role: "Autor / Executor",
-    description: "Elaboração da minuta técnica e carga do arquivo no portal.",
+    shortLabel: "1. Minuta",
+    role: "Autor / Grupo",
+    description: "Elaboração e upload da minuta inicial no sistema (R01).",
     criteria: [
-      "Minuta carregada no repositório",
-      "Mapeamento de escopo Anexo B",
-      "Séries temporais e dados estruturados",
+      "Minuta carregada no sistema",
+      "Mapeamento do escopo do Anexo B",
     ],
   },
   {
-    key: "revisao",
-    label: "2. Revisão Técnica",
-    shortLabel: "Revisão",
+    key: "indicacao_revisor",
+    label: "2. Indicação de Revisor",
+    shortLabel: "2. Revisor",
+    role: "Prof. Floriano (Coord. Geral)",
+    description: "O Prof. Floriano indica o revisor técnico independente.",
+    criteria: [
+      "Revisor independente indicado",
+      "Revisor notificado no sistema",
+    ],
+  },
+  {
+    key: "revisao_apontamentos",
+    label: "3. Revisão & Apontamentos",
+    shortLabel: "3. Apontamentos",
     role: "Revisor Técnico",
-    description: "Análise técnica detalhada e registro de apontamentos.",
+    description: "Análise técnica detalhada e registro de comentários e apontamentos.",
     criteria: [
-      "Checklist de 5 itens preenchido",
-      "Apontamentos técnicos registrados",
-      "Conformidade metodológica avaliada",
+      "Análise técnica realizada",
+      "Comentários e apontamentos registrados",
     ],
   },
   {
-    key: "ajustes",
-    label: "3. Ajustes do Autor",
-    shortLabel: "Ajustes",
-    role: "Autor / Executor",
-    description: "Implementação das alterações e documentação das respostas.",
+    key: "implementacao_ajustes",
+    label: "4. Implementação de Ajustes",
+    shortLabel: "4. Ajustes",
+    role: "Autor / Grupo",
+    description: "Implementação dos comentários pelo autor e envio de nova versão (R02...).",
     criteria: [
-      "Respostas aos apontamentos do revisor",
-      "Nova versão do documento carregada",
-      "Rastreabilidade de revisões garantida",
+      "Atendimento aos comentários do revisor",
+      "Upload da nova versão revisada",
     ],
   },
   {
-    key: "reavaliacao",
-    label: "4. Validação & Parecer",
-    shortLabel: "Parecer",
+    key: "aprovacao_revisor",
+    label: "5. Aprovação Técnica",
+    shortLabel: "5. Aprovação",
     role: "Revisor Técnico",
-    description: "Verificação dos apontamentos atendidos e emissão de parecer favorável.",
+    description: "Validação do atendimento aos comentários e aprovação técnica.",
     criteria: [
-      "100% dos apontamentos resolvidos",
-      "Parecer técnico estruturado emitido",
-      "Veredito 'Aprovado' ou 'Aprovado com Ressalvas'",
+      "Validação das respostas do autor",
+      "Emissão de parecer favorável / aprovação",
     ],
   },
   {
-    key: "remissao",
-    label: "5. Remissão de Capítulo",
-    shortLabel: "Remissão",
-    role: "Coordenador de Capítulo",
-    description: "Consolidação e homologação editorial no capítulo e tomo.",
+    key: "homologacao_geral",
+    label: "6. Homologação do Capítulo",
+    shortLabel: "6. Homologação",
+    role: "Coordenação Geral",
+    description: "Homologação final pela Coordenação Geral e consolidação no Tomo.",
     criteria: [
-      "Consolidação no tomo/capítulo",
-      "Homologação pelo Coordenador de Capítulo",
-      "Liberação para documentação final",
+      "Homologação formal pela Coordenação Geral",
+      "Consolidação no Tomo oficial do Estudo",
     ],
   },
 ];
@@ -87,7 +94,9 @@ export function getWorkflowStage(
   reviewStatus?: string | null,
   pendingCommentCount = 0,
   hasSubmissions = false,
-  allApproved = false
+  allApproved = false,
+  hasReviewers = false,
+  implementedCommentCount = 0
 ): WorkflowStage {
   if (
     documentStatus === "consolidada no capítulo" ||
@@ -98,29 +107,46 @@ export function getWorkflowStage(
     return "concluido";
   }
 
-  if (documentStatus === "revisada pela seção" || allApproved) {
-    return "remissao";
+  // Passo 6: Homologação do Capítulo (Coordenação Geral)
+  if (documentStatus === "revisada pela seção" || allApproved || reviewStatus === "aprovado") {
+    return "homologacao_geral";
   }
 
-  if (documentStatus === "ajustes solicitados" || reviewStatus === "em elaboração" && pendingCommentCount > 0) {
-    return "ajustes";
-  }
-
+  // Passo 5: Aprovação Técnica (Revisor Técnico)
   if (
-    documentStatus === "submetida à revisão da seção" ||
-    documentStatus === "em revisão da seção" ||
-    reviewStatus === "em revisão"
+    (documentStatus === "submetida à revisão da seção" || documentStatus === "em revisão da seção" || reviewStatus === "em revisão") &&
+    implementedCommentCount > 0
   ) {
-    if (pendingCommentCount > 0) {
-      return "reavaliacao";
+    return "aprovacao_revisor";
+  }
+
+  // Passo 4: Implementação dos Comentários (Autor / Grupo)
+  if (
+    documentStatus === "ajustes solicitados" ||
+    (reviewStatus === "em elaboração" && pendingCommentCount > 0) ||
+    pendingCommentCount > 0
+  ) {
+    return "implementacao_ajustes";
+  }
+
+  // Passo 3: Revisão & Apontamentos (Revisor Técnico)
+  if (
+    hasReviewers &&
+    (documentStatus === "submetida à revisão da seção" ||
+      documentStatus === "em revisão da seção" ||
+      reviewStatus === "em revisão")
+  ) {
+    return "revisao_apontamentos";
+  }
+
+  // Passo 2: Indicação de Revisor pelo Prof. Floriano
+  if (hasSubmissions || reviewStatus === "em elaboração" || documentStatus === "submetida à revisão da seção") {
+    if (!hasReviewers) {
+      return "indicacao_revisor";
     }
-    return "revisao";
   }
 
-  if (documentStatus === "em elaboração" || hasSubmissions) {
-    return "minuta";
-  }
-
+  // Passo 1: Minuta Inicial (Autor / Grupo)
   return "minuta";
 }
 
@@ -147,11 +173,12 @@ export function DocumentationWorkflowStepper({
 }: DocumentationWorkflowStepperProps) {
   const stageOrder: Record<WorkflowStage, number> = {
     minuta: 1,
-    revisao: 2,
-    ajustes: 3,
-    reavaliacao: 4,
-    remissao: 5,
-    concluido: 6,
+    indicacao_revisor: 2,
+    revisao_apontamentos: 3,
+    implementacao_ajustes: 4,
+    aprovacao_revisor: 5,
+    homologacao_geral: 6,
+    concluido: 7,
   };
 
   const currentIndex = stageOrder[currentStage] ?? 1;
@@ -199,29 +226,29 @@ export function DocumentationWorkflowStepper({
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
         <div>
           <span className="editorial-kicker text-primary font-semibold">
-            Ciclo de Produção & Revisão Editorial
+            Fluxo Oficial de Gestão de Documentos
           </span>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Fluxo iterativo do autor aos revisores até a resolução completa dos apontamentos e remissão.
+            Minuta inicial do autor → Indicação de revisor pelo Prof. Floriano → Comentários do revisor → Implementação pelo autor → Aprovação do revisor → Homologação pela Coordenação Geral.
           </p>
         </div>
 
         {(openCommentCount > 0 || implementedCommentCount > 0 || resolvedCommentCount > 0) && (
           <div className="flex items-center gap-2 text-xs">
             <span className="rounded bg-amber-500/10 px-2 py-0.5 font-medium text-amber-700 dark:text-amber-300">
-              {openCommentCount} aberto(s)
+              {openCommentCount} comentário(s) aberto(s)
             </span>
             <span className="rounded bg-sky-500/10 px-2 py-0.5 font-medium text-sky-700 dark:text-sky-300">
               {implementedCommentCount} implementado(s)
             </span>
             <span className="rounded bg-emerald-500/10 px-2 py-0.5 font-medium text-emerald-700 dark:text-emerald-300">
-              {resolvedCommentCount} resolvido(s)
+              {resolvedCommentCount} aprovado(s)
             </span>
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6">
         {WORKFLOW_STAGES.map((stage, idx) => {
           const stepNum = idx + 1;
           const isCurrent = currentStage === stage.key;
@@ -251,7 +278,7 @@ export function DocumentationWorkflowStepper({
                     ) : (
                       <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                     )}
-                    Etapa 0{stepNum}
+                    Passo 0{stepNum}
                   </span>
                   {isCurrent && (
                     <span className="rounded-full bg-primary px-1.5 py-0.2 text-[9px] font-bold uppercase tracking-wider text-primary-foreground">
@@ -268,14 +295,14 @@ export function DocumentationWorkflowStepper({
                   {stage.role}
                 </p>
 
-                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-2">
+                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-3">
                   {stage.description}
                 </p>
 
                 {showCriteria && stage.criteria && stage.criteria.length > 0 && (
                   <div className="mt-2.5 pt-2 border-t border-border/50 space-y-1">
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Critérios de Etapa:
+                      Critérios:
                     </p>
                     <ul className="space-y-0.5">
                       {stage.criteria.map((crit, cIdx) => (

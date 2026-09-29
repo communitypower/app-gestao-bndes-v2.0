@@ -45,13 +45,12 @@ export interface ParticipantAction {
   sectionCode?: string | null;
   activityTitle: string;
   dueAt: number | null;
-  role: "executor" | "revisor" | "coordenador" | "interfaces";
+  role: "executor" | "revisor" | "coordenador";
   actionType: string;
   actionTitle: string;
   actionDescription: string;
   ctaLabel: string;
   ctaTarget: string;
-  interfaceId?: number;
   pendingCommentCount?: number;
   responsibleName?: string | null;
   responsibleGroupName?: string | null;
@@ -65,7 +64,7 @@ export interface ParticipantActionCenterProps {
   defaultLayout?: LayoutMode;
 }
 
-type RoleFilter = "todos" | "executor" | "revisor" | "coordenador" | "interfaces";
+type RoleFilter = "todos" | "executor" | "revisor" | "coordenador";
 type LayoutMode = "caixas" | "cronologico";
 
 export interface MonthGroupInfo {
@@ -229,7 +228,7 @@ export function ParticipantActionCenter({
         map.set(info.key, {
           info,
           totalCount: 0,
-          roleCounts: { todos: 0, executor: 0, revisor: 0, coordenador: 0, interfaces: 0 },
+          roleCounts: { todos: 0, executor: 0, revisor: 0, coordenador: 0 },
         });
       }
       const entry = map.get(info.key)!;
@@ -270,31 +269,21 @@ export function ParticipantActionCenter({
     });
   }, [allActions, selectedRole, selectedMonths]);
 
-  // 3. Caixas de Trabalho Categorizadas (Elaboração, Ajustes, Em Análise, Homologação, Interfaces)
+  // 3. Caixas de Trabalho Categorizadas nos 6 passos do fluxo documental
   const actionBoxes = useMemo(() => {
-    const isAjustes = (a: ParticipantAction) =>
-      a.actionType === "ajustes_a_fazer" || a.actionType === "ajustes_solicitados";
-    const isInterfaces = (a: ParticipantAction) =>
-      a.role === "interfaces" || a.actionType.startsWith("interface");
-    const isRevisao = (a: ParticipantAction) =>
-      !isAjustes(a) && !isInterfaces(a) &&
-      (a.actionType === "revisao_pendente" || a.actionType === "validacao_ajustes" || a.role === "revisor");
-    const isHomologacao = (a: ParticipantAction) =>
-      !isAjustes(a) && !isInterfaces(a) && !isRevisao(a) &&
-      (a.actionType === "homologar_capitulo" || a.actionType === "sem_revisores");
-    const isElaboracao = (a: ParticipantAction) =>
-      !isAjustes(a) && !isInterfaces(a) && !isRevisao(a) && !isHomologacao(a);
-
-    const elaboracao = filteredActions.filter(isElaboracao);
-    const ajustes = filteredActions.filter(isAjustes);
-    const revisao = filteredActions.filter(isRevisao);
-    const homologacao = filteredActions.filter(isHomologacao);
-    const interfaces = filteredActions.filter(isInterfaces);
+    const elaboracao = filteredActions.filter(a => a.actionType === "minuta_pendente");
+    const indicacaoRevisores = filteredActions.filter(a => a.actionType === "sem_revisores");
+    const revisao = filteredActions.filter(a => a.actionType === "revisao_pendente");
+    const ajustes = filteredActions.filter(
+      a => a.actionType === "ajustes_a_fazer" || a.actionType === "ajustes_solicitados"
+    );
+    const validacao = filteredActions.filter(a => a.actionType === "validacao_ajustes");
+    const homologacao = filteredActions.filter(a => a.actionType === "homologar_capitulo");
 
     return [
       {
         id: "box_elaboracao",
-        title: "Minutas Iniciais a Elaborar / Subir",
+        title: "1. Minutas Iniciais a Elaborar / Subir",
         icon: FileEdit,
         badgeColor: "bg-emerald-600 text-white",
         borderColor: "border-emerald-500/30",
@@ -302,62 +291,70 @@ export function ParticipantActionCenter({
         count: elaboracao.length,
         actions: elaboracao,
         emptyText: "Nenhuma minuta inicial pendente de elaboração ou envio.",
-        description: "Atividades em fase de redação que necessitam do envio da versão inicial R01.",
+        description: "Passo 1: Atividades em fase de redação que necessitam do envio da versão inicial R01.",
+      },
+      {
+        id: "box_indicacao_revisores",
+        title: "2. Indicação de Revisores Pendente (Prof. Floriano)",
+        icon: Users,
+        badgeColor: "bg-amber-600 text-white",
+        borderColor: "border-amber-500/30",
+        headerBg: "bg-amber-500/5",
+        count: indicacaoRevisores.length,
+        actions: indicacaoRevisores,
+        emptyText: "Todas as seções possuem revisor técnico indicado pelo Prof. Floriano.",
+        description: "Passo 2: Designação exclusiva da Coordenação Geral (Prof. Floriano) para apontar o revisor independente.",
+      },
+      {
+        id: "box_revisao",
+        title: "3. Revisão Técnica & Registro de Comentários",
+        icon: UserCheck,
+        badgeColor: "bg-blue-600 text-white",
+        borderColor: "border-blue-500/30",
+        headerBg: "bg-blue-500/5",
+        count: revisao.length,
+        actions: revisao,
+        emptyText: "Nenhuma minuta aguardando primeira análise técnica no momento.",
+        description: "Passo 3: Minutas entregues que aguardam leitura crítica e apontamentos do revisor indicado.",
       },
       {
         id: "box_ajustes",
-        title: "Ajustes Solicitados pela Coordenação",
+        title: "4. Implementação de Ajustes pelo Autor",
         icon: AlertCircle,
         badgeColor: "bg-rose-600 text-white",
         borderColor: "border-rose-500/30",
         headerBg: "bg-rose-500/5",
         count: ajustes.length,
         actions: ajustes,
-        emptyText: "Nenhum apontamento pendente de ajuste.",
-        description: "Seções com comentários formais e solicitação de alterações devolvidas pela Coordenação Geral.",
+        emptyText: "Nenhum apontamento pendente de ajuste pelos autores.",
+        description: "Passo 4: Seções devolvidas com comentários do revisor para atendimento e envio de nova revisão (R02+).",
       },
       {
-        id: "box_revisao",
-        title: "Em Análise & Pareceres Técnicos",
-        icon: UserCheck,
-        badgeColor: "bg-amber-600 text-white",
-        borderColor: "border-amber-500/30",
-        headerBg: "bg-amber-500/5",
-        count: revisao.length,
-        actions: revisao,
-        emptyText: "Nenhuma minuta aguardando parecer técnico no momento.",
-        description: "Minutas entregues que aguardam validação de apontamentos ou emissão de parecer editorial.",
+        id: "box_validacao",
+        title: "5. Validação de Ajustes & Aprovação do Revisor",
+        icon: FileCheck2,
+        badgeColor: "bg-purple-600 text-white",
+        borderColor: "border-purple-500/30",
+        headerBg: "bg-purple-500/5",
+        count: validacao.length,
+        actions: validacao,
+        emptyText: "Nenhuma alteração aguardando validação pelo revisor técnico.",
+        description: "Passo 5: Retorno ao revisor técnico para validação das alterações e emissão de parecer de aprovação.",
       },
       {
         id: "box_homologacao",
-        title: "Homologação & Consolidação no Capítulo",
-        icon: Users,
+        title: "6. Homologação & Consolidação no Tomo (Coord. Geral)",
+        icon: CheckCircle2,
         badgeColor: "bg-sky-600 text-white",
         borderColor: "border-sky-500/30",
         headerBg: "bg-sky-500/5",
         count: homologacao.length,
         actions: homologacao,
-        emptyText: "Nenhuma seção aguardando homologação ou consolidação.",
-        description: "Seções aprovadas na revisão editorial prontas para consolidação definitiva no capítulo do Tomo.",
+        emptyText: "Nenhuma seção aprovada aguardando homologação final.",
+        description: "Passo 6: Seções aprovadas prontas para homologação pela Coordenação Geral e consolidação no Tomo.",
       },
-      ...(interfaces.length > 0 || selectedRole === "interfaces"
-        ? [
-            {
-              id: "box_interfaces",
-              title: "Interfaces Interdisciplinares",
-              icon: GitMerge,
-              badgeColor: "bg-teal-600 text-white",
-              borderColor: "border-teal-500/30",
-              headerBg: "bg-teal-500/5",
-              count: interfaces.length,
-              actions: interfaces,
-              emptyText: "Nenhuma interface interdisciplinar aberta.",
-              description: "Mapeamento de insumos metodológicos e trocas interdisciplinares entre frentes de pesquisa.",
-            },
-          ]
-        : []),
     ];
-  }, [filteredActions, selectedRole]);
+  }, [filteredActions]);
 
   // 4. Estrutura cronológica em blocos mensais para renderização
   const chronologicalMonthGroups = useMemo(() => {
@@ -391,7 +388,6 @@ export function ParticipantActionCenter({
     executorCount: 0,
     reviewerCount: 0,
     coordinatorCount: 0,
-    interfaceCount: 0,
   };
 
   const monthFilterTriggerLabel = useMemo(() => {
@@ -436,28 +432,21 @@ export function ParticipantActionCenter({
         return (
           <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
             <FileEdit className="h-3 w-3" />
-            Elaboração
+            Autor / Grupo
           </span>
         );
       case "revisor":
         return (
           <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300 border border-amber-500/20">
             <UserCheck className="h-3 w-3" />
-            Revisão Técnica
+            Revisor Técnico
           </span>
         );
       case "coordenador":
         return (
           <span className="inline-flex items-center gap-1 rounded bg-sky-500/10 px-2 py-0.5 text-[11px] font-semibold text-sky-700 dark:text-sky-300 border border-sky-500/20">
             <Users className="h-3 w-3" />
-            Homologação
-          </span>
-        );
-      case "interfaces":
-        return (
-          <span className="inline-flex items-center gap-1 rounded bg-teal-500/10 px-2 py-0.5 text-[11px] font-semibold text-teal-700 dark:text-teal-300 border border-teal-500/20">
-            <GitMerge className="h-3 w-3" />
-            Interface
+            Coord. Geral (Floriano)
           </span>
         );
       default:
@@ -467,47 +456,41 @@ export function ParticipantActionCenter({
 
   const getUrgencyBadge = (actionType: string) => {
     switch (actionType) {
-      case "interface_bloqueante":
+      case "minuta_pendente":
         return (
-          <Badge variant="destructive" className="text-[10px] font-medium h-5 px-1.5">
-            Bloqueante
+          <Badge className="bg-emerald-600 text-white hover:bg-emerald-600 text-[10px] font-medium h-5 px-1.5">
+            1. Minuta Inicial
           </Badge>
         );
-      case "interface_pendente":
+      case "sem_revisores":
         return (
-          <Badge className="bg-teal-600 text-white hover:bg-teal-600 text-[10px] font-medium h-5 px-1.5">
-            Alinhamento
+          <Badge variant="outline" className="border-amber-400 text-amber-700 dark:text-amber-300 text-[10px] font-semibold h-5 px-1.5 bg-amber-50 dark:bg-amber-950/30">
+            2. Indicar Revisor
+          </Badge>
+        );
+      case "revisao_pendente":
+        return (
+          <Badge className="bg-blue-600 text-white hover:bg-blue-600 text-[10px] font-medium h-5 px-1.5">
+            3. Análise Técnica
           </Badge>
         );
       case "ajustes_solicitados":
       case "ajustes_a_fazer":
         return (
           <Badge variant="destructive" className="text-[10px] font-medium h-5 px-1.5">
-            Ajustes Necessários
+            4. Ajustes Necessários
           </Badge>
         );
       case "validacao_ajustes":
         return (
           <Badge className="bg-purple-600/90 text-white hover:bg-purple-600 text-[10px] font-medium h-5 px-1.5">
-            Validar Apontamentos
-          </Badge>
-        );
-      case "revisao_pendente":
-        return (
-          <Badge className="bg-amber-600 text-white hover:bg-amber-600 text-[10px] font-medium h-5 px-1.5">
-            Análise Técnica
-          </Badge>
-        );
-      case "sem_revisores":
-        return (
-          <Badge variant="outline" className="border-amber-400 text-amber-700 dark:text-amber-300 text-[10px] font-medium h-5 px-1.5">
-            Sem Revisores
+            5. Validar Apontamentos
           </Badge>
         );
       case "homologar_capitulo":
         return (
-          <Badge className="bg-teal-600 text-white hover:bg-teal-600 text-[10px] font-medium h-5 px-1.5">
-            Pronto p/ Homologação
+          <Badge className="bg-sky-600 text-white hover:bg-sky-600 text-[10px] font-medium h-5 px-1.5">
+            6. Homologação Geral
           </Badge>
         );
       default:
@@ -520,10 +503,6 @@ export function ParticipantActionCenter({
   };
 
   const handleCtaClick = (action: ParticipantAction) => {
-    if (action.role === "interfaces") {
-      window.location.href = `/interfaces${action.interfaceId ? `?interfaceId=${action.interfaceId}` : ""}`;
-      return;
-    }
     if (action.actionType === "sem_revisores" && onAssignReviewers) {
       onAssignReviewers(action.activityId);
       return;
@@ -600,12 +579,6 @@ export function ParticipantActionCenter({
                   <span className="inline-flex items-center gap-1 text-sky-700 dark:text-sky-300">
                     <FileText className="h-3 w-3" />
                     Material #{action.materialId}
-                  </span>
-                )}
-                {action.interfaceId && (
-                  <span className="inline-flex items-center gap-1 text-teal-700 dark:text-teal-300">
-                    <GitMerge className="h-3 w-3" />
-                    Interface #{action.interfaceId}
                   </span>
                 )}
               </div>
@@ -931,7 +904,7 @@ export function ParticipantActionCenter({
                 : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
-            📝 Elaboração ({summary.executorCount})
+            📝 Autor / Grupo ({summary.executorCount})
           </button>
           <button
             type="button"
@@ -942,7 +915,7 @@ export function ParticipantActionCenter({
                 : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
-            🏛️ Homologação ({summary.coordinatorCount})
+            🏛️ Coord. Geral ({summary.coordinatorCount})
           </button>
           {summary.reviewerCount > 0 && (
             <button
@@ -954,22 +927,9 @@ export function ParticipantActionCenter({
                   : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              🔍 Revisão Técnica ({summary.reviewerCount})
+              🔍 Revisor Técnico ({summary.reviewerCount})
             </button>
           )}
-          {summary.interfaceCount && summary.interfaceCount > 0 ? (
-            <button
-              type="button"
-              onClick={() => setSelectedRole("interfaces")}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-all cursor-pointer ${
-                selectedRole === "interfaces"
-                  ? "bg-teal-600 text-white shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              🔗 Interfaces ({summary.interfaceCount})
-            </button>
-          ) : null}
           <button
             type="button"
             onClick={() => setSelectedRole("todos")}

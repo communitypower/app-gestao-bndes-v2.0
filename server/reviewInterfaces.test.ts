@@ -2,6 +2,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrpcContext } from "./_core/context";
 
 const fixtures = vi.hoisted(() => {
+  const floriano = {
+    id: 1,
+    userId: 100,
+    groupId: 1,
+    groupRole: "coordenador" as const,
+    name: "Floriano Carlos Martins Pires Jr.",
+    active: true,
+  };
   const responsible = {
     id: 11,
     userId: 101,
@@ -130,6 +138,7 @@ const fixtures = vi.hoisted(() => {
     updatedAt: new Date(),
   };
   return {
+    floriano,
     responsible,
     otherCoordinator,
     groupParticipant,
@@ -239,6 +248,7 @@ beforeEach(() => {
     { id: 9, name: "Grupo Gama", active: true },
   ]);
   dbMocks.listTeamMembers.mockResolvedValue([
+    fixtures.floriano,
     fixtures.responsible,
     fixtures.otherCoordinator,
     fixtures.groupParticipant,
@@ -247,6 +257,7 @@ beforeEach(() => {
     fixtures.outsider,
   ]);
   dbMocks.getTeamMemberByUserId.mockImplementation(async (userId: number) => {
+    if (userId === 100) return fixtures.floriano;
     if (userId === 101) return fixtures.responsible;
     if (userId === 102) return fixtures.otherCoordinator;
     if (userId === 103) return fixtures.groupParticipant;
@@ -259,22 +270,26 @@ beforeEach(() => {
 });
 
 describe("alocação de revisores por atividade", () => {
-  it("permite ao administrador e ao coordenador responsável atualizar revisores", async () => {
+  it("permite ao administrador e ao Prof. Floriano (Coordenação Geral) atualizar revisores", async () => {
     const admin = appRouter.createCaller(context(1, "admin"));
-    const coordinator = appRouter.createCaller(context(101));
+    const floriano = appRouter.createCaller(context(100));
 
     await expect(
       admin.activities.updateReviewers({ id: 21, reviewerIds: [14] })
     ).resolves.toMatchObject({ id: 21 });
     await expect(
-      coordinator.activities.updateReviewers({ id: 21, reviewerIds: [14] })
+      floriano.activities.updateReviewers({ id: 21, reviewerIds: [14] })
     ).resolves.toMatchObject({ id: 21 });
   });
 
-  it("bloqueia coordenador alheio e participante do grupo responsável", async () => {
+  it("bloqueia coordenador de grupo e participante regular de indicar revisores", async () => {
+    const coordinator = appRouter.createCaller(context(101));
     const other = appRouter.createCaller(context(102));
     const participant = appRouter.createCaller(context(103));
 
+    await expect(
+      coordinator.activities.updateReviewers({ id: 21, reviewerIds: [14] })
+    ).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(
       other.activities.updateReviewers({ id: 21, reviewerIds: [14] })
     ).rejects.toMatchObject({ code: "FORBIDDEN" });

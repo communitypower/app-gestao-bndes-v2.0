@@ -31,8 +31,10 @@ import {
   assertCanViewActivity,
   assertCanManageActivityAllocations,
   assertCanManageActivityReview,
+  assertCanManageActivityChecklist,
   canManageActivityAllocations,
   isAdministrator,
+  isGeneralCoordinator,
   isGeneralCoordinatorOrAdmin,
 } from "../access";
 import { protectedProcedure, router } from "../_core/trpc";
@@ -549,17 +551,16 @@ export const activitiesRouter = router({
     .query(async ({ ctx, input }) => {
       await ensureSeedData();
       const viewMode = input?.viewMode ?? "my_actions";
-      const [allActivities, currentMember, allMembers, allGroups, materials, interfaces] = await Promise.all([
+      const [allActivities, currentMember, allMembers, allGroups, materials] = await Promise.all([
         listActivities(),
         getTeamMemberByUserId(ctx.user.id),
         listTeamMembers(),
         listTeamGroups(),
         listProductionMaterials(),
-        listCoordinationInterfaces(),
       ]);
 
       const isAdmin = isAdministrator(ctx.user);
-      const isGeneralCoord = isAdmin || Boolean(currentMember?.groupName?.includes("G1")) || currentMember?.groupRole === "coordenador";
+      const isGeneralCoord = isAdmin || isGeneralCoordinator(ctx.user, currentMember);
 
       const member = (input?.memberId && (isAdmin || isGeneralCoord))
         ? allMembers.find((m: any) => m.id === input.memberId) ?? currentMember
@@ -579,26 +580,23 @@ export const activitiesRouter = router({
         sectionCode: string;
         activityTitle: string;
         dueAt: number;
-        role: "executor" | "revisor" | "coordenador" | "interfaces";
+        role: "executor" | "revisor" | "coordenador";
         actionType:
           | "minuta_pendente"
           | "ajustes_a_fazer"
           | "revisao_pendente"
           | "validacao_ajustes"
           | "sem_revisores"
-          | "homologar_capitulo"
-          | "interface_pendente"
-          | "interface_bloqueante";
+          | "homologar_capitulo";
         actionTitle: string;
         actionDescription: string;
         ctaLabel: string;
-        ctaTarget: "drawer" | "revisao" | "interface";
-        interfaceId?: number;
+        ctaTarget: "drawer" | "revisao";
         pendingCommentCount?: number;
         responsibleName?: string | null;
         responsibleGroupName?: string | null;
         tome?: string | null;
-        statusCategory?: "elaboracao" | "ajustes" | "em_revisao" | "homologacao" | "interfaces";
+        statusCategory?: "elaboracao" | "indicacao_revisor" | "revisao" | "ajustes" | "homologacao";
       };
 
       const actions: WorkloadActionItem[] = [];
@@ -618,7 +616,7 @@ export const activitiesRouter = router({
           ? "Tomo III"
           : null;
 
-        // Responsável pela Elaboração (Coordenador de capítulo ou autor líder designado)
+        // Responsável pela Elaboração (Coordenador do grupo ou autor líder designado)
         const isExecutor = Boolean(
           isAllPendingMode ||
             (member &&
@@ -633,15 +631,14 @@ export const activitiesRouter = router({
             (member && activity.reviewers.some((r: any) => r.teamMemberId === member.id))
         );
 
-        // Coordenação / Homologação
-        const isCoordinator = Boolean(
+        // Coordenação Geral (Prof. Floriano / Admin)
+        const isCoordGeral = Boolean(
           isAllPendingMode ||
-            (member && member.id === activity.responsibleId) ||
-            (member && member.groupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador") ||
-            (isAdmin && isAllPendingMode)
+            isAdmin ||
+            (member && isGeneralCoordinator(ctx.user, member))
         );
 
-        // 1. FLUXO DE ELABORAÇÃO E CARGA DE MINUTA (Autor / Coordenador do Capítulo)
+        // PASSO 1: MINUTA INICIAL (Autor / Grupo)
         if (isExecutor) {
           if (
             !material ||
@@ -657,21 +654,104 @@ export const activitiesRouter = router({
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "minuta_pendente",
-              actionTitle: "Minuta Técnica Pendente de Envio",
+              actionTitle: "Minuta Técnica Inicial a Elaborar / Subir",
               actionDescription:
-                "Esta atividade está em fase de elaboração. Anexe o documento técnico intermediário na Ficha e submeta à revisão da seção.",
-              ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial",
+                "Esta atividade está em fase de elaboração. Realize a redação da minuta inicial (R01) e faça o upload no sistema para a Coordenação Geral.",
+              ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial (R01)",
               ctaTarget: material ? "revisao" : "drawer",
               responsibleName,
               responsibleGroupName: groupName,
               tome,
               statusCategory: "elaboracao",
             });
-          } else if (
+          }
+        }
+
+        // PASSO 2: INDICAÇÃO DE REVISOR (Prof. Floriano - Coordenação Geral)
+        if (isCoordGeral) {
+          if (activity.reviewers.length === 0) {
+            actions.push({
+              id: `coord_sem_revisores_${activity.id}`,
+              activityId: activity.id,
+              materialId: material?.id ?? null,
+              sectionCode: activity.sectionCode,
+              activityTitle: activity.title,
+              dueAt: activity.dueAt,
+              role: "coordenador",
+              actionType: "sem_revisores",
+              actionTitle: "Indicar Revisor Técnico Independente (Prof. Floriano)",
+              actionDescription:
+                "O Prof. Floriano deve indicar o revisor técnico independente para esta seção para que a revisão técnica possa ser iniciada.",
+              ctaLabel: "Indicar Revisor",
+              ctaTarget: "drawer",
+              responsibleName,
+              responsibleGroupName: groupName,
+              tome,
+              statusCategory: "indicacao_revisor",
+            });
+          }
+        }
+
+        // PASSO 3 & 5: REVISÃO TÉCNICA E APROVAÇÃO (Revisor Técnico Designado)
+        if (isReviewer && (!isExecutor || isAllPendingMode)) {
+          if (
+            activity.documentStatus === "submetida à revisão da seção" ||
+            activity.documentStatus === "em revisão da seção" ||
+            material?.reviewStatus === "em revisão"
+          ) {
+            if (material && material.implementedCommentCount > 0) {
+              // PASSO 5: Aprovação Técnica
+              actions.push({
+                id: `revisor_validacao_${activity.id}`,
+                activityId: activity.id,
+                materialId: material.id,
+                sectionCode: activity.sectionCode,
+                activityTitle: activity.title,
+                dueAt: activity.dueAt,
+                role: "revisor",
+                actionType: "validacao_ajustes",
+                actionTitle: "Validar Apontamentos & Aprovação Técnica",
+                actionDescription: `O autor implementou ${material.implementedCommentCount} apontamento(s). Valide as respostas para emitir a aprovação técnica.`,
+                ctaLabel: "Validar & Aprovar",
+                ctaTarget: "revisao",
+                pendingCommentCount: material.implementedCommentCount,
+                responsibleName,
+                responsibleGroupName: groupName,
+                tome,
+                statusCategory: "revisao",
+              });
+            } else {
+              // PASSO 3: Revisão & Apontamentos
+              actions.push({
+                id: `revisor_analise_${activity.id}`,
+                activityId: activity.id,
+                materialId: material?.id ?? null,
+                sectionCode: activity.sectionCode,
+                activityTitle: activity.title,
+                dueAt: activity.dueAt,
+                role: "revisor",
+                actionType: "revisao_pendente",
+                actionTitle: "Análise Técnica & Registro de Apontamentos",
+                actionDescription:
+                  "Uma nova minuta foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.",
+                ctaLabel: "Realizar Análise Técnica",
+                ctaTarget: "revisao",
+                responsibleName,
+                responsibleGroupName: groupName,
+                tome,
+                statusCategory: "revisao",
+              });
+            }
+          }
+        }
+
+        // PASSO 4: IMPLEMENTAÇÃO DOS COMENTÁRIOS (Autor / Grupo)
+        if (isExecutor) {
+          if (
             activity.documentStatus === "ajustes solicitados" ||
             (material &&
               (material.openCommentCount > 0 ||
-                material.reviewStatus === "em elaboração"))
+                material.reviewStatus === "em elaboração" && material.currentRevision > 1))
           ) {
             const openComments = material ? material.openCommentCount : 0;
             actions.push({
@@ -683,7 +763,7 @@ export const activitiesRouter = router({
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "ajustes_a_fazer",
-              actionTitle: "Ajustes Solicitados pelos Revisores",
+              actionTitle: "Implementar Comentários do Revisor",
               actionDescription: `Há ${openComments} apontamento(s) pendente(s) de atendimento. Anexe a nova versão revisada com a nota de implementação.`,
               ctaLabel: "Implementar Ajustes",
               ctaTarget: "revisao",
@@ -696,80 +776,9 @@ export const activitiesRouter = router({
           }
         }
 
-        // 2. FLUXO DE REVISÃO TÉCNICA E PARECER (Revisores Independentes Designados)
-        if (isReviewer && (!isExecutor || isAllPendingMode)) {
+        // PASSO 6: HOMOLOGAÇÃO DO CAPÍTULO (Coordenação Geral — Prof. Floriano)
+        if (isCoordGeral) {
           if (
-            activity.documentStatus === "submetida à revisão da seção" ||
-            activity.documentStatus === "em revisão da seção" ||
-            material?.reviewStatus === "em revisão"
-          ) {
-            if (material && material.implementedCommentCount > 0) {
-              actions.push({
-                id: `revisor_validacao_${activity.id}`,
-                activityId: activity.id,
-                materialId: material.id,
-                sectionCode: activity.sectionCode,
-                activityTitle: activity.title,
-                dueAt: activity.dueAt,
-                role: "revisor",
-                actionType: "validacao_ajustes",
-                actionTitle: "Validar Atendimento de Apontamentos",
-                actionDescription: `O autor implementou ${material.implementedCommentCount} apontamento(s). Valide as respostas para emitir o parecer.`,
-                ctaLabel: "Validar Apontamentos",
-                ctaTarget: "revisao",
-                pendingCommentCount: material.implementedCommentCount,
-                responsibleName,
-                responsibleGroupName: groupName,
-                tome,
-                statusCategory: "em_revisao",
-              });
-            } else {
-              actions.push({
-                id: `revisor_analise_${activity.id}`,
-                activityId: activity.id,
-                materialId: material?.id ?? null,
-                sectionCode: activity.sectionCode,
-                activityTitle: activity.title,
-                dueAt: activity.dueAt,
-                role: "revisor",
-                actionType: "revisao_pendente",
-                actionTitle: "Revisão Técnica Atribuída",
-                actionDescription:
-                  "Uma nova minuta foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.",
-                ctaLabel: "Realizar Análise Técnica",
-                ctaTarget: "revisao",
-                responsibleName,
-                responsibleGroupName: groupName,
-                tome,
-                statusCategory: "em_revisao",
-              });
-            }
-          }
-        }
-
-        // 3. FLUXO DE HOMOLOGAÇÃO E GOVERNANÇA (Coordenador do Capítulo / Admin)
-        if (isCoordinator) {
-          if (activity.reviewers.length === 0) {
-            actions.push({
-              id: `coord_sem_revisores_${activity.id}`,
-              activityId: activity.id,
-              materialId: material?.id ?? null,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
-              dueAt: activity.dueAt,
-              role: "coordenador",
-              actionType: "sem_revisores",
-              actionTitle: "Designar Revisores Técnicos",
-              actionDescription:
-                "Este capítulo ainda não possui revisores independentes indicados para a emissão de parecer.",
-              ctaLabel: "Designar Revisores",
-              ctaTarget: "drawer",
-              responsibleName,
-              responsibleGroupName: groupName,
-              tome,
-              statusCategory: "homologacao",
-            });
-          } else if (
             activity.documentStatus === "revisada pela seção" ||
             material?.reviewStatus === "aprovado"
           ) {
@@ -782,9 +791,9 @@ export const activitiesRouter = router({
               dueAt: activity.dueAt,
               role: "coordenador",
               actionType: "homologar_capitulo",
-              actionTitle: "Homologar e Consolidar no Capítulo",
+              actionTitle: "Homologar Capítulo no Tomo Oficial",
               actionDescription:
-                "A minuta foi aprovada na revisão técnica e está pronta para consolidação editorial no capítulo.",
+                "A minuta foi aprovada na revisão técnica e está pronta para a homologação final pela Coordenação Geral.",
               ctaLabel: "Homologar no Capítulo",
               ctaTarget: "revisao",
               responsibleName,
@@ -793,46 +802,6 @@ export const activitiesRouter = router({
               statusCategory: "homologacao",
             });
           }
-        }
-      }
-
-      // 4. FLUXO DE INTERFACES INTERDISCIPLINARES (Pontos Focais)
-      for (const interf of interfaces) {
-        if (interf.status === "resolvida") continue;
-
-        const isDirectlyResponsible = Boolean(member && interf.responsibleId === member.id);
-        const isGroupInvolved = Boolean(
-          member?.groupId &&
-          interf.groups.some((g: any) => g.groupId === member.groupId && (member.groupRole === "coordenador" || isAllPendingMode))
-        );
-
-        if (isAllPendingMode || isDirectlyResponsible || isGroupInvolved) {
-          const isBlocking = interf.blockingClass === "prioritária" || interf.priority === "crítica" || interf.priority === "alta";
-          const groupsSummary = interf.groups.map((g: any) => g.name).join(" ↔ ") || "Frentes temáticas";
-
-          actions.push({
-            id: `interface_${interf.id}`,
-            activityId: interf.activities[0]?.activityId ?? 0,
-            materialId: null,
-            sectionCode: interf.sections[0]?.code ?? "INTER",
-            activityTitle: interf.title,
-            dueAt: interf.dueAt ?? (Date.now() + 7 * 86400 * 1000),
-            role: "interfaces",
-            actionType: isBlocking ? "interface_bloqueante" : "interface_pendente",
-            actionTitle: isBlocking
-              ? "Interface Crítica Aguardando Alinhamento"
-              : "Interface Interdisciplinar em Aberto",
-            actionDescription: isBlocking
-              ? `Interface prioritária conectando ${groupsSummary}. Alinhe os insumos técnicos para evitar descompassos metodológicos.`
-              : `Interface técnica em discussão envolvendo seu grupo (${groupsSummary}). Registre notas ou confirme alinhamento.`,
-            ctaLabel: isBlocking ? "Resolver Interface" : "Alinhar Interface",
-            ctaTarget: "interface",
-            interfaceId: interf.id,
-            responsibleName: interf.responsibleName ?? null,
-            responsibleGroupName: groupsSummary,
-            tome: null,
-            statusCategory: "interfaces",
-          });
         }
       }
 
@@ -846,14 +815,14 @@ export const activitiesRouter = router({
       const executorActions = actions.filter(a => a.role === "executor");
       const reviewerActions = actions.filter(a => a.role === "revisor");
       const coordinatorActions = actions.filter(a => a.role === "coordenador");
-      const interfaceActions = actions.filter(a => a.role === "interfaces");
 
       const boxes = {
         elaboracao: actions.filter(a => a.actionType === "minuta_pendente"),
+        indicacaoRevisor: actions.filter(a => a.actionType === "sem_revisores"),
+        revisao: actions.filter(a => a.actionType === "revisao_pendente"),
         ajustes: actions.filter(a => a.actionType === "ajustes_a_fazer"),
-        emRevisao: actions.filter(a => a.actionType === "revisao_pendente" || a.actionType === "validacao_ajustes"),
-        homologacao: actions.filter(a => a.actionType === "homologar_capitulo" || a.actionType === "sem_revisores"),
-        interfaces: actions.filter(a => a.role === "interfaces"),
+        aprovacao: actions.filter(a => a.actionType === "validacao_ajustes"),
+        homologacao: actions.filter(a => a.actionType === "homologar_capitulo"),
       };
 
       const summary = {
@@ -861,13 +830,13 @@ export const activitiesRouter = router({
         executorCount: executorActions.length,
         reviewerCount: reviewerActions.length,
         coordinatorCount: coordinatorActions.length,
-        interfaceCount: interfaceActions.length,
         boxCounts: {
           elaboracao: boxes.elaboracao.length,
+          indicacaoRevisor: boxes.indicacaoRevisor.length,
+          revisao: boxes.revisao.length,
           ajustes: boxes.ajustes.length,
-          emRevisao: boxes.emRevisao.length,
+          aprovacao: boxes.aprovacao.length,
           homologacao: boxes.homologacao.length,
-          interfaces: boxes.interfaces.length,
         },
       };
 
@@ -889,7 +858,6 @@ export const activitiesRouter = router({
         executorActions,
         reviewerActions,
         coordinatorActions,
-        interfaceActions,
         boxes,
         summary,
         availableMembers,
@@ -958,13 +926,19 @@ export const activitiesRouter = router({
         parentActivity?.responsibleId,
         parentActivity?.responsibleGroupId
       );
-      const canManageReview = isChapterCoordinator;
+      const canAssignReviewers = isGeneralCoordinatorOrAdmin(ctx.user, member);
+      const canManageReview = canAssignReviewers;
       const canAuthorizeAllocations = isGeneralCoordinatorOrAdmin(ctx.user, member);
+      const canHomologate = isGeneralCoordinatorOrAdmin(ctx.user, member) || (member?.groupId === 1);
+      const isGeneralCoordinatorUser = isGeneralCoordinatorOrAdmin(ctx.user, member);
       return {
         ...activity,
         canManageAllocations,
         canManageReview,
+        canAssignReviewers,
         canAuthorizeAllocations,
+        canHomologate,
+        isGeneralCoordinator: isGeneralCoordinatorUser,
         isCoordinator: isChapterCoordinator,
         isChapterCoordinator,
         isReviewer,
@@ -1306,7 +1280,13 @@ export const activitiesRouter = router({
         throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
+      assertCanManageActivityChecklist(
+        ctx.user,
+        member,
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        activity.reviewers?.map(r => r.teamMemberId) ?? []
+      );
       if (input.responsibleId !== undefined && input.responsibleId !== null) {
         const members = await listTeamMembers();
         if (!members.some(item => item.id === input.responsibleId && item.active)) {
@@ -1383,7 +1363,13 @@ export const activitiesRouter = router({
         throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
       }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
+      assertCanManageActivityChecklist(
+        ctx.user,
+        member,
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        activity.reviewers?.map(r => r.teamMemberId) ?? []
+      );
 
       await ensureActivityReviewChecklist(activity, ctx.user.id);
       const currentChecklist = await db

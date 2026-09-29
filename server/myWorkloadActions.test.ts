@@ -199,17 +199,19 @@ describe("myWorkloadActions - segregação de ações por papel e alocação cor
     expect(ii4Action).toBeDefined();
   });
 
-  it("coordenador do G1 (Floriano) recebe ações de I.1 e II.3", async () => {
+  it("coordenador do G1 (Floriano) recebe ações de elaboração de I.1 e II.3 e indicação de revisores nas seções pendentes", async () => {
     const caller = appRouter.createCaller(context(101, "user"));
     const result = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
 
-    const i1Action = result.actions.find(a => a.activityId === fixtures.activityG1.id);
-    const ii3Action = result.actions.find(a => a.activityId === fixtures.activityG1_II3.id);
-    const ii4Action = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id);
+    const i1Action = result.actions.find(a => a.activityId === fixtures.activityG1.id && a.role === "executor");
+    const ii3Action = result.actions.find(a => a.activityId === fixtures.activityG1_II3.id && a.role === "executor");
+    const ii4ExecutorAction = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.role === "executor");
+    const ii4ReviewerDesignationAction = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.actionType === "sem_revisores");
 
     expect(i1Action).toBeDefined();
     expect(ii3Action).toBeDefined();
-    expect(ii4Action).toBeUndefined();
+    expect(ii4ExecutorAction).toBeUndefined();
+    expect(ii4ReviewerDesignationAction).toBeDefined();
   });
 
   it("administrador em 'all_pending' visualiza todas as pendências da equipe", async () => {

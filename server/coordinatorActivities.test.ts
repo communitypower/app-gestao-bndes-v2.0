@@ -240,7 +240,7 @@ describe("autorização das horas por atividade", () => {
     const responsibleCaller = appRouter.createCaller(context(101));
     const responsibleDetail = await responsibleCaller.activities.detail({ id: fixtures.activity.id });
     expect(responsibleDetail.isCoordinator).toBe(true);
-    expect(responsibleDetail.canManageReview).toBe(true);
+    expect(responsibleDetail.canManageReview).toBe(false); // Exclusivo do Prof. Floriano
 
     // Coordenador de outro grupo (que pode atuar como revisor técnico ou visualizador)
     const otherCaller = appRouter.createCaller(context(102));

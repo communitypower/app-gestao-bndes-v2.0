@@ -205,27 +205,64 @@ export function assertCanViewActivityReview(
   }
 }
 
+export function canAssignReviewers(
+  user: User,
+  member?: { name?: string | null; active?: boolean } | null
+) {
+  return isGeneralCoordinatorOrAdmin(user, member as any);
+}
+
 export function assertCanManageActivityReview(
   user: User,
   member: ActivityAccessMember | null | undefined,
-  responsibleId: number,
-  responsibleGroupId?: number | null
+  _responsibleId?: number,
+  _responsibleGroupId?: number | null
 ) {
   if (isAdministrator(user)) return;
   if (!member?.active) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message:
-        "Somente o coordenador do capítulo ou o administrador pode alocar revisores e submeter este material.",
+        "Somente o Prof. Floriano (Coordenação Geral) ou Administradores podem indicar revisores técnicos.",
     });
   }
-  if (member.id === responsibleId) return;
-  if (responsibleGroupId && member.groupId === responsibleGroupId && member.groupRole === "coordenador") return;
+  if (isGeneralCoordinatorOrAdmin(user, member as any)) return;
   throw new TRPCError({
     code: "FORBIDDEN",
     message:
-      "Somente o coordenador do capítulo ou o administrador pode alocar revisores e submeter este material.",
+      "Somente o Prof. Floriano (Coordenação Geral) ou Administradores têm permissão para indicar os revisores técnicos das seções e capítulos.",
   });
+}
+
+export function canManageActivityChecklist(
+  user: User,
+  member: ActivityAccessMember | null | undefined,
+  responsibleId: number,
+  responsibleGroupId?: number | null,
+  reviewerIds: number[] = []
+) {
+  if (isAdministrator(user)) return true;
+  if (!member?.active) return false;
+  if (isGeneralCoordinatorOrAdmin(user, member as any)) return true;
+  if (member.id === responsibleId) return true;
+  if (responsibleGroupId && member.groupId === responsibleGroupId) return true;
+  if (reviewerIds.includes(member.id)) return true;
+  return false;
+}
+
+export function assertCanManageActivityChecklist(
+  user: User,
+  member: ActivityAccessMember | null | undefined,
+  responsibleId: number,
+  responsibleGroupId?: number | null,
+  reviewerIds: number[] = []
+) {
+  if (!canManageActivityChecklist(user, member, responsibleId, responsibleGroupId, reviewerIds)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "A edição do checklist é permitida aos autores, revisores designados, coordenação e administradores.",
+    });
+  }
 }
 
 export function assertCanReviewActivity(

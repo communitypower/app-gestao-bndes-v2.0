@@ -352,7 +352,7 @@ vi.mock("@/lib/trpc", () => ({
                 activityTitle: fixtures.activity.title,
                 dueAt: fixtures.activity.dueAt,
                 role: "executor" as const,
-                actionType: "em_elaboracao",
+                actionType: "minuta_pendente",
                 actionTitle: fixtures.activity.title,
                 actionDescription: fixtures.activity.description,
                 ctaLabel: "Abrir Ficha",

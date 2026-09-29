@@ -5,6 +5,11 @@ import { studyTomeFromCode, type ActivityStatus } from "@shared/domain";
 import { groupDisplayName } from "../../../shared/groupDisplay";
 import { OFFICIAL_MONTH_MILESTONES } from "@shared/officialScheduleMes3";
 import {
+  DocumentationWorkflowStepper,
+  getWorkflowStage,
+  type WorkflowStage,
+} from "./DocumentationWorkflowStepper";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -122,6 +127,9 @@ export function ActivityDetailDialog({
   const addComment = trpc.production?.addComment?.useMutation
     ? trpc.production.addComment.useMutation()
     : ({ mutateAsync: async () => {}, isPending: false } as any);
+  const updateReviewers = trpc.activities?.updateReviewers?.useMutation
+    ? trpc.activities.updateReviewers.useMutation()
+    : ({ mutateAsync: async () => {}, isPending: false } as any);
 
   // Active Tab inside modal
   const [activeTab, setActiveTab] = useState<"documento" | "escopo">("documento");
@@ -133,12 +141,16 @@ export function ActivityDetailDialog({
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadNotes, setUploadNotes] = useState("");
 
+  // Form state for designating reviewer (Prof. Floriano)
+  const [isAssigningReviewer, setIsAssigningReviewer] = useState(false);
+  const [selectedReviewerId, setSelectedReviewerId] = useState<string>("");
+
   // Form states for adding new revision (R02, R03...)
   const [isAddingRevision, setIsAddingRevision] = useState(false);
   const [revisionFile, setRevisionFile] = useState<File | null>(null);
   const [revisionNotes, setRevisionNotes] = useState("");
 
-  // Form states for Review Decision (Coordenação Geral)
+  // Form states for Review Decision (Revisor Técnico)
   const [isDecidingReview, setIsDecidingReview] = useState(false);
   const [reviewDecision, setReviewDecision] = useState<"aprovado" | "ajustes solicitados">("aprovado");
   const [reviewDecisionNote, setReviewDecisionNote] = useState("");
@@ -156,6 +168,19 @@ export function ActivityDetailDialog({
     return materials.find((m: any) => m.activityId === activityId) ?? null;
   }, [activityId, materials]);
 
+  // Compute current workflow stage (6 sequential steps)
+  const currentStage: WorkflowStage = useMemo(() => {
+    return getWorkflowStage(
+      data?.documentStatus,
+      currentMaterial?.reviewStatus,
+      currentMaterial?.openCommentCount ?? 0,
+      Boolean(currentMaterial),
+      currentMaterial?.reviewStatus === "aprovado",
+      (data?.reviewers?.length ?? 0) > 0,
+      currentMaterial?.implementedCommentCount ?? 0
+    );
+  }, [data, currentMaterial]);
+
   // Compute official Wave
   const officialMilestone = useMemo(() => {
     if (!data?.dueAt) return null;
@@ -166,10 +191,20 @@ export function ActivityDetailDialog({
     );
   }, [data?.dueAt]);
 
-  const isGeneralCoord = Boolean(access?.isAdmin || access?.isGeneralCoordinator);
+  const isGeneralCoord = Boolean(
+    access?.isAdmin ||
+    access?.isGeneralCoordinator ||
+    data?.canAssignReviewers ||
+    data?.isGeneralCoordinator
+  );
   const isAuthorCoordinator = Boolean(
     data?.isCoordinator ||
+    data?.isExecutor ||
     (access?.teamMembership?.groupId && data?.responsibleGroupId === access.teamMembership.groupId)
+  );
+  const isDesignatedReviewer = Boolean(
+    data?.isReviewer ||
+    (data?.reviewers && data.reviewers.some((r: any) => r.teamMemberId === access?.teamMembership?.id))
   );
 
   const refreshAll = async () => {
@@ -191,6 +226,26 @@ export function ActivityDetailDialog({
       }
     } catch (err: any) {
       toast.error(err?.message || "Não foi possível baixar o arquivo da revisão.");
+    }
+  };
+
+  // Assign Reviewer (Prof. Floriano)
+  const handleAssignReviewer = async () => {
+    if (!data || !selectedReviewerId) {
+      toast.error("Selecione o revisor técnico independente.");
+      return;
+    }
+    try {
+      await updateReviewers.mutateAsync({
+        id: data.id,
+        reviewerIds: [Number(selectedReviewerId)],
+      });
+      toast.success("Revisor técnico independente indicado pelo Prof. Floriano com sucesso!");
+      setIsAssigningReviewer(false);
+      setSelectedReviewerId("");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Falha ao indicar revisor.");
     }
   };
 
@@ -253,7 +308,7 @@ export function ActivityDetailDialog({
     }
   };
 
-  // Register Review Decision (Coordenação Geral)
+  // Register Review Decision (Revisor Técnico)
   const handleRegisterReviewDecision = async () => {
     if (!currentMaterial) return;
     try {
@@ -266,8 +321,8 @@ export function ActivityDetailDialog({
       });
       toast.success(
         reviewDecision === "aprovado"
-          ? "Minuta aprovada com parecer favorável!"
-          : "Apontamentos e solicitação de ajustes enviados ao autor do grupo."
+          ? "Minuta aprovada com parecer técnico favorável!"
+          : "Comentários e solicitação de ajustes enviados ao autor do grupo."
       );
       setIsDecidingReview(false);
       setReviewDecisionNote("");
@@ -361,8 +416,22 @@ export function ActivityDetailDialog({
                     <span>Prazo oficial: {formatDate(data.dueAt)}</span>
                   </div>
                 )}
+                {data.reviewers && data.reviewers.length > 0 && (
+                  <div className="flex items-center gap-1.5 border-l pl-3 text-amber-700 dark:text-amber-300 font-semibold">
+                    <UserCheck className="h-3.5 w-3.5 text-amber-600" />
+                    <span>Revisor: {data.reviewers.map((r: any) => r.name).join(", ")}</span>
+                  </div>
+                )}
               </div>
             </DialogHeader>
+
+            {/* Stepper Oficial do Ciclo de 6 Passos */}
+            <DocumentationWorkflowStepper
+              currentStage={currentStage}
+              openCommentCount={currentMaterial?.openCommentCount ?? 0}
+              implementedCommentCount={currentMaterial?.implementedCommentCount ?? 0}
+              resolvedCommentCount={currentMaterial?.resolvedCommentCount ?? 0}
+            />
 
             {/* Abas da Ficha */}
             <Tabs value={activeTab} onValueChange={v => setActiveTab(v as any)} className="w-full">
@@ -401,8 +470,8 @@ export function ActivityDetailDialog({
                     </h4>
                   </div>
 
-                  {/* Ação Primária de Upload */}
-                  <div className="flex items-center gap-2">
+                  {/* Ações Diretas por Etapa */}
+                  <div className="flex flex-wrap items-center gap-2">
                     {!currentMaterial ? (
                       <Button
                         size="sm"
@@ -416,6 +485,17 @@ export function ActivityDetailDialog({
                       </Button>
                     ) : (
                       <>
+                        {/* Se não tem revisores e é Prof. Floriano / Admin */}
+                        {data.reviewers.length === 0 && isGeneralCoord && (
+                          <Button
+                            size="sm"
+                            onClick={() => setIsAssigningReviewer(true)}
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer"
+                          >
+                            <UserCheck className="mr-1.5 h-4 w-4" /> Indicar Revisor (Prof. Floriano)
+                          </Button>
+                        )}
+                        {/* Autor subindo nova revisão R02+ */}
                         {isAuthorCoordinator && currentMaterial.reviewStatus !== "em revisão" && (
                           <Button
                             size="sm"
@@ -426,19 +506,88 @@ export function ActivityDetailDialog({
                             <FileClock className="mr-1.5 h-4 w-4 text-primary" /> Subir Nova Versão (R0{currentMaterial.currentRevision + 1})
                           </Button>
                         )}
-                        {isGeneralCoord && currentMaterial.reviewStatus === "em revisão" && (
+                        {/* Revisor emitindo parecer */}
+                        {(isDesignatedReviewer || isGeneralCoord) && currentMaterial.reviewStatus === "em revisão" && (
                           <Button
                             size="sm"
                             onClick={() => setIsDecidingReview(true)}
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer"
+                            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold cursor-pointer"
                           >
-                            <Pencil className="mr-1.5 h-4 w-4" /> Emitir Parecer de Revisão
+                            <Pencil className="mr-1.5 h-4 w-4" /> Emitir Comentários / Parecer
                           </Button>
                         )}
                       </>
                     )}
                   </div>
                 </div>
+
+                {/* PASSO 2: PAINEL DE INDICAÇÃO DE REVISOR (Prof. Floriano) */}
+                {(data.reviewers ?? []).length === 0 && (
+                  <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div>
+                        <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                          <UserCheck className="h-4 w-4 text-amber-600" /> Passo 2: Indicação de Revisor Técnico Independente
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {isGeneralCoord
+                            ? "Como Coordenador Geral, o Prof. Floriano deve selecionar o revisor técnico independente para esta seção."
+                            : "Minuta inicial no sistema. Aguardando a indicação do revisor técnico independente pelo Prof. Floriano."}
+                        </p>
+                      </div>
+                      {isGeneralCoord && !isAssigningReviewer && (
+                        <Button
+                          size="sm"
+                          onClick={() => setIsAssigningReviewer(true)}
+                          className="bg-amber-600 hover:bg-amber-700 text-white font-semibold cursor-pointer shrink-0"
+                        >
+                          <UserCheck className="mr-1.5 h-4 w-4" /> Selecionar Revisor
+                        </Button>
+                      )}
+                    </div>
+
+                    {isAssigningReviewer && isGeneralCoord && (
+                      <div className="mt-3 pt-3 border-t border-amber-500/20 space-y-3">
+                        <div>
+                          <Label className="text-xs font-semibold">Selecione o Revisor Independente (Prof. Floriano)</Label>
+                          <Select
+                            value={selectedReviewerId}
+                            onValueChange={setSelectedReviewerId}
+                          >
+                            <SelectTrigger className="mt-1 h-9 text-xs bg-card">
+                              <SelectValue placeholder="Escolha um pesquisador qualificado de outro grupo..." />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-72">
+                              {data.eligibleReviewers?.map((rev: any) => (
+                                <SelectItem key={rev.id} value={String(rev.id)}>
+                                  {rev.name} — {rev.institution || "UFRJ"} {rev.groupName ? `(${rev.groupName})` : ""} {rev.currentReviewCount > 0 ? `[${rev.currentReviewCount} revisão em curso]` : ""}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setIsAssigningReviewer(false)}
+                            className="h-8 text-xs"
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={handleAssignReviewer}
+                            disabled={!selectedReviewerId || updateReviewers.isPending}
+                            className="h-8 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                          >
+                            {updateReviewers.isPending ? "Indicando..." : "Confirmar Indicação de Revisor"}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* MODAL / FORMULÁRIO DE CARGA DE MINUTA INICIAL */}
                 {isUploadingMinuta && (
