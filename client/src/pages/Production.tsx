@@ -161,7 +161,7 @@ export default function ProductionPage() {
   const [decisionNote, setDecisionNote] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
   const [sectionFilter, setSectionFilter] = useState("todas");
-  const [activeTab, setActiveTab] = useState<"todos" | "minhas_acoes" | "minuta" | "revisao" | "homologacao">("todos");
+  const [activeTab, setActiveTab] = useState<string>("todos");
 
   // Comment implementation & Chapter consolidation state
   const [implementingCommentId, setImplementingCommentId] = useState<number | null>(null);
@@ -210,43 +210,52 @@ export default function ProductionPage() {
     }).length;
   }, [data]);
 
+  const isGeneralCoord = Boolean(access?.isAdmin || access?.isGeneralCoordinator);
+
+  const emRevisaoCount = useMemo(
+    () => (data ?? []).filter(item => item.reviewStatus === "em revisão" || item.activeSubmission?.status === "em revisão").length,
+    [data]
+  );
+  const ajustesCount = useMemo(
+    () => (data ?? []).filter(item => item.activityDocumentStatus === "ajustes solicitados" || item.openCommentCount > 0).length,
+    [data]
+  );
+  const aprovadosCount = useMemo(
+    () => (data ?? []).filter(item => item.reviewStatus === "aprovado" || item.activityDocumentStatus === "consolidada no capítulo").length,
+    [data]
+  );
+  const minhasPendenciasCount = useMemo(() => {
+    return (data ?? []).filter(item => {
+      const needsMinuta = !item.revisions?.length || item.reviewStatus === "em elaboração";
+      const needsAjustes = item.activityDocumentStatus === "ajustes solicitados" || item.openCommentCount > 0;
+      return (needsMinuta || needsAjustes) && item.permissions.canDevelop;
+    }).length;
+  }, [data]);
+
   const filtered = useMemo(() => {
     return (data ?? []).filter(item => {
       // Tab filter
-      if (activeTab === "minhas_acoes") {
-        const isAuthorAction =
-          item.permissions.canDevelop &&
-          (item.reviewStatus === "em elaboração" ||
-            item.activeSubmission?.status === "ajustes solicitados" ||
-            item.activityDocumentStatus === "ajustes solicitados" ||
-            item.openCommentCount > 0);
-        const isReviewerAction =
-          item.permissions.canReview &&
-          (item.reviewStatus === "em revisão" || item.implementedCommentCount > 0);
-        const isCoordinatorAction =
-          item.permissions.canManageReview &&
-          item.reviewStatus === "aprovado" &&
-          item.activityDocumentStatus === "revisada pela seção";
-
-        if (!isAuthorAction && !isReviewerAction && !isCoordinatorAction) {
+      if (activeTab === "fila_revisao" || activeTab === "em_analise") {
+        if (item.reviewStatus !== "em revisão" && item.activeSubmission?.status !== "em revisão") {
           return false;
         }
-      } else if (activeTab === "minuta") {
+      } else if (activeTab === "ajustes") {
         if (
-          item.reviewStatus !== "em elaboração" &&
-          item.activeSubmission?.status !== "ajustes solicitados" &&
-          item.activityDocumentStatus !== "ajustes solicitados"
+          item.activityDocumentStatus !== "ajustes solicitados" &&
+          item.openCommentCount === 0 &&
+          item.activeSubmission?.status !== "ajustes solicitados"
         ) {
           return false;
         }
-      } else if (activeTab === "revisao") {
-        if (item.reviewStatus !== "em revisão") {
-          return false;
-        }
-      } else if (activeTab === "homologacao") {
+      } else if (activeTab === "minhas_pendencias") {
+        const needsMinuta = !item.revisions?.length || item.reviewStatus === "em elaboração";
+        const needsAjustes = item.activityDocumentStatus === "ajustes solicitados" || item.openCommentCount > 0;
+        if (!needsMinuta && !needsAjustes) return false;
+      } else if (activeTab === "aprovados" || activeTab === "concluidos") {
         if (
           item.reviewStatus !== "aprovado" &&
-          item.activityDocumentStatus !== "consolidada no capítulo"
+          item.activityDocumentStatus !== "consolidada no capítulo" &&
+          item.activityDocumentStatus !== "revisada pela seção"
         ) {
           return false;
         }
@@ -288,7 +297,7 @@ export default function ProductionPage() {
         },
       });
       await refresh();
-      toast.success("Material criado e compartilhado com o grupo responsável.");
+      toast.success("Minuta enviada com sucesso à Coordenação Geral.");
       setCreateOpen(false);
       setTitle("");
       setDescription("");
@@ -316,7 +325,7 @@ export default function ProductionPage() {
         },
       });
       await refresh();
-      toast.success("Nova versão registrada com sucesso; pareceres anteriores foram preservados.");
+      toast.success("Nova versão enviada à Coordenação Geral; histórico de pareceres preservado.");
       setRevisionMaterialId(null);
       resetUpload();
     } catch (error) {
@@ -345,7 +354,7 @@ export default function ProductionPage() {
       });
       await refresh();
       setSubmissionMessage("");
-      toast.success("Versão atual disponibilizada aos revisores apontados.");
+      toast.success("Minuta submetida para revisão da Coordenação Geral.");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Não foi possível submeter."
@@ -423,7 +432,7 @@ export default function ProductionPage() {
       });
       setDecisionNote("");
       await refresh();
-      toast.success("Parecer registrado para esta submissão.");
+      toast.success(decision === "aprovado" ? "Minuta aprovada com sucesso!" : "Ajustes enviados ao grupo responsável.");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Não foi possível registrar o parecer."
@@ -440,10 +449,10 @@ export default function ProductionPage() {
       });
       setConsolidationNotes("");
       await refresh();
-      toast.success("Seção homologada e consolidada com sucesso no capítulo do estudo!");
+      toast.success("Seção homologada e consolidada no capítulo com sucesso!");
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Não foi possível consolidar a seção no capítulo."
+        error instanceof Error ? error.message : "Não foi possível homologar a seção no capítulo."
       );
     }
   };
@@ -453,17 +462,17 @@ export default function ProductionPage() {
   return (
     <div className="space-y-7">
       <PageHeader
-        eyebrow="Elaboração e Revisão Editorial"
-        title="Controle de Documentos e Revisões"
-        description="Ciclo editorial de documentação técnica do estudo: Elaboração da Minuta → Revisão Técnica por Pares → Atendimento de Comentários → Versionamento/Rastreamento → Revisão Editorial e Incorporação Final no Relatório."
-        index="04 — Controle de Documentos"
+        eyebrow="Fluxo Documental Direto · Estudo BNDES"
+        title="Controle de Documentos & Minhas Ações"
+        description="Gestão linear de elaboração, envio de minutas, revisões da coordenação geral, comentários e aprovação técnica dos 30 capítulos do estudo."
+        index="01 — Controle de Documentos"
         action={
           access.canAccessActivities ? (
             <Button
               onClick={() => setCreateOpen(true)}
-              className="rounded-md shadow-xs"
+              className="rounded-md shadow-xs bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
             >
-              <Plus className="mr-2 h-4 w-4" /> Novo material
+              <Plus className="mr-2 h-4 w-4" /> Subir Minuta Inicial
             </Button>
           ) : undefined
         }
@@ -475,15 +484,15 @@ export default function ProductionPage() {
           <div>
             <h3 className="font-editorial text-lg font-semibold flex items-center gap-2 text-foreground">
               <Sparkles className="h-4 w-4 text-primary" />
-              Pipeline Editorial de Documentação (5 Etapas)
+              Fluxo Linear de Documentação (4 Etapas)
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Acompanhe as fases formais do estudo: Minuta Inicial → Revisão Técnica → Ajustes do Autor → Validação & Parecer → Remissão de Capítulo.
+              1. Ponto Focal envia Minuta Inicial → 2. Denise / Coord Geral revisa → 3. Ciclo de Ajustes (R02, R03) → 4. Homologação no Capítulo (G1 / Denise).
             </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="rounded bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-              Regra de Integridade: Aprovação bloqueada se houver apontamentos não resolvidos
+              Notificações por e-mail e app a cada transição
             </span>
           </div>
         </div>
@@ -497,51 +506,87 @@ export default function ProductionPage() {
       {/* Workflow Tabs & Filter Controls */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2 border-b pb-2">
-          <Button
-            variant={activeTab === "todos" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("todos")}
-            className="rounded-full text-xs font-medium"
-          >
-            Todos os materiais ({data.length})
-          </Button>
-          <Button
-            variant={activeTab === "minhas_acoes" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("minhas_acoes")}
-            className="rounded-full text-xs font-medium relative"
-          >
-            Minhas ações pendentes
-            {pendingActionsCount > 0 && (
-              <span className="ml-1.5 rounded-full bg-amber-500 px-1.5 py-0.2 text-[10px] font-bold text-white">
-                {pendingActionsCount}
-              </span>
-            )}
-          </Button>
-          <Button
-            variant={activeTab === "minuta" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("minuta")}
-            className="rounded-full text-xs font-medium"
-          >
-            1 & 3. Minuta & Ajustes
-          </Button>
-          <Button
-            variant={activeTab === "revisao" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("revisao")}
-            className="rounded-full text-xs font-medium"
-          >
-            2 & 4. Em Revisão Técnica
-          </Button>
-          <Button
-            variant={activeTab === "homologacao" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("homologacao")}
-            className="rounded-full text-xs font-medium"
-          >
-            5. Homologação & Capítulo
-          </Button>
+          {isGeneralCoord ? (
+            <>
+              <Button
+                variant={activeTab === "todos" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("todos")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                Todas as Seções ({data.length})
+              </Button>
+              <Button
+                variant={activeTab === "fila_revisao" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("fila_revisao")}
+                className="rounded-full text-xs font-medium relative cursor-pointer"
+              >
+                📥 Fila de Revisão da Coord. Geral
+                {emRevisaoCount > 0 && (
+                  <span className="ml-1.5 rounded-full bg-primary text-primary-foreground px-1.5 py-0.2 text-[10px] font-bold">
+                    {emRevisaoCount}
+                  </span>
+                )}
+              </Button>
+              <Button
+                variant={activeTab === "ajustes" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("ajustes")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                ⚠️ Em Ajustes com os Grupos ({ajustesCount})
+              </Button>
+              <Button
+                variant={activeTab === "aprovados" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("aprovados")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                ✅ Aprovadas / Prontas p/ Homologar ({aprovadosCount})
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant={activeTab === "todos" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("todos")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                Minhas Seções ({data.length})
+              </Button>
+              <Button
+                variant={activeTab === "minhas_pendencias" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("minhas_pendencias")}
+                className="rounded-full text-xs font-medium relative cursor-pointer"
+              >
+                📝 Minhas Ações Pendentes
+                {minhasPendenciasCount > 0 && (
+                  <span className="ml-1.5 rounded-full bg-amber-500 text-white px-1.5 py-0.2 text-[10px] font-bold">
+                    {minhasPendenciasCount}
+                  </span>
+                )}
+              </Button>
+              <Button
+                variant={activeTab === "em_analise" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("em_analise")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                ⏳ Em Análise pela Coordenação ({emRevisaoCount})
+              </Button>
+              <Button
+                variant={activeTab === "concluidos" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveTab("concluidos")}
+                className="rounded-full text-xs font-medium cursor-pointer"
+              >
+                ✅ Concluídos & Homologados ({aprovadosCount})
+              </Button>
+            </>
+          )}
         </div>
 
         <div className="technical-panel flex flex-wrap items-center justify-between gap-3 p-4">

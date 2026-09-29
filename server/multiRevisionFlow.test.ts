@@ -293,6 +293,6 @@ describe("Fluxo de Múltiplas Revisões e Regras de Governança", () => {
           base64: "YmFzZTY0",
         },
       })
-    ).rejects.toThrow(/Somente o coordenador do capítulo ou o administrador/i);
+    ).rejects.toThrow(/Somente o coordenador do capítulo/i);
   });
 });

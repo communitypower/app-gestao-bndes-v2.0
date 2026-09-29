@@ -38,14 +38,12 @@ import {
   PanelLeft,
   Settings,
   Users,
-  Bot,
-  Sparkles,
+  ShieldCheck,
   KeyRound,
   ChevronDown,
   Ship,
 } from "lucide-react";
 import { NotificationBell } from "./NotificationBell";
-import { AiAssistantDrawer } from "./AiAssistantDrawer";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -62,17 +60,10 @@ import {
 import { toast } from "sonner";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Visão Geral", path: "/", admin: false, category: "principal" },
-  { icon: ClipboardList, label: "Minhas Ações", path: "/atividades", admin: false, category: "principal" },
-  { icon: CalendarDays, label: "Cronograma", path: "/calendario", admin: false, category: "principal" },
-  { icon: FilePenLine, label: "Controle de Documentos", path: "/producao", admin: false, category: "principal" },
-  { icon: BookOpen, label: "Biblioteca de Referências", path: "/biblioteca", admin: false, category: "apoio" },
-  { icon: Users, label: "Equipe e Grupos", path: "/equipe", admin: false, category: "apoio" },
-  { icon: HelpCircle, label: "Manual do Estudo", path: "/manual", admin: false, category: "apoio" },
-  { icon: Bot, label: "Assistente IA", path: "/assistente", admin: false, category: "apoio" },
-  { icon: Ship, label: "Dados Navais", path: "/dados-navais", admin: false, category: "apoio" },
-  { icon: Settings, label: "Administração", path: "/administracao", admin: true, category: "gestao" },
-  { icon: Users, label: "Acessos e Permissões", path: "/usuarios-permissoes", admin: true, category: "gestao" },
+  { icon: FilePenLine, label: "Documentos & Ações", path: "/", admin: false },
+  { icon: CalendarDays, label: "Cronograma de Entregas", path: "/cronograma", admin: false },
+  { icon: ShieldCheck, label: "Homologação dos Capítulos", path: "/homologacao", admin: false },
+  { icon: Settings, label: "Administração", path: "/administracao", admin: true },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -164,7 +155,6 @@ function DashboardLayoutContent({
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
-  const [isAssistantDrawerOpen, setIsAssistantDrawerOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -278,95 +268,34 @@ function DashboardLayoutContent({
             </div>
           </SidebarHeader>
 
-          <SidebarContent className="gap-3 py-3">
-            {/* Seção Principal */}
-            <div>
-              <div className="px-4 pb-1 pt-2 group-data-[collapsible=icon]:hidden">
-                <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Principal</p>
-              </div>
-              <SidebarMenu className="px-2 py-0.5">
-                {visibleItems
-                  .filter(item => item.category === "principal")
-                  .map(item => {
-                    const isActive = location === item.path;
-                    return (
-                      <SidebarMenuItem key={item.path}>
-                        <SidebarMenuButton
-                          isActive={isActive}
-                          onClick={() => setLocation(item.path)}
-                          tooltip={item.label}
-                          className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
-                        >
-                          <item.icon
-                            className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
-                          />
-                          <span>{item.label}</span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-              </SidebarMenu>
+          <SidebarContent className="py-4">
+            <div className="px-4 pb-2 group-data-[collapsible=icon]:hidden">
+              <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Menu Principal</p>
             </div>
+            <SidebarMenu className="px-2 space-y-1">
+              {visibleItems.map(item => {
+                const isActive =
+                  location === item.path ||
+                  (item.path === "/" && (location === "" || location === "/atividades" || location === "/producao")) ||
+                  (item.path === "/cronograma" && location === "/calendario");
 
-            {/* Seção Apoio e Acervo */}
-            <div>
-              <div className="px-4 pb-1 pt-1 group-data-[collapsible=icon]:hidden">
-                <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Apoio & Acervo</p>
-              </div>
-              <SidebarMenu className="px-2 py-0.5">
-                {visibleItems
-                  .filter(item => item.category === "apoio")
-                  .map(item => {
-                    const isActive = location === item.path;
-                    return (
-                      <SidebarMenuItem key={item.path}>
-                        <SidebarMenuButton
-                          isActive={isActive}
-                          onClick={() => setLocation(item.path)}
-                          tooltip={item.label}
-                          className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
-                        >
-                          <item.icon
-                            className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
-                          />
-                          <span>{item.label}</span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-              </SidebarMenu>
-            </div>
-
-            {/* Seção Gestão (se houver itens visíveis) */}
-            {visibleItems.some(item => item.category === "gestao") && (
-              <div>
-                <div className="px-4 pb-1 pt-1 group-data-[collapsible=icon]:hidden">
-                  <p className="editorial-kicker text-sidebar-foreground/40 text-[10px]">Gestão</p>
-                </div>
-                <SidebarMenu className="px-2 py-0.5">
-                  {visibleItems
-                    .filter(item => item.category === "gestao")
-                    .map(item => {
-                      const isActive = location === item.path;
-                      return (
-                        <SidebarMenuItem key={item.path}>
-                          <SidebarMenuButton
-                            isActive={isActive}
-                            onClick={() => setLocation(item.path)}
-                            tooltip={item.label}
-                            className="h-9 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
-                          >
-                            <item.icon
-                              className={`h-4 w-4 ${isActive ? "text-sidebar-primary" : ""}`}
-                            />
-                            <span>{item.label}</span>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      );
-                    })}
-                </SidebarMenu>
-              </div>
-            )}
+                return (
+                  <SidebarMenuItem key={item.path}>
+                    <SidebarMenuButton
+                      isActive={isActive}
+                      onClick={() => setLocation(item.path)}
+                      tooltip={item.label}
+                      className="h-10 rounded-md border border-transparent px-3 text-[13px] font-medium text-sidebar-foreground/75 data-[active=true]:border-sidebar-border data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground transition-all cursor-pointer"
+                    >
+                      <item.icon
+                        className={`h-4 w-4 ${isActive ? "text-sidebar-primary font-bold" : ""}`}
+                      />
+                      <span>{item.label}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
           </SidebarContent>
 
           <SidebarFooter className="border-t border-sidebar-border p-3">
@@ -455,28 +384,6 @@ function DashboardLayoutContent({
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsAssistantDrawerOpen(true)}
-              className="h-8 gap-1.5 px-2 text-xs text-primary hover:bg-primary/10 hover:text-primary"
-              title="Abrir Assistente Técnico de Inteligência Artificial"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span className="hidden md:inline font-medium">Assistente IA</span>
-            </Button>
-            <Link href="/manual">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
-                title="Manual de Procedimentos da Equipe"
-              >
-                <HelpCircle className="h-4 w-4 text-primary" />
-                <span className="hidden md:inline font-medium">Manual da Equipe</span>
-              </Button>
-            </Link>
-
-            <Button
               variant="outline"
               size="sm"
               onClick={() => setIsPasswordModalOpen(true)}
@@ -549,7 +456,6 @@ function DashboardLayoutContent({
         </header>
         <main className="page-grid flex-1 overflow-x-hidden px-4 py-6 sm:px-6 md:px-8 md:py-8 xl:px-10 xl:py-10"><div className="mx-auto w-full max-w-[1560px]">{children}</div></main>
       </SidebarInset>
-      <AiAssistantDrawer isOpen={isAssistantDrawerOpen} onOpenChange={setIsAssistantDrawerOpen} />
 
       {/* Modal de Alteração de Senha Pessoal */}
       <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>

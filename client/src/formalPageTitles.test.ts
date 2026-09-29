@@ -2,15 +2,9 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const pages = [
-  ["Home.tsx", "Visão geral do projeto"],
-  ["Activities.tsx", "Minhas ações"],
+  ["Production.tsx", "Controle de Documentos & Minhas Ações"],
   ["Calendar.tsx", "Cronograma integrado do estudo"],
-  ["Team.tsx", "Estrutura de grupos e responsabilidades"],
-  ["Library.tsx", "Biblioteca de referências"],
-  ["Production.tsx", "Controle de Documentos e Revisões"],
-  ["Interfaces.tsx", "Gestão de interfaces entre seções"],
-  ["Fieldwork.tsx", "Atividades de campo e divulgação"],
-  ["Assistant.tsx", "Assistente técnico de inteligência artificial"],
+  ["Homologacao.tsx", "Homologação dos Capítulos"],
   ["Administration.tsx", "Administração da plataforma"],
 ] as const;
 
@@ -52,14 +46,9 @@ describe("nomenclatura institucional das páginas", () => {
       "utf8"
     );
     for (const label of [
-      "Visão Geral",
-      "Minhas Ações",
-      "Cronograma",
-      "Controle de Documentos",
-      "Biblioteca de Referências",
-      "Equipe e Grupos",
-      "Manual do Estudo",
-      "Assistente IA",
+      "Documentos & Ações",
+      "Cronograma de Entregas",
+      "Homologação dos Capítulos",
       "Administração",
     ]) {
       expect(source).toContain(`label: "${label}"`);

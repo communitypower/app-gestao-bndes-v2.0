@@ -12,13 +12,32 @@ export function isAdministrator(user: User) {
   return user.role === "admin" || user.appRole === "administrador";
 }
 
+export function isGeneralCoordinator(
+  user: User,
+  member?: { name?: string | null } | null
+) {
+  if ((user.appRole as string) === "coordenador_geral") return true;
+  const email = (user.email ?? "").toLowerCase();
+  const name = (member?.name ?? "").toLowerCase();
+  if (email.includes("floriano") || email.includes("denise")) return true;
+  if (name.includes("floriano") || name.includes("denise")) return true;
+  return false;
+}
+
 export function isGeneralCoordinatorOrAdmin(
   user: User,
   member?: { name?: string | null } | null
 ) {
   if (isAdministrator(user)) return true;
-  if (user.email && user.email.toLowerCase().includes("floriano")) return true;
-  if (member?.name && member.name.includes("Floriano")) return true;
+  return isGeneralCoordinator(user, member);
+}
+
+export function isSistematizacaoOrCoord(
+  user: User,
+  member?: ActivityAccessMember | null
+) {
+  if (isGeneralCoordinatorOrAdmin(user, member as any)) return true;
+  if (member?.groupId === 1) return true; // G1 - Sistematização
   return false;
 }
 
@@ -38,7 +57,19 @@ export function assertGeneralCoordinatorOrAdmin(
   if (!isGeneralCoordinatorOrAdmin(user, member)) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Esta ação é restrita à Coordenação Geral (Prof. Floriano) ou Administradores.",
+      message: "Esta ação é restrita à Coordenação Geral (Prof. Floriano / Denise) ou Administradores.",
+    });
+  }
+}
+
+export function assertSistematizacaoOrCoord(
+  user: User,
+  member?: ActivityAccessMember | null
+) {
+  if (!isSistematizacaoOrCoord(user, member)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Esta ação é restrita à Sistematização (G1) e à Coordenação Geral.",
     });
   }
 }

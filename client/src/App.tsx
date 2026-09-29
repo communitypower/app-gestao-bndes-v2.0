@@ -6,20 +6,10 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import DashboardLayout from "./components/DashboardLayout";
 
-const Home = lazy(() => import("./pages/Home"));
-const KpisPage = lazy(() => import("./pages/Kpis"));
-const ActivitiesPage = lazy(() => import("./pages/Activities"));
-const CalendarPage = lazy(() => import("./pages/Calendar"));
-const TeamPage = lazy(() => import("./pages/Team"));
-const LibraryPage = lazy(() => import("./pages/Library"));
 const ProductionPage = lazy(() => import("./pages/Production"));
-const InterfacesPage = lazy(() => import("./pages/Interfaces"));
-const FieldworkPage = lazy(() => import("./pages/Fieldwork"));
+const CalendarPage = lazy(() => import("./pages/Calendar"));
+const HomologacaoPage = lazy(() => import("./pages/Homologacao"));
 const AdministrationPage = lazy(() => import("./pages/Administration"));
-const UserAccessPage = lazy(() => import("./pages/UserAccess"));
-const ManualPage = lazy(() => import("./pages/Manual"));
-const AssistantPage = lazy(() => import("./pages/Assistant"));
-const NavalDataPage = lazy(() => import("./pages/NavalData"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
@@ -45,20 +35,13 @@ function Router() {
           <DashboardLayout>
             <Suspense fallback={<RouteLoading />}>
               <Switch>
-                <Route path="/" component={Home} />
-                <Route path="/kpis" component={KpisPage} />
-                <Route path="/atividades" component={ActivitiesPage} />
-                <Route path="/calendario" component={CalendarPage} />
-                <Route path="/equipe" component={TeamPage} />
-                <Route path="/biblioteca" component={LibraryPage} />
+                <Route path="/" component={ProductionPage} />
                 <Route path="/producao" component={ProductionPage} />
-                <Route path="/interfaces" component={InterfacesPage} />
-                <Route path="/campo-divulgacao" component={FieldworkPage} />
-                <Route path="/assistente" component={AssistantPage} />
-                <Route path="/dados-navais" component={NavalDataPage} />
-                <Route path="/manual" component={ManualPage} />
+                <Route path="/atividades" component={ProductionPage} />
+                <Route path="/cronograma" component={CalendarPage} />
+                <Route path="/calendario" component={CalendarPage} />
+                <Route path="/homologacao" component={HomologacaoPage} />
                 <Route path="/administracao" component={AdministrationPage} />
-                <Route path="/usuarios-permissoes" component={UserAccessPage} />
                 <Route path="/404" component={NotFound} />
                 <Route component={NotFound} />
               </Switch>

@@ -293,7 +293,7 @@ describe("alocação de revisores por atividade", () => {
 });
 
 describe("escopo de visualização e ciclo de revisão", () => {
-  it("permite transparência total de visualização a todos os integrantes autenticados", async () => {
+  it("garante segregação de visualização por grupo temático aos integrantes autenticados", async () => {
     const groupViewer = await appRouter.createCaller(context(103)).production.list();
     const reviewer = await appRouter.createCaller(context(104)).production.list();
     const outsider = await appRouter.createCaller(context(105)).production.list();
@@ -302,8 +302,7 @@ describe("escopo de visualização e ciclo de revisão", () => {
     expect(groupViewer[0]?.permissions.isGroupViewer).toBe(true);
     expect(groupViewer[0]?.permissions.canReview).toBe(false);
     expect(reviewer[0]?.permissions.canReview).toBe(true);
-    expect(outsider).toHaveLength(1);
-    expect(outsider[0]?.permissions.canReview).toBe(false);
+    expect(outsider).toHaveLength(0);
   });
 
   it("permite ao coordenador submeter a versão vigente para os revisores apontados", async () => {

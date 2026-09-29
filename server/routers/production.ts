@@ -19,6 +19,8 @@ import {
   canUploadActivityMaterial,
   canViewActivityReview,
   isAdministrator,
+  isGeneralCoordinatorOrAdmin,
+  isSistematizacaoOrCoord,
   type ActivityAccessMember,
 } from "../access";
 import { protectedProcedure, router } from "../_core/trpc";
@@ -62,13 +64,20 @@ function isExecutionAssignee(
 }
 
 function canViewMaterial(
-  _user: Parameters<typeof isAdministrator>[0],
-  _member: ActivityAccessMember | null,
-  _material: ProductionMaterialRow,
+  user: Parameters<typeof isAdministrator>[0],
+  member: ActivityAccessMember | null,
+  material: ProductionMaterialRow,
   _activity?: Awaited<ReturnType<typeof getActivity>> | null
 ) {
-  // Transparência total para toda a equipe e BNDES
-  return true;
+  if (isGeneralCoordinatorOrAdmin(user, member as any)) return true;
+  if (!member?.active) return false;
+  // Integrantes do G1 Sistematização visualizam todas as seções para homologação
+  if (member.groupId === 1) return true;
+  // Ponto Focal / Coordenador: visualiza exclusivamente as seções do seu grupo
+  if (member.groupId && material.responsibleGroupId === member.groupId) return true;
+  if (material.responsibleId === member.id) return true;
+  if (material.reviewers.some(r => r.teamMemberId === member.id)) return true;
+  return false;
 }
 
 function assertCanEditMaterial(
@@ -77,6 +86,7 @@ function assertCanEditMaterial(
   material: ProductionMaterialRow
 ) {
   if (!material.activityId || isAdministrator(user)) return;
+  if (isGeneralCoordinatorOrAdmin(user, member as any)) return;
   const isCoordinator = Boolean(
     member?.active && (
       member.id === material.responsibleId ||
@@ -86,7 +96,7 @@ function assertCanEditMaterial(
   if (!isCoordinator) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Somente o coordenador do capítulo ou o administrador pode acrescentar novas versões de material.",
+      message: "Somente o coordenador do capítulo, a coordenação geral ou o administrador pode acrescentar novas versões de material.",
     });
   }
 }
@@ -1062,18 +1072,20 @@ export const productionRouter = router({
           message: "Atividade não encontrada.",
         });
       }
-      const isChapterCoord = Boolean(
-        member?.active &&
+      const canConsolidate = Boolean(
+        isAdministrator(ctx.user) ||
+        isSistematizacaoOrCoord(ctx.user, member) ||
+        (member?.active &&
           (member.id === material.responsibleId ||
             (member.groupId &&
               member.groupId === material.responsibleGroupId &&
-              member.groupRole === "coordenador"))
+              member.groupRole === "coordenador")))
       );
-      if (!isChapterCoord && !isAdministrator(ctx.user)) {
+      if (!canConsolidate) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message:
-            "Somente o coordenador do capítulo ou administrador pode homologar a seção e consolidar no capítulo.",
+            "Somente a Sistematização (G1), a Coordenação Geral ou o coordenador do capítulo pode homologar a seção e consolidar no capítulo.",
         });
       }
       await syncActivityDocumentStatus(
