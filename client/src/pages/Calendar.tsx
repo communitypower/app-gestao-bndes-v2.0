@@ -223,25 +223,10 @@ function TimelineRow({
         </div>
       </div>
 
-      {/* Coluna 3: Estado & Barra de Progresso */}
+      {/* Coluna 3: Estado da Entrega */}
       <div className="border-r border-border/50 px-3 py-1.5 flex flex-col justify-center">
         <div className="flex items-center gap-1.5">
           <StatusBadge status={item.status} />
-        </div>
-        <div className="mt-1 flex items-center gap-2">
-          <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
-            <div
-              className={`h-full ${
-                item.status === "concluído"
-                  ? "bg-[#27745B]"
-                  : item.status === "atrasado"
-                  ? "bg-[#B44232]"
-                  : "bg-primary"
-              }`}
-              style={{ width: `${item.progress}%` }}
-            />
-          </div>
-          <span className="font-mono text-[10px] text-muted-foreground shrink-0">{item.progress}%</span>
         </div>
       </div>
 
@@ -1476,7 +1461,7 @@ function CalendarContent() {
               Título da Atividade e Equipe
             </div>
             <div className="data-label border-r border-border/60 px-3 py-2 font-bold flex items-center">
-              Estado e Progresso
+              Status da Entrega
             </div>
 
             {/* Meses Clicáveis */}
@@ -1546,38 +1531,26 @@ function CalendarContent() {
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                         <span className="font-mono font-semibold text-foreground">
                           {tome.chapters.length} {tome.chapters.length === 1 ? "capítulo" : "capítulos"}
                         </span>
                         <span>·</span>
                         <span className="font-mono text-foreground font-medium">
-                          {tome.totalActivities} {tome.totalActivities === 1 ? "atividade" : "atividades"}
+                          {tome.totalActivities} {tome.totalActivities === 1 ? "seção" : "seções"}
                         </span>
                         <span>·</span>
-                        <span className="text-emerald-700 dark:text-emerald-400 font-medium">
+                        <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
                           {tome.completedCount} concluídas
                         </span>
                         {tome.delayedCount > 0 && (
                           <>
                             <span>·</span>
-                            <span className="text-red-700 dark:text-red-400 font-medium">
+                            <span className="text-red-700 dark:text-red-400 font-semibold">
                               {tome.delayedCount} atrasadas
                             </span>
                           </>
                         )}
-                      </div>
-
-                      <div className="flex items-center gap-2 w-28">
-                        <div className="h-2 flex-1 rounded-full bg-muted-foreground/20 overflow-hidden">
-                          <div
-                            className="h-full bg-primary"
-                            style={{ width: `${tome.avgProgress}%` }}
-                          />
-                        </div>
-                        <span className="font-mono text-xs font-semibold text-foreground shrink-0">
-                          {tome.avgProgress}%
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -1619,20 +1592,20 @@ function CalendarContent() {
                                   </h3>
                                   {(chapter.parentItem?.dueAt || chapter.items[0]?.dueAt) && (
                                     <span className="font-mono text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded shrink-0 hidden sm:inline">
-                                      Cronograma: Término em {formatDate(chapter.parentItem?.dueAt ?? chapter.items[0]?.dueAt)}
+                                      {chapter.parentItem?.startAt ? `${formatDate(chapter.parentItem.startAt)} — ${formatDate(chapter.parentItem.dueAt)}` : `Término: ${formatDate(chapter.parentItem?.dueAt ?? chapter.items[0]?.dueAt)}`}
                                     </span>
                                   )}
                                 </div>
 
                                 {chapter.groupName && (
                                   <span className="text-[11px] text-muted-foreground hidden lg:inline truncate">
-                                    · {groupDisplayName(chapter.groupName)} {chapter.responsibleName ? `(${chapter.responsibleName})` : ""}
+                                    · <strong className="text-foreground/80">{groupDisplayName(chapter.groupName)}</strong> {chapter.responsibleName ? `(${chapter.responsibleName})` : ""}
                                   </span>
                                 )}
                               </div>
 
                               <div className="flex items-center gap-3 shrink-0">
-                                <div className="hidden md:flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                                   <span className="font-mono font-medium text-foreground">
                                     {chapter.items.length} {chapter.items.length === 1 ? "seção" : "seções"}
                                   </span>
@@ -1648,18 +1621,6 @@ function CalendarContent() {
                                       </span>
                                     </>
                                   )}
-                                </div>
-
-                                <div className="flex items-center gap-2 w-24">
-                                  <div className="h-1.5 flex-1 rounded-full bg-muted-foreground/20 overflow-hidden">
-                                    <div
-                                      className="h-full bg-primary"
-                                      style={{ width: `${chapter.avgProgress}%` }}
-                                    />
-                                  </div>
-                                  <span className="font-mono text-[10px] text-muted-foreground shrink-0">
-                                    {chapter.avgProgress}%
-                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -1734,7 +1695,7 @@ function CalendarContent() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="font-mono text-[10px] text-muted-foreground">
-                      {tome.avgProgress}%
+                      {tome.totalActivities} seções
                     </span>
                     {isTomeOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                   </div>
@@ -1813,9 +1774,9 @@ function CalendarContent() {
                                   </div>
 
                                   <div className="mt-2.5 flex items-center justify-between gap-2">
-                                    <span className="font-mono text-[10px] text-muted-foreground">
-                                      {item.progress}% concluído
-                                    </span>
+                                    <Badge variant="outline" className="text-[10px]">
+                                      {item.status}
+                                    </Badge>
                                     <Button
                                       variant="outline"
                                       size="sm"
