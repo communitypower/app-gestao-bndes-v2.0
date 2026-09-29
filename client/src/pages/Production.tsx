@@ -478,31 +478,6 @@ export default function ProductionPage() {
         }
       />
 
-      {/* Global workflow stepper summary */}
-      <div className="technical-panel p-5 bg-card/80">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-4 mb-4">
-          <div>
-            <h3 className="font-editorial text-lg font-semibold flex items-center gap-2 text-foreground">
-              <Sparkles className="h-4 w-4 text-primary" />
-              Fluxo Linear de Documentação (4 Etapas)
-            </h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              1. Ponto Focal envia Minuta Inicial → 2. Denise / Coord Geral revisa → 3. Ciclo de Ajustes (R02, R03) → 4. Homologação no Capítulo (G1 / Denise).
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="rounded bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-              Notificações por e-mail e app a cada transição
-            </span>
-          </div>
-        </div>
-
-        <DocumentationWorkflowStepper
-          currentStage="revisao"
-          className="border-0 shadow-none p-0 bg-transparent"
-        />
-      </div>
-
       {/* Workflow Tabs & Filter Controls */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2 border-b pb-2">
