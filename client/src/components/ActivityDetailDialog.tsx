@@ -454,7 +454,7 @@ export function ActivityDetailDialog({
 
   return (
     <Dialog open={activityId !== null && activityId > 0} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[94vh] overflow-y-auto bg-card w-[96vw] max-w-5xl p-5 sm:p-7">
+      <DialogContent className="max-h-[92vh] overflow-y-auto bg-card w-[96vw] sm:max-w-[94vw] lg:max-w-[1240px] xl:max-w-[1380px] p-6 sm:p-8">
         {/* Hidden inputs directly connected to native file explorer */}
         <input
           type="file"
