@@ -375,7 +375,7 @@ export function ActivityDetailDialog({
 
   return (
     <Dialog open={activityId !== null && activityId > 0} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[94vh] overflow-y-auto bg-card w-[96vw] max-w-4xl p-5 sm:p-7">
+      <DialogContent className="max-h-[94vh] overflow-y-auto bg-card w-[96vw] max-w-5xl p-5 sm:p-7">
         {isLoading || !data ? (
           <div className="py-20 text-center text-sm text-muted-foreground animate-pulse">
             Carregando Ficha da Atividade…
@@ -402,7 +402,7 @@ export function ActivityDetailDialog({
                 </div>
               </div>
 
-              <DialogTitle className="font-display mt-2 text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
+              <DialogTitle className="font-display mt-2 text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug break-words">
                 {data.title}
               </DialogTitle>
 
@@ -449,7 +449,7 @@ export function ActivityDetailDialog({
                 </TabsTrigger>
                 <TabsTrigger value="escopo" className="text-xs font-medium gap-1.5 cursor-pointer">
                   <Layers className="h-3.5 w-3.5" />
-                  <span>Escopo & Cronograma</span>
+                  <span>Escopo Oficial</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -788,29 +788,29 @@ export function ActivityDetailDialog({
                       {currentMaterial.revisions.map((rev: any, index: number) => (
                         <div
                           key={rev.id}
-                          className="rounded-md border p-3 flex flex-wrap items-center justify-between gap-3 bg-card hover:bg-muted/20 transition-colors"
+                          className="rounded-md border p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card hover:bg-muted/20 transition-colors"
                         >
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="secondary" className="font-mono text-xs font-semibold">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <Badge variant="secondary" className="font-mono text-xs font-semibold shrink-0">
                                 Versão {rev.revisionNumber}
                               </Badge>
-                              <span className="text-xs font-medium text-foreground truncate">
+                              <span className="text-xs font-medium text-foreground break-words break-all">
                                 {rev.fileName || `Minuta_R0${rev.revisionNumber}`}
                               </span>
                               {index === 0 && (
-                                <Badge variant="outline" className="text-[10px] text-primary border-primary/30">
+                                <Badge variant="outline" className="text-[10px] text-primary border-primary/30 shrink-0">
                                   Mais Recente
                                 </Badge>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground mt-1">
-                              {rev.fileSize && (
-                                <span>{fileSize(rev.fileSize)}</span>
-                              )}
-                            </div>
+                            {rev.fileSize && (
+                              <div className="text-[11px] text-muted-foreground mt-1">
+                                {fileSize(rev.fileSize)}
+                              </div>
+                            )}
                             {rev.notes && (
-                              <p className="mt-1.5 text-xs text-muted-foreground/90 bg-muted/30 rounded p-1.5 leading-relaxed">
+                              <p className="mt-1.5 text-xs text-muted-foreground/90 bg-muted/30 rounded p-2 leading-relaxed break-words">
                                 {rev.notes}
                               </p>
                             )}
@@ -820,7 +820,7 @@ export function ActivityDetailDialog({
                             size="sm"
                             variant="outline"
                             onClick={() => handleDownloadRevision(rev.id)}
-                            className="h-8 gap-1.5 text-xs shrink-0 cursor-pointer"
+                            className="h-8 gap-1.5 text-xs shrink-0 cursor-pointer self-start sm:self-center"
                           >
                             <Download className="h-3.5 w-3.5" /> Baixar
                           </Button>
@@ -870,19 +870,19 @@ export function ActivityDetailDialog({
 
                     <div className="space-y-2">
                       {currentMaterial.submissions?.map((sub: any) => (
-                        <div key={sub.id} className="rounded border bg-muted/15 p-3 text-xs space-y-1.5">
-                          <div className="flex items-center justify-between">
+                        <div key={sub.id} className="rounded border bg-muted/15 p-3 text-xs space-y-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="font-semibold text-foreground">
                               Parecer da Submissão (R0{sub.revisionNumber})
                             </span>
                             <StatusBadge status={sub.status} />
                           </div>
                           {sub.decisions?.map((d: any) => (
-                            <div key={d.id} className="border-t pt-1.5 mt-1.5 text-muted-foreground">
+                            <div key={d.id} className="border-t pt-2 mt-1.5 text-muted-foreground space-y-1">
                               <p className="font-medium text-foreground">
                                 Decisão: <span className="uppercase">{d.decision}</span> · Por: {d.reviewerName} ({formatDate(d.decidedAt)})
                               </p>
-                              {d.note && <p className="mt-0.5 leading-relaxed">{d.note}</p>}
+                              {d.note && <p className="leading-relaxed break-words bg-background/50 p-2 rounded border border-border/40 text-foreground/90">{d.note}</p>}
                             </div>
                           ))}
                         </div>
@@ -894,12 +894,12 @@ export function ActivityDetailDialog({
                 {/* 4. Homologação no Capítulo */}
                 {currentMaterial && (currentMaterial.reviewStatus === "aprovado" || isGeneralCoord) && (
                   <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4 space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
                           <ShieldCheck className="h-4 w-4 text-emerald-600" /> Homologação no Capítulo Oficial
                         </h4>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <p className="text-xs text-muted-foreground mt-0.5 break-words">
                           {data.documentStatus === "consolidada no capítulo"
                             ? "✅ Esta seção já foi homologada e incorporada ao documento final do Estudo BNDES."
                             : "A minuta aprovada pode ser homologada e consolidada no relatório oficial do Estudo."}
@@ -910,7 +910,7 @@ export function ActivityDetailDialog({
                           size="sm"
                           onClick={handleHomologateInChapter}
                           disabled={consolidateInChapter.isPending}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold cursor-pointer"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold cursor-pointer shrink-0"
                         >
                           <CheckCircle2 className="mr-1.5 h-4 w-4" /> Homologar Capítulo
                         </Button>
@@ -920,59 +920,40 @@ export function ActivityDetailDialog({
                 )}
               </TabsContent>
 
-              {/* ABA 2: ESCOPO & CRONOGRAMA */}
+              {/* ABA 2: ESCOPO OFICIAL */}
               <TabsContent value="escopo" className="space-y-4">
                 {/* Descrição Anexo B */}
                 <div className="rounded-lg border bg-card p-4 space-y-2">
                   <span className="editorial-kicker text-primary text-[10px]">
                     Escopo Oficial do Capítulo (Anexo B)
                   </span>
-                  <p className="text-xs sm:text-sm text-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-foreground leading-relaxed break-words">
                     {data.description || "Escopo conforme índice analítico e plano de trabalho oficial do Estudo BNDES."}
                   </p>
                 </div>
 
-                {/* Cronograma e Prazos */}
+                {/* Marco de Entrega e Responsável */}
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-lg border bg-muted/20 p-3.5 space-y-1">
-                    <span className="text-[10px] font-semibold text-muted-foreground uppercase">Marco de Entrega</span>
-                    <p className="text-sm font-bold text-foreground">
+                  <div className="rounded-lg border bg-muted/20 p-4 space-y-1.5">
+                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Marco de Entrega</span>
+                    <p className="text-base font-bold text-foreground">
                       {officialMilestone?.label ?? "Onda M1"}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Data limite oficial: {formatDate(data.dueAt)}
+                      Data limite oficial: <strong className="text-foreground">{formatDate(data.dueAt)}</strong>
                     </p>
                   </div>
 
-                  <div className="rounded-lg border bg-muted/20 p-3.5 space-y-1">
-                    <span className="text-[10px] font-semibold text-muted-foreground uppercase">Grupo Responsável</span>
-                    <p className="text-sm font-bold text-foreground">
+                  <div className="rounded-lg border bg-muted/20 p-4 space-y-1.5">
+                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Grupo Responsável</span>
+                    <p className="text-base font-bold text-foreground break-words">
                       {groupDisplayName(data.groupName || data.responsibleName)}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Coordenador: {data.responsibleName}
+                      Coordenador: <strong className="text-foreground">{data.responsibleName}</strong>
                     </p>
                   </div>
                 </div>
-
-                {/* Etapas de Execução do Cronograma */}
-                {data.executionSteps && data.executionSteps.length > 0 && (
-                  <div className="space-y-2 pt-2">
-                    <h4 className="font-semibold text-xs text-foreground flex items-center gap-1.5">
-                      <Layers className="h-3.5 w-3.5 text-primary" /> Etapas do Cronograma ({data.executionSteps.length})
-                    </h4>
-                    <div className="divide-y rounded-md border bg-card text-xs">
-                      {data.executionSteps.map((step: any) => (
-                        <div key={step.id} className="p-2.5 flex items-center justify-between gap-3">
-                          <div className="min-w-0">
-                            <span className="text-foreground font-medium">{step.title}</span>
-                          </div>
-                          <span className="text-[11px] text-muted-foreground shrink-0">{formatDate(step.dueAt)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </TabsContent>
             </Tabs>
           </div>

@@ -23,8 +23,8 @@ export interface WorkflowStageInfo {
 export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   {
     key: "minuta",
-    label: "1. Minuta Inicial",
-    shortLabel: "1. Minuta",
+    label: "Minuta Inicial",
+    shortLabel: "Minuta",
     role: "Autor / Grupo",
     description: "Elaboração e upload da minuta inicial no sistema (R01).",
     criteria: [
@@ -34,8 +34,8 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   },
   {
     key: "indicacao_revisor",
-    label: "2. Indicação de Revisor",
-    shortLabel: "2. Revisor",
+    label: "Indicação de Revisor",
+    shortLabel: "Revisor",
     role: "Prof. Floriano (Coord. Geral)",
     description: "O Prof. Floriano indica o revisor técnico independente.",
     criteria: [
@@ -45,8 +45,8 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   },
   {
     key: "revisao_apontamentos",
-    label: "3. Revisão & Apontamentos",
-    shortLabel: "3. Apontamentos",
+    label: "Revisão & Apontamentos",
+    shortLabel: "Apontamentos",
     role: "Revisor Técnico",
     description: "Análise técnica detalhada e registro de comentários e apontamentos.",
     criteria: [
@@ -56,8 +56,8 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   },
   {
     key: "implementacao_ajustes",
-    label: "4. Implementação de Ajustes",
-    shortLabel: "4. Ajustes",
+    label: "Implementação de Ajustes",
+    shortLabel: "Ajustes",
     role: "Autor / Grupo",
     description: "Implementação dos comentários pelo autor e envio de nova versão (R02...).",
     criteria: [
@@ -67,8 +67,8 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   },
   {
     key: "aprovacao_revisor",
-    label: "5. Aprovação Técnica",
-    shortLabel: "5. Aprovação",
+    label: "Aprovação Técnica",
+    shortLabel: "Aprovação",
     role: "Revisor Técnico",
     description: "Validação do atendimento aos comentários e aprovação técnica.",
     criteria: [
@@ -78,8 +78,8 @@ export const WORKFLOW_STAGES: WorkflowStageInfo[] = [
   },
   {
     key: "homologacao_geral",
-    label: "6. Homologação do Capítulo",
-    shortLabel: "6. Homologação",
+    label: "Homologação do Capítulo",
+    shortLabel: "Homologação",
     role: "Coordenação Geral",
     description: "Homologação final pela Coordenação Geral e consolidação no Tomo.",
     criteria: [
@@ -222,33 +222,82 @@ export function DocumentationWorkflowStepper({
   }
 
   return (
-    <div className={cn("rounded-md border bg-card p-4 shadow-xs", className)}>
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+    <div className={cn("rounded-lg border bg-card/60 p-4 sm:p-5 shadow-xs space-y-4", className)}>
+      {/* Top Header: Título e Badges de Comentários */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
         <div>
-          <span className="editorial-kicker text-primary font-semibold">
-            Fluxo Oficial de Gestão de Documentos
+          <span className="editorial-kicker text-primary font-bold tracking-wider text-[11px] uppercase">
+            Fluxo Oficial de Gestão Documental
           </span>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Minuta inicial do autor → Indicação de revisor pelo Prof. Floriano → Comentários do revisor → Implementação pelo autor → Aprovação do revisor → Homologação pela Coordenação Geral.
+            Minuta inicial (R01) → Indicação de revisor (Prof. Floriano) → Parecer técnico → Ajustes (R02+) → Aprovação → Homologação no Tomo.
           </p>
         </div>
 
         {(openCommentCount > 0 || implementedCommentCount > 0 || resolvedCommentCount > 0) && (
-          <div className="flex items-center gap-2 text-xs">
-            <span className="rounded bg-amber-500/10 px-2 py-0.5 font-medium text-amber-700 dark:text-amber-300">
-              {openCommentCount} comentário(s) aberto(s)
-            </span>
-            <span className="rounded bg-sky-500/10 px-2 py-0.5 font-medium text-sky-700 dark:text-sky-300">
-              {implementedCommentCount} implementado(s)
-            </span>
-            <span className="rounded bg-emerald-500/10 px-2 py-0.5 font-medium text-emerald-700 dark:text-emerald-300">
-              {resolvedCommentCount} aprovado(s)
-            </span>
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            {openCommentCount > 0 && (
+              <span className="rounded-full bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 font-semibold text-amber-700 dark:text-amber-300">
+                {openCommentCount} apontamento(s) pendente(s)
+              </span>
+            )}
+            {implementedCommentCount > 0 && (
+              <span className="rounded-full bg-sky-500/15 border border-sky-500/30 px-2.5 py-0.5 font-semibold text-sky-700 dark:text-sky-300">
+                {implementedCommentCount} ajustado(s)
+              </span>
+            )}
+            {resolvedCommentCount > 0 && (
+              <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 font-semibold text-emerald-700 dark:text-emerald-300">
+                {resolvedCommentCount} aprovado(s)
+              </span>
+            )}
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-6">
+      {/* Barra de Progresso Horizontal Conectada */}
+      <div className="hidden sm:flex items-center justify-between gap-1 overflow-x-auto py-1 px-1">
+        {WORKFLOW_STAGES.map((stage, idx) => {
+          const stepNum = idx + 1;
+          const isCurrent = currentStage === stage.key;
+          const isPassed = currentIndex > stepNum;
+
+          return (
+            <React.Fragment key={stage.key}>
+              <button
+                type="button"
+                onClick={() => onStageClick?.(stage.key)}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all shrink-0 cursor-pointer text-left",
+                  isCurrent && "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary",
+                  isPassed && "bg-primary/10 text-primary hover:bg-primary/20",
+                  !isCurrent && !isPassed && "bg-muted/40 text-muted-foreground/70 hover:bg-muted/70"
+                )}
+              >
+                {isPassed ? (
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                ) : isCurrent ? (
+                  <CircleDot className="h-3.5 w-3.5 text-primary-foreground animate-pulse shrink-0" />
+                ) : (
+                  <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-muted-foreground/20 text-[10px] font-mono font-bold shrink-0">
+                    {stepNum}
+                  </span>
+                )}
+                <span className="truncate">{stage.shortLabel}</span>
+              </button>
+              {idx < WORKFLOW_STAGES.length - 1 && (
+                <div className={cn(
+                  "h-[2px] flex-1 min-w-[12px] transition-colors",
+                  isPassed ? "bg-primary/40" : "bg-muted"
+                )} />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+
+      {/* Grid de 6 Caixas em 3 Colunas (com espaço folgado para os textos) */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {WORKFLOW_STAGES.map((stage, idx) => {
           const stepNum = idx + 1;
           const isCurrent = currentStage === stage.key;
@@ -259,43 +308,58 @@ export function DocumentationWorkflowStepper({
               key={stage.key}
               onClick={() => onStageClick?.(stage.key)}
               className={cn(
-                "relative flex flex-col justify-between rounded-md border p-3 transition-all",
-                isCurrent && "border-primary bg-primary/5 ring-1 ring-primary shadow-xs",
-                isPassed && "border-muted bg-muted/30 opacity-90",
-                !isCurrent && !isPassed && "border-border/60 bg-card/40 opacity-70"
+                "relative flex flex-col justify-between rounded-lg border p-3.5 transition-all cursor-pointer",
+                isCurrent && "border-primary bg-primary/5 ring-1.5 ring-primary/40 shadow-sm",
+                isPassed && "border-border/70 bg-muted/20 opacity-90 hover:opacity-100",
+                !isCurrent && !isPassed && "border-border/50 bg-card/30 opacity-70 hover:opacity-90"
               )}
             >
               <div>
+                {/* Header do Passo */}
                 <div className="flex items-center justify-between gap-2">
                   <span className={cn(
-                    "inline-flex items-center gap-1 font-mono text-xs font-semibold uppercase tracking-wider",
-                    isCurrent ? "text-primary" : isPassed ? "text-primary/70" : "text-muted-foreground"
+                    "inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider",
+                    isCurrent ? "text-primary" : isPassed ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"
                   )}>
                     {isPassed ? (
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                     ) : isCurrent ? (
-                      <CircleDot className="h-3.5 w-3.5 text-primary animate-pulse" />
+                      <CircleDot className="h-3.5 w-3.5 text-primary animate-pulse shrink-0" />
                     ) : (
-                      <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                     )}
                     Passo 0{stepNum}
                   </span>
-                  {isCurrent && (
-                    <span className="rounded-full bg-primary px-1.5 py-0.2 text-[9px] font-bold uppercase tracking-wider text-primary-foreground">
+
+                  {isCurrent ? (
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-xs">
                       Em curso
+                    </span>
+                  ) : isPassed ? (
+                    <span className="rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold">
+                      Concluído
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-[10px] font-medium">
+                      Pendente
                     </span>
                   )}
                 </div>
 
-                <p className="font-editorial mt-2 text-sm font-semibold leading-tight text-foreground">
-                  {stage.label.split(". ")[1]}
+                {/* Título do Passo */}
+                <p className="mt-2 text-sm font-bold text-foreground leading-snug break-words">
+                  {stage.label}
                 </p>
 
-                <p className="mt-1 text-[11px] font-medium text-primary/80">
-                  {stage.role}
-                </p>
+                {/* Papel / Responsável */}
+                <div className="mt-1 flex items-center gap-1">
+                  <span className="inline-block rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary break-words">
+                    {stage.role}
+                  </span>
+                </div>
 
-                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-3">
+                {/* Descrição Completa (Sem corte/clamp) */}
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground break-words">
                   {stage.description}
                 </p>
 
@@ -304,11 +368,11 @@ export function DocumentationWorkflowStepper({
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Critérios:
                     </p>
-                    <ul className="space-y-0.5">
+                    <ul className="space-y-1">
                       {stage.criteria.map((crit, cIdx) => (
-                        <li key={cIdx} className="text-[10px] text-muted-foreground/90 flex items-start gap-1">
-                          <span className={cn("inline-block h-1.5 w-1.5 rounded-full mt-1 shrink-0", isPassed ? "bg-emerald-500" : isCurrent ? "bg-primary" : "bg-muted-foreground/40")} />
-                          <span className="leading-tight">{crit}</span>
+                        <li key={cIdx} className="text-[11px] text-muted-foreground/90 flex items-start gap-1.5">
+                          <span className={cn("inline-block h-1.5 w-1.5 rounded-full mt-1.5 shrink-0", isPassed ? "bg-emerald-500" : isCurrent ? "bg-primary" : "bg-muted-foreground/40")} />
+                          <span className="leading-tight break-words">{crit}</span>
                         </li>
                       ))}
                     </ul>
