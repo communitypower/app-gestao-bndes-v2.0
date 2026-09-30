@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 export default function ProductionPage() {
   const { data: access, isLoading } = trpc.administration.status.useQuery();
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
+  const [initialAction, setInitialAction] = useState<"upload_minuta" | "upload_revision" | undefined>(undefined);
 
   if (isLoading || !access) return <PageLoading />;
 
@@ -22,14 +23,23 @@ export default function ProductionPage() {
       {/* Central de Ações e Pendências do Participante */}
       <div className="technical-panel p-4 sm:p-5">
         <ParticipantActionCenter
-          onSelectActivity={id => setSelectedActivityId(id)}
+          onSelectActivity={(id, action) => {
+            setSelectedActivityId(id);
+            setInitialAction(action);
+          }}
         />
       </div>
 
       {/* Ficha da Atividade Unificada com Fluxo Documental */}
       <ActivityDetailDialog
         activityId={selectedActivityId}
-        onOpenChange={open => !open && setSelectedActivityId(null)}
+        initialAction={initialAction}
+        onOpenChange={open => {
+          if (!open) {
+            setSelectedActivityId(null);
+            setInitialAction(undefined);
+          }
+        }}
         isAdmin={Boolean(access?.isAdmin)}
       />
     </div>

@@ -59,7 +59,7 @@ export interface ParticipantAction {
 }
 
 export interface ParticipantActionCenterProps {
-  onSelectActivity: (activityId: number) => void;
+  onSelectActivity: (activityId: number, initialAction?: "upload_minuta" | "upload_revision") => void;
   onAssignReviewers?: (activityId: number) => void;
   defaultLayout?: LayoutMode;
 }
@@ -505,6 +505,14 @@ export function ParticipantActionCenter({
   const handleCtaClick = (action: ParticipantAction) => {
     if (action.actionType === "sem_revisores" && onAssignReviewers) {
       onAssignReviewers(action.activityId);
+      return;
+    }
+    if (action.actionType === "minuta_pendente" || action.actionType === "sem_minuta") {
+      onSelectActivity(action.activityId, "upload_minuta");
+      return;
+    }
+    if (action.actionType === "ajustes_a_fazer") {
+      onSelectActivity(action.activityId, "upload_revision");
       return;
     }
     onSelectActivity(action.activityId);

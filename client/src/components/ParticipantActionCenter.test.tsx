@@ -3,9 +3,9 @@ import "@testing-library/jest-dom/vitest";
 import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ParticipantActionCenter } from "./ParticipantActionCenter";
+import { ParticipantAction, ParticipantActionCenter } from "./ParticipantActionCenter";
 
-const mockActions = [
+const mockActions: ParticipantAction[] = [
   {
     id: "act-1",
     activityId: 21,
@@ -60,14 +60,17 @@ const mockSummary = {
   coordinatorCount: 1,
 };
 
+let currentMockActions = [...mockActions];
+let currentMockSummary = { ...mockSummary };
+
 vi.mock("@/lib/trpc", () => ({
   trpc: {
     activities: {
       myWorkloadActions: {
         useQuery: () => ({
           data: {
-            actions: mockActions,
-            summary: mockSummary,
+            actions: currentMockActions,
+            summary: currentMockSummary,
           },
           isLoading: false,
         }),
@@ -79,6 +82,8 @@ vi.mock("@/lib/trpc", () => ({
 describe("ParticipantActionCenter - Direct Display, Filtering and 6-Step Workflow Distribution", () => {
   afterEach(() => {
     cleanup();
+    currentMockActions = [...mockActions];
+    currentMockSummary = { ...mockSummary };
   });
 
   it("renderiza o painel com título, total de pendências e as caixas de ação separadas", () => {
@@ -172,13 +177,46 @@ describe("ParticipantActionCenter - Direct Display, Filtering and 6-Step Workflo
     expect(screen.getByText("Combustíveis Marítimos e Transição")).toBeInTheDocument();
   });
 
-  it("chama onSelectActivity ao clicar no CTA de uma atividade", () => {
+  it("chama onSelectActivity com upload_revision ao clicar no CTA de ajustes", () => {
     const handleSelect = vi.fn();
     render(<ParticipantActionCenter onSelectActivity={handleSelect} />);
 
     const editBtn = screen.getByRole("button", { name: /Implementar Ajustes/i });
     fireEvent.click(editBtn);
 
-    expect(handleSelect).toHaveBeenCalledWith(21);
+    expect(handleSelect).toHaveBeenCalledWith(21, "upload_revision");
+  });
+
+  it("chama onSelectActivity com upload_minuta ao clicar em Subir Minuta Inicial", () => {
+    currentMockActions = [
+      {
+        id: "act-4",
+        activityId: 24,
+        materialId: null,
+        sectionCode: "5.1",
+        activityTitle: "Descarbonização Marítima",
+        dueAt: Date.UTC(2026, 8, 25),
+        role: "executor" as const,
+        actionType: "minuta_pendente",
+        actionTitle: "Minuta Técnica Inicial a Elaborar / Subir",
+        actionDescription: "Esta atividade está em fase de elaboração.",
+        ctaLabel: "Subir Minuta Inicial (R01)",
+        ctaTarget: "drawer",
+        pendingCommentCount: 0,
+      },
+    ];
+    currentMockSummary = {
+      total: 1,
+      executorCount: 1,
+      reviewerCount: 0,
+      coordinatorCount: 0,
+    };
+    const handleSelect = vi.fn();
+    render(<ParticipantActionCenter onSelectActivity={handleSelect} />);
+
+    const uploadMinutaBtn = screen.getByRole("button", { name: /Subir Minuta Inicial/i });
+    fireEvent.click(uploadMinutaBtn);
+
+    expect(handleSelect).toHaveBeenCalledWith(24, "upload_minuta");
   });
 });

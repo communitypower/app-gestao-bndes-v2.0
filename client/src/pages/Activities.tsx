@@ -15,6 +15,7 @@ function ActivitiesContent() {
 
   // Estado da Ficha Aberta
   const [detailId, setDetailId] = useState<number | null>(null);
+  const [initialAction, setInitialAction] = useState<"upload_minuta" | "upload_revision" | undefined>(undefined);
 
   // Abrir Ficha automaticamente se query param `ficha`, `activityId` ou `id` estiver presente
   useEffect(() => {
@@ -40,8 +41,9 @@ function ActivitiesContent() {
       {/* Central de Ações e Pendências do Participante */}
       <div className="technical-panel p-4 sm:p-5">
         <ParticipantActionCenter
-          onSelectActivity={id => {
+          onSelectActivity={(id, action) => {
             setDetailId(id);
+            setInitialAction(action);
           }}
         />
       </div>
@@ -49,8 +51,12 @@ function ActivitiesContent() {
       {/* Ficha da Atividade Unificada */}
       <ActivityDetailDialog
         activityId={detailId}
+        initialAction={initialAction}
         onOpenChange={open => {
-          if (!open) setDetailId(null);
+          if (!open) {
+            setDetailId(null);
+            setInitialAction(undefined);
+          }
         }}
         isAdmin={isAdmin}
       />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { formatDate, fileSize, dueTone } from "@/lib/format";
 import { studyTomeFromCode, type ActivityStatus } from "@shared/domain";
@@ -46,6 +46,7 @@ import {
   ExternalLink,
   Eye,
   FileCheck,
+  FileCheck2,
   FileClock,
   FileDown,
   FileText,
@@ -73,6 +74,7 @@ interface ActivityDetailDialogProps {
   activityId: number | null;
   onOpenChange: (open: boolean) => void;
   isAdmin?: boolean;
+  initialAction?: "upload_minuta" | "upload_revision" | null;
 }
 
 function fileToBase64(file: File): Promise<string> {
@@ -92,6 +94,7 @@ export function ActivityDetailDialog({
   activityId,
   onOpenChange,
   isAdmin = false,
+  initialAction,
 }: ActivityDetailDialogProps) {
   const utils = trpc.useUtils();
   const { data: access } = trpc.administration?.status?.useQuery
@@ -110,6 +113,10 @@ export function ActivityDetailDialog({
         enabled: activityId !== null && activityId > 0,
       })
     : ({ data: [] } as any);
+
+  // Hidden native file input refs for immediate Explorer activation
+  const initialFileInputRef = useRef<HTMLInputElement>(null);
+  const revisionFileInputRef = useRef<HTMLInputElement>(null);
 
   // Mutations
   const createMaterial = trpc.production?.create?.useMutation
@@ -223,6 +230,78 @@ export function ActivityDetailDialog({
       utils.governance.overview.invalidate(),
     ]);
   };
+
+  // Handlers for triggering native OS file explorer immediately
+  const handleTriggerInitialFileInput = () => {
+    if (data?.title && !uploadTitle) {
+      setUploadTitle(data.title);
+    }
+    setIsUploadingMinuta(true);
+    initialFileInputRef.current?.click();
+  };
+
+  const handleTriggerRevisionFileInput = () => {
+    setIsAddingRevision(true);
+    revisionFileInputRef.current?.click();
+  };
+
+  const handleInitialFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadFile(file);
+      if (!uploadTitle && data?.title) {
+        setUploadTitle(data.title);
+      }
+      setIsUploadingMinuta(true);
+      toast.success(`Arquivo "${file.name}" selecionado! Confirme o envio da minuta abaixo.`);
+    }
+  };
+
+  const handleRevisionFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setRevisionFile(file);
+      setIsAddingRevision(true);
+      toast.success(`Arquivo "${file.name}" selecionado para a nova versão.`);
+    }
+  };
+
+  // Auto-open file picker when requested from action center CTA
+  useEffect(() => {
+    if (activityId && initialAction === "upload_minuta") {
+      setIsUploadingMinuta(true);
+      if (data?.title && !uploadTitle) {
+        setUploadTitle(data.title);
+      }
+      const timer = setTimeout(() => {
+        initialFileInputRef.current?.click();
+      }, 200);
+      return () => clearTimeout(timer);
+    } else if (activityId && initialAction === "upload_revision") {
+      setIsAddingRevision(true);
+      const timer = setTimeout(() => {
+        revisionFileInputRef.current?.click();
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [activityId, initialAction, data?.title]);
+
+  // Reset states when dialog closes
+  useEffect(() => {
+    if (!activityId) {
+      setIsUploadingMinuta(false);
+      setUploadFile(null);
+      setUploadTitle("");
+      setUploadDescription("");
+      setUploadNotes("");
+      setIsAddingRevision(false);
+      setRevisionFile(null);
+      setRevisionNotes("");
+      setIsAssigningReviewer(false);
+      setIsDecidingReview(false);
+      setIsAddingComment(false);
+    }
+  }, [activityId]);
 
   // Download revision file
   const handleDownloadRevision = async (revisionId: number) => {
@@ -376,6 +455,22 @@ export function ActivityDetailDialog({
   return (
     <Dialog open={activityId !== null && activityId > 0} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[94vh] overflow-y-auto bg-card w-[96vw] max-w-5xl p-5 sm:p-7">
+        {/* Hidden inputs directly connected to native file explorer */}
+        <input
+          type="file"
+          ref={initialFileInputRef}
+          accept=".pdf,.doc,.docx,.rtf"
+          className="hidden"
+          onChange={handleInitialFileChange}
+        />
+        <input
+          type="file"
+          ref={revisionFileInputRef}
+          accept=".pdf,.doc,.docx,.rtf"
+          className="hidden"
+          onChange={handleRevisionFileChange}
+        />
+
         {isLoading || !data ? (
           <div className="py-20 text-center text-sm text-muted-foreground animate-pulse">
             Carregando Ficha da Atividade…
@@ -482,11 +577,8 @@ export function ActivityDetailDialog({
                     {!currentMaterial ? (
                       <Button
                         size="sm"
-                        onClick={() => {
-                          setUploadTitle(data.title);
-                          setIsUploadingMinuta(true);
-                        }}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer"
+                        onClick={handleTriggerInitialFileInput}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer shadow-xs"
                       >
                         <FileUp className="mr-1.5 h-4 w-4" /> Subir Minuta Inicial (R01)
                       </Button>
@@ -507,7 +599,7 @@ export function ActivityDetailDialog({
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => setIsAddingRevision(true)}
+                            onClick={handleTriggerRevisionFileInput}
                             className="font-medium cursor-pointer"
                           >
                             <FileClock className="mr-1.5 h-4 w-4 text-primary" /> Subir Nova Versão (R0{currentMaterial.currentRevision + 1})
@@ -528,21 +620,164 @@ export function ActivityDetailDialog({
                   </div>
                 </div>
 
+                {/* PASSO 1: CARGA DA MINUTA INICIAL (Área de Upload Interativa e Imediata) */}
+                {!currentMaterial && (
+                  <div className="rounded-xl border-2 border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                      <div>
+                        <span className="editorial-kicker text-primary font-bold text-[10px]">Passo 1 do Ciclo Editorial</span>
+                        <h4 className="font-bold text-base text-foreground flex items-center gap-2">
+                          <FileUp className="h-5 w-5 text-primary" /> Carga da Minuta Inicial (R01)
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Faça o upload do documento da minuta inicial para abrir o fluxo de revisão independente da Coordenação Geral.
+                        </p>
+                      </div>
+
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={handleTriggerInitialFileInput}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer shadow-xs"
+                      >
+                        <Upload className="mr-1.5 h-4 w-4" />
+                        {uploadFile ? "Trocar Arquivo no Explorer" : "Abrir Explorer para Selecionar"}
+                      </Button>
+                    </div>
+
+                    {/* Dropzone / Área de Arquivo Selecionado */}
+                    {!uploadFile ? (
+                      <div
+                        onClick={handleTriggerInitialFileInput}
+                        className="group flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 hover:border-primary p-6 text-center cursor-pointer transition-all"
+                      >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform mb-2.5">
+                          <FileUp className="h-6 w-6" />
+                        </div>
+                        <p className="text-sm font-semibold text-foreground">
+                          Clique aqui para abrir o Explorer do seu computador
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Selecione o arquivo da Minuta Técnica (Word <span className="font-mono font-semibold">.docx</span> ou <span className="font-mono font-semibold">.pdf</span>)
+                        </p>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="mt-3 text-xs font-semibold bg-background pointer-events-none"
+                        >
+                          📂 Selecionar Documento
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4 space-y-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-500/20 pb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                              <FileCheck2 className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                                  Arquivo selecionado com sucesso
+                                </span>
+                                <Badge className="bg-emerald-600 text-white font-mono text-[10px] px-1.5 py-0">
+                                  {fileSize(uploadFile.size)}
+                                </Badge>
+                              </div>
+                              <p className="text-xs font-mono font-semibold text-foreground mt-0.5 break-all">
+                                {uploadFile.name}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={handleTriggerInitialFileInput}
+                              className="h-8 text-xs cursor-pointer"
+                            >
+                              Trocar Arquivo
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setUploadFile(null)}
+                              className="h-8 text-xs text-destructive hover:bg-destructive/10 cursor-pointer"
+                            >
+                              Remover
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Campos complementares */}
+                        <div className="space-y-3 pt-1">
+                          <div>
+                            <Label className="text-xs font-semibold">Título do Documento</Label>
+                            <Input
+                              value={uploadTitle || data.title}
+                              onChange={e => setUploadTitle(e.target.value)}
+                              placeholder="Título da Minuta Técnica..."
+                              className="mt-1 h-9 text-xs bg-card"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs font-semibold">Observações para a Coordenação Geral (Opcional)</Label>
+                            <Textarea
+                              value={uploadNotes}
+                              onChange={e => setUploadNotes(e.target.value)}
+                              placeholder="Informe os destaques desta versão, metodologia aplicada ou orientações aos revisores..."
+                              className="mt-1 min-h-[70px] text-xs bg-card"
+                            />
+                          </div>
+
+                          <div className="flex justify-end gap-2 pt-2 border-t border-emerald-500/20">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setUploadFile(null)}
+                              className="h-9 text-xs"
+                            >
+                              Cancelar
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={handleUploadInitialMinuta}
+                              disabled={createMaterial.isPending}
+                              className="h-9 px-4 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer"
+                            >
+                              {createMaterial.isPending ? "Enviando Documento..." : "✅ Confirmar Envio da Minuta Inicial (R01)"}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* PASSO 2: PAINEL DE INDICAÇÃO DE REVISOR (Prof. Floriano) */}
                 {(data.reviewers ?? []).length === 0 && (
-                  <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-4 space-y-3">
+                  <div className={`rounded-lg border ${!currentMaterial ? "border-border/60 bg-muted/20 opacity-75" : "border-amber-500/40 bg-amber-500/5"} p-4 space-y-3`}>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div>
                         <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
-                          <UserCheck className="h-4 w-4 text-amber-600" /> Passo 2: Indicação de Revisor Técnico Independente
+                          <UserCheck className={`h-4 w-4 ${!currentMaterial ? "text-muted-foreground" : "text-amber-600"}`} /> Passo 2: Indicação de Revisor Técnico Independente
                         </h4>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          {isGeneralCoord
+                          {!currentMaterial
+                            ? "A indicação do revisor técnico independente pelo Prof. Floriano será liberada assim que a minuta inicial (R01) for enviada no Passo 1."
+                            : isGeneralCoord
                             ? "Como Coordenador Geral, o Prof. Floriano deve selecionar o revisor técnico independente para esta seção."
                             : "Minuta inicial no sistema. Aguardando a indicação do revisor técnico independente pelo Prof. Floriano."}
                         </p>
                       </div>
-                      {isGeneralCoord && !isAssigningReviewer && (
+                      {currentMaterial && isGeneralCoord && !isAssigningReviewer && (
                         <Button
                           size="sm"
                           onClick={() => setIsAssigningReviewer(true)}
@@ -553,7 +788,7 @@ export function ActivityDetailDialog({
                       )}
                     </div>
 
-                    {isAssigningReviewer && isGeneralCoord && (
+                    {isAssigningReviewer && isGeneralCoord && currentMaterial && (
                       <div className="mt-3 pt-3 border-t border-amber-500/20 space-y-3">
                         <div>
                           <Label className="text-xs font-semibold">Selecione o Revisor Independente (Prof. Floriano)</Label>
@@ -596,121 +831,130 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* MODAL / FORMULÁRIO DE CARGA DE MINUTA INICIAL */}
-                {isUploadingMinuta && (
-                  <div className="rounded-lg border border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
-                    <div className="flex items-center justify-between border-b pb-3">
-                      <h4 className="font-semibold text-foreground flex items-center gap-2">
-                        <FileUp className="h-4 w-4 text-primary" /> Carga da Minuta Inicial (R01)
-                      </h4>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setIsUploadingMinuta(false)}
-                        className="h-7 text-xs"
-                      >
-                        Cancelar
-                      </Button>
-                    </div>
-                    <div className="space-y-3">
-                      <div>
-                        <Label className="text-xs">Título do Documento</Label>
-                        <Input
-                          value={uploadTitle}
-                          onChange={e => setUploadTitle(e.target.value)}
-                          className="mt-1 h-9 text-xs"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs">Arquivo da Minuta (Word .docx ou PDF) *</Label>
-                        <Input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.rtf"
-                          onChange={e => setUploadFile(e.target.files?.[0] ?? null)}
-                          className="mt-1 text-xs cursor-pointer"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs">Observações para a Coordenação Geral</Label>
-                        <Textarea
-                          value={uploadNotes}
-                          onChange={e => setUploadNotes(e.target.value)}
-                          placeholder="Informe destaques da minuta, metodologia aplicada ou orientações aos revisores..."
-                          className="mt-1 min-h-[70px] text-xs"
-                        />
-                      </div>
-                      <div className="flex justify-end gap-2 pt-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => setIsUploadingMinuta(false)}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={handleUploadInitialMinuta}
-                          disabled={!uploadFile || createMaterial.isPending}
-                        >
-                          {createMaterial.isPending ? "Enviando..." : "Confirmar Envio da Minuta"}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 {/* MODAL / FORMULÁRIO DE NOVA REVISÃO (R02, R03...) */}
                 {isAddingRevision && currentMaterial && (
-                  <div className="rounded-lg border border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
-                    <div className="flex items-center justify-between border-b pb-3">
-                      <h4 className="font-semibold text-foreground flex items-center gap-2">
-                        <FileClock className="h-4 w-4 text-primary" /> Envio de Nova Revisão (R0{currentMaterial.currentRevision + 1})
-                      </h4>
+                  <div className="rounded-xl border-2 border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                      <div>
+                        <span className="editorial-kicker text-primary font-bold text-[10px]">Passo 4 do Ciclo Editorial</span>
+                        <h4 className="font-bold text-base text-foreground flex items-center gap-2">
+                          <FileClock className="h-5 w-5 text-primary" /> Envio de Nova Revisão (R0{currentMaterial.currentRevision + 1})
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Envie o documento revisado com a implementação dos comentários da Coordenação Geral / Revisor Técnico.
+                        </p>
+                      </div>
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => setIsAddingRevision(false)}
-                        className="h-7 text-xs"
+                        className="h-7 text-xs cursor-pointer"
                       >
-                        Cancelar
+                        Fechar
                       </Button>
                     </div>
-                    <div className="space-y-3">
-                      <div>
-                        <Label className="text-xs">Arquivo Revisado (Word .docx ou PDF) *</Label>
-                        <Input
-                          type="file"
-                          accept=".pdf,.doc,.docx,.rtf"
-                          onChange={e => setRevisionFile(e.target.files?.[0] ?? null)}
-                          className="mt-1 text-xs cursor-pointer"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs">Resumo das Alterações / Resposta aos Apontamentos</Label>
-                        <Textarea
-                          value={revisionNotes}
-                          onChange={e => setRevisionNotes(e.target.value)}
-                          placeholder="Descreva as modificações efetuadas nesta versão para apreciação da Coordenação Geral..."
-                          className="mt-1 min-h-[70px] text-xs"
-                        />
-                      </div>
-                      <div className="flex justify-end gap-2 pt-2">
+
+                    {!revisionFile ? (
+                      <div
+                        onClick={handleTriggerRevisionFileInput}
+                        className="group flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 hover:border-primary p-6 text-center cursor-pointer transition-all"
+                      >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform mb-2.5">
+                          <FileClock className="h-6 w-6" />
+                        </div>
+                        <p className="text-sm font-semibold text-foreground">
+                          Clique aqui para abrir o Explorer e selecionar o arquivo revisado (R0{currentMaterial.currentRevision + 1})
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Selecione o arquivo com as alterações implementadas (Word <span className="font-mono font-semibold">.docx</span> ou <span className="font-mono font-semibold">.pdf</span>)
+                        </p>
                         <Button
+                          type="button"
                           size="sm"
                           variant="outline"
-                          onClick={() => setIsAddingRevision(false)}
+                          className="mt-3 text-xs font-semibold bg-background pointer-events-none"
                         >
-                          Cancelar
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={handleUploadNewRevision}
-                          disabled={!revisionFile || addRevision.isPending}
-                        >
-                          {addRevision.isPending ? "Enviando..." : "Submeter Nova Versão"}
+                          📂 Selecionar Documento Revisado
                         </Button>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4 space-y-4">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-500/20 pb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                              <FileCheck2 className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                                  Arquivo revisado selecionado
+                                </span>
+                                <Badge className="bg-emerald-600 text-white font-mono text-[10px] px-1.5 py-0">
+                                  {fileSize(revisionFile.size)}
+                                </Badge>
+                              </div>
+                              <p className="text-xs font-mono font-semibold text-foreground mt-0.5 break-all">
+                                {revisionFile.name}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={handleTriggerRevisionFileInput}
+                              className="h-8 text-xs cursor-pointer"
+                            >
+                              Trocar Arquivo
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setRevisionFile(null)}
+                              className="h-8 text-xs text-destructive hover:bg-destructive/10 cursor-pointer"
+                            >
+                              Remover
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 pt-1">
+                          <div>
+                            <Label className="text-xs font-semibold">Resumo das Alterações / Resposta aos Apontamentos *</Label>
+                            <Textarea
+                              value={revisionNotes}
+                              onChange={e => setRevisionNotes(e.target.value)}
+                              placeholder="Descreva as modificações efetuadas nesta versão em resposta aos apontamentos da revisão técnica..."
+                              className="mt-1 min-h-[80px] text-xs bg-card"
+                            />
+                          </div>
+
+                          <div className="flex justify-end gap-2 pt-2 border-t border-emerald-500/20">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setIsAddingRevision(false)}
+                              className="h-9 text-xs"
+                            >
+                              Cancelar
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={handleUploadNewRevision}
+                              disabled={addRevision.isPending}
+                              className="h-9 px-4 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer"
+                            >
+                              {addRevision.isPending ? "Enviando Revisão..." : `✅ Submeter Versão R0${currentMaterial.currentRevision + 1} para Revisão`}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
