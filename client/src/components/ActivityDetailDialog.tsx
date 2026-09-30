@@ -266,9 +266,9 @@ export function ActivityDetailDialog({
     }
   };
 
-  // Auto-open file picker when requested from action center CTA
+  // Auto-open file picker when requested from action center CTA (apenas se a minuta ainda não tiver sido carregada)
   useEffect(() => {
-    if (activityId && initialAction === "upload_minuta") {
+    if (activityId && initialAction === "upload_minuta" && !currentMaterial) {
       setIsUploadingMinuta(true);
       if (data?.title && !uploadTitle) {
         setUploadTitle(data.title);
@@ -284,7 +284,7 @@ export function ActivityDetailDialog({
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [activityId, initialAction, data?.title]);
+  }, [activityId, initialAction, data?.title, currentMaterial]);
 
   // Reset states when dialog closes
   useEffect(() => {
@@ -752,7 +752,7 @@ export function ActivityDetailDialog({
                               disabled={createMaterial.isPending}
                               className="h-9 px-4 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer"
                             >
-                              {createMaterial.isPending ? "Enviando Documento..." : "✅ Confirmar Envio da Minuta Inicial (R01)"}
+                              {createMaterial.isPending ? "Submetendo Documento..." : "✅ Submeter Minuta Inicial (R01)"}
                             </Button>
                           </div>
                         </div>

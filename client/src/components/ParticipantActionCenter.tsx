@@ -508,6 +508,12 @@ export function ParticipantActionCenter({
       return;
     }
     if (action.actionType === "minuta_pendente" || action.actionType === "sem_minuta") {
+      // Se a minuta já foi carregada no sistema (materialId presente ou ctaLabel indica 'Submeter Minuta'),
+      // abre diretamente a ficha da atividade sem abrir o Explorer de seleção de arquivos.
+      if (action.materialId || action.ctaLabel?.toLowerCase().includes("submeter")) {
+        onSelectActivity(action.activityId);
+        return;
+      }
       onSelectActivity(action.activityId, "upload_minuta");
       return;
     }

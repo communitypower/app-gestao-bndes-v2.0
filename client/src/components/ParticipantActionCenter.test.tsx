@@ -219,4 +219,39 @@ describe("ParticipantActionCenter - Direct Display, Filtering and 6-Step Workflo
 
     expect(handleSelect).toHaveBeenCalledWith(24, "upload_minuta");
   });
+
+  it("não chama upload_minuta (não abre Explorer) ao clicar em Submeter Minuta quando o arquivo já foi carregado", () => {
+    currentMockActions = [
+      {
+        id: "act-5",
+        activityId: 30,
+        materialId: 101,
+        sectionCode: "4.2",
+        activityTitle: "Financiamento Naval",
+        dueAt: Date.UTC(2026, 8, 25),
+        role: "executor" as const,
+        actionType: "minuta_pendente",
+        actionTitle: "Submeter Minuta para Revisão",
+        actionDescription: "A minuta inicial já foi carregada no sistema.",
+        ctaLabel: "Submeter Minuta",
+        ctaTarget: "revisao",
+        pendingCommentCount: 0,
+      },
+    ];
+    currentMockSummary = {
+      total: 1,
+      executorCount: 1,
+      reviewerCount: 0,
+      coordinatorCount: 0,
+    };
+    const handleSelect = vi.fn();
+    render(<ParticipantActionCenter onSelectActivity={handleSelect} />);
+
+    const submitMinutaBtn = screen.getByRole("button", { name: /Submeter Minuta/i });
+    fireEvent.click(submitMinutaBtn);
+
+    // Deve abrir a ficha diretamente sem acionar 'upload_minuta' (que abriria o Explorer)
+    expect(handleSelect).toHaveBeenCalledWith(30);
+    expect(handleSelect).not.toHaveBeenCalledWith(30, "upload_minuta");
+  });
 });

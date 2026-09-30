@@ -653,9 +653,12 @@ export const activitiesRouter = router({
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "minuta_pendente",
-              actionTitle: "Minuta Técnica Inicial a Elaborar / Subir",
-              actionDescription:
-                "Esta atividade está em fase de elaboração. Realize a redação da minuta inicial (R01) e faça o upload no sistema para a Coordenação Geral.",
+              actionTitle: material
+                ? "Submeter Minuta para Revisão"
+                : "Minuta Técnica Inicial a Elaborar / Subir",
+              actionDescription: material
+                ? "A minuta inicial já foi carregada no sistema. Submeta-a para a Coordenação Geral e início da revisão técnica independente."
+                : "Esta atividade está em fase de elaboração. Realize a redação da minuta inicial (R01) e faça o upload no sistema para a Coordenação Geral.",
               ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial (R01)",
               ctaTarget: material ? "revisao" : "drawer",
               responsibleName,
