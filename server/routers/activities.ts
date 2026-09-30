@@ -631,10 +631,9 @@ export const activitiesRouter = router({
             (member && activity.reviewers.some((r: any) => r.teamMemberId === member.id))
         );
 
-        // Coordenação Geral (Prof. Floriano / Admin)
+        // Coordenação Geral (Prof. Floriano / Denise)
         const isCoordGeral = Boolean(
           isAllPendingMode ||
-            isAdmin ||
             (member && isGeneralCoordinator(ctx.user, member))
         );
 

@@ -48,11 +48,11 @@ const fixtures = vi.hoisted(() => {
     reviewers: [],
   };
 
-  const activityG10_II7 = {
+  const activityG10_II1 = {
     id: 107,
     parentActivityId: null,
-    sectionCode: "II.7",
-    title: "Padrão tecnológico e recursos humanos",
+    sectionCode: "II.1",
+    title: "Construção Naval Mundial",
     responsibleId: coordG10.id,
     responsibleGroupId: coordG10.groupId,
     documentStatus: "em elaboração",
@@ -110,7 +110,7 @@ const fixtures = vi.hoisted(() => {
     reviewers: [],
   };
 
-  return { coordG1, coordG10, coordG11, executor, activityG1, activityG1_II3, activityG10_II7, activityG10_II8, activityG11_II4 };
+  return { coordG1, coordG10, coordG11, executor, activityG1, activityG1_II3, activityG10_II1, activityG10_II8, activityG11_II4 };
 });
 
 const dbMocks = vi.hoisted(() => ({
@@ -156,7 +156,7 @@ describe("myWorkloadActions - segregação de ações por papel e alocação cor
     dbMocks.listActivities.mockResolvedValue([
       fixtures.activityG1,
       fixtures.activityG1_II3,
-      fixtures.activityG10_II7,
+      fixtures.activityG10_II1,
       fixtures.activityG10_II8,
       fixtures.activityG11_II4,
     ]);
@@ -171,29 +171,29 @@ describe("myWorkloadActions - segregação de ações por papel e alocação cor
     });
   });
 
-  it("coordenador do G10 (Cassiano) recebe ações para os capítulos II.7 e II.8", async () => {
+  it("coordenador do G10 (Cassiano) recebe ações para os capítulos II.1 e II.8", async () => {
     const caller = appRouter.createCaller(context(103, "user"));
     const result = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
 
-    const ii7Action = result.actions.find(a => a.activityId === fixtures.activityG10_II7.id);
+    const ii1Action = result.actions.find(a => a.activityId === fixtures.activityG10_II1.id);
     const ii8Action = result.actions.find(a => a.activityId === fixtures.activityG10_II8.id);
     const g11Action = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id);
 
-    expect(ii7Action).toBeDefined();
+    expect(ii1Action).toBeDefined();
     expect(ii8Action).toBeDefined();
     expect(g11Action).toBeUndefined();
   });
 
-  it("coordenadora do G11 (Marta) NÃO recebe ações de II.7, II.8 e II.3, apenas de II.4", async () => {
+  it("coordenadora do G11 (Marta) NÃO recebe ações de II.1, II.8 e II.3, apenas de II.4", async () => {
     const caller = appRouter.createCaller(context(111, "user"));
     const result = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
 
-    const ii7Action = result.actions.find(a => a.activityId === fixtures.activityG10_II7.id);
+    const ii1Action = result.actions.find(a => a.activityId === fixtures.activityG10_II1.id);
     const ii8Action = result.actions.find(a => a.activityId === fixtures.activityG10_II8.id);
     const ii3Action = result.actions.find(a => a.activityId === fixtures.activityG1_II3.id);
     const ii4Action = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id);
 
-    expect(ii7Action).toBeUndefined();
+    expect(ii1Action).toBeUndefined();
     expect(ii8Action).toBeUndefined();
     expect(ii3Action).toBeUndefined();
     expect(ii4Action).toBeDefined();
