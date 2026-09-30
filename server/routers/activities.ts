@@ -638,12 +638,19 @@ export const activitiesRouter = router({
         );
 
         // PASSO 1: MINUTA INICIAL (Autor / Grupo)
+        // Só há pendência de elaboração/carga se a minuta ainda NÃO tiver sido submetida para revisão
         if (isExecutor) {
-          if (
-            !material ||
-            activity.documentStatus === "planejada" ||
-            activity.documentStatus === "em elaboração"
-          ) {
+          const isAlreadySubmitted = Boolean(
+            activity.documentStatus === "submetida à revisão da seção" ||
+            activity.documentStatus === "em revisão da seção" ||
+            activity.documentStatus === "revisada pela seção" ||
+            activity.documentStatus === "consolidada no capítulo" ||
+            activity.documentStatus === "ajustes solicitados" ||
+            material?.reviewStatus === "em revisão" ||
+            material?.reviewStatus === "aprovado"
+          );
+
+          if (!isAlreadySubmitted && (!material || material.reviewStatus === "em elaboração")) {
             actions.push({
               id: `executor_minuta_${activity.id}`,
               activityId: activity.id,

@@ -317,6 +317,7 @@ export const productionRouter = router({
           activityId: input.activityId,
           sectionId: input.sectionId,
           createdBy: ctx.user.id,
+          reviewStatus: "em revisão",
         })
         .returning({ id: productionMaterials.id });
       const materialId = inserted[0]?.id;
@@ -326,17 +327,45 @@ export const productionRouter = router({
           message: "Não foi possível criar o material.",
         });
       }
-      await db.insert(materialRevisions).values({
-        materialId,
-        revisionNumber: 1,
-        notes: input.notes,
-        fileName: input.file.fileName,
-        mimeType: input.file.mimeType,
-        fileSize: input.file.fileSize,
-        storageKey: stored.key,
-        storageUrl: stored.url,
-        uploadedBy: ctx.user.id,
-      });
+      const revInserted = await db
+        .insert(materialRevisions)
+        .values({
+          materialId,
+          revisionNumber: 1,
+          notes: input.notes,
+          fileName: input.file.fileName,
+          mimeType: input.file.mimeType,
+          fileSize: input.file.fileSize,
+          storageKey: stored.key,
+          storageUrl: stored.url,
+          uploadedBy: ctx.user.id,
+        })
+        .returning({ id: materialRevisions.id });
+
+      if (input.activityId) {
+        const revId = revInserted[0]?.id;
+        if (revId) {
+          await db.insert(reviewSubmissions).values({
+            activityId: input.activityId,
+            materialId,
+            revisionId: revId,
+            submittedBy: ctx.user.id,
+            status: "em revisão",
+            message: input.notes ?? `Minuta inicial (R01) submetida para revisão técnica da Coordenação Geral.`,
+            submittedAt: Date.now(),
+          });
+        }
+
+        await syncActivityDocumentStatus(
+          input.activityId,
+          "submetida à revisão da seção",
+          ctx.user.id,
+          input.notes
+            ? `Minuta inicial (R01) submetida para revisão: ${input.notes}`
+            : "Minuta inicial (R01) submetida para revisão técnica da Coordenação Geral."
+        );
+      }
+
       return getMaterialOrThrow(materialId);
     }),
 

@@ -238,4 +238,39 @@ describe("myWorkloadActions - segregação de ações por papel e alocação cor
       }
     }
   });
+
+  it("não exibe ação de subir minuta inicial para atividade que já possui arquivo/material submetido", async () => {
+    dbMocks.listProductionMaterials.mockResolvedValue([
+      {
+        id: 501,
+        title: "Minuta R01 de II.1",
+        activityId: fixtures.activityG10_II1.id,
+        sectionId: 1,
+        sectionCode: "II.1",
+        responsibleId: fixtures.coordG10.id,
+        responsibleGroupId: fixtures.coordG10.groupId,
+        currentRevision: 1,
+        reviewStatus: "em revisão",
+        openCommentCount: 0,
+        implementedCommentCount: 0,
+        revisions: [{ id: 1, revisionNumber: 1, fileName: "Minuta_II1_R01.docx" }],
+        reviewers: [],
+      },
+    ]);
+
+    const caller = appRouter.createCaller(context(103, "user"));
+    const result = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
+
+    // Para o capítulo II.1 (que já tem material submetido), NÃO deve haver ação de subir minuta inicial
+    const ii1MinutaAction = result.actions.find(
+      a => a.activityId === fixtures.activityG10_II1.id && a.actionType === "minuta_pendente"
+    );
+    expect(ii1MinutaAction).toBeUndefined();
+
+    // Para o capítulo II.8 (que ainda não tem material), deve haver ação de elaboração
+    const ii8MinutaAction = result.actions.find(
+      a => a.activityId === fixtures.activityG10_II8.id && a.actionType === "minuta_pendente"
+    );
+    expect(ii8MinutaAction).toBeDefined();
+  });
 });
