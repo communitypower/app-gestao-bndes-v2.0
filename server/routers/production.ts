@@ -972,14 +972,15 @@ export const productionRouter = router({
 
       const combinedNote = (input.note?.trim() ?? "") + fileAttachmentText;
 
-      // Se foram solicitados ajustes com nota ou arquivo, registra também como apontamento formal
-      if (input.decision === "ajustes solicitados" && combinedNote.trim()) {
+      // Se foram solicitados ajustes com nota ou arquivo, registra sempre como apontamento formal
+      if (input.decision === "ajustes solicitados") {
+        const commentContent = combinedNote.trim() || (input.file ? `Arquivo de revisão anexado: ${input.file.fileName}` : "Ajustes e correções solicitados pelo revisor técnico.");
         await db.insert(materialComments).values({
           materialId: material.id,
           submissionId: submission.id,
           authorId: ctx.user.id,
           commentType: "solicitação de ajuste",
-          content: combinedNote.trim(),
+          content: commentContent,
           status: "aberto",
         });
       } else if (fileAttachmentText.trim()) {
@@ -1066,15 +1067,25 @@ export const productionRouter = router({
             input.note ?? "Ajustes solicitados pela equipe de revisão."
           );
 
-          // Notificar autores/executores
+          // Notificar autores, coordenador do capítulo e integrantes do grupo temático
+          const allMembers = await listTeamMembers();
           const actCode = activity?.planCode || activity?.detailCode || "";
           const targetMemberIds: number[] = [];
+          if (activity?.responsibleId && !targetMemberIds.includes(activity.responsibleId)) {
+            targetMemberIds.push(activity.responsibleId);
+          }
           if (material.responsibleId && !targetMemberIds.includes(material.responsibleId)) {
             targetMemberIds.push(material.responsibleId);
           }
           (activity?.allocations ?? []).forEach(a => {
             if (!targetMemberIds.includes(a.teamMemberId)) targetMemberIds.push(a.teamMemberId);
           });
+          if (activity?.responsibleGroupId) {
+            const groupMembers = allMembers.filter((m: any) => m.groupId === activity.responsibleGroupId);
+            groupMembers.forEach((m: any) => {
+              if (!targetMemberIds.includes(m.id)) targetMemberIds.push(m.id);
+            });
+          }
           for (let i = 0; i < targetMemberIds.length; i++) {
             const tId = targetMemberIds[i];
             const targetUserId = await getUserIdForTeamMember(tId);
@@ -1085,7 +1096,7 @@ export const productionRouter = router({
                 activityId: material.activityId,
                 type: "ajustes_solicitados",
                 title: "Ajustes solicitados pela revisão técnica",
-                message: `Foram solicitados ajustes na atividade ${actCode ? `${actCode} — ` : ""}("${activity?.title ?? material.title}"). Verifique os apontamentos e submeta nova versão.`,
+                message: `Foram solicitados ajustes na atividade ${actCode ? `${actCode} — ` : ""}("${activity?.title ?? material.title}"). Verifique os apontamentos, consulte o arquivo anexado pelo revisor e submeta a nova versão.`,
                 actionUrl: `/atividades?ficha=${material.activityId}`,
               });
             }

@@ -239,9 +239,14 @@ export function ActivityDetailDialog({
     data?.isGeneralCoordinator
   );
   const isAuthorCoordinator = Boolean(
+    isAdmin ||
+    access?.isAdmin ||
+    access?.isGeneralCoordinator ||
     data?.isCoordinator ||
     data?.isExecutor ||
-    (access?.teamMembership?.groupId && data?.responsibleGroupId === access.teamMembership.groupId)
+    (access?.teamMembership?.groupId && data?.responsibleGroupId === access.teamMembership.groupId) ||
+    (currentMaterial?.authorId && access?.user?.id && currentMaterial.authorId === access.user.id) ||
+    (data?.responsibleId && access?.teamMembership?.id && data.responsibleId === access.teamMembership.id)
   );
   const isDesignatedReviewer = Boolean(
     data?.isReviewer ||
@@ -1028,28 +1033,68 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* MODAL / FORMULÁRIO DE NOVA REVISÃO (R02, R03...) */}
-                {isAddingRevision && currentMaterial && (
+                {/* PASSO 4: IMPLEMENTAÇÃO DE AJUSTES & ENVIO DE NOVA VERSÃO (R02, R03...) */}
+                {currentMaterial && (isAddingRevision || currentStage === "implementacao_ajustes" || data.documentStatus === "ajustes solicitados" || currentMaterial.openCommentCount > 0) && (
                   <div className="rounded-xl border-2 border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
                       <div>
                         <span className="editorial-kicker text-primary font-bold text-[10px]">Passo 4 do Ciclo Editorial</span>
                         <h4 className="font-bold text-base text-foreground flex items-center gap-2">
-                          <FileClock className="h-5 w-5 text-primary" /> Envio de Nova Revisão (R0{currentMaterial.currentRevision + 1})
+                          <FileClock className="h-5 w-5 text-primary" /> Envio de Nova Revisão (R0{currentMaterial.currentRevision + 1}) — Atendimento aos Apontamentos
                         </h4>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Envie o documento revisado com a implementação dos comentários da Coordenação Geral / Revisor Técnico.
+                          Consulte os comentários e arquivos anotados pelo revisor técnico abaixo, implemente as correções e submeta a nova versão.
                         </p>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setIsAddingRevision(false)}
-                        className="h-7 text-xs cursor-pointer"
-                      >
-                        Fechar
-                      </Button>
+                      {isAddingRevision && currentStage !== "implementacao_ajustes" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setIsAddingRevision(false)}
+                          className="h-7 text-xs cursor-pointer"
+                        >
+                          Fechar
+                        </Button>
+                      )}
                     </div>
+
+                    {/* Destaque do Parecer e Arquivo Anexado pelo Revisor */}
+                    {currentMaterial.submissions?.length > 0 && currentMaterial.submissions[0]?.decisions?.length > 0 && (
+                      <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3.5 space-y-2">
+                        <div className="flex items-center gap-2 font-bold text-xs text-amber-800 dark:text-amber-300">
+                          <AlertCircle className="h-4 w-4 text-amber-600" />
+                          <span>Parecer e Arquivo Anexado pelo Revisor Técnico:</span>
+                        </div>
+                        {currentMaterial.submissions[0].decisions.map((d: any) => (
+                          <div key={d.id} className="text-xs space-y-2 pt-1">
+                            <p className="font-semibold text-muted-foreground">
+                              Parecer emitido por <strong className="text-foreground">{d.reviewerName}</strong> em {formatDate(d.decidedAt)}:
+                            </p>
+                            {d.note && (
+                              <div className="bg-background/80 p-2.5 rounded border border-border/50 text-foreground/90 space-y-2">
+                                <p className="whitespace-pre-line leading-relaxed">{d.note}</p>
+                                {d.note.includes("http") && (
+                                  <div className="pt-2 border-t border-border/40 flex flex-wrap gap-2">
+                                    {Array.from(d.note.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g)).map((match: any, i: number) => (
+                                      <a
+                                        key={i}
+                                        href={match[2]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 border border-primary/20 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+                                      >
+                                        <Download className="h-3.5 w-3.5" />
+                                        <span>Baixar {match[1]}</span>
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {!revisionFile ? (
                       <div

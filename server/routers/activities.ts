@@ -616,13 +616,15 @@ export const activitiesRouter = router({
           ? "Tomo III"
           : null;
 
-        // Responsável pela Elaboração (Coordenador do grupo ou autor líder designado)
+        // Responsável pela Elaboração (Coordenador do grupo, autor líder ou qualquer pesquisador do grupo temático responsável)
         const isExecutor = Boolean(
           isAllPendingMode ||
+            isAdmin ||
             (member &&
               (member.id === activity.responsibleId ||
-                activity.allocations.some((a: any) => a.teamMemberId === member.id && (a.isExecutionLead || activity.allocations.length === 1)) ||
-                (member.groupId && member.groupId === activity.responsibleGroupId && member.groupRole === "coordenador")))
+                (material && (material.responsibleId === member.id || material.authorId === ctx.user.id)) ||
+                activity.allocations.some((a: any) => a.teamMemberId === member.id) ||
+                (member.groupId && member.groupId === activity.responsibleGroupId)))
         );
 
         // Revisor Técnico Designado
@@ -647,7 +649,8 @@ export const activitiesRouter = router({
             activity.documentStatus === "consolidada no capítulo" ||
             activity.documentStatus === "ajustes solicitados" ||
             material?.reviewStatus === "em revisão" ||
-            material?.reviewStatus === "aprovado"
+            material?.reviewStatus === "aprovado" ||
+            (material && material.submissions?.length > 0)
           );
 
           if (!isAlreadySubmitted && (!material || material.reviewStatus === "em elaboração")) {
@@ -765,12 +768,15 @@ export const activitiesRouter = router({
 
         // PASSO 4: IMPLEMENTAÇÃO DOS COMENTÁRIOS (Autor / Grupo)
         if (isExecutor) {
-          if (
+          const isAjustesStage = Boolean(
             activity.documentStatus === "ajustes solicitados" ||
             (material &&
               (material.openCommentCount > 0 ||
-                material.reviewStatus === "em elaboração" && material.currentRevision > 1))
-          ) {
+                (material.reviewStatus === "em elaboração" && material.currentRevision > 1) ||
+                (material.submissions?.some((s: any) => s.status === "ajustes solicitados"))))
+          );
+
+          if (isAjustesStage) {
             const openComments = material ? material.openCommentCount : 0;
             actions.push({
               id: `executor_ajustes_${activity.id}`,
@@ -781,10 +787,12 @@ export const activitiesRouter = router({
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "ajustes_a_fazer",
-              actionTitle: "Implementar Comentários do Revisor",
-              actionDescription: `Há ${openComments} apontamento(s) pendente(s) de atendimento. Anexe a nova versão revisada com a nota de implementação.`,
-              ctaLabel: "Implementar Ajustes",
-              ctaTarget: "revisao",
+              actionTitle: "Revisar Documento / Atender Apontamentos da Revisão",
+              actionDescription: openComments > 0
+                ? `O revisor técnico devolveu a minuta com ${openComments} apontamento(s) e arquivo de revisão. Analise as notas e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`
+                : `O revisor técnico solicitou ajustes na minuta. Verifique os comentários e arquivo anexado pelo revisor e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`,
+              ctaLabel: "Revisar Documento / Atender Ajustes",
+              ctaTarget: "drawer",
               pendingCommentCount: openComments,
               responsibleName,
               responsibleGroupName: groupName,
