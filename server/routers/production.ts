@@ -38,6 +38,7 @@ import { uploadProjectFile } from "../fileUpload";
 import {
   createParticipantNotification,
   getUserIdForTeamMember,
+  notifyFlorianoMinutaSubmitted,
 } from "../notificationService";
 import { storageGetSignedUrl } from "../storage";
 import { fileInputSchema, reviewDecisionSchema } from "./schemas";
@@ -364,6 +365,18 @@ export const productionRouter = router({
             ? `Minuta inicial (R01) submetida para revisão: ${input.notes}`
             : "Minuta inicial (R01) submetida para revisão técnica da Coordenação Geral."
         );
+
+        // Notificar o Professor Floriano (in-app e e-mail) para indicação do revisor independente
+        const activity = await getActivity(input.activityId);
+        const authorName = member?.name ?? ctx.user.name ?? "Autor do Grupo";
+        await notifyFlorianoMinutaSubmitted({
+          activityId: input.activityId,
+          materialId,
+          activityTitle: activity?.title ?? input.title,
+          sectionCode: activity?.sectionCode || activity?.planCode,
+          authorName,
+          authorUserId: ctx.user.id,
+        });
       }
 
       return getMaterialOrThrow(materialId);

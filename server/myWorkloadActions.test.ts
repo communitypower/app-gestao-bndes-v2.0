@@ -199,30 +199,85 @@ describe("myWorkloadActions - segregação de ações por papel e alocação cor
     expect(ii4Action).toBeDefined();
   });
 
-  it("coordenador do G1 (Floriano) recebe ações de elaboração de I.1 e II.3 e indicação de revisores nas seções pendentes", async () => {
+  it("coordenador do G1 (Floriano) recebe ações de elaboração de I.1 e II.3 e indicação de revisores nas seções onde o documento já foi submetido", async () => {
+    // Quando nenhum documento foi submetido, não há indicação pendente
     const caller = appRouter.createCaller(context(101, "user"));
-    const result = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
+    const resultInitial = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
 
-    const i1Action = result.actions.find(a => a.activityId === fixtures.activityG1.id && a.role === "executor");
-    const ii3Action = result.actions.find(a => a.activityId === fixtures.activityG1_II3.id && a.role === "executor");
-    const ii4ExecutorAction = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.role === "executor");
-    const ii4ReviewerDesignationAction = result.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.actionType === "sem_revisores");
+    const i1Action = resultInitial.actions.find(a => a.activityId === fixtures.activityG1.id && a.role === "executor");
+    const ii3Action = resultInitial.actions.find(a => a.activityId === fixtures.activityG1_II3.id && a.role === "executor");
+    const ii4ExecutorAction = resultInitial.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.role === "executor");
+    const ii4NoDocReviewerAction = resultInitial.actions.find(a => a.activityId === fixtures.activityG11_II4.id && a.actionType === "sem_revisores");
 
     expect(i1Action).toBeDefined();
     expect(ii3Action).toBeDefined();
     expect(ii4ExecutorAction).toBeUndefined();
-    expect(ii4ReviewerDesignationAction).toBeDefined();
+    expect(ii4NoDocReviewerAction).toBeUndefined(); // Sem documento, não gera indicação
+
+    // Quando o grupo G11 sobe uma minuta para II.4, a indicação de revisor surge exclusivamente para o Prof. Floriano
+    dbMocks.listProductionMaterials.mockResolvedValue([
+      {
+        id: 502,
+        title: "Minuta R01 de II.4",
+        activityId: fixtures.activityG11_II4.id,
+        sectionId: 4,
+        sectionCode: "II.4",
+        responsibleId: fixtures.coordG11.id,
+        responsibleGroupId: fixtures.coordG11.groupId,
+        currentRevision: 1,
+        reviewStatus: "em revisão",
+        openCommentCount: 0,
+        implementedCommentCount: 0,
+        revisions: [{ id: 2, revisionNumber: 1, fileName: "Minuta_II4_R01.docx" }],
+        reviewers: [],
+      },
+    ]);
+
+    const resultWithDoc = await caller.activities.myWorkloadActions({ viewMode: "my_actions" });
+    const ii4ReviewerActionWithDoc = resultWithDoc.actions.find(
+      a => a.activityId === fixtures.activityG11_II4.id && a.actionType === "sem_revisores"
+    );
+    expect(ii4ReviewerActionWithDoc).toBeDefined();
+    expect(ii4ReviewerActionWithDoc?.role).toBe("coordenador");
+
+    // E para o autor (Marta - G11), o apontamento de revisor NÃO aparece em suas ações
+    const martaCaller = appRouter.createCaller(context(111, "user"));
+    const martaResult = await martaCaller.activities.myWorkloadActions({ viewMode: "my_actions" });
+    const martaReviewerAction = martaResult.actions.find(
+      a => a.activityId === fixtures.activityG11_II4.id && a.actionType === "sem_revisores"
+    );
+    expect(martaReviewerAction).toBeUndefined();
   });
 
   it("administrador em 'all_pending' visualiza todas as pendências da equipe", async () => {
+    // Com 1 documento submetido em revisão (II.4) e 4 sem documento:
+    // 4 elaboração (executor) + 1 indicação de revisor (coordenador) + 1 análise técnica (revisor) = 6 ações pendentes
+    dbMocks.listProductionMaterials.mockResolvedValue([
+      {
+        id: 502,
+        title: "Minuta R01 de II.4",
+        activityId: fixtures.activityG11_II4.id,
+        sectionId: 4,
+        sectionCode: "II.4",
+        responsibleId: fixtures.coordG11.id,
+        responsibleGroupId: fixtures.coordG11.groupId,
+        currentRevision: 1,
+        reviewStatus: "em revisão",
+        openCommentCount: 0,
+        implementedCommentCount: 0,
+        revisions: [{ id: 2, revisionNumber: 1, fileName: "Minuta_II4_R01.docx" }],
+        reviewers: [],
+      },
+    ]);
+
     const caller = appRouter.createCaller(context(1, "admin"));
     const result = await caller.activities.myWorkloadActions({ viewMode: "all_pending" });
 
-    // Em all_pending, cada atividade não iniciada gera ação de elaboração (executor) e designação (coordenador)
-    expect(result.actions.length).toBe(10);
-    expect(result.summary.total).toBe(10);
-    expect(result.summary.coordinatorCount).toBe(5);
-    expect(result.summary.executorCount).toBe(5);
+    expect(result.actions.length).toBe(6);
+    expect(result.summary.total).toBe(6);
+    expect(result.summary.coordinatorCount).toBe(1);
+    expect(result.summary.executorCount).toBe(4);
+    expect(result.summary.reviewerCount).toBe(1);
   });
 
   it("retorna as ações estritamente ordenadas por prazo cronológico (dueAt ascendente)", async () => {

@@ -584,9 +584,17 @@ export const activitiesRouter = router({
         }
       }
 
-      // 3. Ações como Coordenador
-      if (isCoordinator) {
-        if (activity.reviewers.length === 0) {
+      // 3. Ações como Coordenação Geral (Prof. Floriano)
+      if (isCoordGeral) {
+        const hasUploadedDocument = Boolean(
+          material &&
+          (material.revisions?.length > 0 ||
+            material.reviewStatus === "em revisão" ||
+            activity.documentStatus === "submetida à revisão da seção" ||
+            activity.documentStatus === "em revisão da seção")
+        );
+
+        if (hasUploadedDocument && activity.reviewers.length === 0) {
           actions.push({
             id: `coord_sem_revisores_${activity.id}`,
             activityId: activity.id,
@@ -596,10 +604,10 @@ export const activitiesRouter = router({
             dueAt: activity.dueAt,
             role: "coordenador",
             actionType: "sem_revisores",
-            actionTitle: "Atribuir Revisores Técnicos",
+            actionTitle: "Indicar Revisor Técnico Independente (Prof. Floriano)",
             actionDescription:
-              "Esta atividade ainda não possui revisores independentes designados para a análise do documento.",
-            ctaLabel: "Atribuir Revisores",
+              "Uma nova minuta inicial foi submetida pelo autor. O Prof. Floriano deve indicar o revisor técnico independente para que a revisão técnica possa ser iniciada.",
+            ctaLabel: "Indicar Revisor",
             ctaTarget: "drawer",
           });
         } else if (

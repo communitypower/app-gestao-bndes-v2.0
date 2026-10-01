@@ -677,8 +677,17 @@ export const activitiesRouter = router({
         }
 
         // PASSO 2: INDICAÇÃO DE REVISOR (Prof. Floriano - Coordenação Geral)
+        // ESSA ATIVIDADE SÓ DEVE APARECER NAS AÇÕES DO PROF. FLORIANO QUANDO ALGUÉM SUBIR UM DOCUMENTO!
         if (isCoordGeral) {
-          if (activity.reviewers.length === 0) {
+          const hasUploadedDocument = Boolean(
+            material &&
+            (material.revisions?.length > 0 ||
+              material.reviewStatus === "em revisão" ||
+              activity.documentStatus === "submetida à revisão da seção" ||
+              activity.documentStatus === "em revisão da seção")
+          );
+
+          if (hasUploadedDocument && activity.reviewers.length === 0) {
             actions.push({
               id: `coord_sem_revisores_${activity.id}`,
               activityId: activity.id,
@@ -690,7 +699,7 @@ export const activitiesRouter = router({
               actionType: "sem_revisores",
               actionTitle: "Indicar Revisor Técnico Independente (Prof. Floriano)",
               actionDescription:
-                "O Prof. Floriano deve indicar o revisor técnico independente para esta seção para que a revisão técnica possa ser iniciada.",
+                "Uma nova minuta inicial foi submetida pelo autor. O Prof. Floriano deve indicar o revisor técnico independente para que a revisão técnica possa ser iniciada.",
               ctaLabel: "Indicar Revisor",
               ctaTarget: "drawer",
               responsibleName,
