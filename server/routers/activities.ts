@@ -1245,11 +1245,14 @@ export const activitiesRouter = router({
       if (!activity) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
       }
-      if (activity.parentActivityId !== null) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "O checklist de revisão deve ser criado na atividade-mãe." });
-      }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
+      assertCanManageActivityChecklist(
+        ctx.user,
+        member,
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        activity.reviewers?.map(r => r.teamMemberId) ?? []
+      );
       return ensureActivityReviewChecklist(activity, ctx.user.id);
     }),
 
@@ -1261,11 +1264,14 @@ export const activitiesRouter = router({
       if (!activity) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Atividade não encontrada." });
       }
-      if (activity.parentActivityId !== null) {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Os prazos de revisão são configurados na atividade-mãe." });
-      }
       const member = await getTeamMemberByUserId(ctx.user.id);
-      assertCanManageActivityReview(ctx.user, member, activity.responsibleId, activity.responsibleGroupId);
+      assertCanManageActivityChecklist(
+        ctx.user,
+        member,
+        activity.responsibleId,
+        activity.responsibleGroupId,
+        activity.reviewers?.map(r => r.teamMemberId) ?? []
+      );
       return applyOfficialReviewChecklistSchedule(activity, ctx.user.id);
     }),
 

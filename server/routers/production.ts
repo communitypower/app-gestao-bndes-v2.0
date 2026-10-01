@@ -612,6 +612,7 @@ export const productionRouter = router({
           "solicitação de ajuste",
           "resposta",
         ]),
+        file: fileInputSchema.optional().nullable(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -620,6 +621,17 @@ export const productionRouter = router({
         getTeamMemberByUserId(ctx.user.id),
       ]);
       const db = await requireDb();
+
+      let finalContent = input.content.trim();
+      if (input.file) {
+        const stored = await uploadProjectFile(
+          "production",
+          material.sectionCode,
+          input.file
+        );
+        finalContent += `\n\n📎 **Arquivo Anexado:** [${input.file.fileName}](${stored.url}) (${(input.file.fileSize / 1024).toFixed(1)} KB)`;
+      }
+
       if (!input.submissionId) {
         if (material.activityId) {
           throw new TRPCError({
@@ -632,7 +644,7 @@ export const productionRouter = router({
           revisionId: material.revisions[0]?.id ?? null,
           submissionId: null,
           authorId: ctx.user.id,
-          content: input.content,
+          content: finalContent,
           commentType: "comentário",
         });
         return getMaterialOrThrow(material.id);
@@ -677,7 +689,7 @@ export const productionRouter = router({
         revisionId: submission.revisionId,
         submissionId: submission.id,
         authorId: ctx.user.id,
-        content: input.content,
+        content: finalContent,
         commentType: input.commentType,
         status: input.commentType === "solicitação de ajuste" ? "aberto" : "aberto",
       });
@@ -947,14 +959,36 @@ export const productionRouter = router({
         }
       }
 
-      // Se foram solicitados ajustes com nota, registra também como apontamento formal
-      if (input.decision === "ajustes solicitados" && input.note?.trim()) {
+      // Processar upload de arquivo da revisão enviado pelo revisor (se fornecido)
+      let fileAttachmentText = "";
+      if (input.file) {
+        const stored = await uploadProjectFile(
+          "production",
+          material.sectionCode,
+          input.file
+        );
+        fileAttachmentText = `\n\n📎 **Arquivo de Revisão do Revisor Anexado:** [${input.file.fileName}](${stored.url}) (${(input.file.fileSize / 1024).toFixed(1)} KB)`;
+      }
+
+      const combinedNote = (input.note?.trim() ?? "") + fileAttachmentText;
+
+      // Se foram solicitados ajustes com nota ou arquivo, registra também como apontamento formal
+      if (input.decision === "ajustes solicitados" && combinedNote.trim()) {
         await db.insert(materialComments).values({
           materialId: material.id,
           submissionId: submission.id,
           authorId: ctx.user.id,
           commentType: "solicitação de ajuste",
-          content: input.note.trim(),
+          content: combinedNote.trim(),
+          status: "aberto",
+        });
+      } else if (fileAttachmentText.trim()) {
+        await db.insert(materialComments).values({
+          materialId: material.id,
+          submissionId: submission.id,
+          authorId: ctx.user.id,
+          commentType: "comentário",
+          content: combinedNote.trim(),
           status: "aberto",
         });
       }
@@ -965,14 +999,14 @@ export const productionRouter = router({
           submissionId: submission.id,
           reviewerId: reviewerMemberId,
           decision: input.decision,
-          note: input.note,
+          note: combinedNote.trim() || null,
           decidedAt: Date.now(),
         })
         .onConflictDoUpdate({
           target: [reviewDecisions.submissionId, reviewDecisions.reviewerId],
           set: {
             decision: input.decision,
-            note: input.note,
+            note: combinedNote.trim() || null,
             decidedAt: Date.now(),
           },
         });
@@ -980,7 +1014,7 @@ export const productionRouter = router({
         .update(activityReviewers)
         .set({
           status: input.decision,
-          decisionNote: input.note,
+          decisionNote: combinedNote.trim() || null,
           decidedAt: Date.now(),
         })
         .where(

@@ -37,9 +37,13 @@ import {
 } from "@/components/EditorialUI";
 import {
   AlertCircle,
+  AlertTriangle,
   ArrowRight,
+  Bot,
   CalendarDays,
   CheckCircle2,
+  CheckSquare,
+  ClipboardCheck,
   Clock,
   Clock3,
   Download,
@@ -49,18 +53,22 @@ import {
   FileCheck2,
   FileClock,
   FileDown,
+  FileSpreadsheet,
   FileText,
   FileUp,
   History,
   Layers,
   Link as LinkIcon,
+  ListChecks,
   MessageSquare,
   Paperclip,
   Pencil,
   Plus,
+  RefreshCw,
   Send,
   ShieldAlert,
   ShieldCheck,
+  Sliders,
   Sparkles,
   Upload,
   User,
@@ -117,6 +125,8 @@ export function ActivityDetailDialog({
   // Hidden native file input refs for immediate Explorer activation
   const initialFileInputRef = useRef<HTMLInputElement>(null);
   const revisionFileInputRef = useRef<HTMLInputElement>(null);
+  const reviewDecisionFileInputRef = useRef<HTMLInputElement>(null);
+  const hasTriggeredInitialActionRef = useRef<boolean>(false);
 
   // Mutations
   const createMaterial = trpc.production?.create?.useMutation
@@ -137,9 +147,25 @@ export function ActivityDetailDialog({
   const updateReviewers = trpc.activities?.updateReviewers?.useMutation
     ? trpc.activities.updateReviewers.useMutation()
     : ({ mutateAsync: async () => {}, isPending: false } as any);
+  const initializeReviewChecklist = trpc.activities?.initializeReviewChecklist?.useMutation
+    ? trpc.activities.initializeReviewChecklist.useMutation()
+    : ({ mutateAsync: async () => {}, isPending: false } as any);
+  const applyOfficialSchedule = trpc.activities?.applyOfficialChecklistSchedule?.useMutation
+    ? trpc.activities.applyOfficialChecklistSchedule.useMutation()
+    : ({ mutateAsync: async () => {}, isPending: false } as any);
+  const updateChecklistItem = trpc.activities?.updateReviewChecklistItem?.useMutation
+    ? trpc.activities.updateReviewChecklistItem.useMutation()
+    : ({ mutateAsync: async () => {}, isPending: false } as any);
+  const applyAIChecklistSuggestions = trpc.activities?.applyAIChecklistSuggestions?.useMutation
+    ? trpc.activities.applyAIChecklistSuggestions.useMutation()
+    : ({ mutateAsync: async () => {}, isPending: false } as any);
 
   // Active Tab inside modal
-  const [activeTab, setActiveTab] = useState<"documento" | "escopo">("documento");
+  const [activeTab, setActiveTab] = useState<"documento" | "checklist" | "escopo">("documento");
+
+  // AI & Checklist states
+  const [isEvaluatingAI, setIsEvaluatingAI] = useState(false);
+  const [aiEvaluation, setAiEvaluation] = useState<any>(null);
 
   // Form states for uploading Initial Minuta
   const [isUploadingMinuta, setIsUploadingMinuta] = useState(false);
@@ -161,6 +187,7 @@ export function ActivityDetailDialog({
   const [isDecidingReview, setIsDecidingReview] = useState(false);
   const [reviewDecision, setReviewDecision] = useState<"aprovado" | "ajustes solicitados">("aprovado");
   const [reviewDecisionNote, setReviewDecisionNote] = useState("");
+  const [reviewDecisionFile, setReviewDecisionFile] = useState<File | null>(null);
 
   // Form state for Comment
   const [isAddingComment, setIsAddingComment] = useState(false);
@@ -245,6 +272,10 @@ export function ActivityDetailDialog({
     revisionFileInputRef.current?.click();
   };
 
+  const handleTriggerReviewDecisionFileInput = () => {
+    reviewDecisionFileInputRef.current?.click();
+  };
+
   const handleInitialFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -255,6 +286,7 @@ export function ActivityDetailDialog({
       setIsUploadingMinuta(true);
       toast.success(`Arquivo "${file.name}" selecionado! Confirme o envio da minuta abaixo.`);
     }
+    e.target.value = "";
   };
 
   const handleRevisionFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -264,27 +296,45 @@ export function ActivityDetailDialog({
       setIsAddingRevision(true);
       toast.success(`Arquivo "${file.name}" selecionado para a nova versão.`);
     }
+    e.target.value = "";
   };
 
-  // Auto-open file picker when requested from action center CTA (apenas se a minuta ainda não tiver sido carregada)
+  const handleReviewDecisionFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setReviewDecisionFile(file);
+      toast.success(`Arquivo "${file.name}" anexado ao parecer.`);
+    }
+    e.target.value = "";
+  };
+
+  // Auto-open file picker when requested from action center CTA (apenas uma única vez ao abrir o modal)
   useEffect(() => {
-    if (activityId && initialAction === "upload_minuta" && !currentMaterial) {
+    if (!activityId) {
+      hasTriggeredInitialActionRef.current = false;
+      return;
+    }
+    if (hasTriggeredInitialActionRef.current) return;
+
+    if (initialAction === "upload_minuta" && !currentMaterial) {
+      hasTriggeredInitialActionRef.current = true;
       setIsUploadingMinuta(true);
       if (data?.title && !uploadTitle) {
         setUploadTitle(data.title);
       }
       const timer = setTimeout(() => {
         initialFileInputRef.current?.click();
-      }, 200);
+      }, 250);
       return () => clearTimeout(timer);
-    } else if (activityId && initialAction === "upload_revision") {
+    } else if (initialAction === "upload_revision") {
+      hasTriggeredInitialActionRef.current = true;
       setIsAddingRevision(true);
       const timer = setTimeout(() => {
         revisionFileInputRef.current?.click();
-      }, 200);
+      }, 250);
       return () => clearTimeout(timer);
     }
-  }, [activityId, initialAction, data?.title, currentMaterial]);
+  }, [activityId, initialAction, currentMaterial, data?.title]);
 
   // Reset states when dialog closes
   useEffect(() => {
@@ -299,7 +349,10 @@ export function ActivityDetailDialog({
       setRevisionNotes("");
       setIsAssigningReviewer(false);
       setIsDecidingReview(false);
+      setReviewDecisionFile(null);
       setIsAddingComment(false);
+      setAiEvaluation(null);
+      hasTriggeredInitialActionRef.current = false;
     }
   }, [activityId]);
 
@@ -398,20 +451,33 @@ export function ActivityDetailDialog({
   const handleRegisterReviewDecision = async () => {
     if (!currentMaterial) return;
     try {
+      let filePayload: { fileName: string; mimeType: string; fileSize: number; base64: string } | undefined = undefined;
+      if (reviewDecisionFile) {
+        const base64 = await fileToBase64(reviewDecisionFile);
+        filePayload = {
+          fileName: reviewDecisionFile.name,
+          mimeType: reviewDecisionFile.type || "application/octet-stream",
+          fileSize: reviewDecisionFile.size,
+          base64,
+        };
+      }
+
       await registerDecision.mutateAsync({
         submissionId: currentMaterial.activeSubmission?.id ?? null,
         materialId: currentMaterial.id,
         activityId: currentMaterial.activityId ?? null,
         decision: reviewDecision,
         note: reviewDecisionNote.trim() || null,
+        file: filePayload,
       });
       toast.success(
         reviewDecision === "aprovado"
           ? "Minuta aprovada com parecer técnico favorável!"
-          : "Comentários e solicitação de ajustes enviados ao autor do grupo."
+          : "Comentários e arquivo de revisão enviados ao autor do grupo."
       );
       setIsDecidingReview(false);
       setReviewDecisionNote("");
+      setReviewDecisionFile(null);
       await refreshAll();
     } catch (err: any) {
       toast.error(err?.message || "Erro ao registrar decisão de revisão.");
@@ -452,6 +518,122 @@ export function ActivityDetailDialog({
     }
   };
 
+  // AI & Checklist Handlers
+  const handleRunAIEvaluation = async () => {
+    if (!data) return;
+    setIsEvaluatingAI(true);
+    try {
+      const result = await utils.activities.aiReviewEvaluation.fetch({
+        activityId: data.id,
+        materialId: currentMaterial?.id ?? null,
+      });
+      setAiEvaluation(result);
+      toast.success("Diagnóstico editorial por IA executado com sucesso!");
+    } catch (err: any) {
+      toast.error(err?.message || "Falha ao executar diagnóstico por IA.");
+    } finally {
+      setIsEvaluatingAI(false);
+    }
+  };
+
+  const handleApplyAISuggestions = async () => {
+    if (!data || !aiEvaluation?.checklistDiagnostics?.length) return;
+    try {
+      const items = aiEvaluation.checklistDiagnostics.map((d: any) => ({
+        itemKey: d.itemKey,
+        status: d.suggestedStatus as "pendente" | "em andamento" | "concluído" | "bloqueado",
+        reason: d.reason,
+      }));
+      await applyAIChecklistSuggestions.mutateAsync({
+        activityId: data.id,
+        items,
+      });
+      toast.success("Sugestões de conformidade da IA aplicadas ao checklist!");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao aplicar sugestões da IA.");
+    }
+  };
+
+  const handleInitializeChecklist = async () => {
+    if (!data) return;
+    try {
+      await initializeReviewChecklist.mutateAsync({ id: data.id });
+      toast.success("Checklist de revisão (5 aspectos básicos) inicializado!");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao inicializar checklist.");
+    }
+  };
+
+  const handleApplyOfficialSchedule = async () => {
+    if (!data) return;
+    try {
+      await applyOfficialSchedule.mutateAsync({ id: data.id });
+      toast.success("Prazos oficiais do cronograma BNDES aplicados aos itens do checklist!");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao aplicar prazos oficiais.");
+    }
+  };
+
+  const handleUpdateChecklistItemStatus = async (
+    itemId: number,
+    newStatus: "pendente" | "em andamento" | "concluído" | "bloqueado"
+  ) => {
+    try {
+      await updateChecklistItem.mutateAsync({
+        id: itemId,
+        status: newStatus,
+      });
+      toast.success("Status do item de checklist atualizado.");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao atualizar item do checklist.");
+    }
+  };
+
+  const handleUpdateChecklistItemResponsible = async (
+    itemId: number,
+    responsibleId: number | null
+  ) => {
+    try {
+      await updateChecklistItem.mutateAsync({
+        id: itemId,
+        responsibleId,
+      });
+      toast.success("Responsável pelo item de checklist atualizado.");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao atualizar responsável.");
+    }
+  };
+
+  const handleUpdateChecklistItemDeadline = async (
+    itemId: number,
+    dateStr: string
+  ) => {
+    if (!dateStr) return;
+    try {
+      const [year, month, day] = dateStr.split("-").map(Number);
+      const dueAt = new Date(year, month - 1, day, 23, 59, 59).getTime();
+      await updateChecklistItem.mutateAsync({
+        id: itemId,
+        dueAt,
+      });
+      toast.success("Prazo do item atualizado.");
+      await refreshAll();
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao atualizar prazo.");
+    }
+  };
+
+  const checklistItems = data?.reviewChecklist?.items ?? [];
+  const checklistEvents = data?.reviewChecklist?.events ?? [];
+  const completedCount = checklistItems.filter((i: any) => i.status === "concluído").length;
+  const totalCount = checklistItems.length;
+  const checklistPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
   return (
     <Dialog open={activityId !== null && activityId > 0} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92vh] overflow-y-auto bg-card w-[96vw] sm:max-w-[94vw] lg:max-w-[1240px] xl:max-w-[1380px] p-6 sm:p-8">
@@ -469,6 +651,13 @@ export function ActivityDetailDialog({
           accept=".pdf,.doc,.docx,.rtf"
           className="hidden"
           onChange={handleRevisionFileChange}
+        />
+        <input
+          type="file"
+          ref={reviewDecisionFileInputRef}
+          accept=".pdf,.doc,.docx,.rtf"
+          className="hidden"
+          onChange={handleReviewDecisionFileChange}
         />
 
         {isLoading || !data ? (
@@ -537,10 +726,26 @@ export function ActivityDetailDialog({
 
             {/* Abas da Ficha */}
             <Tabs value={activeTab} onValueChange={v => setActiveTab(v as any)} className="w-full">
-              <TabsList className="grid grid-cols-2 w-full max-w-sm mb-4">
+              <TabsList className="grid grid-cols-3 w-full max-w-lg mb-4">
                 <TabsTrigger value="documento" className="text-xs font-medium gap-1.5 cursor-pointer">
                   <FileText className="h-3.5 w-3.5" />
                   <span>Fluxo Documental</span>
+                </TabsTrigger>
+                <TabsTrigger value="checklist" className="text-xs font-medium gap-1.5 cursor-pointer">
+                  <ClipboardCheck className="h-3.5 w-3.5" />
+                  <span>Checklist & IA</span>
+                  {totalCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className={`ml-1 text-[10px] px-1.5 py-0 h-4 ${
+                        checklistPercent === 100
+                          ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {completedCount}/{totalCount}
+                    </Badge>
+                  )}
                 </TabsTrigger>
                 <TabsTrigger value="escopo" className="text-xs font-medium gap-1.5 cursor-pointer">
                   <Layers className="h-3.5 w-3.5" />
@@ -572,17 +777,9 @@ export function ActivityDetailDialog({
                     </h4>
                   </div>
 
-                  {/* Ações Diretas por Etapa */}
+                  {/* Ações Diretas por Etapa (Botão duplicado de subir minuta removido) */}
                   <div className="flex flex-wrap items-center gap-2">
-                    {!currentMaterial ? (
-                      <Button
-                        size="sm"
-                        onClick={handleTriggerInitialFileInput}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer shadow-xs"
-                      >
-                        <FileUp className="mr-1.5 h-4 w-4" /> Subir Minuta Inicial (R01)
-                      </Button>
-                    ) : (
+                    {currentMaterial && (
                       <>
                         {/* Se não tem revisores e é Prof. Floriano / Admin */}
                         {data.reviewers.length === 0 && isGeneralCoord && (
@@ -741,7 +938,7 @@ export function ActivityDetailDialog({
                               size="sm"
                               variant="ghost"
                               onClick={() => setUploadFile(null)}
-                              className="h-9 text-xs"
+                              className="h-9 text-xs cursor-pointer"
                             >
                               Cancelar
                             </Button>
@@ -813,7 +1010,7 @@ export function ActivityDetailDialog({
                             size="sm"
                             variant="ghost"
                             onClick={() => setIsAssigningReviewer(false)}
-                            className="h-8 text-xs"
+                            className="h-8 text-xs cursor-pointer"
                           >
                             Cancelar
                           </Button>
@@ -821,7 +1018,7 @@ export function ActivityDetailDialog({
                             size="sm"
                             onClick={handleAssignReviewer}
                             disabled={!selectedReviewerId || updateReviewers.isPending}
-                            className="h-8 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                            className="h-8 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold cursor-pointer"
                           >
                             {updateReviewers.isPending ? "Indicando..." : "Confirmar Indicação de Revisor"}
                           </Button>
@@ -938,7 +1135,7 @@ export function ActivityDetailDialog({
                               size="sm"
                               variant="ghost"
                               onClick={() => setIsAddingRevision(false)}
-                              className="h-9 text-xs"
+                              className="h-9 text-xs cursor-pointer"
                             >
                               Cancelar
                             </Button>
@@ -958,52 +1155,105 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* MODAL / FORMULÁRIO DE EMISSÃO DE PARECER (Coordenação Geral) */}
+                {/* MODAL / FORMULÁRIO DE EMISSÃO DE PARECER & ARQUIVO ANEXO (Revisor Técnico / Coordenação) */}
                 {isDecidingReview && currentMaterial && (
-                  <div className="rounded-lg border border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
+                  <div className="rounded-xl border-2 border-amber-500/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
                     <div className="flex items-center justify-between border-b pb-3">
-                      <h4 className="font-semibold text-foreground flex items-center gap-2">
-                        <Pencil className="h-4 w-4 text-primary" /> Parecer de Revisão da Coordenação Geral
-                      </h4>
+                      <div>
+                        <span className="editorial-kicker text-amber-600 font-bold text-[10px]">Passo 3 do Ciclo Editorial</span>
+                        <h4 className="font-bold text-base text-foreground flex items-center gap-2">
+                          <Pencil className="h-5 w-5 text-amber-600" /> Parecer de Revisão & Encaminhamento ao Autor
+                        </h4>
+                      </div>
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => setIsDecidingReview(false)}
-                        className="h-7 text-xs"
+                        className="h-7 text-xs cursor-pointer"
                       >
                         Cancelar
                       </Button>
                     </div>
-                    <div className="space-y-3">
+
+                    <div className="space-y-4">
                       <div>
-                        <Label className="text-xs">Decisão Editorial</Label>
+                        <Label className="text-xs font-semibold">Decisão Editorial</Label>
                         <Select
                           value={reviewDecision}
                           onValueChange={(val: any) => setReviewDecision(val)}
                         >
-                          <SelectTrigger className="mt-1 h-9 text-xs">
+                          <SelectTrigger className="mt-1 h-9 text-xs bg-card">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="aprovado">✅ Aprovar Minuta (Parecer Favorável)</SelectItem>
-                            <SelectItem value="ajustes solicitados">⚠️ Solicitar Ajustes ao Autor / Grupo</SelectItem>
+                            <SelectItem value="aprovado">✅ Aprovar Minuta (Parecer Favorável Sem Restrições)</SelectItem>
+                            <SelectItem value="ajustes solicitados">⚠️ Solicitar Ajustes / Comentários ao Autor</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
+
                       <div>
-                        <Label className="text-xs">Justificativa e Apontamentos do Parecer</Label>
+                        <Label className="text-xs font-semibold">Justificativa e Apontamentos do Parecer</Label>
                         <Textarea
                           value={reviewDecisionNote}
                           onChange={e => setReviewDecisionNote(e.target.value)}
-                          placeholder="Insira as observações técnicas, comentários ou instruções de ajuste para o autor..."
-                          className="mt-1 min-h-[80px] text-xs"
+                          placeholder="Insira as observações técnicas, comentários parágrafo a parágrafo ou orientações metodológicas para o autor..."
+                          className="mt-1 min-h-[90px] text-xs bg-card"
                         />
                       </div>
-                      <div className="flex justify-end gap-2 pt-2">
+
+                      {/* UPLOAD DE ARQUIVO PELO REVISOR COM A REVISÃO PRETENDIDA */}
+                      <div className="rounded-lg border border-border/80 bg-muted/20 p-3.5 space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Paperclip className="h-4 w-4 text-primary" />
+                            <Label className="text-xs font-semibold text-foreground">
+                              Anexar Arquivo com a Revisão Pretendida (Opcional)
+                            </Label>
+                          </div>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={handleTriggerReviewDecisionFileInput}
+                            className="h-7 text-xs gap-1 cursor-pointer"
+                          >
+                            <Upload className="h-3 w-3" />
+                            {reviewDecisionFile ? "Trocar Arquivo" : "Selecionar do Computador"}
+                          </Button>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground">
+                          O revisor pode anexar a minuta com alterações controladas no Word (.docx), PDF com anotações ou nota técnica complementar para encaminhamento direto ao autor.
+                        </p>
+
+                        {reviewDecisionFile && (
+                          <div className="flex items-center justify-between gap-2 p-2 bg-background border rounded-md text-xs">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <FileCheck2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                              <span className="font-mono font-medium truncate">{reviewDecisionFile.name}</span>
+                              <Badge variant="secondary" className="text-[10px] shrink-0">
+                                {fileSize(reviewDecisionFile.size)}
+                              </Badge>
+                            </div>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setReviewDecisionFile(null)}
+                              className="h-6 text-[11px] text-destructive hover:bg-destructive/10"
+                            >
+                              Remover
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex justify-end gap-2 pt-2 border-t">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => setIsDecidingReview(false)}
+                          className="h-9 text-xs cursor-pointer"
                         >
                           Cancelar
                         </Button>
@@ -1011,8 +1261,9 @@ export function ActivityDetailDialog({
                           size="sm"
                           onClick={handleRegisterReviewDecision}
                           disabled={registerDecision.isPending}
+                          className="h-9 px-4 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white cursor-pointer shadow-xs"
                         >
-                          {registerDecision.isPending ? "Registrando..." : "Registrar Parecer"}
+                          {registerDecision.isPending ? "Registrando Parecer..." : "Confirmar Parecer e Encaminhar ao Autor"}
                         </Button>
                       </div>
                     </div>
@@ -1102,10 +1353,10 @@ export function ActivityDetailDialog({
                           className="text-xs min-h-[60px]"
                         />
                         <div className="flex justify-end gap-2">
-                          <Button size="sm" variant="ghost" onClick={() => setIsAddingComment(false)} className="h-7 text-xs">
+                          <Button size="sm" variant="ghost" onClick={() => setIsAddingComment(false)} className="h-7 text-xs cursor-pointer">
                             Cancelar
                           </Button>
-                          <Button size="sm" onClick={handleAddComment} disabled={!commentContent.trim() || addComment.isPending} className="h-7 text-xs">
+                          <Button size="sm" onClick={handleAddComment} disabled={!commentContent.trim() || addComment.isPending} className="h-7 text-xs cursor-pointer">
                             Salvar
                           </Button>
                         </div>
@@ -1122,11 +1373,31 @@ export function ActivityDetailDialog({
                             <StatusBadge status={sub.status} />
                           </div>
                           {sub.decisions?.map((d: any) => (
-                            <div key={d.id} className="border-t pt-2 mt-1.5 text-muted-foreground space-y-1">
+                            <div key={d.id} className="border-t pt-2 mt-1.5 text-muted-foreground space-y-1.5">
                               <p className="font-medium text-foreground">
-                                Decisão: <span className="uppercase">{d.decision}</span> · Por: {d.reviewerName} ({formatDate(d.decidedAt)})
+                                Decisão: <span className="uppercase font-bold text-primary">{d.decision}</span> · Por: {d.reviewerName} ({formatDate(d.decidedAt)})
                               </p>
-                              {d.note && <p className="leading-relaxed break-words bg-background/50 p-2 rounded border border-border/40 text-foreground/90">{d.note}</p>}
+                              {d.note && (
+                                <div className="leading-relaxed break-words bg-background/60 p-2.5 rounded border border-border/40 text-foreground/90 space-y-2">
+                                  <p className="whitespace-pre-line">{d.note}</p>
+                                  {d.note.includes("http") && (
+                                    <div className="pt-2 border-t border-border/40 flex flex-wrap gap-2">
+                                      {Array.from(d.note.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g)).map((match: any, i: number) => (
+                                        <a
+                                          key={i}
+                                          href={match[2]}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 border border-primary/20 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+                                        >
+                                          <Download className="h-3.5 w-3.5" />
+                                          <span>Baixar {match[1]}</span>
+                                        </a>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -1164,7 +1435,360 @@ export function ActivityDetailDialog({
                 )}
               </TabsContent>
 
-              {/* ABA 2: ESCOPO OFICIAL */}
+              {/* ABA 2: CHECKLIST DE REVISÃO & IA (Aspectos Básicos com Inteligência Artificial) */}
+              <TabsContent value="checklist" className="space-y-5">
+                {/* Banner do Checklist & Diagnóstico de IA */}
+                <div className="rounded-xl border bg-gradient-to-r from-primary/5 via-primary/10 to-transparent p-5 space-y-4">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <ClipboardCheck className="h-5 w-5 text-primary" />
+                        <h3 className="font-bold text-base text-foreground">
+                          Checklist dos Aspectos Básicos de Revisão
+                        </h3>
+                        <Badge variant="outline" className="text-xs font-semibold">
+                          5 Critérios Oficiais
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1 max-w-2xl">
+                        Verificação dos 5 aspectos estruturais do Estudo BNDES: Texto & Fontes, Banco de Evidências, Interfaces com Outros Grupos, Coerência do Capítulo e Encaminhamento ao Tomo.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 shrink-0">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={handleRunAIEvaluation}
+                        disabled={isEvaluatingAI}
+                        className="bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-700 hover:to-primary/90 text-white font-bold text-xs gap-1.5 shadow-sm cursor-pointer"
+                      >
+                        {isEvaluatingAI ? (
+                          <>
+                            <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                            <span>Executando Diagnóstico IA…</span>
+                          </>
+                        ) : (
+                          <>
+                            <Bot className="h-4 w-4" />
+                            <span>⚡ Executar Diagnóstico com IA</span>
+                          </>
+                        )}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={handleApplyOfficialSchedule}
+                        disabled={applyOfficialSchedule.isPending}
+                        className="text-xs font-medium gap-1.5 cursor-pointer"
+                      >
+                        <CalendarDays className="h-3.5 w-3.5 text-primary" />
+                        <span>Aplicar Prazos Oficiais</span>
+                      </Button>
+
+                      {totalCount === 0 && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={handleInitializeChecklist}
+                          disabled={initializeReviewChecklist.isPending}
+                          className="text-xs font-medium gap-1.5 cursor-pointer"
+                        >
+                          <Plus className="h-3.5 w-3.5 text-primary" />
+                          <span>Inicializar Checklist</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Barra de Progresso do Checklist */}
+                  {totalCount > 0 && (
+                    <div className="pt-2 border-t border-primary/20 space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-foreground">
+                          Progresso de Validação dos 5 Aspectos:
+                        </span>
+                        <span className="font-mono font-bold text-primary">
+                          {completedCount} de {totalCount} concluídos ({checklistPercent}%)
+                        </span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={`h-full transition-all duration-500 ${
+                            checklistPercent === 100
+                              ? "bg-emerald-600"
+                              : checklistPercent > 50
+                              ? "bg-primary"
+                              : "bg-amber-500"
+                          }`}
+                          style={{ width: `${checklistPercent}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* PAINEL DE RESULTADO DO DIAGNÓSTICO DE IA (Quando executado) */}
+                {aiEvaluation && (
+                  <div className="rounded-xl border-2 border-indigo-500/40 bg-indigo-500/5 p-5 space-y-4 animate-in fade-in">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-500/20 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold shrink-0">
+                          <Bot className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-sm text-foreground">
+                              Diagnóstico de IA: Parecer & Conformidade Editorial
+                            </h4>
+                            <Badge
+                              className={`text-xs font-bold ${
+                                aiEvaluation.verdict === "pronto_para_aprovacao"
+                                  ? "bg-emerald-600 text-white"
+                                  : aiEvaluation.verdict === "ajustes_necessarios"
+                                  ? "bg-amber-600 text-white"
+                                  : "bg-indigo-600 text-white"
+                              }`}
+                            >
+                              {aiEvaluation.verdictLabel || aiEvaluation.verdict}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Modo: <span className="font-mono font-semibold">{aiEvaluation.evaluationMode}</span> · Avaliado em: {formatDate(aiEvaluation.evaluatedAt)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 self-end sm:self-center">
+                        <div className="text-right">
+                          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
+                            Score Editorial
+                          </span>
+                          <span className="text-xl font-extrabold text-indigo-700 dark:text-indigo-300 font-mono">
+                            {aiEvaluation.overallScore}/100
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={handleApplyAISuggestions}
+                          disabled={applyAIChecklistSuggestions.isPending}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold cursor-pointer shadow-xs"
+                        >
+                          <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+                          Aplicar Sugestões ao Checklist
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Resumo do Veredito da IA */}
+                    <div className="bg-background/80 rounded-lg p-3.5 border border-indigo-500/20 text-xs text-foreground space-y-2">
+                      <p className="leading-relaxed font-medium">
+                        {aiEvaluation.verdictSummary}
+                      </p>
+                      {aiEvaluation.draftParecer && (
+                        <div className="mt-2 pt-2 border-t border-border/40 text-[11px] text-muted-foreground">
+                          <strong className="text-foreground">Minuta de Parecer Sugerida:</strong> {aiEvaluation.draftParecer.title} — {aiEvaluation.draftParecer.text}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* LISTA DOS 5 ASPECTOS BÁSICOS DO CHECKLIST */}
+                {totalCount === 0 ? (
+                  <div className="rounded-lg border border-dashed p-8 text-center space-y-3 bg-muted/10">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <ListChecks className="h-6 w-6" />
+                    </div>
+                    <h4 className="font-semibold text-sm text-foreground">
+                      Checklist de Revisão não inicializado para esta seção
+                    </h4>
+                    <p className="text-xs text-muted-foreground max-w-md mx-auto">
+                      Inicialize o checklist para registrar o acompanhamento dos 5 aspectos básicos de revisão técnica com prazos e responsáveis.
+                    </p>
+                    <Button
+                      size="sm"
+                      onClick={handleInitializeChecklist}
+                      disabled={initializeReviewChecklist.isPending}
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs cursor-pointer"
+                    >
+                      <Plus className="mr-1.5 h-4 w-4" /> Inicializar os 5 Aspectos Básicos
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                        <CheckSquare className="h-4 w-4 text-primary" />
+                        Itens do Checklist de Revisão ({checklistItems.length})
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={handleInitializeChecklist}
+                        disabled={initializeReviewChecklist.isPending}
+                        className="h-7 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                      >
+                        <RefreshCw className="mr-1 h-3 w-3" /> Redefinir Itens
+                      </Button>
+                    </div>
+
+                    <div className="space-y-3">
+                      {checklistItems.map((item: any) => {
+                        const aiDiag = aiEvaluation?.checklistDiagnostics?.find(
+                          (d: any) => d.itemKey === item.itemKey
+                        );
+
+                        return (
+                          <div
+                            key={item.id}
+                            className={`rounded-xl border p-4 bg-card transition-all space-y-3 ${
+                              item.status === "concluído"
+                                ? "border-emerald-500/30 bg-emerald-500/5"
+                                : item.status === "bloqueado"
+                                ? "border-rose-500/30 bg-rose-500/5"
+                                : item.status === "em andamento"
+                                ? "border-blue-500/30 bg-blue-500/5"
+                                : "border-border/80"
+                            }`}
+                          >
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                              <div className="space-y-1 min-w-0 flex-1">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0"
+                                  >
+                                    {item.scope}
+                                  </Badge>
+                                  <h5 className="font-semibold text-sm text-foreground">
+                                    {item.title}
+                                  </h5>
+                                </div>
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                                  <span>
+                                    Responsável: <strong className="text-foreground">{item.responsibleName || "Coordenação / Revisor"}</strong>
+                                  </span>
+                                  {item.dueAt && (
+                                    <span>
+                                      Prazo: <strong className="text-foreground">{formatDate(item.dueAt)}</strong>
+                                    </span>
+                                  )}
+                                  {item.completedByName && item.completedAt && (
+                                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">
+                                      Concluído por {item.completedByName} em {formatDate(item.completedAt)}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Controles de Status e Edição */}
+                              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                                <Select
+                                  value={item.status}
+                                  onValueChange={(val: any) => handleUpdateChecklistItemStatus(item.id, val)}
+                                >
+                                  <SelectTrigger className="h-8 w-36 text-xs bg-background font-semibold">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="pendente">⏳ Pendente</SelectItem>
+                                    <SelectItem value="em andamento">🔄 Em Andamento</SelectItem>
+                                    <SelectItem value="concluído">✅ Concluído</SelectItem>
+                                    <SelectItem value="bloqueado">🚫 Bloqueado</SelectItem>
+                                  </SelectContent>
+                                </Select>
+
+                                {data.eligibleReviewers && (
+                                  <Select
+                                    value={item.responsibleId ? String(item.responsibleId) : "none"}
+                                    onValueChange={(val: string) =>
+                                      handleUpdateChecklistItemResponsible(
+                                        item.id,
+                                        val === "none" ? null : Number(val)
+                                      )
+                                    }
+                                  >
+                                    <SelectTrigger className="h-8 w-40 text-xs bg-background">
+                                      <SelectValue placeholder="Responsável..." />
+                                    </SelectTrigger>
+                                    <SelectContent className="max-h-60">
+                                      <SelectItem value="none">Sem responsável específico</SelectItem>
+                                      {data.eligibleReviewers.map((rev: any) => (
+                                        <SelectItem key={rev.id} value={String(rev.id)}>
+                                          {rev.name}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* DIAGNÓSTICO ESPECÍFICO DESTE ITEM PELA IA */}
+                            {aiDiag && (
+                              <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3 text-xs space-y-1.5">
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex items-center gap-1.5 font-bold text-indigo-700 dark:text-indigo-300">
+                                    <Bot className="h-3.5 w-3.5" />
+                                    <span>Diagnóstico de IA: Sugere status "{aiDiag.suggestedStatus}"</span>
+                                  </div>
+                                  <Badge variant="outline" className="text-[10px] font-mono text-indigo-600 border-indigo-300">
+                                    Confiança: {aiDiag.confidence}%
+                                  </Badge>
+                                </div>
+                                <p className="text-muted-foreground text-[11px] leading-relaxed">
+                                  {aiDiag.reason}
+                                </p>
+                                {aiDiag.recommendations?.length > 0 && (
+                                  <div className="pt-1 text-[11px] text-muted-foreground/90 space-y-0.5">
+                                    <span className="font-semibold text-foreground">Recomendações:</span>
+                                    <ul className="list-disc pl-4 space-y-0.5">
+                                      {aiDiag.recommendations.map((rec: string, rIdx: number) => (
+                                        <li key={rIdx}>{rec}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* HISTÓRICO DE AUDITORIA DO CHECKLIST */}
+                {checklistEvents.length > 0 && (
+                  <div className="space-y-2 pt-3 border-t">
+                    <h5 className="font-semibold text-xs text-muted-foreground flex items-center gap-1.5">
+                      <History className="h-3.5 w-3.5" /> Histórico de Alterações do Checklist
+                    </h5>
+                    <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 text-xs">
+                      {checklistEvents.map((evt: any) => (
+                        <div
+                          key={evt.id}
+                          className="rounded border bg-muted/10 p-2 flex flex-wrap items-center justify-between gap-2 text-muted-foreground"
+                        >
+                          <span>
+                            <strong className="text-foreground">{evt.actorName}</strong>: {evt.summary}
+                          </span>
+                          <span className="text-[11px] font-mono">
+                            {formatDate(evt.createdAt)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              {/* ABA 3: ESCOPO OFICIAL */}
               <TabsContent value="escopo" className="space-y-4">
                 {/* Descrição Anexo B */}
                 <div className="rounded-lg border bg-card p-4 space-y-2">
