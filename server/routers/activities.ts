@@ -957,6 +957,17 @@ export const activitiesRouter = router({
       const canAuthorizeAllocations = isGeneralCoordinatorOrAdmin(ctx.user, member);
       const canHomologate = isGeneralCoordinatorOrAdmin(ctx.user, member) || (member?.groupId === 1);
       const isGeneralCoordinatorUser = isGeneralCoordinatorOrAdmin(ctx.user, member);
+
+      if (!activity.reviewChecklist?.items || activity.reviewChecklist.items.length === 0) {
+        try {
+          await ensureActivityReviewChecklist(activity, ctx.user.id);
+          const refreshed = await listActivityReviewChecklist(activity.id);
+          activity.reviewChecklist = refreshed;
+        } catch {
+          // ignore if error in background ensure
+        }
+      }
+
       return {
         ...activity,
         canManageAllocations,

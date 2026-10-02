@@ -586,11 +586,7 @@ describe("ficha visível da atividade", () => {
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
-    const newRevisionBtn = await screen.findByRole("button", { name: /subir nova versão/i });
-    expect(newRevisionBtn).toBeInTheDocument();
-    fireEvent.click(newRevisionBtn);
-
-    expect(screen.getByText(/Envio de Nova Revisão/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Envio de Nova Revisão/i)).toBeInTheDocument();
     expect(screen.getByText(/arquivo revisado/i)).toBeInTheDocument();
     fixtures.activity.productionMaterials[0].reviewStatus = "em revisão";
   });
@@ -604,12 +600,11 @@ describe("ficha visível da atividade", () => {
     const openButtons = screen.getAllByRole("button", { name: /abrir ficha/i });
     fireEvent.click(openButtons[0]);
 
-    const parecerBtn = await screen.findByRole("button", { name: /emitir comentários \/ parecer/i });
-    expect(parecerBtn).toBeInTheDocument();
-    fireEvent.click(parecerBtn);
+    expect(await screen.findByText(/Parecer de Revisão & Encaminhamento ao Autor/i)).toBeInTheDocument();
+    const emitirBtn = screen.getByRole("button", { name: /emitir comentários \/ parecer/i });
+    fireEvent.click(emitirBtn);
 
-    expect(screen.getByText(/Parecer de Revisão/i)).toBeInTheDocument();
-    expect(screen.getByText(/decisão editorial/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/decisão editorial/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/justificativa e apontamentos/i)).toBeInTheDocument();
   });
 

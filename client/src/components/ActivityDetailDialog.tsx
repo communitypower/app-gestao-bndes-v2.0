@@ -41,6 +41,7 @@ import {
   ArrowRight,
   Bot,
   CalendarDays,
+  Check,
   CheckCircle2,
   CheckSquare,
   ClipboardCheck,
@@ -769,9 +770,14 @@ export function ActivityDetailDialog({
                         <>
                           <FileCheck className="h-4 w-4 text-primary" />
                           <span>Versão R0{currentMaterial.currentRevision}</span>
-                          <Badge variant="outline" className="text-xs font-semibold">
+                          <Badge variant="outline" className="text-xs font-semibold capitalize">
                             {currentMaterial.reviewStatus}
                           </Badge>
+                          {data.documentStatus === "consolidada no capítulo" && (
+                            <Badge className="bg-emerald-600 text-white text-[10px]">
+                              Consolidada no Capítulo
+                            </Badge>
+                          )}
                         </>
                       ) : (
                         <>
@@ -782,44 +788,17 @@ export function ActivityDetailDialog({
                     </h4>
                   </div>
 
-                  {/* Ações Diretas por Etapa (Botão duplicado de subir minuta removido) */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    {currentMaterial && (
-                      <>
-                        {/* Se não tem revisores e é Prof. Floriano / Admin */}
-                        {data.reviewers.length === 0 && isGeneralCoord && (
-                          <Button
-                            size="sm"
-                            onClick={() => setIsAssigningReviewer(true)}
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold cursor-pointer"
-                          >
-                            <UserCheck className="mr-1.5 h-4 w-4" /> Indicar Revisor (Prof. Floriano)
-                          </Button>
-                        )}
-                        {/* Autor subindo nova revisão R02+ */}
-                        {isAuthorCoordinator && currentMaterial.reviewStatus !== "em revisão" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={handleTriggerRevisionFileInput}
-                            className="font-medium cursor-pointer"
-                          >
-                            <FileClock className="mr-1.5 h-4 w-4 text-primary" /> Subir Nova Versão (R0{currentMaterial.currentRevision + 1})
-                          </Button>
-                        )}
-                        {/* Revisor emitindo parecer */}
-                        {(isDesignatedReviewer || isGeneralCoord) && currentMaterial.reviewStatus === "em revisão" && (
-                          <Button
-                            size="sm"
-                            onClick={() => setIsDecidingReview(true)}
-                            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold cursor-pointer"
-                          >
-                            <Pencil className="mr-1.5 h-4 w-4" /> Emitir Comentários / Parecer
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </div>
+                  {/* Ação única no cabeçalho: Download da versão vigente se disponível */}
+                  {currentMaterial && currentMaterial.revisions?.length > 0 && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDownloadRevision(currentMaterial.revisions[0].id)}
+                      className="h-8 gap-1.5 text-xs shrink-0 cursor-pointer font-medium"
+                    >
+                      <Download className="h-3.5 w-3.5 text-primary" /> Baixar Versão Vigente (R0{currentMaterial.currentRevision})
+                    </Button>
+                  )}
                 </div>
 
                 {/* PASSO 1: CARGA DA MINUTA INICIAL (Área de Upload Interativa e Imediata) */}
@@ -964,22 +943,27 @@ export function ActivityDetailDialog({
                 )}
 
                 {/* PASSO 2: PAINEL DE INDICAÇÃO DE REVISOR (Prof. Floriano) */}
-                {(data.reviewers ?? []).length === 0 && (
-                  <div className={`rounded-lg border ${!currentMaterial ? "border-border/60 bg-muted/20 opacity-75" : "border-amber-500/40 bg-amber-500/5"} p-4 space-y-3`}>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div>
-                        <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
-                          <UserCheck className={`h-4 w-4 ${!currentMaterial ? "text-muted-foreground" : "text-amber-600"}`} /> Passo 2: Indicação de Revisor Técnico Independente
-                        </h4>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {!currentMaterial
-                            ? "A indicação do revisor técnico independente pelo Prof. Floriano será liberada assim que a minuta inicial (R01) for enviada no Passo 1."
-                            : isGeneralCoord
-                            ? "Como Coordenador Geral, o Prof. Floriano deve selecionar o revisor técnico independente para esta seção."
-                            : "Minuta inicial no sistema. Aguardando a indicação do revisor técnico independente pelo Prof. Floriano."}
-                        </p>
+                {currentMaterial && (data.reviewers ?? []).length === 0 && (
+                  <div className={`rounded-xl border-2 ${isGeneralCoord ? "border-amber-500/40 bg-amber-500/5" : "border-blue-500/30 bg-blue-500/5"} p-5 space-y-4 shadow-sm animate-in fade-in`}>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/40 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${isGeneralCoord ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" : "bg-blue-500/10 text-blue-600 dark:text-blue-400"} shrink-0`}>
+                          <UserCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <span className="editorial-kicker text-muted-foreground font-bold text-[10px]">Passo 2 do Ciclo Editorial</span>
+                          <h4 className="font-bold text-base text-foreground">
+                            Passo 2: Indicação de Revisor Técnico Independente
+                          </h4>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {isGeneralCoord
+                              ? "Como Coordenador Geral, selecione um pesquisador qualificado de outro grupo temático para revisar esta seção."
+                              : "Minuta submetida com sucesso. Encaminhada para a Coordenação Geral (Prof. Floriano) designar o revisor técnico independente."}
+                          </p>
+                        </div>
                       </div>
-                      {currentMaterial && isGeneralCoord && !isAssigningReviewer && (
+
+                      {isGeneralCoord && !isAssigningReviewer && (
                         <Button
                           size="sm"
                           onClick={() => setIsAssigningReviewer(true)}
@@ -990,8 +974,8 @@ export function ActivityDetailDialog({
                       )}
                     </div>
 
-                    {isAssigningReviewer && isGeneralCoord && currentMaterial && (
-                      <div className="mt-3 pt-3 border-t border-amber-500/20 space-y-3">
+                    {isAssigningReviewer && isGeneralCoord && (
+                      <div className="space-y-3 pt-1">
                         <div>
                           <Label className="text-xs font-semibold">Selecione o Revisor Independente (Prof. Floriano)</Label>
                           <Select
@@ -1033,8 +1017,145 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
+                {/* PASSO 3: PARECER DE REVISÃO TÉCNICA INDEPENDENTE */}
+                {currentMaterial && (data.reviewers ?? []).length > 0 && currentMaterial.reviewStatus === "em revisão" && (
+                  <div className="rounded-xl border-2 border-amber-500/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b pb-3">
+                      <div>
+                        <span className="editorial-kicker text-amber-600 font-bold text-[10px]">Passo 3 do Ciclo Editorial</span>
+                        <h4 className="font-bold text-base text-foreground flex items-center gap-2">
+                          <Pencil className="h-5 w-5 text-amber-600" /> Parecer de Revisão & Encaminhamento ao Autor
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {isDesignatedReviewer || isGeneralCoord
+                            ? "Analise o documento e o checklist, anexe seu arquivo com comentários se necessário e emita a decisão editorial."
+                            : `A minuta está em análise técnica com o revisor designado (${data.reviewers.map((r: any) => r.name).join(", ")}).`}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        {currentMaterial.revisions?.[0] && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleDownloadRevision(currentMaterial.revisions[0].id)}
+                            className="h-8 text-xs gap-1.5 cursor-pointer font-medium"
+                          >
+                            <Download className="h-3.5 w-3.5 text-primary" /> Baixar Minuta para Revisão
+                          </Button>
+                        )}
+                        {(isDesignatedReviewer || isGeneralCoord) && !isDecidingReview && (
+                          <Button
+                            size="sm"
+                            onClick={() => setIsDecidingReview(true)}
+                            className="h-8 text-xs bg-amber-600 hover:bg-amber-700 text-white font-bold cursor-pointer shadow-xs"
+                          >
+                            <Pencil className="mr-1.5 h-3.5 w-3.5" /> Emitir Comentários / Parecer
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Formulário de Emissão de Parecer do Revisor */}
+                    {isDecidingReview && (isDesignatedReviewer || isGeneralCoord) && (
+                      <div className="space-y-4 pt-1">
+                        <div>
+                          <Label className="text-xs font-semibold">Decisão Editorial</Label>
+                          <Select
+                            value={reviewDecision}
+                            onValueChange={(val: any) => setReviewDecision(val)}
+                          >
+                            <SelectTrigger className="mt-1 h-9 text-xs bg-card">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="aprovado">✅ Aprovar Minuta (Parecer Favorável Sem Restrições)</SelectItem>
+                              <SelectItem value="ajustes solicitados">⚠️ Solicitar Ajustes / Comentários ao Autor</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label className="text-xs font-semibold">Justificativa e Apontamentos do Parecer</Label>
+                          <Textarea
+                            value={reviewDecisionNote}
+                            onChange={e => setReviewDecisionNote(e.target.value)}
+                            placeholder="Insira as observações técnicas, comentários parágrafo a parágrafo ou orientações metodológicas para o autor..."
+                            className="mt-1 min-h-[90px] text-xs bg-card"
+                          />
+                        </div>
+
+                        {/* UPLOAD DE ARQUIVO PELO REVISOR COM A REVISÃO PRETENDIDA */}
+                        <div className="rounded-lg border border-border/80 bg-muted/20 p-3.5 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Paperclip className="h-4 w-4 text-primary" />
+                              <Label className="text-xs font-semibold text-foreground">
+                                Anexar Arquivo com a Revisão Pretendida (Opcional)
+                              </Label>
+                            </div>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={handleTriggerReviewDecisionFileInput}
+                              className="h-7 text-xs gap-1 cursor-pointer"
+                            >
+                              <Upload className="h-3 w-3" />
+                              {reviewDecisionFile ? "Trocar Arquivo" : "Selecionar do Computador"}
+                            </Button>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground">
+                            O revisor pode anexar a minuta com alterações controladas no Word (.docx), PDF com anotações ou nota técnica complementar para encaminhamento direto ao autor.
+                          </p>
+
+                          {reviewDecisionFile && (
+                            <div className="flex items-center justify-between gap-2 p-2 bg-background border rounded-md text-xs">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <FileCheck2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                                <span className="font-mono font-medium truncate">{reviewDecisionFile.name}</span>
+                                <Badge variant="secondary" className="text-[10px] shrink-0">
+                                  {fileSize(reviewDecisionFile.size)}
+                                </Badge>
+                              </div>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => setReviewDecisionFile(null)}
+                                className="h-6 text-[11px] text-destructive hover:bg-destructive/10"
+                              >
+                                Remover
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2 border-t">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setIsDecidingReview(false)}
+                            className="h-9 text-xs cursor-pointer"
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={handleRegisterReviewDecision}
+                            disabled={registerDecision.isPending}
+                            className="h-9 px-4 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white cursor-pointer shadow-xs"
+                          >
+                            {registerDecision.isPending ? "Registrando Parecer..." : "Confirmar Parecer e Encaminhar ao Autor"}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* PASSO 4: IMPLEMENTAÇÃO DE AJUSTES & ENVIO DE NOVA VERSÃO (R02, R03...) */}
-                {currentMaterial && (isAddingRevision || currentStage === "implementacao_ajustes" || data.documentStatus === "ajustes solicitados" || currentMaterial.openCommentCount > 0) && (
+                {currentMaterial && (isAddingRevision || currentStage === "implementacao_ajustes" || data.documentStatus === "ajustes solicitados" || currentMaterial.reviewStatus === "ajustes solicitados" || currentMaterial.openCommentCount > 0) && (
                   <div className="rounded-xl border-2 border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
                       <div>
@@ -1200,122 +1321,37 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* MODAL / FORMULÁRIO DE EMISSÃO DE PARECER & ARQUIVO ANEXO (Revisor Técnico / Coordenação) */}
-                {isDecidingReview && currentMaterial && (
-                  <div className="rounded-xl border-2 border-amber-500/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
-                    <div className="flex items-center justify-between border-b pb-3">
+                {/* PASSO 5 & 6: CONSOLIDAÇÃO NO CAPÍTULO & HOMOLOGAÇÃO NO TOMO */}
+                {currentMaterial && (currentMaterial.reviewStatus === "aprovado" || data.documentStatus === "consolidada no capítulo" || isGeneralCoord) && (
+                  <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/5 p-5 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-500/20 pb-3">
                       <div>
-                        <span className="editorial-kicker text-amber-600 font-bold text-[10px]">Passo 3 do Ciclo Editorial</span>
+                        <span className="editorial-kicker text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">Passos 5 e 6 do Ciclo Editorial</span>
                         <h4 className="font-bold text-base text-foreground flex items-center gap-2">
-                          <Pencil className="h-5 w-5 text-amber-600" /> Parecer de Revisão & Encaminhamento ao Autor
+                          <ShieldCheck className="h-5 w-5 text-emerald-600" /> Consolidação no Capítulo & Homologação no Tomo
                         </h4>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setIsDecidingReview(false)}
-                        className="h-7 text-xs cursor-pointer"
-                      >
-                        Cancelar
-                      </Button>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div>
-                        <Label className="text-xs font-semibold">Decisão Editorial</Label>
-                        <Select
-                          value={reviewDecision}
-                          onValueChange={(val: any) => setReviewDecision(val)}
-                        >
-                          <SelectTrigger className="mt-1 h-9 text-xs bg-card">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="aprovado">✅ Aprovar Minuta (Parecer Favorável Sem Restrições)</SelectItem>
-                            <SelectItem value="ajustes solicitados">⚠️ Solicitar Ajustes / Comentários ao Autor</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label className="text-xs font-semibold">Justificativa e Apontamentos do Parecer</Label>
-                        <Textarea
-                          value={reviewDecisionNote}
-                          onChange={e => setReviewDecisionNote(e.target.value)}
-                          placeholder="Insira as observações técnicas, comentários parágrafo a parágrafo ou orientações metodológicas para o autor..."
-                          className="mt-1 min-h-[90px] text-xs bg-card"
-                        />
-                      </div>
-
-                      {/* UPLOAD DE ARQUIVO PELO REVISOR COM A REVISÃO PRETENDIDA */}
-                      <div className="rounded-lg border border-border/80 bg-muted/20 p-3.5 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Paperclip className="h-4 w-4 text-primary" />
-                            <Label className="text-xs font-semibold text-foreground">
-                              Anexar Arquivo com a Revisão Pretendida (Opcional)
-                            </Label>
-                          </div>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={handleTriggerReviewDecisionFileInput}
-                            className="h-7 text-xs gap-1 cursor-pointer"
-                          >
-                            <Upload className="h-3 w-3" />
-                            {reviewDecisionFile ? "Trocar Arquivo" : "Selecionar do Computador"}
-                          </Button>
-                        </div>
-                        <p className="text-[11px] text-muted-foreground">
-                          O revisor pode anexar a minuta com alterações controladas no Word (.docx), PDF com anotações ou nota técnica complementar para encaminhamento direto ao autor.
+                        <p className="text-xs text-muted-foreground mt-0.5 break-words">
+                          {data.documentStatus === "consolidada no capítulo"
+                            ? "✅ Esta seção já foi homologada e incorporada ao capítulo e relatório oficial do Estudo BNDES."
+                            : "Minuta aprovada pela revisão técnica independente. Pronta para consolidação pelo coordenador do capítulo e homologação no tomo."}
                         </p>
-
-                        {reviewDecisionFile && (
-                          <div className="flex items-center justify-between gap-2 p-2 bg-background border rounded-md text-xs">
-                            <div className="flex items-center gap-2 min-w-0">
-                              <FileCheck2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                              <span className="font-mono font-medium truncate">{reviewDecisionFile.name}</span>
-                              <Badge variant="secondary" className="text-[10px] shrink-0">
-                                {fileSize(reviewDecisionFile.size)}
-                              </Badge>
-                            </div>
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => setReviewDecisionFile(null)}
-                              className="h-6 text-[11px] text-destructive hover:bg-destructive/10"
-                            >
-                              Remover
-                            </Button>
-                          </div>
-                        )}
                       </div>
 
-                      <div className="flex justify-end gap-2 pt-2 border-t">
+                      {data.documentStatus !== "consolidada no capítulo" && (isAuthorCoordinator || isGeneralCoord) && (
                         <Button
                           size="sm"
-                          variant="outline"
-                          onClick={() => setIsDecidingReview(false)}
-                          className="h-9 text-xs cursor-pointer"
+                          onClick={handleHomologateInChapter}
+                          disabled={consolidateInChapter.isPending}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold cursor-pointer shrink-0 shadow-xs"
                         >
-                          Cancelar
+                          <CheckCircle2 className="mr-1.5 h-4 w-4" /> Consolidar Seção no Capítulo
                         </Button>
-                        <Button
-                          size="sm"
-                          onClick={handleRegisterReviewDecision}
-                          disabled={registerDecision.isPending}
-                          className="h-9 px-4 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white cursor-pointer shadow-xs"
-                        >
-                          {registerDecision.isPending ? "Registrando Parecer..." : "Confirmar Parecer e Encaminhar ao Autor"}
-                        </Button>
-                      </div>
+                      )}
                     </div>
                   </div>
                 )}
 
-                {/* 2. Histórico de Versões e Arquivos */}
+                {/* Histórico de Versões e Arquivos */}
                 {currentMaterial && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -1370,7 +1406,7 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* 3. Apontamentos e Decisões Anteriores */}
+                {/* Apontamentos e Decisões Anteriores */}
                 {currentMaterial && (currentMaterial.submissions?.length > 0 || currentMaterial.comments?.length > 0) && (
                   <div className="space-y-3 pt-2">
                     <div className="flex items-center justify-between">
@@ -1447,34 +1483,6 @@ export function ActivityDetailDialog({
                           ))}
                         </div>
                       ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* 4. Homologação no Capítulo */}
-                {currentMaterial && (currentMaterial.reviewStatus === "aprovado" || isGeneralCoord) && (
-                  <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div>
-                        <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
-                          <ShieldCheck className="h-4 w-4 text-emerald-600" /> Homologação no Capítulo Oficial
-                        </h4>
-                        <p className="text-xs text-muted-foreground mt-0.5 break-words">
-                          {data.documentStatus === "consolidada no capítulo"
-                            ? "✅ Esta seção já foi homologada e incorporada ao documento final do Estudo BNDES."
-                            : "A minuta aprovada pode ser homologada e consolidada no relatório oficial do Estudo."}
-                        </p>
-                      </div>
-                      {data.documentStatus !== "consolidada no capítulo" && (
-                        <Button
-                          size="sm"
-                          onClick={handleHomologateInChapter}
-                          disabled={consolidateInChapter.isPending}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold cursor-pointer shrink-0"
-                        >
-                          <CheckCircle2 className="mr-1.5 h-4 w-4" /> Homologar Capítulo
-                        </Button>
-                      )}
                     </div>
                   </div>
                 )}
@@ -1731,22 +1739,47 @@ export function ActivityDetailDialog({
                                 </div>
                               </div>
 
-                              {/* Controles de Status e Edição */}
-                              <div className="flex flex-wrap items-center gap-2 shrink-0">
-                                <Select
-                                  value={item.status}
-                                  onValueChange={(val: any) => handleUpdateChecklistItemStatus(item.id, val)}
+                              {/* Controles de 1 Clique e Status Rápido */}
+                              <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  onClick={() => handleUpdateChecklistItemStatus(item.id, "concluído")}
+                                  className={`h-8 px-2.5 text-xs font-semibold gap-1 cursor-pointer transition-all ${
+                                    item.status === "concluído"
+                                      ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs"
+                                      : "bg-background hover:bg-emerald-50 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30"
+                                  }`}
                                 >
-                                  <SelectTrigger className="h-8 w-36 text-xs bg-background font-semibold">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="pendente">⏳ Pendente</SelectItem>
-                                    <SelectItem value="em andamento">🔄 Em Andamento</SelectItem>
-                                    <SelectItem value="concluído">✅ Concluído</SelectItem>
-                                    <SelectItem value="bloqueado">🚫 Bloqueado</SelectItem>
-                                  </SelectContent>
-                                </Select>
+                                  <Check className="h-3.5 w-3.5" />
+                                  <span>Conforme</span>
+                                </Button>
+
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  onClick={() => handleUpdateChecklistItemStatus(item.id, "bloqueado")}
+                                  className={`h-8 px-2.5 text-xs font-semibold gap-1 cursor-pointer transition-all ${
+                                    item.status === "bloqueado"
+                                      ? "bg-amber-600 hover:bg-amber-700 text-white shadow-xs"
+                                      : "bg-background hover:bg-amber-50 text-amber-700 dark:text-amber-300 border border-amber-500/30"
+                                  }`}
+                                >
+                                  <AlertCircle className="h-3.5 w-3.5" />
+                                  <span>Ajuste Necessário</span>
+                                </Button>
+
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => handleUpdateChecklistItemStatus(item.id, "pendente")}
+                                  className={`h-8 px-2 text-xs cursor-pointer ${
+                                    item.status === "pendente" ? "text-muted-foreground font-semibold bg-muted/40" : "text-muted-foreground/70"
+                                  }`}
+                                >
+                                  <span>Pendente</span>
+                                </Button>
 
                                 {data.eligibleReviewers && (
                                   <Select
@@ -1758,11 +1791,11 @@ export function ActivityDetailDialog({
                                       )
                                     }
                                   >
-                                    <SelectTrigger className="h-8 w-40 text-xs bg-background">
+                                    <SelectTrigger className="h-8 w-36 text-xs bg-background">
                                       <SelectValue placeholder="Responsável..." />
                                     </SelectTrigger>
                                     <SelectContent className="max-h-60">
-                                      <SelectItem value="none">Sem responsável específico</SelectItem>
+                                      <SelectItem value="none">Sem responsável</SelectItem>
                                       {data.eligibleReviewers.map((rev: any) => (
                                         <SelectItem key={rev.id} value={String(rev.id)}>
                                           {rev.name}
