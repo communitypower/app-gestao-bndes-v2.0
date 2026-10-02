@@ -311,7 +311,7 @@ export function assertCanUploadActivityMaterial(
     throw new TRPCError({
       code: "FORBIDDEN",
       message:
-        "Somente o coordenador do capítulo ou o administrador pode anexar materiais e dar fluxo para a revisão.",
+        "Somente o coordenador responsável, os autores alocados, o grupo temático ou o administrador podem anexar materiais e dar fluxo para a revisão.",
     });
   }
 }

@@ -1758,7 +1758,7 @@ export async function getActivity(id: number) {
   );
 
   const productionMaterials = allMaterials.filter(
-    item => item.activityId === activity.id || item.sectionId === activity.sectionId
+    item => item.activityId === activity.id || (!item.activityId && item.sectionId === activity.sectionId)
   );
 
   return {
@@ -1771,8 +1771,17 @@ export async function getActivity(id: number) {
     })),
     executionSteps:
       activity.parentActivityId === null
-        ? rows.filter(step => step.parentActivityId === activity.id)
+        ? rows
+            .filter(step => step.parentActivityId === activity.id)
+            .map(step => ({
+              ...step,
+              productionMaterials: allMaterials.filter(m => m.activityId === step.id),
+            }))
         : [],
+    parentActivity:
+      activity.parentActivityId !== null
+        ? rows.find(p => p.id === activity.parentActivityId) ?? null
+        : null,
     relatedFieldwork: fieldworkRows.filter(item => item.relatedActivityId === activity.id),
     relatedInterfaces,
     productionMaterials,

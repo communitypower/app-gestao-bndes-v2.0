@@ -34,6 +34,7 @@ import {
 } from "@/components/EditorialUI";
 import {
   AlertCircle,
+  ArrowLeft,
   CalendarDays,
   Check,
   CheckCircle2,
@@ -85,6 +86,12 @@ export function ActivityDetailDialog({
   isAdmin = false,
   initialAction,
 }: ActivityDetailDialogProps) {
+  const [currentActivityId, setCurrentActivityId] = useState<number | null>(activityId);
+
+  useEffect(() => {
+    setCurrentActivityId(activityId);
+  }, [activityId]);
+
   const utils = trpc.useUtils();
   const { data: access } = trpc.administration?.status?.useQuery
     ? trpc.administration.status.useQuery()
@@ -92,14 +99,14 @@ export function ActivityDetailDialog({
 
   const { data, isLoading } = trpc.activities?.detail?.useQuery
     ? trpc.activities.detail.useQuery(
-        { id: activityId ?? 0 },
-        { enabled: activityId !== null && activityId > 0 }
+        { id: currentActivityId ?? 0 },
+        { enabled: currentActivityId !== null && currentActivityId > 0 }
       )
     : ({ data: null, isLoading: false } as any);
 
   const { data: materials } = trpc.production?.list?.useQuery
     ? trpc.production.list.useQuery(undefined, {
-        enabled: activityId !== null && activityId > 0,
+        enabled: currentActivityId !== null && currentActivityId > 0,
       })
     : ({ data: [] } as any);
 
@@ -162,16 +169,16 @@ export function ActivityDetailDialog({
 
   // Match corresponding production material
   const currentMaterial = useMemo(() => {
-    if (!activityId) return null;
+    if (!currentActivityId) return null;
     if (materials && materials.length > 0) {
-      const found = materials.find((m: any) => m.activityId === activityId);
+      const found = materials.find((m: any) => m.activityId === currentActivityId);
       if (found) return found;
     }
     if (data?.productionMaterials && data.productionMaterials.length > 0) {
       return data.productionMaterials[0];
     }
     return null;
-  }, [activityId, materials, data?.productionMaterials]);
+  }, [currentActivityId, materials, data?.productionMaterials]);
 
   // Compute current workflow stage (6 sequential steps)
   const currentStage: WorkflowStage = useMemo(() => {
@@ -521,9 +528,9 @@ export function ActivityDetailDialog({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[11px] font-bold text-primary uppercase tracking-wider block">
-                    Ficha da Atividade
+                    {data.parentActivityId ? "Ficha da Sessão Analítica" : "Ficha da Atividade"}
                   </span>
-                  <SectionMark code={data.planCode ?? data.sectionCode} />
+                  <SectionMark code={data.detailCode || data.planCode || data.sectionCode} />
                   <span className="rounded bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
                     {studyTomeFromCode(data.sectionCode)}
                   </span>
@@ -534,11 +541,33 @@ export function ActivityDetailDialog({
                   )}
                   <StatusBadge status={data.status} />
                 </div>
+
+                {data.parentActivityId && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setCurrentActivityId(data.parentActivityId);
+                      setIsUploadingMinuta(false);
+                      setUploadFile(null);
+                    }}
+                    className="h-7 text-xs font-semibold gap-1.5 cursor-pointer bg-background hover:bg-primary hover:text-primary-foreground shrink-0 shadow-2xs"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5" /> Voltar ao Capítulo {data.sectionCode}
+                  </Button>
+                )}
               </div>
 
               <DialogTitle className="font-display mt-2 text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug break-words">
-                {data.title}
+                {data.detailCode ? `${data.detailCode} — ` : ""}{data.title}
               </DialogTitle>
+
+              {data.parentActivityId && (
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Pertencente ao <strong className="text-foreground">Capítulo {data.sectionCode}: {data.parentActivity?.title || data.sectionTitle || ""}</strong>
+                </p>
+              )}
 
               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
@@ -589,6 +618,74 @@ export function ActivityDetailDialog({
 
               {/* ABA 1: FLUXO DOCUMENTAL */}
               <TabsContent value="documento" className="space-y-5">
+                {/* LISTAGEM DE SESSÕES ANALÍTICAS DO CAPÍTULO (quando visualizando um capítulo que possui sessões) */}
+                {!data.parentActivityId && data.executionSteps && data.executionSteps.length > 0 && (
+                  <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 sm:p-5 space-y-3 shadow-2xs animate-in fade-in">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-primary/20 pb-3">
+                      <div>
+                        <span className="editorial-kicker text-primary font-bold text-[10px]">
+                          Desdobramento do Capítulo em Sessões (Anexo B)
+                        </span>
+                        <h4 className="font-bold text-base text-foreground flex items-center gap-2">
+                          <Layers className="h-5 w-5 text-primary" /> Sessões Analíticas do Capítulo ({data.executionSteps.length})
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Você pode gerenciar e subir minutas individualmente para cada sessão ou submeter o capítulo consolidado completo abaixo.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-2.5 sm:grid-cols-2">
+                      {data.executionSteps.map((step: any) => {
+                        const stepMaterial = step.productionMaterials?.[0];
+                        return (
+                          <div
+                            key={step.id}
+                            className="rounded-lg border bg-card p-3.5 flex flex-col justify-between gap-2.5 hover:border-primary/50 transition-colors shadow-2xs"
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="font-mono text-xs font-bold text-primary">
+                                  {step.detailCode || `Sessão #${step.id}`}
+                                </span>
+                                <StatusBadge status={step.documentStatus || step.status} />
+                              </div>
+                              <h5 className="font-semibold text-xs text-foreground line-clamp-2">
+                                {step.title}
+                              </h5>
+                              {stepMaterial ? (
+                                <div className="mt-1 flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-300 font-mono font-medium">
+                                  <FileCheck2 className="h-3.5 w-3.5 shrink-0" />
+                                  <span>Minuta R0{stepMaterial.currentRevision} ({stepMaterial.reviewStatus})</span>
+                                </div>
+                              ) : (
+                                <p className="text-[11px] text-muted-foreground mt-1">
+                                  Nenhuma minuta carregada nesta sessão.
+                                </p>
+                              )}
+                            </div>
+
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setCurrentActivityId(step.id);
+                                setIsUploadingMinuta(false);
+                                setUploadFile(null);
+                              }}
+                              className="h-7 text-xs font-semibold gap-1.5 justify-center w-full cursor-pointer hover:bg-primary hover:text-primary-foreground mt-1"
+                            >
+                              <FileText className="h-3.5 w-3.5" />
+                              {stepMaterial ? "Abrir Ficha da Sessão" : "Subir Minuta da Sessão"}
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* PASSO 1: CARGA DA MINUTA INICIAL (Área de Upload Interativa e Imediata) */}
                 {!currentMaterial && (
                   <div className="rounded-xl border-2 border-primary/40 bg-card p-5 space-y-4 shadow-sm animate-in fade-in">
@@ -596,10 +693,12 @@ export function ActivityDetailDialog({
                       <div>
                         <span className="editorial-kicker text-primary font-bold text-[10px]">Passo 1 do Ciclo Editorial</span>
                         <h4 className="font-bold text-base text-foreground flex items-center gap-2">
-                          <FileUp className="h-5 w-5 text-primary" /> Carga da Minuta Inicial (R01)
+                          <FileUp className="h-5 w-5 text-primary" /> {data.parentActivityId ? `Carga da Minuta da Sessão ${data.detailCode || ""} (R01)` : `Carga da Minuta Consolidada do Capítulo (R01)`}
                         </h4>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Faça o upload do documento da minuta inicial para abrir o fluxo de revisão independente da Coordenação Geral.
+                          {data.parentActivityId
+                            ? `Faça o upload do documento da minuta desta sessão (${data.detailCode}) para abrir o fluxo de revisão independente.`
+                            : `Faça o upload do documento da minuta consolidada do capítulo para abrir o fluxo de revisão independente da Coordenação Geral.`}
                         </p>
                       </div>
 

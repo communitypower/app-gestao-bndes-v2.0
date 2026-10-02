@@ -602,8 +602,13 @@ export const activitiesRouter = router({
       const actions: WorkloadActionItem[] = [];
 
       for (const activity of allActivities) {
-        if (activity.parentActivityId !== null) continue;
         if (input?.groupId && activity.responsibleGroupId !== input.groupId) continue;
+
+        const isChildSession = activity.parentActivityId !== null;
+        const displayCode = isChildSession ? (activity.detailCode || activity.sectionCode) : activity.sectionCode;
+        const displayTitle = isChildSession
+          ? `${activity.detailCode ? activity.detailCode + " — " : ""}${activity.title}`
+          : `${activity.sectionCode ? activity.sectionCode + " — " : ""}${activity.title}`;
 
         const material = materialByActivityId.get(activity.id) ?? null;
         const groupName = allGroups.find((g: any) => g.id === activity.responsibleGroupId)?.name || null;
@@ -658,18 +663,20 @@ export const activitiesRouter = router({
               id: `executor_minuta_${activity.id}`,
               activityId: activity.id,
               materialId: material?.id ?? null,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
+              sectionCode: displayCode,
+              activityTitle: displayTitle,
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "minuta_pendente",
               actionTitle: material
-                ? "Submeter Minuta para Revisão"
-                : "Minuta Técnica Inicial a Elaborar / Subir",
+                ? (isChildSession ? "Submeter Minuta da Sessão para Revisão" : "Submeter Minuta do Capítulo para Revisão")
+                : (isChildSession ? `Minuta da Sessão ${displayCode} a Elaborar / Subir` : `Minuta do Capítulo ${displayCode} a Elaborar / Subir`),
               actionDescription: material
-                ? "A minuta inicial já foi carregada no sistema. Submeta-a para a Coordenação Geral e início da revisão técnica independente."
-                : "Esta atividade está em fase de elaboração. Realize a redação da minuta inicial (R01) e faça o upload no sistema para a Coordenação Geral.",
-              ctaLabel: material ? "Submeter Minuta" : "Subir Minuta Inicial (R01)",
+                ? `A minuta já foi carregada no sistema. Submeta-a para a Coordenação Geral e início da revisão técnica independente.`
+                : isChildSession
+                ? `Sessão "${activity.title}" do capítulo ${activity.sectionCode}. Realize a redação da minuta da sessão (R01) e faça o upload no sistema para a Coordenação Geral.`
+                : `Capítulo "${activity.title}". Realize a redação da minuta inicial (R01) e faça o upload no sistema para a Coordenação Geral.`,
+              ctaLabel: material ? "Submeter Minuta" : (isChildSession ? "Subir Minuta da Sessão (R01)" : "Subir Minuta do Capítulo (R01)"),
               ctaTarget: material ? "revisao" : "drawer",
               responsibleName,
               responsibleGroupName: groupName,
@@ -695,14 +702,16 @@ export const activitiesRouter = router({
               id: `coord_sem_revisores_${activity.id}`,
               activityId: activity.id,
               materialId: material?.id ?? null,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
+              sectionCode: displayCode,
+              activityTitle: displayTitle,
               dueAt: activity.dueAt,
               role: "coordenador",
               actionType: "sem_revisores",
-              actionTitle: "Indicar Revisor Técnico Independente (Prof. Floriano)",
+              actionTitle: isChildSession
+                ? `Indicar Revisor da Sessão ${displayCode} (Prof. Floriano)`
+                : `Indicar Revisor do Capítulo ${displayCode} (Prof. Floriano)`,
               actionDescription:
-                "Uma nova minuta inicial foi submetida pelo autor. O Prof. Floriano deve indicar o revisor técnico independente para que a revisão técnica possa ser iniciada.",
+                `Uma nova minuta (${displayCode}) foi submetida pelo autor. O Prof. Floriano deve indicar o revisor técnico independente para que a revisão técnica possa ser iniciada.`,
               ctaLabel: "Indicar Revisor",
               ctaTarget: "drawer",
               responsibleName,
@@ -726,12 +735,14 @@ export const activitiesRouter = router({
                 id: `revisor_validacao_${activity.id}`,
                 activityId: activity.id,
                 materialId: material.id,
-                sectionCode: activity.sectionCode,
-                activityTitle: activity.title,
+                sectionCode: displayCode,
+                activityTitle: displayTitle,
                 dueAt: activity.dueAt,
                 role: "revisor",
                 actionType: "validacao_ajustes",
-                actionTitle: "Validar Apontamentos & Aprovação Técnica",
+                actionTitle: isChildSession
+                  ? `Validar Apontamentos da Sessão ${displayCode}`
+                  : `Validar Apontamentos & Aprovação do Capítulo ${displayCode}`,
                 actionDescription: `O autor implementou ${material.implementedCommentCount} apontamento(s). Valide as respostas para emitir a aprovação técnica.`,
                 ctaLabel: "Validar & Aprovar",
                 ctaTarget: "revisao",
@@ -747,14 +758,16 @@ export const activitiesRouter = router({
                 id: `revisor_analise_${activity.id}`,
                 activityId: activity.id,
                 materialId: material?.id ?? null,
-                sectionCode: activity.sectionCode,
-                activityTitle: activity.title,
+                sectionCode: displayCode,
+                activityTitle: displayTitle,
                 dueAt: activity.dueAt,
                 role: "revisor",
                 actionType: "revisao_pendente",
-                actionTitle: "Análise Técnica & Registro de Apontamentos",
+                actionTitle: isChildSession
+                  ? `Análise Técnica da Sessão ${displayCode}`
+                  : `Análise Técnica do Capítulo ${displayCode} & Registro de Apontamentos`,
                 actionDescription:
-                  "Uma nova minuta foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.",
+                  `A minuta de ${displayCode} foi submetida e aguarda sua análise técnica, apontamentos ou parecer de aprovação.`,
                 ctaLabel: "Realizar Análise Técnica",
                 ctaTarget: "revisao",
                 responsibleName,
@@ -782,15 +795,17 @@ export const activitiesRouter = router({
               id: `executor_ajustes_${activity.id}`,
               activityId: activity.id,
               materialId: material?.id ?? null,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
+              sectionCode: displayCode,
+              activityTitle: displayTitle,
               dueAt: activity.dueAt,
               role: "executor",
               actionType: "ajustes_a_fazer",
-              actionTitle: "Revisar Documento / Atender Apontamentos da Revisão",
+              actionTitle: isChildSession
+                ? `Revisar Sessão ${displayCode} / Atender Apontamentos`
+                : `Revisar Capítulo ${displayCode} / Atender Apontamentos`,
               actionDescription: openComments > 0
-                ? `O revisor técnico devolveu a minuta com ${openComments} apontamento(s) e arquivo de revisão. Analise as notas e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`
-                : `O revisor técnico solicitou ajustes na minuta. Verifique os comentários e arquivo anexado pelo revisor e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`,
+                ? `O revisor técnico devolveu a minuta de ${displayCode} com ${openComments} apontamento(s) e arquivo de revisão. Analise as notas e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`
+                : `O revisor técnico solicitou ajustes na minuta de ${displayCode}. Verifique os comentários e arquivo anexado pelo revisor e envie a nova versão revisada (R0${(material?.currentRevision ?? 1) + 1}).`,
               ctaLabel: "Revisar Documento / Atender Ajustes",
               ctaTarget: "drawer",
               pendingCommentCount: openComments,
@@ -812,14 +827,16 @@ export const activitiesRouter = router({
               id: `coord_homologar_${activity.id}`,
               activityId: activity.id,
               materialId: material?.id ?? null,
-              sectionCode: activity.sectionCode,
-              activityTitle: activity.title,
+              sectionCode: displayCode,
+              activityTitle: displayTitle,
               dueAt: activity.dueAt,
               role: "coordenador",
               actionType: "homologar_capitulo",
-              actionTitle: "Homologar Capítulo no Tomo Oficial",
+              actionTitle: isChildSession
+                ? `Homologar Sessão ${displayCode} no Capítulo`
+                : `Homologar Capítulo ${displayCode} no Tomo Oficial`,
               actionDescription:
-                "A minuta foi aprovada na revisão técnica e está pronta para a homologação final pela Coordenação Geral.",
+                `A minuta (${displayCode}) foi aprovada na revisão técnica e está pronta para a homologação final pela Coordenação Geral.`,
               ctaLabel: "Homologar no Capítulo",
               ctaTarget: "revisao",
               responsibleName,
