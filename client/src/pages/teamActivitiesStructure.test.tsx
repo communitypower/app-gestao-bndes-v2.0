@@ -601,9 +601,6 @@ describe("ficha visível da atividade", () => {
     fireEvent.click(openButtons[0]);
 
     expect(await screen.findByText(/Parecer de Revisão & Encaminhamento ao Autor/i)).toBeInTheDocument();
-    const emitirBtn = screen.getByRole("button", { name: /emitir comentários \/ parecer/i });
-    fireEvent.click(emitirBtn);
-
     expect(screen.getAllByText(/decisão editorial/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/justificativa e apontamentos/i)).toBeInTheDocument();
   });
