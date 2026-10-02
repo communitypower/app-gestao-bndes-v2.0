@@ -877,7 +877,7 @@ export function ActivityDetailDialog({
                           onClick={() => handleDownloadRevision(currentMaterial.revisions[0].id)}
                           className="h-9 px-4 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shrink-0 cursor-pointer shadow-xs"
                         >
-                          <Download className="h-4 w-4" /> Baixar Minuta para Revisão
+                          <Download className="h-4 w-4" /> Baixar Minuta
                         </Button>
                       </div>
                     )}
@@ -1199,12 +1199,12 @@ export function ActivityDetailDialog({
                   </div>
                 )}
 
-                {/* Histórico de Versões e Arquivos (apenas versões anteriores se houver mais de 1) */}
+                {/* Histórico de Versões Anteriores (apenas versões anteriores se houver mais de 1) */}
                 {currentMaterial && currentMaterial.revisions?.length > 1 && (
                   <div className="space-y-3 pt-2">
                     <div className="flex items-center justify-between">
                       <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
-                        <History className="h-4 w-4 text-primary" /> Histórico de Versões Submetidas ({currentMaterial.revisions.length})
+                        <History className="h-4 w-4 text-primary" /> Histórico de Versões Anteriores ({currentMaterial.revisions.length - 1})
                       </h4>
                     </div>
 
@@ -1217,7 +1217,7 @@ export function ActivityDetailDialog({
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
                               <Badge variant="secondary" className="font-mono text-xs font-semibold shrink-0">
-                                Versão {rev.revisionNumber}
+                                Versão R0{rev.revisionNumber}
                               </Badge>
                               <span className="font-medium text-foreground break-words break-all">
                                 {rev.fileName || `Minuta_R0${rev.revisionNumber}`}
@@ -1241,7 +1241,7 @@ export function ActivityDetailDialog({
                             onClick={() => handleDownloadRevision(rev.id)}
                             className="h-8 gap-1.5 text-xs shrink-0 cursor-pointer self-start sm:self-center"
                           >
-                            <Download className="h-3.5 w-3.5" /> Baixar
+                            <Download className="h-3.5 w-3.5" /> Baixar Versão Anterior
                           </Button>
                         </div>
                       ))}
