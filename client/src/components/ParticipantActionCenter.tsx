@@ -563,7 +563,11 @@ export function ParticipantActionCenter({
 
           {/* Conteúdo textual do card */}
           <div className="space-y-1.5">
-            <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug break-words">
+            <h4
+              onClick={() => onSelectActivity(action.activityId)}
+              className="text-xs font-semibold text-foreground hover:text-primary hover:underline cursor-pointer transition-colors leading-snug break-words"
+              title="Clique para abrir a ficha completa da atividade com descrição e escopo"
+            >
               {action.activityTitle}
             </h4>
 

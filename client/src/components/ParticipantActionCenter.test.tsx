@@ -254,4 +254,38 @@ describe("ParticipantActionCenter - Direct Display, Filtering and 6-Step Workflo
     expect(handleSelect).toHaveBeenCalledWith(30);
     expect(handleSelect).not.toHaveBeenCalledWith(30, "upload_minuta");
   });
+
+  it("chama onSelectActivity sem initialAction ao clicar no título da atividade para abrir a ficha completa", () => {
+    currentMockActions = [
+      {
+        id: "act-6",
+        activityId: 35,
+        materialId: null,
+        sectionCode: "II.1.1",
+        activityTitle: "II.1.1 — Panorama Internacional de Construção Naval",
+        dueAt: Date.UTC(2026, 8, 25),
+        role: "executor" as const,
+        actionType: "minuta_pendente",
+        actionTitle: "Minuta da Sessão II.1.1 a Elaborar / Subir",
+        actionDescription: "Sessão analítica em elaboração.",
+        ctaLabel: "Subir Minuta da Sessão (R01)",
+        ctaTarget: "drawer",
+        pendingCommentCount: 0,
+      },
+    ];
+    currentMockSummary = {
+      total: 1,
+      executorCount: 1,
+      reviewerCount: 0,
+      coordinatorCount: 0,
+    };
+    const handleSelect = vi.fn();
+    render(<ParticipantActionCenter onSelectActivity={handleSelect} />);
+
+    const titleElement = screen.getByText("II.1.1 — Panorama Internacional de Construção Naval");
+    fireEvent.click(titleElement);
+
+    // Clicar no título abre a ficha de atividade completa sem acionar o Explorer
+    expect(handleSelect).toHaveBeenCalledWith(35);
+  });
 });

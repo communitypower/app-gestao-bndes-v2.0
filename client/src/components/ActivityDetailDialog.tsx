@@ -650,7 +650,15 @@ export function ActivityDetailDialog({
                                 </span>
                                 <StatusBadge status={step.documentStatus || step.status} />
                               </div>
-                              <h5 className="font-semibold text-xs text-foreground line-clamp-2">
+                              <h5
+                                onClick={() => {
+                                  setCurrentActivityId(step.id);
+                                  setIsUploadingMinuta(false);
+                                  setUploadFile(null);
+                                }}
+                                className="font-semibold text-xs text-foreground hover:text-primary hover:underline cursor-pointer transition-colors line-clamp-2"
+                                title="Clique para abrir a ficha completa desta sessão com descrição e escopo"
+                              >
                                 {step.title}
                               </h5>
                               {stepMaterial ? (
@@ -671,8 +679,13 @@ export function ActivityDetailDialog({
                               variant="outline"
                               onClick={() => {
                                 setCurrentActivityId(step.id);
-                                setIsUploadingMinuta(false);
-                                setUploadFile(null);
+                                if (!stepMaterial) {
+                                  setIsUploadingMinuta(true);
+                                  setTimeout(() => initialFileInputRef.current?.click(), 250);
+                                } else {
+                                  setIsUploadingMinuta(false);
+                                  setUploadFile(null);
+                                }
                               }}
                               className="h-7 text-xs font-semibold gap-1.5 justify-center w-full cursor-pointer hover:bg-primary hover:text-primary-foreground mt-1"
                             >
