@@ -219,6 +219,18 @@ export const ACTIVE_TEAM_MEMBER_NAMES = TEAM_GROUP_SEED.flatMap(group => [
 ]);
 
 export function teamGroupForMember(memberName: string) {
+  if (memberName === "Carlos Frederico Leão Rocha" || memberName === "Marcelo Colomer Ferraro") {
+    return TEAM_GROUP_SEED.find(g => g.name.startsWith("G2"));
+  }
+  if (memberName === "Cassiano Marins de Souza") {
+    return TEAM_GROUP_SEED.find(g => g.name.startsWith("G10"));
+  }
+  if (memberName === "Marcos Bernardes Cozzolino do Nascimento") {
+    return TEAM_GROUP_SEED.find(g => g.name.startsWith("G5"));
+  }
+  if (memberName === "Luiz Felipe Assis") {
+    return TEAM_GROUP_SEED.find(g => g.name.startsWith("G4"));
+  }
   return (
     TEAM_GROUP_SEED.find(group => group.coordinatorName === memberName) ||
     TEAM_GROUP_SEED.find(group =>

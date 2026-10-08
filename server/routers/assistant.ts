@@ -518,10 +518,14 @@ function generateDeterministicAnswer(ctx: DeterministicContext): string {
     const m = memberSearch;
     const group = teamGroupForMember(m.name);
     const seedGroup = TEAM_GROUP_SEED.find(g => g.coordinatorName === m.name);
-    const isCoordinator = Boolean(seedGroup) || m.appRole === "coordenador";
-    const coordinatedChapters = Object.entries(CHAPTER_RESPONSIBLE_MAP)
-      .filter(([_, respName]) => respName === m.name)
-      .map(([code]) => code);
+    const isCoordinator = Boolean(seedGroup) || m.appRole === "coordenador" || m.name === "Marcelo Colomer Ferraro";
+    const coordinatedChapters = (m.name === "Marcelo Colomer Ferraro")
+      ? Object.entries(CHAPTER_RESPONSIBLE_MAP)
+          .filter(([_, respName]) => respName === "Carlos Frederico Leão Rocha")
+          .map(([code]) => code)
+      : Object.entries(CHAPTER_RESPONSIBLE_MAP)
+          .filter(([_, respName]) => respName === m.name)
+          .map(([code]) => code);
 
     let answer = `### 👤 Integrante: ${m.name}\n\n`;
     answer += `**Cargo / Título:** ${m.title || "Pesquisador"} | **Instituição:** ${m.institution || "UFRJ"}\n`;
@@ -533,6 +537,10 @@ function generateDeterministicAnswer(ctx: DeterministicContext): string {
       answer += `**Função Institucional:** Coordenador Geral do Projeto (UFRJ · FEP/BNDES) | Administrador do Sistema\n`;
     } else if (m.name === "Cassiano Marins de Souza") {
       answer += `**Função Institucional:** Coordenador do Grupo G10 (Construção Naval Mundial e Análise Econômica), Membro do G1 (Sistematização), Substituto Editorial da Coordenação do Projeto | Administrador do Sistema\n`;
+    } else if (m.name === "Carlos Frederico Leão Rocha") {
+      answer += `**Função Institucional:** Coordenador do Grupo G2 (Política Industrial e Cadeia de Suprimentos) e Membro do G1 (Sistematização) (IE-UFRJ)\n`;
+    } else if (m.name === "Marcelo Colomer Ferraro") {
+      answer += `**Função Institucional:** Coordenador do Grupo G2 (Política Industrial e Cadeia de Suprimentos) e Membro do G1 (Sistematização) (IE-UFRJ) | Coordenação conjunta com o Prof. Carlos Frederico Leão Rocha\n`;
     } else if (m.name === "Denise Cunha") {
       answer += `**Função Institucional:** Administradora Executiva do Projeto (UFRJ) | Administradora do Sistema\n`;
     } else if (m.name === "Luiz Felipe Assis") {

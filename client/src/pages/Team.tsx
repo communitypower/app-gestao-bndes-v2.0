@@ -503,7 +503,37 @@ function TeamContent() {
                   Coord. G2 (Política Industrial) · Membro G1
                 </p>
                 <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
-                  <Mail className="h-3 w-3 shrink-0" /> carlos.rocha@ie.ufrj.br
+                  <Mail className="h-3 w-3 shrink-0" /> fred@ie.ufrj.br
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Marcelo Colomer Ferraro - Coordenação Técnica */}
+          <div className="space-y-2.5 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start gap-3">
+              <Avatar className="h-10 w-10 border border-amber-200">
+                <AvatarFallback className="bg-amber-100 text-xs font-semibold text-amber-800">
+                  MF
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-semibold leading-5">
+                  Prof. Marcelo Colomer Ferraro
+                </h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" className="h-4 border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-medium text-amber-700">
+                    Coordenação Técnica
+                  </Badge>
+                </div>
+                <p className="mt-1.5 text-xs font-medium text-foreground">
+                  Coordenador do Grupo G2 e Membro do G1 (IE-UFRJ)
+                </p>
+                <p className="mt-0.5 text-[11px] text-muted-foreground">
+                  Coord. G2 (Política Industrial) · Membro G1
+                </p>
+                <p className="mt-2 flex items-center gap-1.5 truncate text-[11px] text-primary">
+                  <Mail className="h-3 w-3 shrink-0" /> marcelo.colomer@gmail.com
                 </p>
               </div>
             </div>

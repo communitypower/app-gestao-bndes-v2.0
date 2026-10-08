@@ -929,7 +929,12 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
   for (const memberSeed of TEAM_SEED) {
     const seedGroup = teamGroupForMember(memberSeed.name);
     const group = seedGroup ? seededGroupByName.get(seedGroup.name) : null;
-    const targetRole = seedGroup?.coordinatorName === memberSeed.name ? ("coordenador" as const) : ("participante" as const);
+    const targetRole =
+      seedGroup?.coordinatorName === memberSeed.name ||
+      memberSeed.name === "Marcelo Colomer Ferraro" ||
+      memberSeed.name === "Denise Cunha"
+        ? ("coordenador" as const)
+        : ("participante" as const);
     const targetActive = Boolean(seedGroup) || memberSeed.name === "Denise Cunha" || memberSeed.name === "Marcos Pedreira da Silva";
     const linkedUserId = userMapByEmail.get(memberSeed.email.trim().toLowerCase())?.id ?? userMapByName.get(memberSeed.name.trim().toLowerCase())?.id ?? null;
 
