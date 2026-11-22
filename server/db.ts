@@ -77,6 +77,8 @@ import { ENV } from './_core/env';
 import { normalizeProvisionEmail } from "./accessProvisioning";
 import { normalizeLibraryFilters, type LibraryFilters } from "./libraryFilters";
 import { initLocalDatabase } from "./localDb";
+import { applyChapterRestructurings } from "./chapterRestructuring";
+import { CHAPTER_RESTRUCTURINGS } from "../shared/chapterRestructurings";
 import * as schema from "../drizzle/schema";
 import { type NodePgDatabase } from "drizzle-orm/node-postgres";
 
@@ -579,6 +581,16 @@ export async function syncStudySectionCatalog(
 export async function syncPdfAnalyticCatalog(
   db: Awaited<ReturnType<typeof requireDb>>
 ) {
+  // Remaneja as linhas existentes antes de aplicar a numeração nova do catálogo.
+  // Se uma reestruturação não puder ser aplicada, os itens do capítulo ficam como estão,
+  // para que títulos novos não sejam gravados sobre o conteúdo antigo.
+  const restructuringOutcomes = await applyChapterRestructurings(db);
+  const blockedChapters = new Set(
+    restructuringOutcomes
+      .filter(outcome => outcome.status === "skipped")
+      .map(outcome => CHAPTER_RESTRUCTURINGS.find(plan => plan.key === outcome.key)?.chapter)
+      .filter((chapter): chapter is string => Boolean(chapter))
+  );
   const [sections, initialActivities, activeMembers] = await Promise.all([
     db.select().from(studySections),
     db.select().from(activities),
@@ -668,6 +680,7 @@ export async function syncPdfAnalyticCatalog(
       .map(activity => [activity.detailCode!, activity])
   );
   for (const item of PDF_ANALYTIC_ITEMS) {
+    if (blockedChapters.has(item.sectionCode)) continue;
     const section = sectionByCode.get(item.sectionCode);
     if (!section) throw new Error(`Seção do item ${item.detailCode} não encontrada.`);
     const parent = canonicalParents.get(section.id);

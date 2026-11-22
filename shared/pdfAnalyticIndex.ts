@@ -1370,25 +1370,25 @@ export const PDF_ANALYTIC_ITEMS = [
     "sectionCode": "III.4",
     "detailCode": "III.4.1",
     "detailSortOrder": 1,
-    "title": "Políticas marítimas no Brasil: marinha mercante, construção naval, navegação interior, óleo e gás offshore, energias oceânicas e defesa"
+    "title": "Políticas marítimas no Brasil: marinha mercante, navegação interior e construção naval"
   },
   {
     "sectionCode": "III.4",
     "detailCode": "III.4.2",
     "detailSortOrder": 2,
-    "title": "Evolução das políticas brasileiras de marinha mercante"
+    "title": "Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos"
   },
   {
     "sectionCode": "III.4",
     "detailCode": "III.4.3",
     "detailSortOrder": 3,
-    "title": "Evolução das políticas brasileiras de construção naval"
+    "title": "Clusters navais e políticas de desenvolvimento regional"
   },
   {
     "sectionCode": "III.4",
     "detailCode": "III.4.4",
     "detailSortOrder": 4,
-    "title": "Os Planos de Desenvolvimento e os Planos de Construção Naval: ciclos de 1970–1980 e 2000–2010"
+    "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval"
   },
   {
     "sectionCode": "III.4",
@@ -1412,30 +1412,12 @@ export const PDF_ANALYTIC_ITEMS = [
     "sectionCode": "III.4",
     "detailCode": "III.4.8",
     "detailSortOrder": 8,
-    "title": "Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos"
+    "title": "Resultados das políticas brasileiras de marinha mercante e construção naval"
   },
   {
     "sectionCode": "III.4",
     "detailCode": "III.4.9",
     "detailSortOrder": 9,
-    "title": "Clusters navais e políticas de desenvolvimento regional"
-  },
-  {
-    "sectionCode": "III.4",
-    "detailCode": "III.4.10",
-    "detailSortOrder": 10,
-    "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval"
-  },
-  {
-    "sectionCode": "III.4",
-    "detailCode": "III.4.11",
-    "detailSortOrder": 11,
-    "title": "Resultados das políticas brasileiras de marinha mercante e construção naval"
-  },
-  {
-    "sectionCode": "III.4",
-    "detailCode": "III.4.12",
-    "detailSortOrder": 12,
     "title": "Mudanças recentes e principais questões em debate no Brasil"
   },
   {
