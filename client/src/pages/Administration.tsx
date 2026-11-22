@@ -280,7 +280,7 @@ function AdministrationContent() {
               Pacote P1 de Implementação — Limpeza e Ativação
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Executa a limpeza de minutas, revisões e fluxos de teste, preservando 100% da base canônica oficial (30 capítulos, 280 etapas, 11 grupos temáticos, 67 interfaces e 328 itens da biblioteca).
+              Executa a limpeza de minutas, revisões e fluxos de teste, preservando 100% da base canônica oficial (30 capítulos, 277 etapas, 11 grupos temáticos, 67 interfaces e 328 itens da biblioteca).
             </p>
           </div>
           <Button
@@ -677,7 +677,7 @@ function AdministrationContent() {
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-3.5">
                 <p className="font-semibold text-primary">O que será restaurado e mantido (100% Canônico):</p>
                 <ul className="mt-1 list-disc pl-4 space-y-0.5 text-muted-foreground">
-                  <li>30 Capítulos e 280 Etapas com descrições oficiais do Anexo B e cronograma;</li>
+                  <li>30 Capítulos e 277 Etapas com descrições oficiais do Anexo B e cronograma;</li>
                   <li>11 Grupos Temáticos e atribuições de coordenadores;</li>
                   <li>Todos os participantes e pré-cadastros de acesso;</li>
                   <li>67 Interfaces interdisciplinares identificadas;</li>

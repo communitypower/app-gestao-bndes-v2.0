@@ -26,9 +26,9 @@ describe("estrutura canônica do estudo", () => {
     expect(studyTomeFromCode("IV.3")).toBe("Tomo IV");
   });
 
-  it("mantém 250 seções de trabalho e descrições derivadas da mesma fonte canônica", () => {
+  it("mantém 247 seções de trabalho e descrições derivadas da mesma fonte canônica", () => {
     expect(PDF_ANALYTIC_SOURCE).toBe("Plano_de_Trabalho-UFRJ_26_agosto.pdf");
-    expect(PDF_ANALYTIC_ITEMS).toHaveLength(250);
+    expect(PDF_ANALYTIC_ITEMS).toHaveLength(247);
     expect(Object.keys(STUDY_SECTION_DESCRIPTIONS)).toEqual(STUDY_SECTION_CODES);
     for (const section of STUDY_SECTIONS) {
       expect(studySectionDescription(section.code)).toBe(section.officialDescription);

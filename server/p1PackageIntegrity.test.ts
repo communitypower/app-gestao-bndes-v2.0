@@ -78,7 +78,7 @@ describe("Pacote P1 de Implementação — Integridade Estrutural & Limpeza", ()
     // 3. Validações da Base Canônica Preservada (100%)
     expect(result.stats.sections).toBe(30);
     expect(result.stats.parentChapters).toBe(30);
-    expect(result.stats.totalActivities).toBe(280);
+    expect(result.stats.totalActivities).toBe(277);
     expect(result.stats.groups).toBe(11);
     expect(result.stats.members).toBeGreaterThanOrEqual(33);
     expect(result.stats.memberships).toBeGreaterThanOrEqual(36);
@@ -122,8 +122,8 @@ describe("Pacote P1 de Implementação — Integridade Estrutural & Limpeza", ()
     expect(Number(notificationsInDb[0]?.count ?? 0)).toBe(0);
     expect(Number(openWorkflowActivities[0]?.count ?? 0)).toBe(0);
 
-    // Todas as 280 atividades canônicas devem estar limpas com status planejado/pendente
-    expect(allCanonicalActivities.length).toBe(280);
+    // Todas as 277 atividades canônicas devem estar limpas com status planejado/pendente
+    expect(allCanonicalActivities.length).toBe(277);
     for (const act of allCanonicalActivities) {
       expect(act.documentStatus).toBe("planejada");
       expect(act.status).toBe("pendente");
