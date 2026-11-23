@@ -364,26 +364,9 @@ export async function getDb(): Promise<DbClient | null> {
           console.warn("[Database] Seed data notice:", seedErr?.message || seedErr);
         }
 
-        // Auto-enforce P1 clean package state on startup
-        try {
-          const [matCheck, subCheck, nonPlanCheck] = await Promise.all([
-            client.select({ count: sql<number>`count(*)` }).from(productionMaterials),
-            client.select({ count: sql<number>`count(*)` }).from(reviewSubmissions),
-            client.select({ count: sql<number>`count(*)` }).from(activities).where(sql`"documentStatus" != 'planejada' OR "status" != 'pendente'`),
-          ]);
-          const dirtyCount =
-            Number(matCheck[0]?.count ?? 0) +
-            Number(subCheck[0]?.count ?? 0) +
-            Number(nonPlanCheck[0]?.count ?? 0);
-
-          if (dirtyCount > 0) {
-            console.log(`[P1 Clean Package] Detected ${dirtyCount} legacy test entries in database. Auto-executing clean reset to activate P1 Package...`);
-            await resetAndSeedPilotDatabase(client);
-            console.log("[P1 Clean Package] Database successfully cleaned and initialized to 100% canonical P1 package!");
-          }
-        } catch (p1Err: any) {
-          console.warn("[P1 Clean Package] Startup check notice:", p1Err?.message || p1Err);
-        }
+        // A limpeza automática do Pacote P1 na inicialização foi removida em 23/11/2026:
+        // ela apagava minutas, revisões e submissões reais a cada reinício do servidor.
+        // A limpeza agora só ocorre por ação explícita do administrador.
 
         return _db;
       } catch (error) {
