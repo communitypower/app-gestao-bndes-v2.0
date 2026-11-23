@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { parse as parseCookie } from "cookie";
@@ -529,7 +530,16 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
 
   resetPilotEnvironment: protectedProcedure.mutation(async ({ ctx }) => {
     assertAdministrator(ctx.user);
-    const result = await resetAndSeedPilotDatabase();
-    return result;
+    // Bloqueio de segurança (23/11/2026): o estudo está em produção com documentos reais.
+    // A limpeza apagaria minutas, revisões e submissões; só pode ser reativada no código.
+    const resetEnabled = false as boolean;
+    if (!resetEnabled) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message:
+          "A limpeza do ambiente está desativada porque o portal contém documentos reais do estudo.",
+      });
+    }
+    return resetAndSeedPilotDatabase();
   }),
 });
