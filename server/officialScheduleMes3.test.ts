@@ -11,10 +11,10 @@ import { activities } from "../drizzle/schema";
 import { eq, and, isNull } from "drizzle-orm";
 
 describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
-  it("contém todos os 250 itens canônicos de seção com códigos únicos e limites mensais válidos (M1 a M7)", () => {
-    expect(OFFICIAL_SCHEDULE_MES3_SECTIONS).toHaveLength(250);
+  it("contém todos os 247 itens canônicos de seção com códigos únicos e limites mensais válidos (M1 a M7)", () => {
+    expect(OFFICIAL_SCHEDULE_MES3_SECTIONS).toHaveLength(247);
     const codes = new Set(OFFICIAL_SCHEDULE_MES3_SECTIONS.map(s => s.detailCode));
-    expect(codes.size).toBe(250);
+    expect(codes.size).toBe(247);
 
     for (const section of OFFICIAL_SCHEDULE_MES3_SECTIONS) {
       expect(section.startMonth).toBeGreaterThanOrEqual(1);
@@ -40,7 +40,7 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
     }
   });
 
-  it("fornece correspondência exata para todos os 250 itens canônicos do PDF", () => {
+  it("fornece correspondência exata para todos os 247 itens canônicos do PDF", () => {
     for (const item of PDF_ANALYTIC_ITEMS) {
       const sched = getScheduleForDetailCode(item.detailCode);
       expect(sched).toBeDefined();
@@ -93,7 +93,7 @@ describe("Cronograma Oficial Mês 3 (Cronograma-Mes-3.xlsm)", () => {
       .from(activities)
       .where(and(eq(activities.structureStatus, "canonica"), isNull(activities.planCode)));
 
-    expect(dbSections).toHaveLength(250);
+    expect(dbSections).toHaveLength(247);
 
     // Verificar se todos os itens têm startAt e dueAt preenchidos
     for (const section of dbSections) {

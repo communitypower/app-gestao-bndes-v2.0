@@ -5,9 +5,9 @@ import { PDF_ANALYTIC_ITEMS, PDF_ANALYTIC_SECTIONS, PDF_ANALYTIC_SOURCE } from "
 import { requireDb } from "./db";
 
 describe("catálogo exclusivo do índice analítico do PDF", () => {
-  it("mantém 30 capítulos e 250 seções de trabalho após mover as dimensões de análise para os Capítulos II.2, II.4 e III.3", () => {
+  it("mantém 30 capítulos e 247 seções de trabalho após mover as dimensões de análise para os Capítulos II.2, II.4 e III.3", () => {
     expect(PDF_ANALYTIC_SECTIONS).toHaveLength(30);
-    expect(PDF_ANALYTIC_ITEMS).toHaveLength(250);
+    expect(PDF_ANALYTIC_ITEMS).toHaveLength(247);
     expect(PDF_ANALYTIC_SOURCE).toBe("Plano_de_Trabalho-UFRJ_26_agosto.pdf");
   });
 
@@ -45,6 +45,6 @@ describe("catálogo exclusivo do índice analítico do PDF", () => {
     const activeParents = await db.select({ id: activities.id }).from(activities).where(and(eq(activities.structureStatus, "canonica"), isNull(activities.parentActivityId)));
     const activeItems = await db.select({ id: activities.id }).from(activities).where(and(eq(activities.structureStatus, "canonica"), isNull(activities.planCode)));
     expect(activeParents).toHaveLength(30);
-    expect(activeItems).toHaveLength(250);
+    expect(activeItems).toHaveLength(247);
   });
 });

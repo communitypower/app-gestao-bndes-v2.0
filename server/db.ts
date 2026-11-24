@@ -77,6 +77,8 @@ import { ENV } from './_core/env';
 import { normalizeProvisionEmail } from "./accessProvisioning";
 import { normalizeLibraryFilters, type LibraryFilters } from "./libraryFilters";
 import { initLocalDatabase } from "./localDb";
+import { applyChapterRestructurings } from "./chapterRestructuring";
+import { CHAPTER_RESTRUCTURINGS } from "../shared/chapterRestructurings";
 import * as schema from "../drizzle/schema";
 import { type NodePgDatabase } from "drizzle-orm/node-postgres";
 
@@ -364,26 +366,9 @@ export async function getDb(): Promise<DbClient | null> {
           console.warn("[Database] Seed data notice:", seedErr?.message || seedErr);
         }
 
-        // Auto-enforce P1 clean package state on startup
-        try {
-          const [matCheck, subCheck, nonPlanCheck] = await Promise.all([
-            client.select({ count: sql<number>`count(*)` }).from(productionMaterials),
-            client.select({ count: sql<number>`count(*)` }).from(reviewSubmissions),
-            client.select({ count: sql<number>`count(*)` }).from(activities).where(sql`"documentStatus" != 'planejada' OR "status" != 'pendente'`),
-          ]);
-          const dirtyCount =
-            Number(matCheck[0]?.count ?? 0) +
-            Number(subCheck[0]?.count ?? 0) +
-            Number(nonPlanCheck[0]?.count ?? 0);
-
-          if (dirtyCount > 0) {
-            console.log(`[P1 Clean Package] Detected ${dirtyCount} legacy test entries in database. Auto-executing clean reset to activate P1 Package...`);
-            await resetAndSeedPilotDatabase(client);
-            console.log("[P1 Clean Package] Database successfully cleaned and initialized to 100% canonical P1 package!");
-          }
-        } catch (p1Err: any) {
-          console.warn("[P1 Clean Package] Startup check notice:", p1Err?.message || p1Err);
-        }
+        // A limpeza automática do Pacote P1 na inicialização foi removida em 23/11/2026:
+        // ela apagava minutas, revisões e submissões reais a cada reinício do servidor.
+        // A limpeza agora só ocorre por ação explícita do administrador.
 
         return _db;
       } catch (error) {
@@ -579,6 +564,16 @@ export async function syncStudySectionCatalog(
 export async function syncPdfAnalyticCatalog(
   db: Awaited<ReturnType<typeof requireDb>>
 ) {
+  // Remaneja as linhas existentes antes de aplicar a numeração nova do catálogo.
+  // Se uma reestruturação não puder ser aplicada, os itens do capítulo ficam como estão,
+  // para que títulos novos não sejam gravados sobre o conteúdo antigo.
+  const restructuringOutcomes = await applyChapterRestructurings(db);
+  const blockedChapters = new Set(
+    restructuringOutcomes
+      .filter(outcome => outcome.status === "skipped")
+      .map(outcome => CHAPTER_RESTRUCTURINGS.find(plan => plan.key === outcome.key)?.chapter)
+      .filter((chapter): chapter is string => Boolean(chapter))
+  );
   const [sections, initialActivities, activeMembers] = await Promise.all([
     db.select().from(studySections),
     db.select().from(activities),
@@ -668,6 +663,7 @@ export async function syncPdfAnalyticCatalog(
       .map(activity => [activity.detailCode!, activity])
   );
   for (const item of PDF_ANALYTIC_ITEMS) {
+    if (blockedChapters.has(item.sectionCode)) continue;
     const section = sectionByCode.get(item.sectionCode);
     if (!section) throw new Error(`Seção do item ${item.detailCode} não encontrada.`);
     const parent = canonicalParents.get(section.id);

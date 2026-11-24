@@ -3285,7 +3285,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
   },
   {
     "detailCode": "III.4.1",
-    "title": "Políticas marítimas no Brasil: marinha mercante, construção naval, navegação interior, óleo e gás offshore, energias oceânicas e defesa",
+    "title": "Políticas marítimas no Brasil: marinha mercante, navegação interior e construção naval",
     "tome": "Tomo III",
     "chapter": "III.4",
     "startMonth": 1,
@@ -3302,54 +3302,57 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
   },
   {
     "detailCode": "III.4.2",
-    "title": "Evolução das políticas brasileiras de marinha mercante",
+    "title": "Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos",
     "tome": "Tomo III",
     "chapter": "III.4",
     "startMonth": 1,
-    "endMonth": 3,
+    "endMonth": 4,
     "activeMonths": [
       1,
       2,
-      3
+      3,
+      4
     ],
     "startDate": "2026-08-20",
-    "dueDate": "2026-11-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787184000000,
-    "dueAt": 1795219199000
+    "dueAt": 1797811199000
   },
   {
     "detailCode": "III.4.3",
-    "title": "Evolução das políticas brasileiras de construção naval",
+    "title": "Clusters navais e políticas de desenvolvimento regional",
     "tome": "Tomo III",
     "chapter": "III.4",
     "startMonth": 1,
-    "endMonth": 3,
+    "endMonth": 4,
     "activeMonths": [
       1,
       2,
-      3
+      3,
+      4
     ],
     "startDate": "2026-08-20",
-    "dueDate": "2026-11-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787184000000,
-    "dueAt": 1795219199000
+    "dueAt": 1797811199000
   },
   {
     "detailCode": "III.4.4",
-    "title": "Os Planos de Desenvolvimento e os Planos de Construção Naval: ciclos de 1970–1980 e 2000–2010",
+    "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval",
     "tome": "Tomo III",
     "chapter": "III.4",
     "startMonth": 1,
-    "endMonth": 3,
+    "endMonth": 4,
     "activeMonths": [
       1,
       2,
-      3
+      3,
+      4
     ],
     "startDate": "2026-08-20",
-    "dueDate": "2026-11-20",
+    "dueDate": "2026-12-20",
     "startAt": 1787184000000,
-    "dueAt": 1795219199000
+    "dueAt": 1797811199000
   },
   {
     "detailCode": "III.4.5",
@@ -3407,60 +3410,6 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
   },
   {
     "detailCode": "III.4.8",
-    "title": "Políticas de pesquisa, desenvolvimento, inovação e formação de recursos humanos",
-    "tome": "Tomo III",
-    "chapter": "III.4",
-    "startMonth": 1,
-    "endMonth": 4,
-    "activeMonths": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "startDate": "2026-08-20",
-    "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
-    "dueAt": 1797811199000
-  },
-  {
-    "detailCode": "III.4.9",
-    "title": "Clusters navais e políticas de desenvolvimento regional",
-    "tome": "Tomo III",
-    "chapter": "III.4",
-    "startMonth": 1,
-    "endMonth": 4,
-    "activeMonths": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "startDate": "2026-08-20",
-    "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
-    "dueAt": 1797811199000
-  },
-  {
-    "detailCode": "III.4.10",
-    "title": "Políticas para os setores de óleo e gás, defesa e energia e seus impactos sobre a indústria naval",
-    "tome": "Tomo III",
-    "chapter": "III.4",
-    "startMonth": 1,
-    "endMonth": 4,
-    "activeMonths": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "startDate": "2026-08-20",
-    "dueDate": "2026-12-20",
-    "startAt": 1787184000000,
-    "dueAt": 1797811199000
-  },
-  {
-    "detailCode": "III.4.11",
     "title": "Resultados das políticas brasileiras de marinha mercante e construção naval",
     "tome": "Tomo III",
     "chapter": "III.4",
@@ -3476,7 +3425,7 @@ export const OFFICIAL_SCHEDULE_MES3_SECTIONS: ReadonlyArray<ScheduleSectionItem>
     "dueAt": 1800489599000
   },
   {
-    "detailCode": "III.4.12",
+    "detailCode": "III.4.9",
     "title": "Mudanças recentes e principais questões em debate no Brasil",
     "tome": "Tomo III",
     "chapter": "III.4",
