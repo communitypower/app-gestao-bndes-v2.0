@@ -69,6 +69,12 @@ vi.mock("@/lib/trpc", () => ({
       },
     },
     administration: {
+      storageRestoreList: {
+        useQuery: () => ({ data: [], isLoading: false, refetch: vi.fn() }),
+      },
+      storageRestoreUpload: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
       status: {
         useQuery: () => ({
           data: {
