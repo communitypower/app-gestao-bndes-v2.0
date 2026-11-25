@@ -31,6 +31,7 @@ import {
 } from "../db";
 import { processScheduledActivityAlerts } from "../notificationEngine";
 import { isWhatsAppConfigured } from "../whatsapp";
+import { listReferencedStorageFiles, restoreStorageFile } from "../storageRestore";
 
 export const whatsappSettingsSchema = z.object({
   whatsappEnabled: z.boolean(),
@@ -526,6 +527,28 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
         .set({ scheduleCronTaskUid: job.taskUid })
         .where(eq(projectSettings.id, 1));
       return { enabled: true, taskUid: job.taskUid };
+    }),
+
+  storageRestoreList: protectedProcedure.query(async ({ ctx }) => {
+    assertAdministrator(ctx.user);
+    return listReferencedStorageFiles(await requireDb());
+  }),
+
+  storageRestoreUpload: protectedProcedure
+    .input(
+      z.object({
+        key: z.string().min(1).max(600),
+        fileBase64: z.string().min(1),
+        overwrite: z.boolean().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      assertAdministrator(ctx.user);
+      try {
+        return await restoreStorageFile(await requireDb(), input);
+      } catch (err: any) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: err?.message ?? "Falha ao gravar o arquivo." });
+      }
     }),
 
   resetPilotEnvironment: protectedProcedure.mutation(async ({ ctx }) => {
