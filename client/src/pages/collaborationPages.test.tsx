@@ -69,6 +69,12 @@ vi.mock("@/lib/trpc", () => ({
       },
     },
     administration: {
+      emailNotificationsStatus: {
+        useQuery: () => ({ data: undefined, isLoading: false, refetch: vi.fn() }),
+      },
+      runDeadlineRemindersNow: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
       storageRestoreList: {
         useQuery: () => ({ data: [], isLoading: false, refetch: vi.fn() }),
       },

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminGate from "@/components/AdminGate";
 import StorageRestorePanel from "@/components/StorageRestorePanel";
+import EmailNotificationsPanel from "@/components/EmailNotificationsPanel";
 import { PageHeader, PageLoading, StatusBadge } from "@/components/EditorialUI";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -173,6 +174,8 @@ function AdministrationContent() {
   return (
     <div className="space-y-7">
       <PageHeader eyebrow="Configuração e controle" title="Administração da plataforma" description="Gestão de perfis de acesso, integração com WhatsApp, rotinas de prazo e histórico operacional." index="08 — Administração" />
+
+      <EmailNotificationsPanel />
 
       <StorageRestorePanel />
 

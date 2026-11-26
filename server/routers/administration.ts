@@ -32,6 +32,8 @@ import {
 import { processScheduledActivityAlerts } from "../notificationEngine";
 import { isWhatsAppConfigured } from "../whatsapp";
 import { listReferencedStorageFiles, restoreStorageFile } from "../storageRestore";
+import { getEmailConfig } from "../emailService";
+import { collectDeadlineReminders, runDeadlineReminders, DEADLINE_WINDOW_DAYS } from "../emailNotifications";
 
 export const whatsappSettingsSchema = z.object({
   whatsappEnabled: z.boolean(),
@@ -528,6 +530,26 @@ Coordenação Geral do Estudo BNDES / UFRJ`;
         .where(eq(projectSettings.id, 1));
       return { enabled: true, taskUid: job.taskUid };
     }),
+
+  emailNotificationsStatus: protectedProcedure.query(async ({ ctx }) => {
+    assertAdministrator(ctx.user);
+    const config = getEmailConfig();
+    const pending = await collectDeadlineReminders(await requireDb());
+    return {
+      enabled: config.enabled,
+      reason: config.reason ?? null,
+      provider: config.provider,
+      fromEmail: config.fromEmail || null,
+      redirectTo: config.redirectTo,
+      windowDays: DEADLINE_WINDOW_DAYS,
+      pending: pending.map(g => ({ name: g.name, email: g.email, items: g.items })),
+    };
+  }),
+
+  runDeadlineRemindersNow: protectedProcedure.mutation(async ({ ctx }) => {
+    assertAdministrator(ctx.user);
+    return runDeadlineReminders();
+  }),
 
   storageRestoreList: protectedProcedure.query(async ({ ctx }) => {
     assertAdministrator(ctx.user);
