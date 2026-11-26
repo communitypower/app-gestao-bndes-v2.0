@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { ActivityDetailDialog } from "@/components/ActivityDetailDialog";
 import {
   PageHeader,
   PageLoading,
@@ -46,6 +46,7 @@ export default function HomologacaoPage() {
   const [tomoFilter, setTomoFilter] = useState<string>("todos");
   const [statusFilter, setStatusFilter] = useState<string>("todos");
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
+  const [detailActivityId, setDetailActivityId] = useState<number | null>(null);
   const [homologationNotes, setHomologationNotes] = useState("");
 
   const selectedMaterial = useMemo(
@@ -219,7 +220,10 @@ export default function HomologacaoPage() {
               m.reviewStatus === "aprovado" ||
               m.activityDocumentStatus === "revisada pela seção" ||
               m.activeSubmission?.status === "aprovado";
-            const latestRevision = m.revisions?.[m.revisions.length - 1];
+            const latestRevision = (m.revisions ?? []).reduce(
+              (best: any, rev: any) => (!best || rev.revisionNumber > best.revisionNumber ? rev : best),
+              null as any
+            );
 
             return (
               <div
@@ -295,12 +299,14 @@ export default function HomologacaoPage() {
 
                 {/* Rodapé e Ações de Homologação */}
                 <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-2">
-                  <Link
-                    href={`/?material=${m.id}`}
+                  <button
+                    type="button"
+                    onClick={() => setDetailActivityId(m.activityId ?? null)}
+                    disabled={!m.activityId}
                     className="text-xs text-muted-foreground hover:text-foreground font-medium flex items-center gap-1"
                   >
                     <Eye className="h-3.5 w-3.5" /> Ver Detalhes
-                  </Link>
+                  </button>
 
                   {isHomologated ? (
                     <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
@@ -392,6 +398,12 @@ export default function HomologacaoPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <ActivityDetailDialog
+        activityId={detailActivityId}
+        onOpenChange={open => {
+          if (!open) setDetailActivityId(null);
+        }}
+      />
     </div>
   );
 }

@@ -1154,9 +1154,9 @@ export function ActivityDetailDialog({
                             {d.note && (
                               <div className="bg-background/80 p-2.5 rounded border border-border/50 text-foreground/90 space-y-2">
                                 <p className="whitespace-pre-line leading-relaxed">{d.note}</p>
-                                {d.note.includes("http") && (
+                                {(d.note.includes("http") || d.note.includes("/manus-storage/")) && (
                                   <div className="pt-2 border-t border-border/40 flex flex-wrap gap-2">
-                                    {Array.from(d.note.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g)).map((match: any, i: number) => (
+                                    {Array.from(d.note.matchAll(/\[([^\]]+)\]\(((?:https?:\/\/|\/manus-storage\/)[^\)]+)\)/g)).map((match: any, i: number) => (
                                       <a
                                         key={i}
                                         href={match[2]}
@@ -1416,9 +1416,9 @@ export function ActivityDetailDialog({
                               {d.note && (
                                 <div className="leading-relaxed break-words bg-background/60 p-2.5 rounded border border-border/40 text-foreground/90 space-y-2">
                                   <p className="whitespace-pre-line">{d.note}</p>
-                                  {d.note.includes("http") && (
+                                  {(d.note.includes("http") || d.note.includes("/manus-storage/")) && (
                                     <div className="pt-2 border-t border-border/40 flex flex-wrap gap-2">
-                                      {Array.from(d.note.matchAll(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g)).map((match: any, i: number) => (
+                                      {Array.from(d.note.matchAll(/\[([^\]]+)\]\(((?:https?:\/\/|\/manus-storage\/)[^\)]+)\)/g)).map((match: any, i: number) => (
                                         <a
                                           key={i}
                                           href={match[2]}
