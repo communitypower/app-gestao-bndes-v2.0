@@ -11,6 +11,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { activityAlertsHandler } from "../scheduledAlerts";
 import { getDb } from "../db";
+import { startDeadlineReminderScheduler } from "../emailNotifications";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -76,6 +77,7 @@ async function startServer() {
   server.listen(port, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
+  startDeadlineReminderScheduler();
 }
 
 startServer().catch(console.error);

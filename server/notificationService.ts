@@ -90,7 +90,21 @@ export async function createParticipantNotification(
       })
       .returning({ id: participantNotifications.id });
 
-    return inserted[0]?.id ?? null;
+    const notificationId = inserted[0]?.id ?? null;
+    if (input.type === "revisao_atribuida" || input.type === "versao_submetida") {
+      // E-mail ao revisor; só sai se o destinatário for revisor indicado da seção.
+      await import("./emailNotifications")
+        .then(m =>
+          m.emailReviewerAssignment({
+            recipientUserId: userId!,
+            activityId: input.activityId,
+            notificationId,
+            type: input.type,
+          })
+        )
+        .catch(err => console.warn("[Email] Aviso ao revisor não enviado:", err?.message ?? err));
+    }
+    return notificationId;
   } catch (err) {
     console.error("[Notifications] Failed to insert notification:", err);
     return null;
