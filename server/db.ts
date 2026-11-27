@@ -928,6 +928,7 @@ export async function ensureSeedData(explicitDb?: Awaited<ReturnType<typeof requ
     const targetRole =
       seedGroup?.coordinatorName === memberSeed.name ||
       memberSeed.name === "Marcelo Colomer Ferraro" ||
+      memberSeed.name === "Carolina Gonçalves dos Santos" || // co-coordenação do G3 (27/11/2026)
       memberSeed.name === "Denise Cunha"
         ? ("coordenador" as const)
         : ("participante" as const);

@@ -404,6 +404,8 @@ export function ActivityDetailDialog({
       await addRevision.mutateAsync({
         materialId: currentMaterial.id,
         notes: revisionNotes.trim() || null,
+        // O botão diz "Submeter Versão para Revisão": a versão segue direto para o revisor.
+        autoSubmit: true,
         file: {
           fileName: revisionFile.name,
           mimeType: revisionFile.type || "application/octet-stream",
