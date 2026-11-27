@@ -122,7 +122,7 @@ export const TEAM_SEED: ReadonlyArray<{
   { name: "Germano Mendes de Paula", title: "Professor", institution: "UFU", email: "germano@ufu.br", appRole: "executor" },
   { name: "Rodrigo Coelho Sabbatini", title: "Professor", institution: "FACAMP", email: "rodrigo.sabbatini@facamp.com.br", appRole: "executor" },
   { name: "Paulo Octavio de Paiva Almeida", title: "Consultor", institution: "AQUAPAR", email: "paulo@aquapar.com.br", appRole: "executor" },
-  { name: "Carolina Gonçalves dos Santos", title: "Consultor", institution: "AQUAPAR", email: "carolina@aquapar.com.br", appRole: "executor" },
+  { name: "Carolina Gonçalves dos Santos", title: "Consultor", institution: "AQUAPAR", email: "carolina@aquapar.com.br", appRole: "coordenador" },
   { name: "Pedro Igor Dias Lameira", title: "Professor", institution: "UFPA", email: "pedrolameira@ufpa.br", appRole: "executor" },
   { name: "André Mitsuo Kogishi", title: "Pesquisador", institution: "IPT", email: "amkogishi@ipt.br", appRole: "executor" },
   { name: "Hito Braga de Moraes", title: "Professor", institution: "UFPA", email: "hito@ufpa.br", appRole: "executor" },
